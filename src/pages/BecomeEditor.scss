@@ -1,0 +1,12 @@
+.becomeEditor {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 40px 20px;
+	width: 600px;
+
+	&_container {
+		align-self: center;
+		margin: auto 0;
+	}
+}

@@ -1,0 +1,45 @@
+.profile {
+	display: flex;
+	justify-content: center;
+}
+
+.profile_info {
+	display: flex;
+	flex-direction: row;
+
+	img {
+		width: 64px;
+		height: 64px;
+		border-radius: 100px;
+		margin-right: 16px;
+	}
+
+	&_text {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	&_text2 {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		padding-bottom: 4px;
+	}
+
+	h3 {
+		margin: 0;
+	}
+
+	h4 {
+		margin: 0;
+		margin-left: 16px;
+		font-size: 16px;
+		opacity: 0.5;
+		text-transform: uppercase;
+	}
+
+	p {
+		margin: 0;
+	}
+}
