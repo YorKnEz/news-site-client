@@ -1,0 +1,34 @@
+.author {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	&_avatar {
+		width: 50px;
+		height: 50px;
+		border-radius: 50px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		margin: 0 10px 0 10px;
+	}
+
+	&_info {
+		display: flex;
+		flex-direction: column;
+
+		&_fullname {
+			font-size: 20px;
+		}
+
+		&_newscount {
+			color: var(--secondText-color);
+			font-size: 16px;
+		}
+
+		&_from em {
+			font-family: "Chomsky";
+			color: var(--text-color);
+		}
+	}
+}
