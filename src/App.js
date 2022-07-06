@@ -114,6 +114,16 @@ export default function App() {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route
+							exact
+							path="/create"
+							element={
+								<ProtectedRoute authorOnly={true}>
+									<CreateNews />
+								</ProtectedRoute>
+							}
+						/>
 					</Routes>
 					<Footer />
 				</Router>

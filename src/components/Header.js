@@ -58,9 +58,9 @@ function Header({ theme, signOut }) {
 		<>
 			<div className="header">
 				<div>
-				<Link to="/" className="header_branding">
-					YorkNews
-				</Link>
+					<Link to="/" className="header_branding">
+						YorkNews
+					</Link>
 
 					<Link to="/reddit" className="header_menuBtn header_reddit">
 						<FcReddit />
@@ -72,13 +72,18 @@ function Header({ theme, signOut }) {
 				</button>
 			</div>
 			<UserContext.Consumer>
-				{({ token }) => (
+				{({ token, user }) => (
 					<div className="dropdown" onMouseLeave={handleBlur}>
 						{token ? (
 							<>
 								<Link className="dropdown_link" to="/profile">
 									Profile
 								</Link>
+								{user.type === "author" && (
+									<Link className="dropdown_link" to="/create">
+										Create News
+									</Link>
+								)}
 								<ThemeContext.Consumer>
 									{({ toggleTheme }) => (
 										<Switch
