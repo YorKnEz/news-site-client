@@ -5,7 +5,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ThemeContext, themes, UserContext } from "./context"
 
 import { Header, Footer, ProtectedRoute } from "./components"
-import { Home, News, SignUp, SignIn, Profile, BecomeEditor } from "./pages"
+import {
+	Home,
+	HomeReddit,
+	News,
+	SignUp,
+	SignIn,
+	Profile,
+	BecomeEditor,
+	CreateNews,
+} from "./pages"
 
 export default function App() {
 	const [theme, setTheme] = useState(
@@ -82,6 +91,7 @@ export default function App() {
 					<Header theme={themeName} signOut={signOut} />
 					<Routes>
 						<Route exact path="/" element={<Home />} />
+						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn signIn={signIn} />} />
@@ -101,6 +111,16 @@ export default function App() {
 							element={
 								<ProtectedRoute>
 									<Profile />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							exact
+							path="/create"
+							element={
+								<ProtectedRoute authorOnly={true}>
+									<CreateNews />
 								</ProtectedRoute>
 							}
 						/>

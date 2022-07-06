@@ -1,7 +1,16 @@
-.news_list {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	// display: grid;
-	// grid-template-columns: 50% 50%;
+.news {
+	&_list {
+		// display: flex;
+		// flex-direction: column;
+		// align-items: center;
+		display: grid;
+		grid-template-columns: 33% 33% 33%;
+		grid-template-rows: 30% 50% 70%;
+	}
+
+	&_listReddit {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 }

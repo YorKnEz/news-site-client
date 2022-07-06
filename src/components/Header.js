@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AiOutlineMenu } from "react-icons/ai"
+import { FcReddit } from "react-icons/fc"
 
 import "./Header.scss"
 import { ThemeContext, UserContext } from "../context"
@@ -56,22 +57,33 @@ function Header({ theme, signOut }) {
 	return (
 		<>
 			<div className="header">
-				<Link to="/" className="header_branding">
-					YorkNews
-				</Link>
+				<div>
+					<Link to="/" className="header_branding">
+						YorkNews
+					</Link>
+
+					<Link to="/reddit" className="header_menuBtn header_reddit">
+						<FcReddit />
+					</Link>
+				</div>
 
 				<button className="header_menuBtn" onClick={handleClick}>
 					<AiOutlineMenu />
 				</button>
 			</div>
 			<UserContext.Consumer>
-				{({ token }) => (
+				{({ token, user }) => (
 					<div className="dropdown" onMouseLeave={handleBlur}>
 						{token ? (
 							<>
 								<Link className="dropdown_link" to="/profile">
 									Profile
 								</Link>
+								{user.type === "author" && (
+									<Link className="dropdown_link" to="/create">
+										Create News
+									</Link>
+								)}
 								<ThemeContext.Consumer>
 									{({ toggleTheme }) => (
 										<Switch
