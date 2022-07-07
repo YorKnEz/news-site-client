@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AiOutlineMenu } from "react-icons/ai"
 import { FcReddit } from "react-icons/fc"
+import axios from "axios"
 
 import "./Header.scss"
 import { ThemeContext, UserContext } from "../context"
 import Switch from "./Switch"
+
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function Header({ theme, signOut }) {
 	const [showDropdown, setShowDropdown] = useState(false)
 	const [switchState, setSwitchState] = useState(
 		theme === "dark" ? true : false
 	)
+	const { token } = useContext(UserContext)
 	const history = useNavigate()
 
 	useEffect(() => {
@@ -48,10 +52,22 @@ function Header({ theme, signOut }) {
 		dropdown.style.top = !showDropdown ? "58px" : "-1000px"
 	}
 
-	const handleSignOut = e => {
+	const handleSignOut = async e => {
 		signOut()
 
-		history("/")
+		await axios({
+			method: "post",
+			url: ip + "/users/sign-out",
+			headers: {
+				authorization: token,
+			},
+		})
+			.then(res => {
+				console.log(res)
+
+				history("/")
+			})
+			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
 
 	return (
