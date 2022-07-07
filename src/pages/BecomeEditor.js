@@ -12,6 +12,7 @@ function BecomeEditor() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
+	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = useState("")
 
 	// eslint-disable-next-line no-unused-vars
