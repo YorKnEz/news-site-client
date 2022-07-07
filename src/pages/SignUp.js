@@ -18,7 +18,7 @@ import {
 	useDocumentTitle,
 } from "../utils"
 
-const ip = process.env.REACT_APP_AUTH_API_IP
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function SignUp() {
 	const {
@@ -49,7 +49,6 @@ function SignUp() {
 			},
 		})
 			.then(res => {
-				console.log(res)
 				setError("")
 
 				setShowModal(true)

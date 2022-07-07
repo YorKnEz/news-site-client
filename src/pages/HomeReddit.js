@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useQuery, gql } from "@apollo/client"
 
 import "./Home.scss"
-import { NewsCard, Page, QueryResult, RedditNewsCard } from "../components"
+import { Page, QueryResult, RedditNewsCard } from "../components"
 import { useDocumentTitle } from "../utils"
 
 const NEWS = gql`

@@ -14,26 +14,22 @@ function Profile() {
 		<Page>
 			<div className="profile">
 				<UserContext.Consumer>
-					{({ user }) => {
-						console.log(user)
-
-						return (
-							<div className="profile_info">
-								{user.profilePicture === "default" ? (
-									<img src="default_avatar.png" alt="avatar of user" />
-								) : (
-									<img src={user.profilePicture} alt="avatar of user" />
-								)}
-								<div className="profile_info_text">
-									<div className="profile_info_text2">
-										<h3>{user.fullName}</h3>
-										<h4>{user.type}</h4>
-									</div>
-									<p>{user.email}</p>
+					{({ user }) => (
+						<div className="profile_info">
+							{user.profilePicture === "default" ? (
+								<img src="default_avatar.png" alt="avatar of user" />
+							) : (
+								<img src={user.profilePicture} alt="avatar of user" />
+							)}
+							<div className="profile_info_text">
+								<div className="profile_info_text2">
+									<h3>{user.fullName}</h3>
+									<h4>{user.type}</h4>
 								</div>
+								<p>{user.email}</p>
 							</div>
-						)
-					}}
+						</div>
+					)}
 				</UserContext.Consumer>
 			</div>
 		</Page>

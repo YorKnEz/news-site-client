@@ -5,7 +5,7 @@ export const themes = {
 		text: "#fff",
 		secondText: "gray",
 		background: "#161616",
-		button: "#lightseagreen",
+		button: "lightseagreen",
 		shadow: "black",
 	},
 	light: {
