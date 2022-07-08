@@ -8,11 +8,17 @@ function NewsCard({ data }) {
 	return (
 		<div className="news_card">
 			<Link to={`/news/${data.id}`}>
-				<img
+				<div
+					className="news_card_thumbnail"
+					style={{ backgroundImage: `url("${data.thumbnail}")` }}
+				>
+					{/* Thumbnail */}
+				</div>
+				{/* <img
 					className="news_card_thumbnail"
 					src={data.thumbnail}
 					alt="thumbnail"
-				/>
+				/> */}
 			</Link>
 			<div className="news_card_info">
 				<span className="news_card_info_title">{data.title}</span>
