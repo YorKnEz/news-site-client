@@ -20,7 +20,7 @@ const NEWS = gql`
 			subreddit
 			thumbnail
 			date
-			source
+			sources
 		}
 	}
 `

@@ -14,7 +14,7 @@ const NEWS = gql`
 			date
 			thumbnail
 			subreddit
-			source
+			sources
 			body
 			type
 			author {
@@ -25,7 +25,6 @@ const NEWS = gql`
 		}
 	}
 `
-
 function News() {
 	const { newsId } = useParams()
 	const { loading, error, data } = useQuery(NEWS, {
