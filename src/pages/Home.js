@@ -20,7 +20,7 @@ const NEWS = gql`
 			subreddit
 			thumbnail
 			date
-			source
+			sources
 		}
 	}
 `
@@ -39,6 +39,8 @@ function Home() {
 
 	useEffect(() => {
 		if (data) {
+			console.log(data)
+
 			setNews(news => [...news, ...data.newsForHome])
 		}
 	}, [data])
@@ -62,7 +64,13 @@ function Home() {
 
 	return (
 		<Page>
-			<h1>What is Lorem Ipsum?</h1>
+			<h1>
+				Welcome to{" "}
+				<span style={{ fontFamily: "Chomsky", color: "var(--text-color)" }}>
+					YorkNews
+				</span>
+				!
+			</h1>
 
 			<p>
 				Lorem Ipsum is simply dummy text of the printing and typesetting

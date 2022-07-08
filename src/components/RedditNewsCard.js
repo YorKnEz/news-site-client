@@ -6,7 +6,7 @@ import "./RedditNewsCard.scss"
 function RedditNewsCard({ data }) {
 	return (
 		<a
-			href={data.source}
+			href={data.sources}
 			target="_blank"
 			className="reddit_news_card"
 			rel="noreferrer"

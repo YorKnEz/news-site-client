@@ -29,7 +29,11 @@ function AuthorInfo({ fullName, profilePicture, type, subreddit }) {
 			<span>Made by:</span>
 			<div
 				className="author_avatar"
-				style={{ backgroundImage: `url(${profilePicture})` }}
+				style={{
+					backgroundImage: `url(${
+						profilePicture !== "default" ? profilePicture : "default_avatar.png"
+					})`,
+				}}
 			></div>
 			<div className="author_info">
 				<span className="author_info_fullname">{fullName}</span>
