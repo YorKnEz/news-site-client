@@ -1,4 +1,4 @@
-.news_card {
+.news_card2 {
 	width: 100%;
 	margin: 20px 0;
 	text-decoration: none;
@@ -6,8 +6,9 @@
 	border-radius: 10px;
 	overflow: hidden;
 	box-shadow: 0 2px 5px var(--shadow-color);
-	max-width: 720px;
 	position: relative;
+	display: grid;
+	grid-template-columns: 30% 70%;
 
 	&_overlay {
 		position: absolute;
@@ -25,7 +26,7 @@
 		background-size: cover;
 		background-position: center;
 		width: 100%;
-		padding-top: 56.25%;
+		padding-top: 100%;
 	}
 
 	&_info {
@@ -40,12 +41,26 @@
 
 		&_wrapper {
 			display: flex;
+			flex-direction: column;
+			margin-top: auto;
+		}
+
+		&_tags {
+			display: flex;
+			flex-wrap: wrap;
 		}
 
 		&_date {
-			align-self: center;
+			color: var(--secondText-color);
 			margin: 0;
+			align-self: flex-end;
 			margin-left: auto;
+			width: fit-content;
+		}
+
+		&_body {
+			font-size: 14px;
+			color: var(--secondText-color);
 		}
 	}
 }

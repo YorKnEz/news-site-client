@@ -59,13 +59,18 @@
 .tags {
 	margin-top: 26px;
 	margin-bottom: 16px;
+	display: flex;
+	flex-wrap: wrap;
 
 	h4 {
-		margin-top: 0;
+		margin-bottom: 0;
+		margin-top: 14px;
+		margin: 14px 10px 0 0;
 	}
 
 	&_item {
-		margin-left: 10px;
+		margin-top: 10px;
+		margin-right: 10px;
 		text-decoration: none;
 		color: rgb(27, 145, 204);
 		background-color: rgba(27, 145, 204, 0.3);
@@ -81,8 +86,8 @@
 			background-color: rgba(97, 188, 234, 0.3);
 		}
 
-		&:first-child {
-			margin-left: 0;
+		&:last-child {
+			margin-right: 0;
 		}
 	}
 }

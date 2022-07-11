@@ -1,36 +1,44 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import AuthorInfo from "./AuthorInfo"
+import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
+import AuthorInfo from "./AuthorInfo"
 
-function NewsCard({ data }) {
+function NewsCard({ data, authorOff }) {
+	const showDate = () => {
+		const updatedAt = fromUnixTime(data.updatedAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(updatedAt, currentDate)
+
+		return data.createdAt === data.updatedAt
+			? `Posted ${distance} ago`
+			: `Edited ${distance} ago`
+	}
+
 	return (
-		<div className="news_card">
-			<Link to={`/news/${data.id}`}>
-				<div
-					className="news_card_thumbnail"
-					style={{ backgroundImage: `url("${data.thumbnail}")` }}
-				>
-					{/* Thumbnail */}
-				</div>
-				{/* <img
-					className="news_card_thumbnail"
-					src={data.thumbnail}
-					alt="thumbnail"
-				/> */}
-			</Link>
+		<Link to={`/news/${data.id}`} className="news_card">
+			<div className="news_card_overlay" />
+			<div
+				className="news_card_thumbnail"
+				style={{ backgroundImage: `url("${data.thumbnail}")` }}
+			/>
 			<div className="news_card_info">
 				<span className="news_card_info_title">{data.title}</span>
 
-				<AuthorInfo
-					fullName={data.author.fullName}
-					profilePicture={data.author.profilePicture}
-					type={data.type}
-					subreddit={data.subreddit}
-				/>
+				<div className="news_card_info_wrapper">
+					{!authorOff && (
+						<AuthorInfo
+							fullName={data.author.fullName}
+							profilePicture={data.author.profilePicture}
+							type={data.type}
+							subreddit={data.subreddit}
+						/>
+					)}
+					<p className="news_card_info_date">{showDate()}</p>
+				</div>
 			</div>
-		</div>
+		</Link>
 	)
 }
 export default NewsCard
