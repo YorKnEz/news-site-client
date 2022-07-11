@@ -15,9 +15,9 @@ function AuthorInfo({ fullName, profilePicture, type, subreddit }) {
 					<span className="author_info_fullname">{fullName}</span>
 					<span>
 						From:{" "}
-						<a className="link" href={`https://www.reddit.com/${subreddit}`}>
+						<div className="link" href={`https://www.reddit.com/${subreddit}`}>
 							{subreddit}
-						</a>
+						</div>
 					</span>
 				</div>
 			</div>
@@ -31,7 +31,9 @@ function AuthorInfo({ fullName, profilePicture, type, subreddit }) {
 				className="author_avatar"
 				style={{
 					backgroundImage: `url(${
-						profilePicture !== "default" ? profilePicture : "default_avatar.png"
+						profilePicture !== "default"
+							? profilePicture
+							: "../default_avatar.png"
 					})`,
 				}}
 			></div>
