@@ -37,17 +37,29 @@
 		justify-content: center;
 	}
 
-	&_exit {
+	button {
 		border: none;
 		border-radius: 5px;
-		background-color: lightseagreen;
 		color: #eee;
 		font-size: 24px;
 		padding: 10px 30px 10px 30px;
 		cursor: pointer;
 		margin-top: 40px;
+		margin-left: 10px;
 		display: table;
-		margin-left: auto;
+	}
+
+	&_decline {
+		background-color: var(--secondText-color);
+	}
+
+	&_submit {
+		background-color: lightseagreen;
+	}
+
+	&_buttons {
+		display: flex;
+		justify-content: flex-end;
 	}
 }
 

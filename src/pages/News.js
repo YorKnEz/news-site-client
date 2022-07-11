@@ -1,10 +1,17 @@
+/* eslint-disable eqeqeq */
 import { useQuery, gql } from "@apollo/client"
-import React, { useEffect, useState } from "react"
-import { useParams } from "react-router"
-import { AuthorInfo, Page, QueryResult } from "../components"
-import { useDocumentTitle } from "../utils"
+import { format, fromUnixTime } from "date-fns"
+import React, { useContext, useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router"
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
+import axios from "axios"
 
 import "./News.scss"
+import { useDocumentTitle } from "../utils"
+import { AuthorInfo, Modal, Page, QueryResult } from "../components"
+import { UserContext } from "../context"
+
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 const NEWS = gql`
 	query News($newsId: ID!) {
@@ -13,7 +20,6 @@ const NEWS = gql`
 			title
 			subreddit
 			thumbnail
-			date
 			sources
 			tags
 			body
@@ -39,6 +45,7 @@ function News() {
 	const history = useNavigate()
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
+	const [showModal, setShowModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
@@ -55,17 +62,58 @@ function News() {
 		}
 	}, [data, setDocumentTitle])
 
+	const onModalSubmit = async () => {
+		setShowModal(false)
+
+		// handle news deletion
+		await axios({
+			method: "delete",
+			url: ip + "/news/delete",
+			data: data.news,
+			headers: {
+				authorization: token,
+			},
+		})
+			.then(res => {
+				console.log(res)
+
+				history("../profile")
+			})
+			.catch(e => console.log(e?.response?.data?.error || e.message))
+	}
+
+	const onModalDecline = () => {
+		setShowModal(false)
+	}
+
+	const handleDelete = () => {
+		setShowModal(true)
+	}
+
 	const handleEdit = e => {
 		history(`/news/${data.news.id}/edit`)
 	}
 	return (
 		<Page>
+			{showModal && (
+				<Modal onSubmit={onModalSubmit} onDecline={onModalDecline}>
+					<h3 style={{ margin: 0 }}>Delete news</h3>
+					<hr />
+					<p>
+						Are you sure you want to delete this news? You won't be able to
+						recover it afterwards.
+					</p>
+				</Modal>
+			)}
 			<QueryResult loading={loading} error={error} data={data}>
 				<div className="news_container">
 					<div className="news_header">
 						<h1 className="news_header_title">{data?.news.title}</h1>
 						{user.id == data.news.author.id && (
 							<div className="news_buttons">
+								<button onClick={handleDelete} className="news_buttons_delete">
+									<AiOutlineDelete size={16} />
+								</button>
 								<button onClick={handleEdit} className="news_buttons_edit">
 									<AiOutlineEdit size={16} />
 								</button>

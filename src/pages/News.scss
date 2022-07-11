@@ -8,4 +8,35 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+
+	&_buttons {
+		display: flex;
+		justify-content: flex-end;
+
+		button {
+			cursor: pointer;
+			border: 1px solid;
+			padding: 10px;
+			margin: 4px 0 4px 16px;
+			border-radius: 10px;
+			background-color: transparent;
+
+			transition: all 0.3s ease;
+
+			&:hover {
+				padding: 14px;
+				margin: 0 0 0 8px;
+			}
+		}
+
+		&_edit {
+			color: var(--button-color);
+			border-color: var(--button-color);
+		}
+
+		&_delete {
+			color: red;
+			border-color: red;
+		}
+	}
 }
