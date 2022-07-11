@@ -45,6 +45,12 @@ function CreateNews() {
 
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
+
+	// prompt the user to confirm leaving the page
+	window.onbeforeunload = e => {
+		return "Are you sure you want to leave? Your changes may not be saved."
+	}
+
 	const onSubmit = async data => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
