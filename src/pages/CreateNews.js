@@ -42,22 +42,6 @@ function CreateNews() {
 		"Write your news story | YorkNews"
 	)
 
-	const options = [
-		"inline",
-		"blockType",
-		"fontSize",
-		"fontFamily",
-		"list",
-		"textAlign",
-		"colorPicker",
-		"link",
-		"embedded",
-		"emoji",
-		"image",
-		"remove",
-		"history",
-	]
-
 	const onSubmit = async data => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
@@ -144,7 +128,7 @@ function CreateNews() {
 		if (tagInput.endsWith(",")) {
 			tagInput = tagInput.slice(0, tagInput.length - 1)
 
-			if (/^[A-Za-z0-9]*$/.test(tagInput)) {
+			if (/^[A-Za-z0-9 ]*$/.test(tagInput)) {
 				setError("")
 
 				setTags([...tags, tagInput])

@@ -11,15 +11,18 @@ const NEWS = gql`
 		news(id: $newsId) {
 			id
 			title
-			date
-			thumbnail
 			subreddit
+			thumbnail
+			date
 			sources
+			tags
 			body
 			type
+			createdAt
+			updatedAt
 			author {
-				fullName
 				id
+				fullName
 				profilePicture
 			}
 		}

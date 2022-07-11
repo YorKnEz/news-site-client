@@ -10,17 +10,20 @@ const NEWS = gql`
 		newsForHome(offsetIndex: $offsetIndex) {
 			id
 			title
+			subreddit
+			thumbnail
+			date
+			sources
+			tags
+			body
+			type
+			createdAt
+			updatedAt
 			author {
 				profilePicture
 				fullName
 				id
 			}
-			type
-			body
-			subreddit
-			thumbnail
-			date
-			sources
 		}
 	}
 `
