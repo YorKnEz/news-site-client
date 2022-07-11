@@ -35,6 +35,8 @@ function News() {
 			newsId: newsId,
 		},
 	})
+	const { user, token } = useContext(UserContext)
+	const history = useNavigate()
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	// eslint-disable-next-line no-unused-vars
@@ -53,12 +55,22 @@ function News() {
 		}
 	}, [data, setDocumentTitle])
 
+	const handleEdit = e => {
+		history(`/news/${data.news.id}/edit`)
+	}
 	return (
 		<Page>
 			<QueryResult loading={loading} error={error} data={data}>
 				<div className="news_container">
 					<div className="news_header">
 						<h1 className="news_header_title">{data?.news.title}</h1>
+						{user.id == data.news.author.id && (
+							<div className="news_buttons">
+								<button onClick={handleEdit} className="news_buttons_edit">
+									<AiOutlineEdit size={16} />
+								</button>
+							</div>
+						)}
 
 						<hr />
 
