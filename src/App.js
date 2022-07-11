@@ -14,6 +14,7 @@ import {
 	Profile,
 	BecomeEditor,
 	CreateNews,
+	EditNews,
 } from "./pages"
 
 export default function App() {
@@ -124,6 +125,8 @@ export default function App() {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route exact path="/news/:newsId/edit" element={<EditNews />} />
 					</Routes>
 					<Footer />
 				</Router>

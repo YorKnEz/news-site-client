@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
 import draftToHtml from "draftjs-to-html"
@@ -14,6 +14,7 @@ import {
 	handleInputBlur,
 	handleInputFocus,
 	isValidHttpUrl,
+	updateInputLabels,
 	useDocumentTitle,
 } from "../utils"
 import { UserContext } from "../context"
@@ -41,6 +42,14 @@ function CreateNews() {
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
 	)
+
+	// check if any input has been autofilled in order to change the label position
+	useEffect(() => updateInputLabels())
+
+	// prompt the user to confirm leaving the page
+	window.onbeforeunload = e => {
+		return "Are you sure you want to leave? Your changes may not be saved."
+	}
 
 	const onSubmit = async data => {
 		// body of the news in html format
