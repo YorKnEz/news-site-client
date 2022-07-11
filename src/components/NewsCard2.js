@@ -5,16 +5,6 @@ import { formatDistance, fromUnixTime } from "date-fns"
 import "./NewsCard2.scss"
 
 function NewsCard2({ data }) {
-	const showDate = () => {
-		const updatedAt = fromUnixTime(data.updatedAt / 1000)
-		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(updatedAt, currentDate)
-
-		return data.createdAt === data.updatedAt
-			? `Posted ${distance} ago`
-			: `Edited ${distance} ago`
-	}
-
 	useEffect(() => {
 		const div = document.getElementById(data.id)
 
@@ -26,8 +16,6 @@ function NewsCard2({ data }) {
 
 		// get first 400 chars of that
 		body = body.slice(0, 396) + "..."
-
-		// console.log(body)
 
 		// render it
 		div.innerHTML = body
@@ -44,9 +32,19 @@ function NewsCard2({ data }) {
 		))
 	}
 
+	const showDate = () => {
+		const updatedAt = fromUnixTime(data.updatedAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(updatedAt, currentDate)
+
+		return data.createdAt === data.updatedAt
+			? `Posted ${distance} ago`
+			: `Edited ${distance} ago`
+	}
+
 	return (
 		<Link to={`/news/${data.id}`} className="news_card2">
-			{/* <div className="news_card2_overlay" /> */}
+			<div className="news_card2_overlay" />
 			<div
 				className="news_card2_thumbnail"
 				style={{ backgroundImage: `url("${data.thumbnail}")` }}

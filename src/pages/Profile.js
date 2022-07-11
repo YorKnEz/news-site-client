@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { useQuery, gql } from "@apollo/client"
 
 import "./Profile.scss"
-import { NewsCard, NewsCard2, Page, QueryResult } from "../components"
+import { NewsCard2, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
 import { useDocumentTitle } from "../utils"
 
@@ -13,7 +13,6 @@ const NEWS = gql`
 			title
 			subreddit
 			thumbnail
-			date
 			sources
 			tags
 			body

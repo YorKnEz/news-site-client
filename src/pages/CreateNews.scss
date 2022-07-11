@@ -1,9 +1,6 @@
 .editor {
 	padding: 10px;
 
-	// &_wrapper {
-	// }
-
 	&_toolbar {
 		color: #161616;
 		background-color: var(--background-color);
@@ -34,10 +31,11 @@
 	}
 
 	&_item {
+		cursor: pointer;
+		user-select: none;
 		margin-left: 10px;
 		text-decoration: none;
 		color: rgb(27, 145, 204);
-		// background-color: rgba(27, 145, 204, 0.3);
 
 		padding: 5px;
 		border-radius: 5px;
@@ -47,7 +45,6 @@
 
 		&:hover {
 			color: rgb(97, 188, 234);
-			// background-color: rgba(97, 188, 234, 0.3);
 		}
 
 		&:first-child {
@@ -69,6 +66,8 @@
 	}
 
 	&_item {
+		cursor: pointer;
+		user-select: none;
 		margin-top: 10px;
 		margin-right: 10px;
 		text-decoration: none;

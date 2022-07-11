@@ -12,7 +12,6 @@ const NEWS = gql`
 			title
 			subreddit
 			thumbnail
-			date
 			sources
 			tags
 			body

@@ -34,6 +34,7 @@ const NEWS = gql`
 		}
 	}
 `
+
 function News() {
 	const { newsId } = useParams()
 	const { loading, error, data } = useQuery(NEWS, {
@@ -61,6 +62,12 @@ function News() {
 			setTags(data.news.tags.split(","))
 		}
 	}, [data, setDocumentTitle])
+
+	const getDate = () => {
+		const updatedAt = fromUnixTime(data.news.updatedAt / 1000)
+
+		return format(updatedAt, "MMMM d',' yyyy H':'mm")
+	}
 
 	const onModalSubmit = async () => {
 		setShowModal(false)
@@ -106,9 +113,9 @@ function News() {
 				</Modal>
 			)}
 			<QueryResult loading={loading} error={error} data={data}>
-				<div className="news_container">
-					<div className="news_header">
-						<h1 className="news_header_title">{data?.news.title}</h1>
+				{data && (
+					<div className="news_container">
+						<h1 className="news_title">{data.news.title}</h1>
 						{user.id == data.news.author.id && (
 							<div className="news_buttons">
 								<button onClick={handleDelete} className="news_buttons_delete">
@@ -124,19 +131,20 @@ function News() {
 
 						<div className="news_info">
 							<AuthorInfo
-								fullName={data?.news.author.fullName}
-								profilePicture={data?.news.author.profilePicture}
-								type={data?.news.type}
-								subreddit={data?.news.subreddit}
+								fullName={data.news.author.fullName}
+								profilePicture={data.news.author.profilePicture}
+								type={data.news.type}
+								subreddit={data.news.subreddit}
 							/>
 
-							<p>Last edited on: {data?.news.date}</p>
+							<p>Last edited on: {getDate()}</p>
 						</div>
+
 						<hr />
 
 						<img
 							className="news_thumbnail"
-							src={data?.news.thumbnail}
+							src={data.news.thumbnail}
 							alt="thumbnail"
 						/>
 
@@ -154,7 +162,6 @@ function News() {
 								</a>
 							))}
 						</div>
-
 						<div className="tags">
 							<h4>Tags</h4>
 							{tags.map(s => (
@@ -164,7 +171,7 @@ function News() {
 							))}
 						</div>
 					</div>
-				</div>
+				)}
 			</QueryResult>
 		</Page>
 	)

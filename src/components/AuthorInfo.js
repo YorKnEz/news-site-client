@@ -26,7 +26,7 @@ function AuthorInfo({ fullName, profilePicture, type, subreddit }) {
 
 	return (
 		<div className="author">
-			<span>Made by:</span>
+			<span>Written by:</span>
 			<div
 				className="author_avatar"
 				style={{
