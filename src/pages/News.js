@@ -35,27 +35,23 @@ function News() {
 			newsId: newsId,
 		},
 	})
+	const [sources, setSources] = useState([])
+	const [tags, setTags] = useState([])
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
 	useEffect(() => {
-		if (data) setDocumentTitle(data.news.title + " | YorkNews")
-
 		if (data) {
+			setDocumentTitle(data.news.title + " | YorkNews")
+
 			const div = document.querySelector("#body")
 
 			div.innerHTML = data.news.body
+
+			setSources(data.news.sources.split(","))
+			setTags(data.news.tags.split(","))
 		}
 	}, [data, setDocumentTitle])
-
-	const htmlDecode = input => {
-		const e = document.createElement("div")
-		e.innerHTML = input
-		console.log(e)
-		// console.log(e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue)
-		// return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue
-		return e
-	}
 
 	return (
 		<Page>
@@ -66,7 +62,7 @@ function News() {
 
 						<hr />
 
-						<div>
+						<div className="news_info">
 							<AuthorInfo
 								fullName={data?.news.author.fullName}
 								profilePicture={data?.news.author.profilePicture}
@@ -76,7 +72,6 @@ function News() {
 
 							<p>Last edited on: {data?.news.date}</p>
 						</div>
-
 						<hr />
 
 						<img
@@ -85,21 +80,29 @@ function News() {
 							alt="thumbnail"
 						/>
 
+						<hr />
+
 						<div id="body"></div>
 
 						<hr />
 
-						<p>
-							Sources:{" "}
-							<a
-								className="link"
-								rel="noreferrer"
-								target="_blank"
-								href={data?.news.source}
-							>
-								{data?.news.source}
-							</a>
-						</p>
+						<div className="sources">
+							<h4>Sources</h4>
+							{sources.map(s => (
+								<a className="sources_item" key={s} href={s}>
+									{s}
+								</a>
+							))}
+						</div>
+
+						<div className="tags">
+							<h4>Tags</h4>
+							{tags.map(s => (
+								<a className="tags_item" key={s} href={s}>
+									{s}
+								</a>
+							))}
+						</div>
 					</div>
 				</div>
 			</QueryResult>
