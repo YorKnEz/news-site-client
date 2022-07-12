@@ -17,8 +17,8 @@ const NEWS = gql`
 			body
 			type
 			author {
-				fullName
 				id
+				fullName
 				profilePicture
 			}
 		}

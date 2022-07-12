@@ -41,7 +41,7 @@ function SignUp() {
 	const onSubmit = async data => {
 		await axios({
 			method: "put",
-			url: ip + "/users/register",
+			url: `${ip}/users/register`,
 			data: {
 				...data,
 				fullName: data.firstName + " " + data.lastName,
@@ -93,8 +93,6 @@ function SignUp() {
 	}
 
 	const handleShowPassword = e => {
-		e.preventDefault()
-
 		setShowPassword(!showPassword)
 	}
 

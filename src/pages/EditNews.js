@@ -21,7 +21,7 @@ import {
 	useDocumentTitle,
 } from "../utils"
 import { UserContext } from "../context"
-import { Navigate, useParams } from "react-router"
+import { Navigate, useNavigate, useParams } from "react-router"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -59,6 +59,7 @@ function CreateNews() {
 		formState: { errors },
 	} = useForm()
 	const watchThumbnail = watch("thumbnail", [])
+	const history = useNavigate()
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
@@ -136,7 +137,7 @@ function CreateNews() {
 
 			await axios({
 				method: "post",
-				url: ip + "/news/upload-thumbnail",
+				url: `${ip}/news/upload-thumbnail`,
 				data: form,
 				headers: {
 					authorization: token,
@@ -150,7 +151,7 @@ function CreateNews() {
 
 		await axios({
 			method: "put",
-			url: ip + "/news/edit",
+			url: `${ip}/news/edit`,
 			data: requestBody,
 			headers: {
 				authorization: token,
@@ -158,6 +159,8 @@ function CreateNews() {
 		})
 			.then(res => {
 				console.log(res)
+
+				history(`/news/${res.data.newsToEdit.id}`)
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
@@ -358,7 +361,7 @@ function CreateNews() {
 							{error2}
 						</p>
 					)}
-					<button className="form_submit">Post your story</button>
+					<button className="form_submit">Edit your story</button>
 				</form>
 			</QueryResult>
 		</Page>

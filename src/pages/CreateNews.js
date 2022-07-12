@@ -18,6 +18,7 @@ import {
 	useDocumentTitle,
 } from "../utils"
 import { UserContext } from "../context"
+import { useNavigate } from "react-router"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -25,19 +26,20 @@ function CreateNews() {
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+	const { user, token } = useContext(UserContext)
 	const {
 		register,
 		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const { user, token } = useContext(UserContext)
+	const watchThumbnail = watch("thumbnail", [])
+	const history = useNavigate()
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
 	const [tags, setTags] = useState([])
 	const [error, setError] = useState("")
-	const watchThumbnail = watch("thumbnail", [])
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
@@ -72,7 +74,7 @@ function CreateNews() {
 
 		await axios({
 			method: "post",
-			url: ip + "/news/upload-thumbnail",
+			url: `${ip}/news/upload-thumbnail`,
 			data: form,
 			headers: {
 				authorization: token,
@@ -96,7 +98,7 @@ function CreateNews() {
 
 		await axios({
 			method: "post",
-			url: ip + "/news/create",
+			url: `${ip}/news/create`,
 			data: requestBody,
 			headers: {
 				authorization: token,
@@ -104,6 +106,8 @@ function CreateNews() {
 		})
 			.then(res => {
 				console.log(res)
+
+				history(`/news/${res.data.news.id}`)
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}

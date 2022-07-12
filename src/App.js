@@ -118,6 +118,16 @@ export default function App() {
 
 						<Route
 							exact
+							path="/profile/:authorId"
+							element={
+								<ProtectedRoute>
+									<Profile />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							exact
 							path="/create"
 							element={
 								<ProtectedRoute authorOnly={true}>

@@ -8,6 +8,47 @@
 		align-items: center;
 	}
 
+	&_row {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&_button {
+		cursor: pointer;
+		border-radius: 10px;
+
+		background-color: transparent;
+
+		margin: auto 0;
+		padding: 10px 20px;
+
+		transition: all 0.2s ease;
+
+		&_follow {
+			border: 1px solid var(--button-color);
+
+			color: var(--button-color);
+
+			&:hover {
+				background-color: var(--button-color);
+			}
+		}
+
+		&_unfollow {
+			border: 1px solid var(--secondText-color);
+
+			color: var(--secondText-color);
+
+			&:hover {
+				background-color: var(--secondText-color);
+			}
+		}
+
+		&:hover {
+			color: #eee;
+		}
+	}
+
 	&_info {
 		display: flex;
 		flex-direction: row;

@@ -35,6 +35,77 @@ select:-webkit-autofill:focus {
 	}
 }
 
+.sources {
+	margin-top: 26px;
+	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+
+	h4 {
+		margin-top: 0;
+	}
+
+	&_item {
+		cursor: pointer;
+		user-select: none;
+		margin-left: 10px;
+		text-decoration: none;
+		color: rgb(27, 145, 204);
+
+		padding: 5px;
+		border-radius: 5px;
+		align-self: flex-start;
+
+		transition: all 0.3s ease;
+
+		&:hover {
+			color: rgb(97, 188, 234);
+		}
+
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}
+
+.tags {
+	margin-top: 26px;
+	margin-bottom: 16px;
+	display: flex;
+	flex-wrap: wrap;
+
+	h4 {
+		margin-bottom: 0;
+		margin-top: 14px;
+		margin: 14px 10px 0 0;
+	}
+
+	&_item {
+		cursor: pointer;
+		user-select: none;
+		margin-top: 10px;
+		margin-right: 10px;
+		text-decoration: none;
+		color: rgb(27, 145, 204);
+		background-color: rgba(27, 145, 204, 0.3);
+
+		padding: 5px;
+		border-radius: 5px;
+		align-self: flex-start;
+
+		transition: all 0.3s ease;
+
+		&:hover {
+			color: rgb(97, 188, 234);
+			background-color: rgba(97, 188, 234, 0.3);
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
 @font-face {
 	font-family: DancingScript;
 	src: url("../public/fonts/DancingScript.ttf");

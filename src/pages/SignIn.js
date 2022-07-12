@@ -39,7 +39,7 @@ function SignIn({ signIn }) {
 	const onSubmit = async data => {
 		await axios({
 			method: "post",
-			url: ip + "/users/login",
+			url: `${ip}/users/login`,
 			data,
 		})
 			.then(res => {
@@ -61,8 +61,6 @@ function SignIn({ signIn }) {
 	}
 
 	const handleShowPassword = e => {
-		e.preventDefault()
-
 		setShowPassword(!showPassword)
 	}
 

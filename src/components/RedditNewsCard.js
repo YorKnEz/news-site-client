@@ -14,8 +14,7 @@ function RedditNewsCard({ data }) {
 			<span className="reddit_news_card_title">{data.title}</span>
 
 			<AuthorInfo
-				fullName={data.author.fullName}
-				profilePicture={data.author.profilePicture}
+				data={data.author}
 				type={data.type}
 				subreddit={data.subreddit}
 			/>
