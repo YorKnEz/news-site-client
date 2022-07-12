@@ -33,8 +33,6 @@ function Header({ theme, signOut }) {
 	}, [switchState])
 
 	const handleClick = e => {
-		e.preventDefault()
-
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(!showDropdown)
@@ -43,8 +41,6 @@ function Header({ theme, signOut }) {
 	}
 
 	const handleBlur = e => {
-		e.preventDefault()
-
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(false)
@@ -57,7 +53,7 @@ function Header({ theme, signOut }) {
 
 		await axios({
 			method: "post",
-			url: ip + "/users/sign-out",
+			url: `${ip}/users/sign-out`,
 			headers: {
 				authorization: token,
 			},

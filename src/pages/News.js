@@ -75,7 +75,7 @@ function News() {
 		// handle news deletion
 		await axios({
 			method: "delete",
-			url: ip + "/news/delete",
+			url: `${ip}/news/delete`,
 			data: data.news,
 			headers: {
 				authorization: token,
