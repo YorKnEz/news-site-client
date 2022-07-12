@@ -27,8 +27,7 @@ function NewsCard({ data, authorOff }) {
 				<div className="news_card_info_wrapper">
 					{!authorOff && (
 						<AuthorInfo
-							fullName={data.author.fullName}
-							profilePicture={data.author.profilePicture}
+							data={data.author}
 							type={data.type}
 							subreddit={data.subreddit}
 						/>

@@ -131,10 +131,10 @@ function News() {
 
 						<div className="news_info">
 							<AuthorInfo
-								fullName={data.news.author.fullName}
-								profilePicture={data.news.author.profilePicture}
+								data={data.news.author}
 								type={data.news.type}
 								subreddit={data.news.subreddit}
+								link
 							/>
 
 							<p>Last edited on: {getDate()}</p>
