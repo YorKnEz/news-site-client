@@ -93,11 +93,15 @@ function News() {
 		setShowModal(false)
 	}
 
-	const handleDelete = () => {
+	const handleDelete = e => {
+		e.preventDefault()
+
 		setShowModal(true)
 	}
 
 	const handleEdit = e => {
+		e.preventDefault()
+
 		history(`/news/${data.news.id}/edit`)
 	}
 	return (

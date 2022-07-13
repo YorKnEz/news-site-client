@@ -33,6 +33,8 @@ function Header({ theme, signOut }) {
 	}, [switchState])
 
 	const handleClick = e => {
+		e.preventDefault()
+
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(!showDropdown)
@@ -49,6 +51,8 @@ function Header({ theme, signOut }) {
 	}
 
 	const handleSignOut = async e => {
+		e.preventDefault()
+
 		signOut()
 
 		await axios({

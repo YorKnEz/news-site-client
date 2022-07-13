@@ -166,6 +166,8 @@ function CreateNews() {
 	}
 
 	const handleSource = e => {
+		e.preventDefault()
+
 		let sourceInput = e.target.value
 		setSource(sourceInput)
 
@@ -187,6 +189,8 @@ function CreateNews() {
 	}
 
 	const handleDeleteSource = e => {
+		e.preventDefault()
+
 		const indexOfSource = sources.findIndex(el => el === e.target.innerHTML)
 
 		let newSources = [...sources]
@@ -197,6 +201,8 @@ function CreateNews() {
 	}
 
 	const handleTag = e => {
+		e.preventDefault()
+
 		let tagInput = e.target.value
 
 		setTag(tagInput)
@@ -225,6 +231,8 @@ function CreateNews() {
 	}
 
 	const handleDeleteTag = e => {
+		e.preventDefault()
+
 		const indexOfTag = tags.findIndex(el => el === e.target.innerHTML)
 
 		let newTags = [...tags]

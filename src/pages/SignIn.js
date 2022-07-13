@@ -61,6 +61,8 @@ function SignIn({ signIn }) {
 	}
 
 	const handleShowPassword = e => {
+		e.preventDefault()
+
 		setShowPassword(!showPassword)
 	}
 

@@ -93,6 +93,8 @@ function SignUp() {
 	}
 
 	const handleShowPassword = e => {
+		e.preventDefault()
+
 		setShowPassword(!showPassword)
 	}
 

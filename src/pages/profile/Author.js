@@ -92,6 +92,8 @@ function Author() {
 	})
 
 	const handleFollow = async e => {
+		e.preventDefault()
+
 		await axios({
 			method: "put",
 			url: `${ip}/users/follow/${authorId}`,
@@ -112,6 +114,8 @@ function Author() {
 	}
 
 	const handleUnfollow = async e => {
+		e.preventDefault()
+
 		await axios({
 			method: "put",
 			url: `${ip}/users/unfollow/${authorId}`,
