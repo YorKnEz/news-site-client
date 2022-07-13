@@ -159,14 +159,14 @@ function Author() {
 							(profile.following ? (
 								<button
 									onClick={handleUnfollow}
-									className="profile_button profile_button_unfollow"
+									className="button button_secondary"
 								>
 									Unfollow
 								</button>
 							) : (
 								<button
 									onClick={handleFollow}
-									className="profile_button profile_button_follow"
+									className="button button_primary"
 								>
 									Follow
 								</button>

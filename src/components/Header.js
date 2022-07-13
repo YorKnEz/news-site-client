@@ -111,7 +111,10 @@ function Header({ theme, signOut }) {
 									)}
 								</ThemeContext.Consumer>
 								<div className="dropdown_separator" />
-								<button className="dropdown_button" onClick={handleSignOut}>
+								<button
+									className="button button_primary dropdown_button"
+									onClick={handleSignOut}
+								>
 									Sign Out
 								</button>
 							</>
@@ -131,7 +134,10 @@ function Header({ theme, signOut }) {
 									)}
 								</ThemeContext.Consumer>
 								<div className="dropdown_separator" />
-								<Link className="dropdown_button" to="/sign-up">
+								<Link
+									className="button button_primary dropdown_button"
+									to="/sign-up"
+								>
 									Sign Up
 								</Link>
 							</>

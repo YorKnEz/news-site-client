@@ -11,11 +11,11 @@ function Modal({ onSubmit, children, onDecline }) {
 					{children}
 					<div className="modal_buttons">
 						{onDecline && (
-							<button className="modal_decline" onClick={onDecline}>
+							<button className="button button_secondary" onClick={onDecline}>
 								Cancel
 							</button>
 						)}
-						<button className="modal_submit" onClick={onSubmit}>
+						<button className="button button_primary" onClick={onSubmit}>
 							Ok
 						</button>
 					</div>

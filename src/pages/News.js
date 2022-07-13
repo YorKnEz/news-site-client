@@ -122,11 +122,17 @@ function News() {
 						<h1 className="news_title">{data.news.title}</h1>
 						{user.id == data.news.author.id && (
 							<div className="news_buttons">
-								<button onClick={handleDelete} className="news_buttons_delete">
-									<AiOutlineDelete size={16} />
+								<button
+									onClick={handleDelete}
+									className="button button_primary news_buttons_delete"
+								>
+									<AiOutlineDelete />
 								</button>
-								<button onClick={handleEdit} className="news_buttons_edit">
-									<AiOutlineEdit size={16} />
+								<button
+									onClick={handleEdit}
+									className="button button_primary news_buttons_edit"
+								>
+									<AiOutlineEdit />
 								</button>
 							</div>
 						)}

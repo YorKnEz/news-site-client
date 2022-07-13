@@ -369,7 +369,9 @@ function CreateNews() {
 							{error2}
 						</p>
 					)}
-					<button className="form_submit">Edit your story</button>
+					<button className="button button_primary form_submit">
+						Edit your story
+					</button>
 				</form>
 			</QueryResult>
 		</Page>

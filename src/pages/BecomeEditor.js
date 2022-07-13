@@ -137,7 +137,9 @@ function BecomeEditor() {
 								{error}
 							</p>
 						)}
-						<button className="form_submit">Send Us Your Information</button>
+						<button className="button button_primary form_submit">
+							Send Us Your Information
+						</button>
 					</form>
 				</div>
 			</div>
