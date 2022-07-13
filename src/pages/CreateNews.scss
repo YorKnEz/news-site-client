@@ -31,3 +31,15 @@
 		align-self: center;
 	}
 }
+
+.tooltip {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+	user-select: none;
+	color: var(--secondText-color);
+
+	&_icon {
+		margin-right: 10px;
+	}
+}

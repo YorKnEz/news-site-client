@@ -3,7 +3,11 @@ import { convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
 import draftToHtml from "draftjs-to-html"
 import { useForm } from "react-hook-form"
-import { AiFillExclamationCircle, AiOutlinePicture } from "react-icons/ai"
+import {
+	AiFillExclamationCircle,
+	AiOutlinePicture,
+	AiOutlineQuestionCircle,
+} from "react-icons/ai"
 import axios from "axios"
 import format from "date-fns/format"
 
@@ -335,6 +339,19 @@ function CreateNews() {
 						{error}
 					</p>
 				)}
+				<div>
+					<div className="tooltip">
+						<AiOutlineQuestionCircle className="tooltip_icon" />
+						<p className="tooltip_text">Thumbnail size should be under 10MB.</p>
+					</div>
+					<div className="tooltip">
+						<AiOutlineQuestionCircle className="tooltip_icon" />
+						<p className="tooltip_text">
+							In order to add sources and tags, write it down then type ',' to
+							add it to the list.
+						</p>
+					</div>
+				</div>
 				<button className="button button_primary form_submit">
 					Post your story
 				</button>
