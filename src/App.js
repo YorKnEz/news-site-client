@@ -15,6 +15,7 @@ import {
 	BecomeEditor,
 	CreateNews,
 	EditNews,
+	Error,
 } from "./pages"
 
 export default function App() {
@@ -91,6 +92,10 @@ export default function App() {
 				<Router>
 					<Header theme={themeName} signOut={signOut} />
 					<Routes>
+						<Route
+							path="*"
+							element={<Error error={"Error 404: Page not found."} />}
+						/>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />

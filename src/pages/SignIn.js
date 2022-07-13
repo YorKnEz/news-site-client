@@ -61,6 +61,8 @@ function SignIn({ signIn }) {
 	}
 
 	const handleShowPassword = e => {
+		e.preventDefault()
+
 		setShowPassword(!showPassword)
 	}
 
@@ -119,7 +121,9 @@ function SignIn({ signIn }) {
 								{error}
 							</p>
 						)}
-						<button className="form_submit">See some news</button>
+						<button className="button button_primary form_submit">
+							See some news
+						</button>
 					</form>
 					<span>
 						Don't have an account?{" "}

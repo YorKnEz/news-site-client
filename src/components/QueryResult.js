@@ -1,9 +1,12 @@
 import React from "react"
+import { useNavigate } from "react-router"
 import { SpinnerCircular } from "spinners-react"
 
 function QueryResult({ loading, error, data, children }) {
+	const history = useNavigate()
+
 	if (error) {
-		return <p>ERROR: {error.message}</p>
+		return history(-1)
 	}
 
 	if (loading) {

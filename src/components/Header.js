@@ -33,6 +33,8 @@ function Header({ theme, signOut }) {
 	}, [switchState])
 
 	const handleClick = e => {
+		e.preventDefault()
+
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(!showDropdown)
@@ -49,6 +51,8 @@ function Header({ theme, signOut }) {
 	}
 
 	const handleSignOut = async e => {
+		e.preventDefault()
+
 		signOut()
 
 		await axios({
@@ -62,6 +66,7 @@ function Header({ theme, signOut }) {
 				console.log(res)
 
 				history("/")
+				window.location.reload()
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
@@ -107,7 +112,10 @@ function Header({ theme, signOut }) {
 									)}
 								</ThemeContext.Consumer>
 								<div className="dropdown_separator" />
-								<button className="dropdown_button" onClick={handleSignOut}>
+								<button
+									className="button button_primary dropdown_button"
+									onClick={handleSignOut}
+								>
 									Sign Out
 								</button>
 							</>
@@ -127,7 +135,10 @@ function Header({ theme, signOut }) {
 									)}
 								</ThemeContext.Consumer>
 								<div className="dropdown_separator" />
-								<Link className="dropdown_button" to="/sign-up">
+								<Link
+									className="button button_primary dropdown_button"
+									to="/sign-up"
+								>
 									Sign Up
 								</Link>
 							</>

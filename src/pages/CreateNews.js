@@ -3,7 +3,11 @@ import { convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
 import draftToHtml from "draftjs-to-html"
 import { useForm } from "react-hook-form"
-import { AiFillExclamationCircle, AiOutlinePicture } from "react-icons/ai"
+import {
+	AiFillExclamationCircle,
+	AiOutlinePicture,
+	AiOutlineQuestionCircle,
+} from "react-icons/ai"
 import axios from "axios"
 import format from "date-fns/format"
 
@@ -47,11 +51,6 @@ function CreateNews() {
 
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
-
-	// prompt the user to confirm leaving the page
-	window.onbeforeunload = e => {
-		return "Are you sure you want to leave? Your changes may not be saved."
-	}
 
 	const onSubmit = async data => {
 		// body of the news in html format
@@ -120,6 +119,12 @@ function CreateNews() {
 			sourceInput = sourceInput.slice(0, sourceInput.length - 1)
 
 			if (isValidHttpUrl(sourceInput)) {
+				if (sources.findIndex(source => source === sourceInput) >= 0) {
+					setError("Source already added")
+
+					return
+				}
+
 				setError("")
 
 				setSources([...sources, sourceInput])
@@ -133,7 +138,21 @@ function CreateNews() {
 		}
 	}
 
+	const handleDeleteSource = e => {
+		e.preventDefault()
+
+		const indexOfSource = sources.findIndex(el => el === e.target.innerHTML)
+
+		let newSources = [...sources]
+
+		newSources.splice(indexOfSource, 1)
+
+		setSources(newSources)
+	}
+
 	const handleTag = e => {
+		e.preventDefault()
+
 		let tagInput = e.target.value
 
 		setTag(tagInput)
@@ -142,6 +161,12 @@ function CreateNews() {
 			tagInput = tagInput.slice(0, tagInput.length - 1)
 
 			if (/^[A-Za-z0-9 ]*$/.test(tagInput)) {
+				if (tags.findIndex(tag => tag === tagInput) >= 0) {
+					setError("Tag already added")
+
+					return
+				}
+
 				setError("")
 
 				setTags([...tags, tagInput])
@@ -155,12 +180,38 @@ function CreateNews() {
 		}
 	}
 
+	const handleDeleteTag = e => {
+		e.preventDefault()
+
+		const indexOfTag = tags.findIndex(el => el === e.target.innerHTML)
+
+		let newTags = [...tags]
+
+		newTags.splice(indexOfTag, 1)
+
+		setTags(newTags)
+	}
+
+	const isSizeOk = value => {
+		console.log(value[0].size)
+
+		return value[0].size < 10485760
+	}
+
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
 				<p className="formItem_error">
 					<AiFillExclamationCircle className="formItem_error_icon" />
 					This field is required.
+				</p>
+			)
+
+		if (errors[name] && errors[name].type === "validate")
+			return (
+				<p className="formItem_error">
+					<AiFillExclamationCircle className="formItem_error_icon" />
+					Thumbnail size should not exceed 10MB.
 				</p>
 			)
 	}
@@ -189,29 +240,42 @@ function CreateNews() {
 					/>
 					{errorCheck("title")}
 				</div>
-				<div className="formItem">
-					<label className="formItem_fileLabel" htmlFor="thumbnail">
-						<AiOutlinePicture className="formItem_fileIcon" />
-						{watchThumbnail.length > 0
-							? watchThumbnail[0].name
-							: "Your thumbnail"}
-					</label>
-					<input
-						className="formItem_fileInput"
-						id="thumbnail"
-						name="thumbnail"
-						type="file"
-						accept="image/*"
-						{...register("thumbnail", {
-							required: true,
-						})}
-					/>
-					{errorCheck("thumbnail")}
+				<div className="thumbnail_wrapper">
+					<div
+						style={{
+							backgroundImage:
+								watchThumbnail.length > 0
+									? `url(${URL.createObjectURL(watchThumbnail[0])})`
+									: "url(/default_thumbnail.png)",
+						}}
+						className="thumbnail"
+					></div>
+					<div className="formItem">
+						<label className="formItem_fileLabel" htmlFor="thumbnail">
+							<AiOutlinePicture className="formItem_fileIcon" />
+							{watchThumbnail.length > 0
+								? watchThumbnail[0].name
+								: "Your thumbnail"}
+						</label>
+						<input
+							className="formItem_fileInput"
+							id="thumbnail"
+							name="thumbnail"
+							type="file"
+							accept="image/*"
+							{...register("thumbnail", {
+								required: true,
+								validate: isSizeOk,
+							})}
+						/>
+						{errorCheck("thumbnail")}
+					</div>
 				</div>
 				<div
 					style={{
 						border: "1px solid var(--text-color)",
 						minHeight: "400px",
+						marginTop: "10px",
 					}}
 				>
 					<Editor
@@ -226,9 +290,9 @@ function CreateNews() {
 				<div className="sources">
 					<h4>Sources</h4>
 					{sources.map(s => (
-						<a className="sources_item" key={s} href={s}>
+						<div className="sources_item" key={s} onClick={handleDeleteSource}>
 							{s}
-						</a>
+						</div>
 					))}
 				</div>
 				<div className="formItem">
@@ -249,9 +313,9 @@ function CreateNews() {
 				<div className="tags">
 					<h4>Tags</h4>
 					{tags.map(s => (
-						<a className="tags_item" key={s} href={s}>
+						<div className="tags_item" key={s} onClick={handleDeleteTag}>
 							{s}
-						</a>
+						</div>
 					))}
 				</div>
 				<div className="formItem">
@@ -269,13 +333,28 @@ function CreateNews() {
 						onBlur={handleInputBlur}
 					/>
 				</div>
-				{error && !error.includes("Email") && (
+				{error && (
 					<p className="formItem_error">
 						<AiFillExclamationCircle className="formItem_error_icon" />
 						{error}
 					</p>
 				)}
-				<button className="form_submit">Post your story</button>
+				<div>
+					<div className="tooltip">
+						<AiOutlineQuestionCircle className="tooltip_icon" />
+						<p className="tooltip_text">Thumbnail size should be under 10MB.</p>
+					</div>
+					<div className="tooltip">
+						<AiOutlineQuestionCircle className="tooltip_icon" />
+						<p className="tooltip_text">
+							In order to add sources and tags, write it down then type ',' to
+							add it to the list.
+						</p>
+					</div>
+				</div>
+				<button className="button button_primary form_submit">
+					Post your story
+				</button>
 			</form>
 		</Page>
 	)

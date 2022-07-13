@@ -92,6 +92,8 @@ function Author() {
 	})
 
 	const handleFollow = async e => {
+		e.preventDefault()
+
 		await axios({
 			method: "put",
 			url: `${ip}/users/follow/${authorId}`,
@@ -112,6 +114,8 @@ function Author() {
 	}
 
 	const handleUnfollow = async e => {
+		e.preventDefault()
+
 		await axios({
 			method: "put",
 			url: `${ip}/users/unfollow/${authorId}`,
@@ -155,14 +159,14 @@ function Author() {
 							(profile.following ? (
 								<button
 									onClick={handleUnfollow}
-									className="profile_button profile_button_unfollow"
+									className="button button_secondary"
 								>
 									Unfollow
 								</button>
 							) : (
 								<button
 									onClick={handleFollow}
-									className="profile_button profile_button_follow"
+									className="button button_primary"
 								>
 									Follow
 								</button>
