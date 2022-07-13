@@ -66,6 +66,7 @@ function Header({ theme, signOut }) {
 				console.log(res)
 
 				history("/")
+				window.location.reload()
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
