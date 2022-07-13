@@ -1,0 +1,13 @@
+.error404 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&_message {
+		display: flex;
+		align-items: center;
+
+		color: red;
+		font-size: 48px;
+	}
+}
