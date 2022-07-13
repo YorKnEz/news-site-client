@@ -19,3 +19,15 @@
 		}
 	}
 }
+
+.thumbnail {
+	background-size: cover;
+	background-position: center;
+	width: 100%;
+	padding-top: 56.25%;
+
+	&_wrapper {
+		width: 400px;
+		align-self: center;
+	}
+}

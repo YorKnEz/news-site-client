@@ -58,7 +58,7 @@ function CreateNews() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const watchThumbnail = watch("thumbnail", [])
+	const watchThumbnail = watch("thumbnail", []) ? watch("thumbnail", []) : []
 	const history = useNavigate()
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
@@ -82,6 +82,10 @@ function CreateNews() {
 			const inputTitle = document.querySelector("#title")
 			inputTitle.value = data.news.title
 
+			// set the thumbnail
+			const inputThumbnail = document.querySelector(".thumbnail")
+			inputThumbnail.style.backgroundImage = `url("${data.news.thumbnail}")`
+
 			// set the editorState
 			const { contentBlocks, entityMap } = htmlToDraft(data.news.body)
 			const contentState = ContentState.createFromBlockArray(
@@ -97,11 +101,6 @@ function CreateNews() {
 			setTags(data.news.tags.split(","))
 		}
 	}, [data])
-
-	// prompt the user to confirm leaving the page
-	window.onbeforeunload = e => {
-		return "Are you sure you want to leave? Your changes may not be saved."
-	}
 
 	const onSubmit = async formData => {
 		// body of the news in html format
@@ -160,7 +159,9 @@ function CreateNews() {
 			.then(res => {
 				console.log(res)
 
-				history(`/news/${res.data.newsToEdit.id}`)
+				setTimeout(() => {
+					history(`/news/${res.data.newsToEdit.id}`)
+				}, 3000)
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
@@ -175,6 +176,12 @@ function CreateNews() {
 			sourceInput = sourceInput.slice(0, sourceInput.length - 1)
 
 			if (isValidHttpUrl(sourceInput)) {
+				if (sources.findIndex(source => source === sourceInput) >= 0) {
+					setError2("Source already added")
+
+					return
+				}
+
 				setError2("")
 
 				setSources([...sources, sourceInput])
@@ -242,12 +249,38 @@ function CreateNews() {
 		setTags(newTags)
 	}
 
+	const isSizeOk = value => {
+		if (value.length > 0) {
+			console.log(value[0].size)
+
+			return value[0].size < 10485760
+		}
+
+		return true
+	}
+
+	const getBackgroundImage = () => {
+		if (watchThumbnail && watchThumbnail.length > 0) {
+			return `url(${URL.createObjectURL(watchThumbnail[0])})`
+		}
+
+		return "url(/default_thumbnail.png)"
+	}
+
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
 				<p className="formItem_error">
 					<AiFillExclamationCircle className="formItem_error_icon" />
 					This field is required.
+				</p>
+			)
+
+		if (errors[name] && errors[name].type === "validate")
+			return (
+				<p className="formItem_error">
+					<AiFillExclamationCircle className="formItem_error_icon" />
+					Thumbnail size should not exceed 10MB.
 				</p>
 			)
 	}
@@ -279,24 +312,33 @@ function CreateNews() {
 						/>
 						{errorCheck("title")}
 					</div>
-					<div className="formItem">
-						<label className="formItem_fileLabel" htmlFor="thumbnail">
-							<AiOutlinePicture className="formItem_fileIcon" />
-							{watchThumbnail?.length > 0
-								? watchThumbnail[0].name
-								: "Your thumbnail"}
-						</label>
-						<input
-							className="formItem_fileInput"
-							id="thumbnail"
-							name="thumbnail"
-							type="file"
-							accept="image/*"
-							{...register("thumbnail", {
-								required: false,
-							})}
-						/>
-						{errorCheck("thumbnail")}
+					<div className="thumbnail_wrapper">
+						<div
+							style={{
+								backgroundImage: getBackgroundImage(),
+							}}
+							className="thumbnail"
+						></div>
+						<div className="formItem">
+							<label className="formItem_fileLabel" htmlFor="thumbnail">
+								<AiOutlinePicture className="formItem_fileIcon" />
+								{watchThumbnail.length > 0
+									? watchThumbnail[0].name
+									: "Your thumbnail"}
+							</label>
+							<input
+								className="formItem_fileInput"
+								id="thumbnail"
+								name="thumbnail"
+								type="file"
+								accept="image/*"
+								{...register("thumbnail", {
+									required: false,
+									validate: isSizeOk,
+								})}
+							/>
+							{errorCheck("thumbnail")}
+						</div>
 					</div>
 					<div
 						style={{
@@ -363,7 +405,7 @@ function CreateNews() {
 							onBlur={handleInputBlur}
 						/>
 					</div>
-					{error2 && !error2.includes("Email") && (
+					{error2 && (
 						<p className="formItem_error">
 							<AiFillExclamationCircle className="formItem_error_icon" />
 							{error2}
