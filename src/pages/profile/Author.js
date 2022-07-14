@@ -159,14 +159,14 @@ function Author() {
 							(profile.following ? (
 								<button
 									onClick={handleUnfollow}
-									className="button button_secondary"
+									className="button button_secondary profile_button"
 								>
 									Unfollow
 								</button>
 							) : (
 								<button
 									onClick={handleFollow}
-									className="button button_primary"
+									className="button button_primary profile_button"
 								>
 									Follow
 								</button>
@@ -192,7 +192,7 @@ function Author() {
 			)}
 			<div className="profile_news">
 				{news.map(item => (
-					<NewsCard2 data={item} key={item.id} authorOff />
+					<NewsCard2 data={item} key={item.id} />
 				))}
 			</div>
 			<QueryResult loading={loading} error={error} data={data} />

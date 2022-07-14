@@ -2,6 +2,10 @@
 	display: flex;
 	flex-direction: column;
 
+	&_button {
+		font-size: 16px;
+	}
+
 	&_news {
 		display: flex;
 		flex-direction: column;

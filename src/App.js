@@ -16,13 +16,13 @@ import {
 	CreateNews,
 	EditNews,
 	Error,
+	SearchResult,
 } from "./pages"
 
 export default function App() {
 	const [theme, setTheme] = useState(
 		themes[localStorage.getItem("theme") || "light"]
 	)
-	const [themeName, setThemeName] = useState(localStorage.getItem("theme"))
 	const [token, setToken] = useState(localStorage.getItem("token") || "")
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem("user")) || {}
@@ -51,11 +51,9 @@ export default function App() {
 	const toggleTheme = () => {
 		if (theme === themes.light) {
 			setTheme(themes.dark)
-			setThemeName("dark")
 			localStorage.setItem("theme", "dark")
 		} else {
 			setTheme(themes.light)
-			setThemeName("light")
 			localStorage.setItem("theme", "light")
 		}
 	}
@@ -90,7 +88,7 @@ export default function App() {
 				}}
 			>
 				<Router>
-					<Header theme={themeName} signOut={signOut} />
+					<Header />
 					<Routes>
 						<Route
 							path="*"
@@ -142,6 +140,8 @@ export default function App() {
 						/>
 
 						<Route exact path="/news/:newsId/edit" element={<EditNews />} />
+
+						<Route exact path="/search" element={<SearchResult />} />
 					</Routes>
 					<Footer />
 				</Router>
