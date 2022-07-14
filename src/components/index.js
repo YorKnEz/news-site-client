@@ -1,4 +1,5 @@
 export { default as Header } from "./Header"
+export { default as AuthorCard } from "./AuthorCard"
 export { default as NewsCard } from "./NewsCard"
 export { default as NewsCard2 } from "./NewsCard2"
 export { default as RedditNewsCard } from "./RedditNewsCard"

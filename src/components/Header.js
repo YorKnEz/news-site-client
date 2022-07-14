@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { AiOutlineMenu } from "react-icons/ai"
-import { FcReddit } from "react-icons/fc"
+import { AiOutlineMenu, AiOutlineReddit, AiOutlineSearch } from "react-icons/ai"
 import axios from "axios"
 
 import "./Header.scss"
@@ -11,14 +10,23 @@ import Switch from "./Switch"
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function Header() {
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+		get: (searchParams, prop) => searchParams.get(prop),
+	})
 	const { user, token, signOut } = useContext(UserContext)
 	const { theme, toggleTheme } = useContext(ThemeContext)
 	const [showDropdown, setShowDropdown] = useState(false)
 	const [switchState, setSwitchState] = useState(
 		theme === "dark" ? true : false
 	)
-
+	const [search, setSearch] = useState(params.search ? params.search : "")
+	const [filter, setFilter] = useState(params.filter ? params.filter : "title")
 	const history = useNavigate()
+
+	useEffect(() => {
+		const input = document.querySelector("#search-input")
+		input.focus()
+	})
 
 	useEffect(() => {
 		const handleThemeToggle = () => {
@@ -73,22 +81,64 @@ function Header() {
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
 
+	const handleSearch = async e => {
+		e.preventDefault()
+
+		history(`/search?search=${search}&filter=${filter}`, { replace: false })
+		window.location.reload()
+	}
+
+	const handleSubmit = async e => {
+		if (e.code === "Enter") {
+			handleSearch(e)
+		}
+	}
+
 	return (
 		<>
 			<div className="header">
-				<div>
+				<div className="header_section1">
 					<Link to="/" className="header_branding">
 						YorkNews
 					</Link>
 
 					<Link to="/reddit" className="header_menuBtn header_reddit">
-						<FcReddit />
+						<AiOutlineReddit className="header_reddit_icon" />
 					</Link>
 				</div>
 
-				<button className="header_menuBtn" onClick={handleClick}>
-					<AiOutlineMenu />
-				</button>
+				<div className="header_section2">
+					<div className="header_search">
+						<input
+							id="search-input"
+							className="header_search_input"
+							placeholder="Search..."
+							type="text"
+							onChange={e => setSearch(e.target.value)}
+							onKeyDown={handleSubmit}
+							value={search}
+						/>
+						<select
+							className="header_search_category"
+							onChange={e => setFilter(e.target.value)}
+							value={filter}
+						>
+							<option value="title">Title</option>
+							<option value="body">Body</option>
+							<option value="tags">Tags</option>
+							<option value="author">Author</option>
+						</select>
+					</div>
+					<button onClick={handleSearch} className="header_search_button">
+						<AiOutlineSearch className="header_search_button_icon" />
+					</button>
+				</div>
+
+				<div className="header_section3">
+					<button className="header_menuBtn" onClick={handleClick}>
+						<AiOutlineMenu />
+					</button>
+				</div>
 			</div>
 			<div className="dropdown" onMouseLeave={handleBlur}>
 				{token ? (

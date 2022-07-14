@@ -7,9 +7,12 @@
 	padding: 5px 10px 5px 10px;
 	box-shadow: 0px 0px 5px var(--shadow-color);
 	background-color: var(--background-color);
-	display: flex;
+	// display: flex;
+	// align-items: center;
+	// justify-content: space-between;
+	display: grid;
+	grid-template-columns: 25% 50% 25%;
 	align-items: center;
-	justify-content: space-between;
 
 	&_branding {
 		font-family: "Chomsky";
@@ -23,7 +26,11 @@
 
 	&_reddit {
 		margin-left: 24px;
-		font-size: 32px !important;
+
+		&_icon {
+			font-size: 32px;
+			color: var(--text-color);
+		}
 	}
 
 	&_menuBtn {
@@ -32,6 +39,81 @@
 		cursor: pointer;
 		font-size: 24px;
 		color: var(--text-color);
+	}
+
+	&_section1 {
+		justify-self: flex-start;
+	}
+
+	&_section2 {
+		justify-self: center;
+
+		display: flex;
+		align-items: center;
+	}
+
+	&_section3 {
+		justify-self: flex-end;
+	}
+
+	&_search {
+		background-color: var(--background-color);
+		border: 1px var(--text-color) solid;
+		border-radius: 5px;
+		font-size: 16px;
+		color: var(--text-color);
+
+		&_input {
+			background-color: var(--background-color);
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			padding: 10px 14px;
+			color: var(--text-color);
+			caret-color: var(--text-color);
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		&_category {
+			cursor: pointer;
+			background-color: grey;
+			border: none;
+			border-radius: 5px;
+			padding: 4px 8px;
+			margin-right: 5px;
+			font-size: 16px;
+			color: lightgray;
+			justify-content: center;
+			// caret-color: ;
+		}
+
+		&_button {
+			cursor: pointer;
+			border: none;
+			background-color: transparent;
+			color: var(--text-color);
+
+			transition: color 0.2s ease-out;
+
+			&_icon {
+				font-size: 32px;
+				margin-left: 10px;
+			}
+
+			&:hover {
+				color: var(--button-color);
+			}
+		}
+
+		&:focus {
+			outline-style: solid;
+			outline-color: lightseagreen;
+			outline-width: 2px;
+			transition: outline-width 0.1s ease;
+		}
 	}
 }
 

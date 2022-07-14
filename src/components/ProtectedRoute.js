@@ -10,7 +10,7 @@ function ProtectedRoute({ children, authorOnly }) {
 		return user.type !== "author" ? <Navigate to="/" replace /> : children
 
 	// if the route is not author only it means any user with a valid token can access it
-	return !token ? <Navigate to="/" replace /> : children
+	return !token ? <Navigate to="/sign-up" /> : children
 }
 
 export default ProtectedRoute

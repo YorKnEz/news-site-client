@@ -6,6 +6,8 @@ function QueryResult({ loading, error, data, children }) {
 	const history = useNavigate()
 
 	if (error) {
+		console.log(error)
+
 		return history(-1)
 	}
 

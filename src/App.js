@@ -16,6 +16,7 @@ import {
 	CreateNews,
 	EditNews,
 	Error,
+	SearchResult,
 } from "./pages"
 
 export default function App() {
@@ -139,6 +140,8 @@ export default function App() {
 						/>
 
 						<Route exact path="/news/:newsId/edit" element={<EditNews />} />
+
+						<Route exact path="/search" element={<SearchResult />} />
 					</Routes>
 					<Footer />
 				</Router>
