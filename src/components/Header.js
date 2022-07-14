@@ -10,12 +10,14 @@ import Switch from "./Switch"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-function Header({ theme, signOut }) {
+function Header() {
+	const { user, token, signOut } = useContext(UserContext)
+	const { theme, toggleTheme } = useContext(ThemeContext)
 	const [showDropdown, setShowDropdown] = useState(false)
 	const [switchState, setSwitchState] = useState(
 		theme === "dark" ? true : false
 	)
-	const { token } = useContext(UserContext)
+
 	const history = useNavigate()
 
 	useEffect(() => {
@@ -88,64 +90,52 @@ function Header({ theme, signOut }) {
 					<AiOutlineMenu />
 				</button>
 			</div>
-			<UserContext.Consumer>
-				{({ token, user }) => (
-					<div className="dropdown" onMouseLeave={handleBlur}>
-						{token ? (
-							<>
-								<Link className="dropdown_link" to="/profile">
-									Profile
-								</Link>
-								{user.type === "author" && (
-									<Link className="dropdown_link" to="/create">
-										Create News
-									</Link>
-								)}
-								<ThemeContext.Consumer>
-									{({ toggleTheme }) => (
-										<Switch
-											theme={theme}
-											toggleTheme={toggleTheme}
-											switchState={switchState}
-											setSwitchState={setSwitchState}
-										/>
-									)}
-								</ThemeContext.Consumer>
-								<div className="dropdown_separator" />
-								<button
-									className="button button_primary dropdown_button"
-									onClick={handleSignOut}
-								>
-									Sign Out
-								</button>
-							</>
-						) : (
-							<>
-								<Link className="dropdown_link" to="/become-editor">
-									Become an editor?
-								</Link>
-								<ThemeContext.Consumer>
-									{({ toggleTheme }) => (
-										<Switch
-											theme={theme}
-											toggleTheme={toggleTheme}
-											switchState={switchState}
-											setSwitchState={setSwitchState}
-										/>
-									)}
-								</ThemeContext.Consumer>
-								<div className="dropdown_separator" />
-								<Link
-									className="button button_primary dropdown_button"
-									to="/sign-up"
-								>
-									Sign Up
-								</Link>
-							</>
+			<div className="dropdown" onMouseLeave={handleBlur}>
+				{token ? (
+					<>
+						<Link className="dropdown_link" to="/profile">
+							Profile
+						</Link>
+						{user.type === "author" && (
+							<Link className="dropdown_link" to="/create">
+								Create News
+							</Link>
 						)}
-					</div>
+						<Switch
+							theme={theme}
+							toggleTheme={toggleTheme}
+							switchState={switchState}
+							setSwitchState={setSwitchState}
+						/>
+						<div className="dropdown_separator" />
+						<button
+							className="button button_primary dropdown_button"
+							onClick={handleSignOut}
+						>
+							Sign Out
+						</button>
+					</>
+				) : (
+					<>
+						<Link className="dropdown_link" to="/become-editor">
+							Become an editor?
+						</Link>
+						<Switch
+							theme={theme}
+							toggleTheme={toggleTheme}
+							switchState={switchState}
+							setSwitchState={setSwitchState}
+						/>
+						<div className="dropdown_separator" />
+						<Link
+							className="button button_primary dropdown_button"
+							to="/sign-up"
+						>
+							Sign Up
+						</Link>
+					</>
 				)}
-			</UserContext.Consumer>
+			</div>
 		</>
 	)
 }
