@@ -11,7 +11,7 @@
 	// align-items: center;
 	// justify-content: space-between;
 	display: grid;
-	grid-template-columns: 25% 50% 25%;
+	grid-template-columns: [col1] 25% [col2] 50% [col3] 25% [col4];
 	align-items: center;
 
 	&_branding {
@@ -43,6 +43,9 @@
 
 	&_section1 {
 		justify-self: flex-start;
+
+		grid-column-start: col1;
+		grid-column-end: col2;
 	}
 
 	&_section2 {
@@ -50,10 +53,16 @@
 
 		display: flex;
 		align-items: center;
+
+		grid-column-start: col2;
+		grid-column-end: col3;
 	}
 
 	&_section3 {
 		justify-self: flex-end;
+
+		grid-column-start: col3;
+		grid-column-end: col4;
 	}
 
 	&_search {
