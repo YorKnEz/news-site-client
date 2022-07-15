@@ -22,10 +22,11 @@ const ip = process.env.REACT_APP_EXPRESS_API_IP
 function SignIn({ signIn }) {
 	const {
 		register,
+		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const [password, setPassword] = useState("")
+	const password = watch("password", "")
 	const [showPassword, setShowPassword] = useState(false)
 	const [error, setError] = useState("")
 	const history = useNavigate()
@@ -36,6 +37,8 @@ function SignIn({ signIn }) {
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
 
+	useEffect(() => updateInputLabels(), [password])
+
 	const onSubmit = async data => {
 		await axios({
 			method: "post",
@@ -44,7 +47,6 @@ function SignIn({ signIn }) {
 		})
 			.then(res => {
 				signIn(res.data)
-
 				history("/")
 			})
 			.catch(e => setError(e?.response?.data?.error || e.message))
@@ -103,8 +105,6 @@ function SignIn({ signIn }) {
 									required: true,
 									onBlur: handleInputBlur,
 								})}
-								value={password}
-								onChange={e => setPassword(e.target.value)}
 							/>
 							<button className="password_button" onClick={handleShowPassword}>
 								{showPassword ? (
@@ -113,8 +113,8 @@ function SignIn({ signIn }) {
 									<AiOutlineEye className="password_icon" />
 								)}
 							</button>
-							{errorCheck("password")}
 						</div>
+						{errorCheck("password")}
 						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />

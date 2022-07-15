@@ -23,10 +23,11 @@ const ip = process.env.REACT_APP_EXPRESS_API_IP
 function SignUp() {
 	const {
 		register,
+		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const [password, setPassword] = useState("")
+	const password = watch("password", "")
 	const [showPassword, setShowPassword] = useState(false)
 	const [showModal, setShowModal] = useState(false)
 	const [error, setError] = useState("")
@@ -37,6 +38,8 @@ function SignUp() {
 
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
+
+	useEffect(() => updateInputLabels(), [password])
 
 	const onSubmit = async data => {
 		await axios({
@@ -181,8 +184,6 @@ function SignUp() {
 									required: true,
 									onBlur: handleInputBlur,
 								})}
-								value={password}
-								onChange={e => setPassword(e.target.value)}
 							/>
 							<button className="password_button" onClick={handleShowPassword}>
 								{showPassword ? (
