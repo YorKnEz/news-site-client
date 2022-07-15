@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 import { ThemeContext, themes, UserContext } from "./context"
 
-import { Header, Footer, ProtectedRoute } from "./components"
 import { PrivateRoutes } from "./components"
 import {
 	Home,
@@ -89,7 +88,6 @@ export default function App() {
 				}}
 			>
 				<Router>
-					<Header />
 					<Routes>
 						{/* public routes */}
 						<Route path="*" element={<Error />} />
@@ -113,7 +111,6 @@ export default function App() {
 							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
 						</Route>
 					</Routes>
-					<Footer />
 				</Router>
 			</UserContext.Provider>
 		</ThemeContext.Provider>
