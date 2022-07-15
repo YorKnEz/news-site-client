@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ThemeContext, themes, UserContext } from "./context"
 
 import { Header, Footer, ProtectedRoute } from "./components"
+import { PrivateRoutes } from "./components"
 import {
 	Home,
 	HomeReddit,
@@ -90,58 +91,27 @@ export default function App() {
 				<Router>
 					<Header />
 					<Routes>
-						<Route
-							path="*"
-							element={<Error error={"Error 404: Page not found."} />}
-						/>
-						<Route exact path="/" element={<Home />} />
-						<Route exact path="/reddit" element={<HomeReddit />} />
+						{/* public routes */}
+						<Route path="*" element={<Error />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn signIn={signIn} />} />
 
-						<Route
-							exact
-							path="/news/:newsId"
-							element={
-								<ProtectedRoute>
-									<News />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							exact
-							path="/profile"
-							element={
-								<ProtectedRoute>
-									<Profile />
-								</ProtectedRoute>
-							}
-						/>
+						{/* private routes, accessible by all users */}
+						<Route element={<PrivateRoutes />}>
+							<Route exact path="/" element={<Home />} />
+							<Route exact path="/reddit" element={<HomeReddit />} />
+							<Route exact path="/news/:newsId" element={<News />} />
+							<Route exact path="/profile" element={<Profile />} />
+							<Route exact path="/profile/:authorId" element={<Profile />} />
+						</Route>
 
-						<Route
-							exact
-							path="/profile/:authorId"
-							element={
-								<ProtectedRoute>
-									<Profile />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route
-							exact
-							path="/create"
-							element={
-								<ProtectedRoute authorOnly={true}>
-									<CreateNews />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route exact path="/news/:newsId/edit" element={<EditNews />} />
-
-						<Route exact path="/search" element={<SearchResult />} />
+						{/* private routes, accessible only by authors */}
+						<Route element={<PrivateRoutes authorOnly />}>
+							<Route exact path="/create" element={<CreateNews />} />
+							<Route exact path="/search" element={<SearchResult />} />
+							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
+						</Route>
 					</Routes>
 					<Footer />
 				</Router>
