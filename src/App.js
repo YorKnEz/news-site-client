@@ -94,12 +94,12 @@ export default function App() {
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn signIn={signIn} />} />
+						<Route exact path="/" element={<Home />} />
+						<Route exact path="/reddit" element={<HomeReddit />} />
+						<Route exact path="/news/:newsId" element={<News />} />
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
-							<Route exact path="/" element={<Home />} />
-							<Route exact path="/reddit" element={<HomeReddit />} />
-							<Route exact path="/news/:newsId" element={<News />} />
 							<Route exact path="/profile" element={<Profile />} />
 							<Route exact path="/profile/:authorId" element={<Profile />} />
 						</Route>

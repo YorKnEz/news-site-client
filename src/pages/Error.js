@@ -36,9 +36,9 @@ function Error({ code }) {
 				<div className="error404_message">
 					<span>
 						<AiFillExclamationCircle />
-						{`Error ${code}: `}
+						{`Error ${code}`}
 					</span>
-					{`${errors[code].message}`}
+					<span>{`${errors[code].message}`}</span>
 				</div>
 				<Link to={errors[code].to} className="button button_primary">
 					{errors[code].buttonText}
