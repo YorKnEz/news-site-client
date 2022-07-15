@@ -24,8 +24,10 @@ function Header() {
 	const history = useNavigate()
 
 	useEffect(() => {
-		const input = document.querySelector("#search-input")
-		input.focus()
+		if (token) {
+			const input = document.querySelector("#search-input")
+			input.focus()
+		}
 	})
 
 	useEffect(() => {
@@ -107,32 +109,34 @@ function Header() {
 					</Link>
 				</div>
 
-				<div className="header_section2">
-					<div className="header_search">
-						<input
-							id="search-input"
-							className="header_search_input"
-							placeholder="Search..."
-							type="text"
-							onChange={e => setSearch(e.target.value)}
-							onKeyDown={handleSubmit}
-							value={search}
-						/>
-						<select
-							className="header_search_category"
-							onChange={e => setFilter(e.target.value)}
-							value={filter}
-						>
-							<option value="title">Title</option>
-							<option value="body">Body</option>
-							<option value="tags">Tags</option>
-							<option value="author">Author</option>
-						</select>
+				{token && (
+					<div className="header_section2">
+						<div className="header_search">
+							<input
+								id="search-input"
+								className="header_search_input"
+								placeholder="Search..."
+								type="text"
+								onChange={e => setSearch(e.target.value)}
+								onKeyDown={handleSubmit}
+								value={search}
+							/>
+							<select
+								className="header_search_category"
+								onChange={e => setFilter(e.target.value)}
+								value={filter}
+							>
+								<option value="title">Title</option>
+								<option value="body">Body</option>
+								<option value="tags">Tags</option>
+								<option value="author">Author</option>
+							</select>
+						</div>
+						<button onClick={handleSearch} className="header_search_button">
+							<AiOutlineSearch className="header_search_button_icon" />
+						</button>
 					</div>
-					<button onClick={handleSearch} className="header_search_button">
-						<AiOutlineSearch className="header_search_button_icon" />
-					</button>
-				</div>
+				)}
 
 				<div className="header_section3">
 					<button className="header_menuBtn" onClick={handleClick}>

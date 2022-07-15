@@ -1,4 +1,15 @@
 .news {
+	&_body {
+		a {
+			text-decoration: none;
+			color: #44b6eb;
+
+			&:hover {
+				color: #75c9f0;
+			}
+		}
+	}
+
 	&_thumbnail {
 		width: 100%;
 	}

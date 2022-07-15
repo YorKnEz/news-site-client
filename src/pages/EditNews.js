@@ -163,9 +163,7 @@ function CreateNews() {
 			.then(res => {
 				console.log(res)
 
-				setTimeout(() => {
-					history(`/news/${res.data.newsToEdit.id}`)
-				}, 3000)
+				history(`/news/${res.data.newsToEdit.id}`)
 			})
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
