@@ -5,16 +5,43 @@ import { Page } from "../components"
 
 import "./Error.scss"
 
-function Error() {
+/*
+ types can be:
+	401: if the page should be accessed by a signed in user/author
+	403: if the page should be accessed by a signed in author
+	404: if the page doesn't exist
+*/
+function Error({ code }) {
+	const errors = {
+		"401": {
+			message: "You must be signed in to access this page.",
+			to: "/sign-in",
+			buttonText: "Sign in",
+		},
+		"403": {
+			message: "You must be an author to access this page.",
+			to: "/become-editor",
+			buttonText: "Become an editor",
+		},
+		"404": {
+			message: "Page not found.",
+			to: "/",
+			buttonText: "Return home",
+		},
+	}
+
 	return (
 		<Page>
 			<div className="error404">
-				<p className="error404_message">
-					<AiFillExclamationCircle />
-					Error 404: Page not found.
-				</p>
-				<Link to="/" className="button button_primary">
-					Return home
+				<div className="error404_message">
+					<span>
+						<AiFillExclamationCircle />
+						{`Error ${code}: `}
+					</span>
+					{`${errors[code].message}`}
+				</div>
+				<Link to={errors[code].to} className="button button_primary">
+					{errors[code].buttonText}
 				</Link>
 			</div>
 		</Page>
