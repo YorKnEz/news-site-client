@@ -160,7 +160,7 @@ function News() {
 
 						<hr />
 
-						<div id="body"></div>
+						<div className="news_body" id="body"></div>
 
 						<hr />
 
