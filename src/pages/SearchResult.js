@@ -10,7 +10,7 @@ function SearchResult() {
 	const params = new Proxy(new URLSearchParams(window.location.search), {
 		get: (searchParams, prop) => searchParams.get(prop),
 	})
-	const { loading, error, data } = useQuery(QUERY, {
+	const { loading, error, data } = useQuery(SEARCH, {
 		variables: {
 			search: params.search,
 			filter: params.filter,

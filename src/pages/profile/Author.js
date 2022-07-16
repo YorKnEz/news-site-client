@@ -14,33 +14,6 @@ import { useDocumentTitle } from "../../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-const QUERY = gql`
-	query Query($offsetIndex: Int, $id: ID!, $reqId: ID!) {
-		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-		}
-		author(id: $id, reqId: $reqId) {
-			id
-			fullName
-			email
-			profilePicture
-			writtenNews
-			followers
-			createdAt
-			following
-		}
-	}
-`
-
 function Author() {
 	const { authorId } = useParams()
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
@@ -48,7 +21,7 @@ function Author() {
 	const [news, setNews] = useState([])
 	const [profile, setProfile] = useState({})
 	const { user, token } = useContext(UserContext)
-	const { loading, error, data } = useQuery(QUERY, {
+	const { loading, error, data } = useQuery(AUTHOR, {
 		variables: {
 			offsetIndex,
 			id: authorId ? authorId : user.id,

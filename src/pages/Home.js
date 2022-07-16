@@ -11,7 +11,7 @@ function Home() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offsetIndex, setOffsetIndex] = useState(0)
 	const [news, setNews] = useState([])
-	const { loading, error, data } = useQuery(NEWS, {
+	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
 		variables: {
 			offsetIndex,
 		},

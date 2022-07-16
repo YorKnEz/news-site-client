@@ -31,22 +31,6 @@ import {
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-const NEWS = gql`
-	query News($newsId: ID!) {
-		news(id: $newsId) {
-			id
-			title
-			thumbnail
-			sources
-			tags
-			body
-			author {
-				id
-			}
-		}
-	}
-`
-
 function CreateNews() {
 	const { newsId } = useParams()
 	const { loading, error, data } = useQuery(NEWS, {

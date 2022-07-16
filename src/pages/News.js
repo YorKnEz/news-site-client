@@ -14,7 +14,7 @@ import { useDocumentTitle } from "../utils/utils"
 
 function News() {
 	const { newsId } = useParams()
-	const { loading, error, data } = useQuery(NEWS, {
+	const { loading, error, data } = useQuery(NEWS2, {
 		variables: {
 			newsId: newsId,
 		},
