@@ -1,9 +1,9 @@
 import React from "react"
 import { AiFillExclamationCircle } from "react-icons/ai"
 import { Link } from "react-router-dom"
-import { Page } from "../components"
 
 import "./Error.scss"
+import { Page } from "../components"
 
 /*
  types can be:

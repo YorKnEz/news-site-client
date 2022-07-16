@@ -1,31 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { useQuery, gql } from "@apollo/client"
+
+import { useQuery } from "@apollo/client"
 
 import "./Home.scss"
 import { NewsCard, Page, QueryResult } from "../components"
-import { useDocumentTitle } from "../utils"
-
-const NEWS = gql`
-	query NewsForHome($offsetIndex: Int) {
-		newsForHome(offsetIndex: $offsetIndex) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			author {
-				profilePicture
-				fullName
-				id
-			}
-		}
-	}
-`
+import { NEWS_FOR_HOME } from "../utils/apollo-queries"
+import { useDocumentTitle } from "../utils/utils"
 
 function Home() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
-import { convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
+import { convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
 import { useForm } from "react-hook-form"
 import {
@@ -8,21 +8,23 @@ import {
 	AiOutlinePicture,
 	AiOutlineQuestionCircle,
 } from "react-icons/ai"
-import axios from "axios"
-import format from "date-fns/format"
+import { useNavigate } from "react-router"
 
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import { useMutation } from "@apollo/client"
+import axios from "axios"
+
 import "./CreateNews.scss"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import { Page } from "../components"
+import { UserContext } from "../context"
+import { CREATE_NEWS, NEWS_FOR_HOME } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	isValidHttpUrl,
 	updateInputLabels,
 	useDocumentTitle,
-} from "../utils"
-import { UserContext } from "../context"
-import { useNavigate } from "react-router"
+} from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 

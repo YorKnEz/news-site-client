@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
+
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import AuthorInfo from "./AuthorInfo"
+import { AuthorInfo } from "../components"
 
 function NewsCard({ data, matches }) {
 	const showDate = () => {

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
 import {
 	AiFillExclamationCircle,
 	AiOutlineEye,
 	AiOutlineEyeInvisible,
 } from "react-icons/ai"
+import { Link, useNavigate } from "react-router-dom"
+
 import axios from "axios"
 
 import "./SignUp.scss"
-import Modal from "../components/Modal"
-import Page from "../components/Page"
+import { Modal, Page } from "../components"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	updateInputLabels,
 	useDocumentTitle,
-} from "../utils"
+} from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 

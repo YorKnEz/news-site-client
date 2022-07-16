@@ -1,39 +1,16 @@
 /* eslint-disable eqeqeq */
-import { useQuery, gql } from "@apollo/client"
-import { format, fromUnixTime } from "date-fns"
 import React, { useContext, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
-import axios from "axios"
+import { useNavigate, useParams } from "react-router"
+
+import { useQuery, useMutation } from "@apollo/client"
+import { format, fromUnixTime } from "date-fns"
 
 import "./News.scss"
-import { useDocumentTitle } from "../utils"
 import { AuthorInfo, Modal, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-
-const ip = process.env.REACT_APP_EXPRESS_API_IP
-
-const NEWS = gql`
-	query News($newsId: ID!) {
-		news(id: $newsId) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
+import { NEWS2, DELETE_NEWS, NEWS_FOR_HOME } from "../utils/apollo-queries"
+import { useDocumentTitle } from "../utils/utils"
 
 function News() {
 	const { newsId } = useParams()

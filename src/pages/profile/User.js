@@ -1,9 +1,9 @@
 import React, { useContext } from "react"
 
 import "./index.scss"
-import { UserContext } from "../../context"
-import { useDocumentTitle } from "../../utils"
 import { Page } from "../../components"
+import { UserContext } from "../../context"
+import { useDocumentTitle } from "../../utils/utils"
 
 function User() {
 	const { user } = useContext(UserContext)

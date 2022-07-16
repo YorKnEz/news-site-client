@@ -1,6 +1,6 @@
-import { format, fromUnixTime } from "date-fns"
 import React from "react"
 import { Link } from "react-router-dom"
+import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorCard.scss"
 

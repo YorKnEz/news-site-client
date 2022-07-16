@@ -1,8 +1,8 @@
 import React, { useContext } from "react"
 import { useParams } from "react-router"
 
-import { User, Author } from "./profile"
 import { UserContext } from "../context"
+import { User, Author } from "./profile"
 
 function Profile() {
 	const { authorId } = useParams()

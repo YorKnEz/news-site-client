@@ -1,43 +1,10 @@
 import React from "react"
-import { useQuery, gql } from "@apollo/client"
-import { AuthorCard, NewsCard, Page, QueryResult } from "../components"
+
+import { useQuery } from "@apollo/client"
 
 import "./SearchResult.scss"
-
-const QUERY = gql`
-	query Query($search: String!, $filter: String!) {
-		search(search: $search, filter: $filter) {
-			matches
-			news {
-				id
-				title
-				subreddit
-				thumbnail
-				sources
-				tags
-				body
-				type
-				createdAt
-				updatedAt
-				author {
-					id
-					fullName
-					profilePicture
-				}
-			}
-			author {
-				id
-				fullName
-				email
-				profilePicture
-				writtenNews
-				followers
-				createdAt
-				following
-			}
-		}
-	}
-`
+import { AuthorCard, NewsCard, Page, QueryResult } from "../components"
+import { SEARCH } from "../utils/apollo-queries"
 
 function SearchResult() {
 	const params = new Proxy(new URLSearchParams(window.location.search), {
