@@ -93,7 +93,7 @@ export default function App() {
 						<Route path="*" element={<Error />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
-						<Route exact path="/sign-in" element={<SignIn signIn={signIn} />} />
+						<Route exact path="/sign-in" element={<SignIn />} />
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/news/:newsId" element={<News />} />
