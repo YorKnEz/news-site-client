@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
-import { convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
+import { convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
 import { useForm } from "react-hook-form"
 import {
@@ -8,21 +8,23 @@ import {
 	AiOutlinePicture,
 	AiOutlineQuestionCircle,
 } from "react-icons/ai"
-import axios from "axios"
-import format from "date-fns/format"
+import { useNavigate } from "react-router"
 
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import { useMutation } from "@apollo/client"
+import axios from "axios"
+
 import "./CreateNews.scss"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import { Page } from "../components"
+import { UserContext } from "../context"
+import { CREATE_NEWS, NEWS_FOR_HOME } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	isValidHttpUrl,
 	updateInputLabels,
 	useDocumentTitle,
-} from "../utils"
-import { UserContext } from "../context"
-import { useNavigate } from "react-router"
+} from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -30,7 +32,7 @@ function CreateNews() {
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
-	const { user, token } = useContext(UserContext)
+	const { token } = useContext(UserContext)
 	const {
 		register,
 		watch,
@@ -38,12 +40,15 @@ function CreateNews() {
 		formState: { errors },
 	} = useForm()
 	const watchThumbnail = watch("thumbnail", [])
+	const [createNews] = useMutation(CREATE_NEWS, {
+		// refetchQueries: [{ query: NEWS_FOR_HOME }],
+	})
 	const history = useNavigate()
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
 	const [tags, setTags] = useState([])
-	const [error, setError] = useState("")
+	const [error2, setError2] = useState("")
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
@@ -86,29 +91,26 @@ function CreateNews() {
 
 		const requestBody = {
 			title: data.title,
-			authorEmail: user.email,
-			date: format(new Date(), "MMMM d',' yyyy"),
 			thumbnail: `${ip}/public/${fileName}`,
 			sources: sourcesFinal,
 			tags: tagsFinal,
 			body: html,
-			type: "created",
 		}
 
-		await axios({
-			method: "post",
-			url: `${ip}/news/create`,
-			data: requestBody,
-			headers: {
-				authorization: token,
+		createNews({
+			variables: {
+				newsData: requestBody,
+			},
+			refetchQueries: [
+				{
+					query: NEWS_FOR_HOME,
+					variables: { offsetIndex: 0 },
+				},
+			],
+			onCompleted: data => {
+				history(`/news/${data.createNews.id}`)
 			},
 		})
-			.then(res => {
-				console.log(res)
-
-				history(`/news/${res.data.news.id}`)
-			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
 
 	const handleSource = e => {
@@ -120,12 +122,12 @@ function CreateNews() {
 
 			if (isValidHttpUrl(sourceInput)) {
 				if (sources.findIndex(source => source === sourceInput) >= 0) {
-					setError("Source already added")
+					setError2("Source already added")
 
 					return
 				}
 
-				setError("")
+				setError2("")
 
 				setSources([...sources, sourceInput])
 
@@ -134,7 +136,7 @@ function CreateNews() {
 				return
 			}
 
-			setError("Invalid source")
+			setError2("Invalid source")
 		}
 	}
 
@@ -162,12 +164,12 @@ function CreateNews() {
 
 			if (/^[A-Za-z0-9 ]*$/.test(tagInput)) {
 				if (tags.findIndex(tag => tag === tagInput) >= 0) {
-					setError("Tag already added")
+					setError2("Tag already added")
 
 					return
 				}
 
-				setError("")
+				setError2("")
 
 				setTags([...tags, tagInput])
 
@@ -176,7 +178,7 @@ function CreateNews() {
 				return
 			}
 
-			setError("A tag should contain only letters and numbers")
+			setError2("A tag should contain only letters and numbers")
 		}
 	}
 
@@ -190,12 +192,6 @@ function CreateNews() {
 		newTags.splice(indexOfTag, 1)
 
 		setTags(newTags)
-	}
-
-	const isSizeOk = value => {
-		console.log(value[0].size)
-
-		return value[0].size < 10485760
 	}
 
 	const errorCheck = name => {
@@ -215,6 +211,8 @@ function CreateNews() {
 				</p>
 			)
 	}
+
+	const isSizeOk = value => value[0].size < 10485760
 
 	return (
 		<Page>
@@ -333,10 +331,10 @@ function CreateNews() {
 						onBlur={handleInputBlur}
 					/>
 				</div>
-				{error && (
+				{error2 && (
 					<p className="formItem_error">
 						<AiFillExclamationCircle className="formItem_error_icon" />
-						{error}
+						{error2}
 					</p>
 				)}
 				<div>

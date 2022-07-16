@@ -1,10 +1,14 @@
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { AiFillExclamationCircle, AiOutlineFileText } from "react-icons/ai"
-import { Page } from "../components"
-import { handleInputBlur, handleInputFocus, useDocumentTitle } from "../utils"
 
 import "./BecomeEditor.scss"
+import { Page } from "../components"
+import {
+	handleInputBlur,
+	handleInputFocus,
+	useDocumentTitle,
+} from "../utils/utils"
 
 function BecomeEditor() {
 	const {

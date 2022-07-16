@@ -1,7 +1,7 @@
 import React from "react"
-import AuthorInfo from "./AuthorInfo"
 
 import "./RedditNewsCard.scss"
+import { AuthorInfo } from "../components"
 
 function RedditNewsCard({ data }) {
 	return (

@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
 import {
 	AiFillExclamationCircle,
 	AiOutlineEye,
 	AiOutlineEyeInvisible,
 } from "react-icons/ai"
+import { Link, useNavigate } from "react-router-dom"
+
 import axios from "axios"
 
 import "./SignUp.scss"
 import Page from "../components/Page"
+import { UserContext } from "../context"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	updateInputLabels,
 	useDocumentTitle,
-} from "../utils"
+} from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-function SignIn({ signIn }) {
+function SignIn() {
+	const { signIn } = useContext(UserContext)
 	const {
 		register,
 		watch,
@@ -47,6 +50,7 @@ function SignIn({ signIn }) {
 		})
 			.then(res => {
 				signIn(res.data)
+
 				history("/")
 			})
 			.catch(e => setError(e?.response?.data?.error || e.message))

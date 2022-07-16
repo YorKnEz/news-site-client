@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { ContentState, convertToRaw, EditorState } from "draft-js"
 import { Editor } from "react-draft-wysiwyg"
+import { ContentState, convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
 import htmlToDraft from "html-to-draftjs"
 import { useForm } from "react-hook-form"
@@ -10,40 +10,26 @@ import {
 	AiOutlinePicture,
 	AiOutlineQuestionCircle,
 } from "react-icons/ai"
+import { Navigate, useNavigate, useParams } from "react-router"
+
+import { useQuery } from "@apollo/client"
 import axios from "axios"
 import format from "date-fns/format"
-import { useQuery, gql } from "@apollo/client"
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import "./CreateNews.scss"
 import { Page, QueryResult } from "../components"
+import { UserContext } from "../context"
+import { NEWS } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	isValidHttpUrl,
 	updateInputLabels,
 	useDocumentTitle,
-} from "../utils"
-import { UserContext } from "../context"
-import { Navigate, useNavigate, useParams } from "react-router"
+} from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
-
-const NEWS = gql`
-	query News($newsId: ID!) {
-		news(id: $newsId) {
-			id
-			title
-			thumbnail
-			sources
-			tags
-			body
-			author {
-				id
-			}
-		}
-	}
-`
 
 function CreateNews() {
 	const { newsId } = useParams()
@@ -121,7 +107,6 @@ function CreateNews() {
 		const requestBody = {
 			id: data.news.id,
 			title: formData.title,
-			authorEmail: user.email,
 			date: format(new Date(), "MMMM d',' yyyy"),
 			sources: sourcesFinal,
 			tags: tagsFinal,

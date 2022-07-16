@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
 import { AiOutlineMenu, AiOutlineReddit, AiOutlineSearch } from "react-icons/ai"
+import { Link, useNavigate } from "react-router-dom"
+
 import axios from "axios"
 
 import "./Header.scss"
+import { Switch } from "../components"
 import { ThemeContext, UserContext } from "../context"
-import Switch from "./Switch"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -22,13 +23,6 @@ function Header() {
 	const [search, setSearch] = useState(params.search ? params.search : "")
 	const [filter, setFilter] = useState(params.filter ? params.filter : "title")
 	const history = useNavigate()
-
-	useEffect(() => {
-		if (token) {
-			const input = document.querySelector("#search-input")
-			input.focus()
-		}
-	})
 
 	useEffect(() => {
 		const handleThemeToggle = () => {

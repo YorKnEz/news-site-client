@@ -1,5 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router"
+
 import { SpinnerCircular } from "spinners-react"
 
 function QueryResult({ loading, error, data, children }) {

@@ -1,8 +1,7 @@
 import React from "react"
-import Footer from "./Footer"
-import Header from "./Header"
 
 import "./Page.scss"
+import { Header, Footer } from "../components"
 
 function Page({ children }) {
 	return (

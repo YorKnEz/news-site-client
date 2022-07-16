@@ -1,43 +1,18 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
-import { useQuery, gql } from "@apollo/client"
-import { format, fromUnixTime } from "date-fns"
+
+import { useQuery } from "@apollo/client"
 import axios from "axios"
+import { format, fromUnixTime } from "date-fns"
 
 import "./index.scss"
 import { NewsCard2, Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
-import { useDocumentTitle } from "../../utils"
+import { AUTHOR } from "../../utils/apollo-queries"
+import { useDocumentTitle } from "../../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
-
-const QUERY = gql`
-	query Query($offsetIndex: Int, $id: ID!, $reqId: ID!) {
-		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-		}
-		author(id: $id, reqId: $reqId) {
-			id
-			fullName
-			email
-			profilePicture
-			writtenNews
-			followers
-			createdAt
-			following
-		}
-	}
-`
 
 function Author() {
 	const { authorId } = useParams()
@@ -46,7 +21,7 @@ function Author() {
 	const [news, setNews] = useState([])
 	const [profile, setProfile] = useState({})
 	const { user, token } = useContext(UserContext)
-	const { loading, error, data } = useQuery(QUERY, {
+	const { loading, error, data } = useQuery(AUTHOR, {
 		variables: {
 			offsetIndex,
 			id: authorId ? authorId : user.id,
