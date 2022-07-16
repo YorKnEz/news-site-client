@@ -194,12 +194,6 @@ function CreateNews() {
 		setTags(newTags)
 	}
 
-	const isSizeOk = value => {
-		console.log(value[0].size)
-
-		return value[0].size < 10485760
-	}
-
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
@@ -217,6 +211,8 @@ function CreateNews() {
 				</p>
 			)
 	}
+
+	const isSizeOk = value => value[0].size < 10485760
 
 	return (
 		<Page>

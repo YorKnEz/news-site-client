@@ -107,7 +107,6 @@ function CreateNews() {
 		const requestBody = {
 			id: data.news.id,
 			title: formData.title,
-			authorEmail: user.email,
 			date: format(new Date(), "MMMM d',' yyyy"),
 			sources: sourcesFinal,
 			tags: tagsFinal,

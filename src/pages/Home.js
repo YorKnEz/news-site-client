@@ -21,8 +21,6 @@ function Home() {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
-
 			setNews(news => [...news, ...data.newsForHome])
 		}
 	}, [data])

@@ -25,13 +25,6 @@ function Header() {
 	const history = useNavigate()
 
 	useEffect(() => {
-		if (token) {
-			const input = document.querySelector("#search-input")
-			input.focus()
-		}
-	})
-
-	useEffect(() => {
 		const handleThemeToggle = () => {
 			const switchElement = document.querySelector("#switchElement")
 

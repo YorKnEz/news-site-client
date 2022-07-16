@@ -19,7 +19,6 @@ function News() {
 			newsId: newsId,
 		},
 	})
-	const { user, token } = useContext(UserContext)
 	const [deleteNews] = useMutation(DELETE_NEWS, {
 		// refetchQueries: [{ query: NEWS_FOR_HOME }],
 	})
