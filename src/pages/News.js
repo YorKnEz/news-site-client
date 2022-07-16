@@ -20,6 +20,10 @@ function News() {
 		},
 	})
 	const { user, token } = useContext(UserContext)
+	const [deleteNews] = useMutation(DELETE_NEWS, {
+		// refetchQueries: [{ query: NEWS_FOR_HOME }],
+	})
+	const { user } = useContext(UserContext)
 	const history = useNavigate()
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
@@ -49,21 +53,22 @@ function News() {
 	const onModalSubmit = async () => {
 		setShowModal(false)
 
-		// handle news deletion
-		await axios({
-			method: "delete",
-			url: `${ip}/news/delete`,
-			data: data.news,
-			headers: {
-				authorization: token,
+		deleteNews({
+			variables: {
+				id: data.news.id,
+			},
+			refetchQueries: [
+				{
+					query: NEWS_FOR_HOME,
+					variables: { offsetIndex: 0 },
+				},
+			],
+			onCompleted: data => {
+				console.log(data)
+
+				history(-1)
 			},
 		})
-			.then(res => {
-				console.log(res)
-
-				history("../profile")
-			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
 
 	const onModalDecline = () => {
