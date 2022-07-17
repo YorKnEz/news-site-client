@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai"
 import { useNavigate } from "react-router"
 
-import { useMutation } from "@apollo/client"
+import { useApolloClient, useMutation } from "@apollo/client"
 import axios from "axios"
 
 import "./CreateNews.scss"
@@ -32,6 +32,7 @@ function CreateNews() {
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+	const client = useApolloClient()
 	const { token } = useContext(UserContext)
 	const {
 		register,
@@ -40,9 +41,7 @@ function CreateNews() {
 		formState: { errors },
 	} = useForm()
 	const watchThumbnail = watch("thumbnail", [])
-	const [createNews] = useMutation(CREATE_NEWS, {
-		// refetchQueries: [{ query: NEWS_FOR_HOME }],
-	})
+	const [createNews] = useMutation(CREATE_NEWS)
 	const history = useNavigate()
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
@@ -101,13 +100,9 @@ function CreateNews() {
 			variables: {
 				newsData: requestBody,
 			},
-			refetchQueries: [
-				{
-					query: NEWS_FOR_HOME,
-					variables: { offsetIndex: 0 },
-				},
-			],
 			onCompleted: data => {
+				client.clearStore()
+
 				history(`/news/${data.createNews.id}`)
 			},
 		})

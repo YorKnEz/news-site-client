@@ -114,6 +114,7 @@ function Header() {
 								onChange={e => setSearch(e.target.value)}
 								onKeyDown={handleSubmit}
 								value={search}
+								title="Separate tags by ', ' and the rest by ' '"
 							/>
 							<select
 								className="header_search_category"

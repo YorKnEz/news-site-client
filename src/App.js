@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useApolloClient } from "@apollo/client"
 import React, { useEffect, useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
-import { ThemeContext, themes, UserContext } from "./context"
-
 import { PrivateRoutes } from "./components"
+import { ThemeContext, themes, UserContext } from "./context"
 import {
 	Home,
 	HomeReddit,
@@ -20,6 +20,7 @@ import {
 } from "./pages"
 
 export default function App() {
+	const client = useApolloClient()
 	const [theme, setTheme] = useState(
 		themes[localStorage.getItem("theme") || "light"]
 	)
@@ -63,6 +64,9 @@ export default function App() {
 		setUser(user)
 		localStorage.setItem("token", token)
 		localStorage.setItem("user", JSON.stringify(user))
+
+		// reset apollo client token
+		client.link.options.headers.authorization = token
 	}
 
 	const signOut = () => {
@@ -70,6 +74,9 @@ export default function App() {
 		setUser({})
 		localStorage.removeItem("token")
 		localStorage.removeItem("user")
+
+		// reset apollo client token
+		client.link.options.headers.authorization = ""
 	}
 
 	return (
