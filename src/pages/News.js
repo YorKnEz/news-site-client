@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import { useNavigate, useParams } from "react-router"
 
-import { useQuery, useMutation } from "@apollo/client"
+import { useQuery, useMutation, gql } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
 
 import "./News.scss"
@@ -20,7 +20,26 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS, {
-		// refetchQueries: [{ query: NEWS_FOR_HOME }],
+		// refetchQueries: [{ query: NEWS_FOR_HOME }],{
+		update(cache, { data: { deleteNews } }) {
+			cache.modify({
+				fields: {
+					newsForHome(news = []) {
+						// const newTodoRef = cache.writeFragment({
+						// 	data: ,
+						// 	fragment: gql`
+						// 		fragment NewTodo on Todo {
+						// 			id
+						// 			type
+						// 		}
+						// 	`,
+						// })
+						// return [...existingTodos, newTodoRef]
+						console.log(news)
+					},
+				},
+			})
+		},
 	})
 	const { user } = useContext(UserContext)
 	const history = useNavigate()
