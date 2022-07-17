@@ -11,6 +11,7 @@ import { NewsCard2, Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import { AUTHOR } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
+import { AiOutlineSetting } from "react-icons/ai"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -110,6 +111,10 @@ function Author() {
 			.catch(e => console.log(e?.response?.data?.error || e.message))
 	}
 
+	const handleSetting = async e => {
+		e.preventDefault()
+	}
+
 	return (
 		<Page>
 			{profile && (
@@ -129,23 +134,31 @@ function Author() {
 								<p>{profile.email}</p>
 							</div>
 						</div>
-						{authorId &&
-							authorId != user.id &&
-							(profile.following ? (
-								<button
-									onClick={handleUnfollow}
-									className="button button_secondary profile_button"
-								>
-									Unfollow
-								</button>
-							) : (
-								<button
-									onClick={handleFollow}
-									className="button button_primary profile_button"
-								>
-									Follow
-								</button>
-							))}
+						<div className="profile_buttons">
+							{authorId &&
+								authorId != user.id &&
+								(profile.following ? (
+									<button
+										onClick={handleUnfollow}
+										className="button button_secondary profile_button"
+									>
+										Unfollow
+									</button>
+								) : (
+									<button
+										onClick={handleFollow}
+										className="button button_primary profile_button"
+									>
+										Follow
+									</button>
+								))}
+							<button
+								onClick={handleSetting}
+								className="button button_primary profile_button"
+							>
+								<AiOutlineSetting />
+							</button>
+						</div>
 					</div>
 					<hr style={{ width: "100%" }} />
 					<div className="info">
