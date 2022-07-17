@@ -91,6 +91,16 @@ export const CREATE_NEWS = gql`
 	}
 `
 
+export const UPDATE_NEWS = gql`
+	mutation UpdateNews($newsData: NewsInput!, $id: ID!) {
+		updateNews(newsData: $newsData, id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
 export const DELETE_NEWS = gql`
 	mutation DeleteNews($id: ID!) {
 		deleteNews(id: $id) {

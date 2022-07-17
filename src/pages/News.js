@@ -3,44 +3,24 @@ import React, { useContext, useEffect, useState } from "react"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import { useNavigate, useParams } from "react-router"
 
-import { useQuery, useMutation, gql } from "@apollo/client"
+import { useQuery, useMutation, useApolloClient } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
 
 import "./News.scss"
 import { AuthorInfo, Modal, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { NEWS2, DELETE_NEWS, NEWS_FOR_HOME } from "../utils/apollo-queries"
+import { NEWS2, DELETE_NEWS } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
+	const client = useApolloClient()
 	const { newsId } = useParams()
 	const { loading, error, data } = useQuery(NEWS2, {
 		variables: {
 			newsId: newsId,
 		},
 	})
-	const [deleteNews] = useMutation(DELETE_NEWS, {
-		// refetchQueries: [{ query: NEWS_FOR_HOME }],{
-		update(cache, { data: { deleteNews } }) {
-			cache.modify({
-				fields: {
-					newsForHome(news = []) {
-						// const newTodoRef = cache.writeFragment({
-						// 	data: ,
-						// 	fragment: gql`
-						// 		fragment NewTodo on Todo {
-						// 			id
-						// 			type
-						// 		}
-						// 	`,
-						// })
-						// return [...existingTodos, newTodoRef]
-						console.log(news)
-					},
-				},
-			})
-		},
-	})
+	const [deleteNews] = useMutation(DELETE_NEWS)
 	const { user } = useContext(UserContext)
 	const history = useNavigate()
 	const [sources, setSources] = useState([])
@@ -75,14 +55,10 @@ function News() {
 			variables: {
 				id: data.news.id,
 			},
-			refetchQueries: [
-				{
-					query: NEWS_FOR_HOME,
-					variables: { offsetIndex: 0 },
-				},
-			],
 			onCompleted: data => {
 				console.log(data)
+
+				client.clearStore()
 
 				history(-1)
 			},

@@ -12,15 +12,14 @@ import {
 } from "react-icons/ai"
 import { Navigate, useNavigate, useParams } from "react-router"
 
-import { useQuery } from "@apollo/client"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import axios from "axios"
-import format from "date-fns/format"
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import "./CreateNews.scss"
 import { Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { NEWS } from "../utils/apollo-queries"
+import { NEWS, UPDATE_NEWS } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
@@ -32,7 +31,9 @@ import {
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function CreateNews() {
+	const client = useApolloClient()
 	const { newsId } = useParams()
+	const [updateNews] = useMutation(UPDATE_NEWS)
 	const { loading, error, data } = useQuery(NEWS, {
 		variables: {
 			newsId: newsId,
@@ -105,9 +106,7 @@ function CreateNews() {
 		tagsFinal = tagsFinal.concat(tags)
 
 		const requestBody = {
-			id: data.news.id,
 			title: formData.title,
-			date: format(new Date(), "MMMM d',' yyyy"),
 			sources: sourcesFinal,
 			tags: tagsFinal,
 			body: html,
@@ -137,20 +136,19 @@ function CreateNews() {
 				.catch(e => console.log(e?.response?.data?.error || e.message))
 		}
 
-		await axios({
-			method: "put",
-			url: `${ip}/news/edit`,
-			data: requestBody,
-			headers: {
-				authorization: token,
+		updateNews({
+			variables: {
+				id: data.news.id,
+				newsData: requestBody,
 			},
-		})
-			.then(res => {
+			onCompleted: res => {
 				console.log(res)
 
-				history(`/news/${res.data.newsToEdit.id}`)
-			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
+				client.clearStore()
+
+				history(`/news/${data.news.id}`)
+			},
+		})
 	}
 
 	const handleSource = e => {
