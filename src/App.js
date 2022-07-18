@@ -109,12 +109,12 @@ export default function App() {
 						<Route element={<PrivateRoutes />}>
 							<Route exact path="/profile" element={<Profile />} />
 							<Route exact path="/profile/:authorId" element={<Profile />} />
+							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
 							<Route exact path="/create" element={<CreateNews />} />
-							<Route exact path="/search" element={<SearchResult />} />
 							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
 						</Route>
 					</Routes>
