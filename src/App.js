@@ -17,6 +17,8 @@ import {
 	EditNews,
 	Error,
 	SearchResult,
+	ForgotPassword,
+	ResetPassword,
 } from "./pages"
 
 export default function App() {
@@ -101,6 +103,8 @@ export default function App() {
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn />} />
+						<Route exact path="/forgot-password" element={<ForgotPassword />} />
+						<Route exact path="/reset-password" element={<ResetPassword />} />
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/news/:newsId" element={<News />} />
@@ -109,12 +113,12 @@ export default function App() {
 						<Route element={<PrivateRoutes />}>
 							<Route exact path="/profile" element={<Profile />} />
 							<Route exact path="/profile/:authorId" element={<Profile />} />
+							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
 							<Route exact path="/create" element={<CreateNews />} />
-							<Route exact path="/search" element={<SearchResult />} />
 							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
 						</Route>
 					</Routes>

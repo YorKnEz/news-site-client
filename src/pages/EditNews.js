@@ -133,7 +133,7 @@ function CreateNews() {
 				.then(res => {
 					console.log(res)
 				})
-				.catch(e => console.log(e?.response?.data?.error || e.message))
+				.catch(e => console.log(e?.response?.data?.error.message || e.message))
 		}
 
 		updateNews({

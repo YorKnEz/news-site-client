@@ -165,6 +165,7 @@ export const AUTHOR = gql`
 			fullName
 			email
 			profilePicture
+			type
 			writtenNews
 			followers
 			createdAt

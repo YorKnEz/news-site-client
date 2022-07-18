@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import {
 	AiFillExclamationCircle,
 	AiOutlineEye,
 	AiOutlineEyeInvisible,
 } from "react-icons/ai"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import axios from "axios"
 
 import "./SignUp.scss"
-import { Page } from "../components"
-import { UserContext } from "../context"
+import Page from "../components/Page"
 import {
 	handleInputBlur,
 	handleInputFocus,
@@ -22,7 +21,9 @@ import {
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function SignIn() {
-	const { signIn } = useContext(UserContext)
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+		get: (searchParams, prop) => searchParams.get(prop),
+	})
 	const {
 		register,
 		watch,
@@ -30,12 +31,13 @@ function SignIn() {
 		formState: { errors },
 	} = useForm()
 	const password = watch("password", "")
-	const [showPassword, setShowPassword] = useState(false)
 	const [error, setError] = useState("")
+	const [showPassword, setShowPassword] = useState(false)
 	const history = useNavigate()
 	// eslint-disable-next-line no-unused-vars
-	const [documentTitle, setDocumentTitle] =
-		useDocumentTitle("Sign In | YorkNews")
+	const [documentTitle, setDocumentTitle] = useDocumentTitle(
+		"Reset your password | YorkNews"
+	)
 
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
@@ -45,15 +47,25 @@ function SignIn() {
 	const onSubmit = async data => {
 		await axios({
 			method: "post",
-			url: `${ip}/users/login`,
-			data,
+			url: `${ip}/users/reset-password?token=${params.token}`,
+			data: {
+				password: data.password,
+			},
 		})
 			.then(res => {
-				signIn(res.data)
-
-				history("/")
+				history("/sign-in")
 			})
 			.catch(e => setError(e?.response?.data?.error.message || e.message))
+	}
+
+	const handleShowPassword = e => {
+		e.preventDefault()
+
+		setShowPassword(!showPassword)
+	}
+
+	const arePasswordsTheSame = value => {
+		return password === value
 	}
 
 	const errorCheck = name => {
@@ -64,37 +76,30 @@ function SignIn() {
 					This field is required.
 				</p>
 			)
-	}
 
-	const handleShowPassword = e => {
-		e.preventDefault()
+		if (errors[name] && errors[name].type === "validate")
+			return (
+				<p className="formItem_error">
+					<AiFillExclamationCircle className="formItem_error_icon" />
+					The passwords must be the same.
+				</p>
+			)
 
-		setShowPassword(!showPassword)
+		if (name === "email" && error.includes("Email"))
+			return (
+				<p className="formItem_error">
+					<AiFillExclamationCircle className="formItem_error_icon" />
+					{error}
+				</p>
+			)
 	}
 
 	return (
 		<Page>
 			<div className="signUp_container">
 				<div className="signUp">
-					<span className="signUp_title">Sign In</span>
+					<span className="signUp_title">Reset your password</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="email">
-								Email
-							</label>
-							<input
-								className="formItem_input"
-								id="email"
-								name="email"
-								type="email"
-								onFocus={handleInputFocus}
-								{...register("email", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
-							/>
-							{errorCheck("email")}
-						</div>
 						<div className="formItem password">
 							<label className="formItem_label" htmlFor="password">
 								Password
@@ -117,13 +122,26 @@ function SignIn() {
 									<AiOutlineEye className="password_icon" />
 								)}
 							</button>
+							{errorCheck("password")}
 						</div>
-						{
-							<Link className="link" to="/forgot-password">
-								Forgot your password?
-							</Link>
-						}
-						{errorCheck("password")}
+						<div className="formItem">
+							<label className="formItem_label" htmlFor="confirmPassword">
+								Confirm Password
+							</label>
+							<input
+								className="formItem_input"
+								id="confirmPassword"
+								name="confirmPassword"
+								type={showPassword ? "text" : "password"}
+								onFocus={handleInputFocus}
+								{...register("confirmPassword", {
+									required: true,
+									onBlur: handleInputBlur,
+									validate: arePasswordsTheSame,
+								})}
+							/>
+							{errorCheck("confirmPassword")}
+						</div>
 						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
@@ -131,15 +149,9 @@ function SignIn() {
 							</p>
 						)}
 						<button className="button button_primary form_submit">
-							See some news
+							Reset your password
 						</button>
 					</form>
-					<span>
-						Don't have an account?{" "}
-						<Link to="/sign-up" className="link">
-							Sign Up
-						</Link>
-					</span>
 				</div>
 			</div>
 		</Page>

@@ -11,7 +11,6 @@ import { NewsCard2, Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import { AUTHOR } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
-import { AiOutlineSetting } from "react-icons/ai"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -86,7 +85,7 @@ function Author() {
 					following: true,
 				})
 			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
+			.catch(e => console.log(e?.response?.data?.error.message || e.message))
 	}
 
 	const handleUnfollow = async e => {
@@ -108,11 +107,7 @@ function Author() {
 					following: false,
 				})
 			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
-	}
-
-	const handleSetting = async e => {
-		e.preventDefault()
+			.catch(e => console.log(e?.response?.data?.error.message || e.message))
 	}
 
 	return (
@@ -134,31 +129,23 @@ function Author() {
 								<p>{profile.email}</p>
 							</div>
 						</div>
-						<div className="profile_buttons">
-							{authorId &&
-								authorId != user.id &&
-								(profile.following ? (
-									<button
-										onClick={handleUnfollow}
-										className="button button_secondary profile_button"
-									>
-										Unfollow
-									</button>
-								) : (
-									<button
-										onClick={handleFollow}
-										className="button button_primary profile_button"
-									>
-										Follow
-									</button>
-								))}
-							<button
-								onClick={handleSetting}
-								className="button button_primary profile_button"
-							>
-								<AiOutlineSetting />
-							</button>
-						</div>
+						{authorId &&
+							authorId != user.id &&
+							(profile.following ? (
+								<button
+									onClick={handleUnfollow}
+									className="button button_secondary profile_button"
+								>
+									Unfollow
+								</button>
+							) : (
+								<button
+									onClick={handleFollow}
+									className="button button_primary profile_button"
+								>
+									Follow
+								</button>
+							))}
 					</div>
 					<hr style={{ width: "100%" }} />
 					<div className="info">
