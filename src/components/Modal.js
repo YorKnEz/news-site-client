@@ -15,9 +15,11 @@ function Modal({ onSubmit, children, onDecline }) {
 								Cancel
 							</button>
 						)}
-						<button className="button button_primary" onClick={onSubmit}>
-							Ok
-						</button>
+						{onSubmit && (
+							<button className="button button_primary" onClick={onSubmit}>
+								Ok
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
