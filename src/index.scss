@@ -251,6 +251,18 @@ select:-webkit-autofill:focus {
 		border: none;
 		cursor: pointer;
 		color: var(--text-color);
+
+		&_link {
+			border: none;
+			background-color: transparent;
+			align-self: flex-start;
+			text-decoration: none;
+			color: #44b6eb;
+
+			&:hover {
+				color: #75c9f0;
+			}
+		}
 	}
 
 	&_icon {

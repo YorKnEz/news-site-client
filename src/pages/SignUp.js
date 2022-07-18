@@ -59,6 +59,18 @@ function SignUp() {
 			.catch(e => setError(e?.response?.data?.error.message || e.message))
 	}
 
+	const onModalSubmit = () => {
+		setShowModal(false)
+
+		history("/sign-in")
+	}
+
+	const handleShowPassword = e => {
+		e.preventDefault()
+
+		setShowPassword(!showPassword)
+	}
+
 	const arePasswordsTheSame = value => {
 		return password === value
 	}
@@ -87,18 +99,6 @@ function SignUp() {
 					{error}
 				</p>
 			)
-	}
-
-	const onModalSubmit = () => {
-		setShowModal(false)
-
-		history("/sign-in")
-	}
-
-	const handleShowPassword = e => {
-		e.preventDefault()
-
-		setShowPassword(!showPassword)
 	}
 
 	return (
