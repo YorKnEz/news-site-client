@@ -17,6 +17,8 @@ import {
 	EditNews,
 	Error,
 	SearchResult,
+	ForgotPassword,
+	ResetPassword,
 } from "./pages"
 
 export default function App() {
@@ -101,6 +103,8 @@ export default function App() {
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn />} />
+						<Route exact path="/forgot-password" element={<ForgotPassword />} />
+						<Route exact path="/reset-password" element={<ResetPassword />} />
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/news/:newsId" element={<News />} />
