@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import "./SignUp.scss"
-import Page from "../components/Page"
+import { Page } from "../components"
 import { UserContext } from "../context"
 import {
 	handleInputBlur,
@@ -118,6 +118,11 @@ function SignIn() {
 								)}
 							</button>
 						</div>
+						{
+							<Link className="link" to="/forgot-password">
+								Forgot your password?
+							</Link>
+						}
 						{errorCheck("password")}
 						{error && (
 							<p className="formItem_error">
