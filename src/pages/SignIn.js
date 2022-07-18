@@ -53,7 +53,7 @@ function SignIn() {
 
 				history("/")
 			})
-			.catch(e => setError(e?.response?.data?.error || e.message))
+			.catch(e => setError(e?.response?.data?.error.message || e.message))
 	}
 
 	const errorCheck = name => {

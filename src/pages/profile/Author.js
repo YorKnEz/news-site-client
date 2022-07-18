@@ -86,7 +86,7 @@ function Author() {
 					following: true,
 				})
 			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
+			.catch(e => console.log(e?.response?.data?.error.message || e.message))
 	}
 
 	const handleUnfollow = async e => {
@@ -108,11 +108,7 @@ function Author() {
 					following: false,
 				})
 			})
-			.catch(e => console.log(e?.response?.data?.error || e.message))
-	}
-
-	const handleSetting = async e => {
-		e.preventDefault()
+			.catch(e => console.log(e?.response?.data?.error.message || e.message))
 	}
 
 	return (
