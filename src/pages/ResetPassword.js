@@ -46,7 +46,7 @@ function SignIn() {
 
 	const onSubmit = async data => {
 		await axios({
-			method: "post",
+			method: "put",
 			url: `${ip}/users/reset-password?token=${params.token}`,
 			data: {
 				password: data.password,

@@ -62,7 +62,7 @@ function Header() {
 		signOut()
 
 		await axios({
-			method: "post",
+			method: "delete",
 			url: `${ip}/users/sign-out`,
 			headers: {
 				authorization: token,

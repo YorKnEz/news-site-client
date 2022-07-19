@@ -43,7 +43,7 @@ function SignUp() {
 
 	const onSubmit = async data => {
 		await axios({
-			method: "put",
+			method: "post",
 			url: `${ip}/users/register`,
 			data: {
 				...data,

@@ -70,7 +70,7 @@ function Author() {
 		e.preventDefault()
 
 		await axios({
-			method: "put",
+			method: "patch",
 			url: `${ip}/users/follow/${authorId}`,
 			headers: {
 				authorization: token,
@@ -92,7 +92,7 @@ function Author() {
 		e.preventDefault()
 
 		await axios({
-			method: "put",
+			method: "patch",
 			url: `${ip}/users/unfollow/${authorId}`,
 			headers: {
 				authorization: token,
