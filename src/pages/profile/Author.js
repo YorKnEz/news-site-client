@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
 
-import { useQuery } from "@apollo/client"
+import { useApolloClient, useQuery } from "@apollo/client"
 import axios from "axios"
 import { format, fromUnixTime } from "date-fns"
 
@@ -15,6 +15,7 @@ import { useDocumentTitle } from "../../utils/utils"
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function Author() {
+	const client = useApolloClient()
 	const { authorId } = useParams()
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offsetIndex, setOffsetIndex] = useState(0)
@@ -25,7 +26,6 @@ function Author() {
 		variables: {
 			offsetIndex,
 			id: authorId ? authorId : user.id,
-			reqId: user.id,
 		},
 	})
 	// eslint-disable-next-line no-unused-vars
@@ -70,7 +70,7 @@ function Author() {
 		e.preventDefault()
 
 		await axios({
-			method: "put",
+			method: "patch",
 			url: `${ip}/users/follow/${authorId}`,
 			headers: {
 				authorization: token,
@@ -84,15 +84,17 @@ function Author() {
 					followers: profile.followers + 1,
 					following: true,
 				})
+
+				client.clearStore()
 			})
-			.catch(e => console.log(e?.response?.data?.error.message || e.message))
+			.catch(e => console.log(e?.response?.data?.message || e.message))
 	}
 
 	const handleUnfollow = async e => {
 		e.preventDefault()
 
 		await axios({
-			method: "put",
+			method: "patch",
 			url: `${ip}/users/unfollow/${authorId}`,
 			headers: {
 				authorization: token,
@@ -106,8 +108,10 @@ function Author() {
 					followers: profile.followers - 1,
 					following: false,
 				})
+
+				client.clearStore()
 			})
-			.catch(e => console.log(e?.response?.data?.error.message || e.message))
+			.catch(e => console.log(e?.response?.data?.message || e.message))
 	}
 
 	return (

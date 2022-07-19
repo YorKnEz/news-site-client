@@ -1,4 +1,5 @@
 import React from "react"
+import { AiOutlineFrown } from "react-icons/ai"
 
 import { useQuery } from "@apollo/client"
 
@@ -19,11 +20,22 @@ function SearchResult() {
 
 	const dataToDisplay = () => {
 		if (data) {
-			if (data.search.length < 1) {
+			if (data.search.length === 0) {
 				return (
-					<div>
-						No {params.filter === "author" ? "authors" : "news"} found matching
-						your query.
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							margin: "40px 0",
+							fontSize: "20px",
+						}}
+					>
+						<AiOutlineFrown />
+						<p style={{ marginLeft: "16px" }}>
+							No {params.filter === "author" ? "authors" : "news"} found
+							matching your query.
+						</p>
 					</div>
 				)
 			}

@@ -43,7 +43,7 @@ function SignUp() {
 
 	const onSubmit = async data => {
 		await axios({
-			method: "put",
+			method: "post",
 			url: `${ip}/users/register`,
 			data: {
 				...data,
@@ -56,7 +56,7 @@ function SignUp() {
 
 				setShowModal(true)
 			})
-			.catch(e => setError(e?.response?.data?.error.message || e.message))
+			.catch(e => setError(e?.response?.data?.message || e.message))
 	}
 
 	const onModalSubmit = () => {

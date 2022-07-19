@@ -46,7 +46,7 @@ function SignIn() {
 
 	const onSubmit = async data => {
 		await axios({
-			method: "post",
+			method: "patch",
 			url: `${ip}/users/reset-password?token=${params.token}`,
 			data: {
 				password: data.password,
@@ -55,7 +55,7 @@ function SignIn() {
 			.then(res => {
 				history("/sign-in")
 			})
-			.catch(e => setError(e?.response?.data?.error.message || e.message))
+			.catch(e => setError(e?.response?.data?.message || e.message))
 	}
 
 	const handleShowPassword = e => {
