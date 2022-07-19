@@ -147,7 +147,7 @@ export const SEARCH = gql`
 `
 
 export const AUTHOR = gql`
-	query Query($offsetIndex: Int, $id: ID!, $reqId: ID!) {
+	query Query($offsetIndex: Int, $id: ID!) {
 		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
 			id
 			title
@@ -160,12 +160,27 @@ export const AUTHOR = gql`
 			createdAt
 			updatedAt
 		}
-		author(id: $id, reqId: $reqId) {
+		author(id: $id) {
 			id
 			fullName
 			email
 			profilePicture
 			type
+			writtenNews
+			followers
+			createdAt
+			following
+		}
+	}
+`
+
+export const FOLLOWED_AUTHORS = gql`
+	query FollowedAuthors($offsetIndex: Int) {
+		followedAuthors(offsetIndex: $offsetIndex) {
+			id
+			fullName
+			email
+			profilePicture
 			writtenNews
 			followers
 			createdAt

@@ -60,6 +60,11 @@
 			margin: 0;
 		}
 	}
+
+	&_followedAuthors {
+		display: grid;
+		grid-template-columns: 50% 50%;
+	}
 }
 
 .info {
