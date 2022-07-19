@@ -44,7 +44,7 @@ function ForgotPassword() {
 			.then(res => {
 				setShowModal(true)
 			})
-			.catch(e => setError(e?.response?.data?.error.message || e.message))
+			.catch(e => setError(e?.response?.data?.message || e.message))
 	}
 
 	const errorCheck = name => {

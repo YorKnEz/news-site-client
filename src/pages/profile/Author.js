@@ -87,7 +87,7 @@ function Author() {
 
 				client.clearStore()
 			})
-			.catch(e => console.log(e?.response?.data?.error.message || e.message))
+			.catch(e => console.log(e?.response?.data?.message || e.message))
 	}
 
 	const handleUnfollow = async e => {
@@ -111,7 +111,7 @@ function Author() {
 
 				client.clearStore()
 			})
-			.catch(e => console.log(e?.response?.data?.error.message || e.message))
+			.catch(e => console.log(e?.response?.data?.message || e.message))
 	}
 
 	return (

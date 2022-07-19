@@ -74,7 +74,7 @@ function Header() {
 				history("/")
 				window.location.reload()
 			})
-			.catch(e => console.log(e?.response?.data?.error.message || e.message))
+			.catch(e => console.log(e?.response?.data?.message || e.message))
 	}
 
 	const handleSearch = async e => {
