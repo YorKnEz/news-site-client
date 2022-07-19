@@ -4,7 +4,11 @@ import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorCard.scss"
 
-function AuthorCard({ data }) {
+function AuthorCard({ data, infoBelow }) {
+	const className = infoBelow
+		? ["authorcard2", "acinfo2"]
+		: ["authorcard", "acinfo"]
+
 	const getDate = () => {
 		const createdAt = fromUnixTime(data.createdAt / 1000)
 
@@ -12,31 +16,33 @@ function AuthorCard({ data }) {
 	}
 
 	return (
-		<Link to={`/profile/${data.id}`} className="authorcard">
-			<div className="authorcard_overlay" />
-			<div className="authorcard_info">
+		<Link to={`/profile/${data.id}`} className={className[0]}>
+			<div className={`${className[0]}_overlay`} />
+			<div className={`${className[0]}_info`}>
 				{data.profilePicture === "default" ? (
 					<img src="/default_avatar.png" alt="avatar of user" />
 				) : (
 					<img src={data.profilePicture} alt="avatar of user" />
 				)}
-				<div className="authorcard_info_text">
+				<div className={`${className[0]}_info_text`}>
 					<h3>{data.fullName}</h3>
 					<p>{data.email}</p>
 				</div>
 			</div>
-			<div className="acinfo">
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Written News:</span>
-					<span className="acinfo_box_data">{data.writtenNews + " "}</span>
+			<div className={className[1]}>
+				<div className={`${className[1]}_box`}>
+					<span className={`${className[1]}_box_title`}>Written News:</span>
+					<span className={`${className[1]}_box_data`}>
+						{data.writtenNews + " "}
+					</span>
 				</div>
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Followers:</span>
-					<span className="acinfo_box_data">{data.followers}</span>
+				<div className={`${className[1]}_box`}>
+					<span className={`${className[1]}_box_title`}>Followers:</span>
+					<span className={`${className[1]}_box_data`}>{data.followers}</span>
 				</div>
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Joined:</span>
-					<span className="acinfo_box_data">{getDate()}</span>
+				<div className={`${className[1]}_box`}>
+					<span className={`${className[1]}_box_title`}>Joined:</span>
+					<span className={`${className[1]}_box_data`}>{getDate()}</span>
 				</div>
 			</div>
 		</Link>
