@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import { useNavigate, useParams } from "react-router"
+import { Link } from "react-router-dom"
 
 import { useQuery, useMutation, useApolloClient } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
@@ -143,7 +144,13 @@ function News() {
 						<div className="sources">
 							<h4>Sources</h4>
 							{sources.map(s => (
-								<a className="sources_item" key={s} href={s}>
+								<a
+									className="sources_item"
+									key={s}
+									href={s}
+									target="_blank"
+									rel="noreferrer"
+								>
 									{s}
 								</a>
 							))}
@@ -151,9 +158,13 @@ function News() {
 						<div className="tags">
 							<h4>Tags</h4>
 							{tags.map(s => (
-								<a className="tags_item" key={s} href={s}>
+								<Link
+									className="tags_item"
+									key={s}
+									to={`/search?search=${s}&filter=tags`}
+								>
 									{s}
-								</a>
+								</Link>
 							))}
 						</div>
 					</div>
