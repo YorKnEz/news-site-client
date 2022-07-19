@@ -17,7 +17,7 @@ import "./CreateNews.scss"
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import { Page } from "../components"
 import { UserContext } from "../context"
-import { CREATE_NEWS, NEWS_FOR_HOME } from "../utils/apollo-queries"
+import { CREATE_NEWS } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
