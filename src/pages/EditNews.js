@@ -60,6 +60,7 @@ function CreateNews() {
 		sources: {},
 		tags: {},
 		editor: {},
+		other: {},
 	})
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
@@ -96,80 +97,86 @@ function CreateNews() {
 	}, [data, setValue])
 
 	const onSubmit = async formData => {
-		// check if any sources were added, if not return error
-		if (sources.length === 0) {
-			setError2({
-				...error2,
-				sources: { message: "This field is required" },
-			})
+		try {
+			// check if any sources were added, if not return error
+			if (sources.length === 0) {
+				setError2({
+					...error2,
+					sources: { message: "This field is required" },
+				})
 
-			return
-		}
-		// body of the news in html format
-		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+				return
+			}
+			// body of the news in html format
+			const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
-		// check if the length of the body is above 200, if not return error
-		if (html.length < 200) {
-			setError2({
-				...error2,
-				editor: { message: "The body should be at least 200 characters long" },
-			})
+			// check if the length of the body is above 200, if not return error
+			if (html.length < 200) {
+				setError2({
+					...error2,
+					editor: {
+						message: "The body should be at least 200 characters long",
+					},
+				})
 
-			return
-		}
+				return
+			}
 
-		// sources concatenated in a single string separated by ','
-		let sourcesFinal = ""
-		sourcesFinal = sourcesFinal.concat(sources)
+			// sources concatenated in a single string separated by ','
+			let sourcesFinal = ""
+			sourcesFinal = sourcesFinal.concat(sources)
 
-		// tags concatenated in a single string separated by ','
-		let tagsFinal = ""
-		tagsFinal = tagsFinal.concat(tags)
+			// tags concatenated in a single string separated by ','
+			let tagsFinal = ""
+			tagsFinal = tagsFinal.concat(tags)
 
-		const requestBody = {
-			title: formData.title,
-			sources: sourcesFinal,
-			tags: tagsFinal,
-			body: html,
-		}
+			const requestBody = {
+				title: formData.title,
+				sources: sourcesFinal,
+				tags: tagsFinal,
+				body: html,
+			}
 
-		if (formData.thumbnail[0]) {
-			const thumbnail = formData.thumbnail[0] ? formData.thumbnail[0] : ""
-			const fileName = Date.now() + "-" + thumbnail.name
+			if (formData.thumbnail[0]) {
+				const thumbnail = formData.thumbnail[0] ? formData.thumbnail[0] : ""
+				const fileName = Date.now() + "-" + thumbnail.name
 
-			const form = new FormData()
+				const form = new FormData()
 
-			form.append("file", thumbnail, fileName)
+				form.append("file", thumbnail, fileName)
 
-			requestBody.thumbnail = `${ip}/public/${fileName}`
+				requestBody.thumbnail = `${ip}/public/${fileName}`
 
-			await axios({
-				method: "post",
-				url: `${ip}/news/upload-thumbnail`,
-				data: form,
-				headers: {
-					authorization: token,
+				await axios({
+					method: "post",
+					url: `${ip}/news/upload-thumbnail`,
+					data: form,
+					headers: {
+						authorization: token,
+					},
+				})
+			}
+
+			updateNews({
+				variables: {
+					id: data.news.id,
+					newsData: requestBody,
+				},
+				onCompleted: res => {
+					console.log(res)
+
+					client.clearStore()
+
+					history(`/news/${data.news.id}`)
 				},
 			})
-				.then(res => {
-					console.log(res)
-				})
-				.catch(e => console.log(e?.response?.data?.message || e.message))
+		} catch (error) {
+			setError2({
+				...error2,
+				other: { message: error?.response?.data?.message || error.message },
+			})
+			console.error(error?.response?.data?.message || error.message)
 		}
-
-		updateNews({
-			variables: {
-				id: data.news.id,
-				newsData: requestBody,
-			},
-			onCompleted: res => {
-				console.log(res)
-
-				client.clearStore()
-
-				history(`/news/${data.news.id}`)
-			},
-		})
 	}
 
 	const handleSource = e => {
@@ -441,6 +448,12 @@ function CreateNews() {
 							</p>
 						)}
 					</div>
+					{error2.other.message && (
+						<p className="formItem_error">
+							<AiFillExclamationCircle className="formItem_error_icon" />
+							{error2.other.message}
+						</p>
+					)}
 					<div>
 						<div className="tooltip">
 							<AiOutlineQuestionCircle className="tooltip_icon" />
