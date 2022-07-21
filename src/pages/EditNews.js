@@ -55,7 +55,11 @@ function CreateNews() {
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
 	const [tags, setTags] = useState([])
-	const [error2, setError2] = useState("")
+	const [error2, setError2] = useState({
+		sources: {},
+		tags: {},
+		editor: {},
+	})
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
@@ -94,8 +98,27 @@ function CreateNews() {
 	}, [data])
 
 	const onSubmit = async formData => {
+		// check if any sources were added, if not return error
+		if (sources.length === 0) {
+			setError2({
+				...error2,
+				sources: { message: "This field is required" },
+			})
+
+			return
+		}
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+
+		// check if the length of the body is above 200, if not return error
+		if (html.length < 200) {
+			setError2({
+				...error2,
+				editor: { message: "The body should be at least 200 characters long" },
+			})
+
+			return
+		}
 
 		// sources concatenated in a single string separated by ','
 		let sourcesFinal = ""
@@ -152,8 +175,6 @@ function CreateNews() {
 	}
 
 	const handleSource = e => {
-		e.preventDefault()
-
 		let sourceInput = e.target.value
 		setSource(sourceInput)
 
@@ -162,12 +183,18 @@ function CreateNews() {
 
 			if (isValidHttpUrl(sourceInput)) {
 				if (sources.findIndex(source => source === sourceInput) >= 0) {
-					setError2("Source already added")
+					setError2({
+						...error2,
+						sources: { message: "Source already added" },
+					})
 
 					return
 				}
 
-				setError2("")
+				setError2({
+					...error2,
+					sources: {},
+				})
 
 				setSources([...sources, sourceInput])
 
@@ -176,7 +203,10 @@ function CreateNews() {
 				return
 			}
 
-			setError2("Invalid source")
+			setError2({
+				...error2,
+				sources: { message: "Invalid source" },
+			})
 		}
 	}
 
@@ -193,8 +223,6 @@ function CreateNews() {
 	}
 
 	const handleTag = e => {
-		e.preventDefault()
-
 		let tagInput = e.target.value
 
 		setTag(tagInput)
@@ -204,12 +232,18 @@ function CreateNews() {
 
 			if (/^[A-Za-z0-9 ]*$/.test(tagInput)) {
 				if (tags.findIndex(tag => tag === tagInput) >= 0) {
-					setError2("Tag already added")
+					setError2({
+						...error2,
+						tags: { message: "Tag already added" },
+					})
 
 					return
 				}
 
-				setError2("")
+				setError2({
+					...error2,
+					tags: {},
+				})
 
 				setTags([...tags, tagInput])
 
@@ -218,7 +252,10 @@ function CreateNews() {
 				return
 			}
 
-			setError2("A tag should contain only letters and numbers")
+			setError2({
+				...error2,
+				tags: { message: "A tag should only contain letters and numbers" },
+			})
 		}
 	}
 
@@ -235,12 +272,10 @@ function CreateNews() {
 	}
 
 	const isSizeOk = value => {
-		if (value.length > 0) {
-			console.log(value[0].size)
+		// check if an image has been added and check if the size is less than 10MB
+		if (value.length > 0) return value[0].size < 10485760
 
-			return value[0].size < 10485760
-		}
-
+		// return true otherwise to avoid errors
 		return true
 	}
 
@@ -340,6 +375,12 @@ function CreateNews() {
 							toolbarClassName="editor_toolbar"
 						/>
 					</div>
+					{error2.editor.message && (
+						<p className="formItem_error">
+							<AiFillExclamationCircle className="formItem_error_icon" />
+							{error2.editor.message}
+						</p>
+					)}
 					<div className="sources">
 						<h4>Sources</h4>
 						{sources.map(s => (
@@ -366,6 +407,12 @@ function CreateNews() {
 							onFocus={handleInputFocus}
 							onBlur={handleInputBlur}
 						/>
+						{error2.sources.message && (
+							<p className="formItem_error">
+								<AiFillExclamationCircle className="formItem_error_icon" />
+								{error2.sources.message}
+							</p>
+						)}
 					</div>
 					<div className="tags">
 						<h4>Tags</h4>
@@ -389,13 +436,13 @@ function CreateNews() {
 							onFocus={handleInputFocus}
 							onBlur={handleInputBlur}
 						/>
+						{error2.tags.message && (
+							<p className="formItem_error">
+								<AiFillExclamationCircle className="formItem_error_icon" />
+								{error2.tags.message}
+							</p>
+						)}
 					</div>
-					{error2 && (
-						<p className="formItem_error">
-							<AiFillExclamationCircle className="formItem_error_icon" />
-							{error2}
-						</p>
-					)}
 					<div>
 						<div className="tooltip">
 							<AiOutlineQuestionCircle className="tooltip_icon" />
