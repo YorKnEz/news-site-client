@@ -57,24 +57,24 @@ function Header() {
 	}
 
 	const handleSignOut = async e => {
-		e.preventDefault()
+		try {
+			e.preventDefault()
 
-		signOut()
+			signOut()
 
-		await axios({
-			method: "delete",
-			url: `${ip}/users/sign-out`,
-			headers: {
-				authorization: token,
-			},
-		})
-			.then(res => {
-				console.log(res)
-
-				history("/")
-				window.location.reload()
+			await axios({
+				method: "delete",
+				url: `${ip}/users/sign-out`,
+				headers: {
+					authorization: token,
+				},
 			})
-			.catch(e => console.log(e?.response?.data?.message || e.message))
+
+			history("/")
+			window.location.reload()
+		} catch (error) {
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const handleSearch = async e => {

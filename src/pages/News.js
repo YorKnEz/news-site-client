@@ -39,7 +39,8 @@ function News() {
 			div.innerHTML = data.news.body
 
 			setSources(data.news.sources.split(","))
-			setTags(data.news.tags.split(","))
+
+			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 		}
 	}, [data, setDocumentTitle])
 
@@ -157,15 +158,16 @@ function News() {
 						</div>
 						<div className="tags">
 							<h4>Tags</h4>
-							{tags.map(s => (
-								<Link
-									className="tags_item"
-									key={s}
-									to={`/search?search=${s}&filter=tags`}
-								>
-									{s}
-								</Link>
-							))}
+							{tags.length > 0 &&
+								tags.map(s => (
+									<Link
+										className="tags_item"
+										key={s}
+										to={`/search?search=${s}&filter=tags`}
+									>
+										{s}
+									</Link>
+								))}
 						</div>
 					</div>
 				)}

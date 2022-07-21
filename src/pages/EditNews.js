@@ -46,6 +46,7 @@ function CreateNews() {
 	const {
 		register,
 		watch,
+		setValue,
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
@@ -55,23 +56,22 @@ function CreateNews() {
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
 	const [tags, setTags] = useState([])
-	const [error2, setError2] = useState("")
+	const [error2, setError2] = useState({
+		sources: {},
+		tags: {},
+		editor: {},
+		other: {},
+	})
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
 	)
 
-	// check if any input has been autofilled in order to change the label position
-	useEffect(() => {
-		if (data) updateInputLabels()
-	})
-
 	// set the news data to each input
 	useEffect(() => {
 		if (data) {
 			// set the title
-			const inputTitle = document.querySelector("#title")
-			inputTitle.value = data.news.title
+			setValue("title", data.news.title)
 
 			// set the thumbnail
 			const inputThumbnail = document.querySelector(".thumbnail")
@@ -89,71 +89,97 @@ function CreateNews() {
 			setSources(data.news.sources.split(","))
 
 			// set the tags
-			setTags(data.news.tags.split(","))
+			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
+
+			// check if any input has been autofilled in order to change the label position
+			updateInputLabels()
 		}
-	}, [data])
+	}, [data, setValue])
 
 	const onSubmit = async formData => {
-		// body of the news in html format
-		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+		try {
+			// check if any sources were added, if not return error
+			if (sources.length === 0) {
+				setError2({
+					...error2,
+					sources: { message: "This field is required" },
+				})
 
-		// sources concatenated in a single string separated by ','
-		let sourcesFinal = ""
-		sourcesFinal = sourcesFinal.concat(sources)
+				return
+			}
+			// body of the news in html format
+			const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
-		// tags concatenated in a single string separated by ','
-		let tagsFinal = ""
-		tagsFinal = tagsFinal.concat(tags)
+			// check if the length of the body is above 200, if not return error
+			if (html.length < 200) {
+				setError2({
+					...error2,
+					editor: {
+						message: "The body should be at least 200 characters long",
+					},
+				})
 
-		const requestBody = {
-			title: formData.title,
-			sources: sourcesFinal,
-			tags: tagsFinal,
-			body: html,
-		}
+				return
+			}
 
-		if (formData.thumbnail[0]) {
-			const thumbnail = formData.thumbnail[0] ? formData.thumbnail[0] : ""
-			const fileName = Date.now() + "-" + thumbnail.name
+			// sources concatenated in a single string separated by ','
+			let sourcesFinal = ""
+			sourcesFinal = sourcesFinal.concat(sources)
 
-			const form = new FormData()
+			// tags concatenated in a single string separated by ','
+			let tagsFinal = ""
+			tagsFinal = tagsFinal.concat(tags)
 
-			form.append("file", thumbnail, fileName)
+			const requestBody = {
+				title: formData.title,
+				sources: sourcesFinal,
+				tags: tagsFinal,
+				body: html,
+			}
 
-			requestBody.thumbnail = `${ip}/public/${fileName}`
+			if (formData.thumbnail[0]) {
+				const thumbnail = formData.thumbnail[0] ? formData.thumbnail[0] : ""
+				const fileName = Date.now() + "-" + thumbnail.name
 
-			await axios({
-				method: "post",
-				url: `${ip}/news/upload-thumbnail`,
-				data: form,
-				headers: {
-					authorization: token,
+				const form = new FormData()
+
+				form.append("file", thumbnail, fileName)
+
+				requestBody.thumbnail = `${ip}/public/${fileName}`
+
+				await axios({
+					method: "post",
+					url: `${ip}/news/upload-thumbnail`,
+					data: form,
+					headers: {
+						authorization: token,
+					},
+				})
+			}
+
+			updateNews({
+				variables: {
+					id: data.news.id,
+					newsData: requestBody,
+				},
+				onCompleted: res => {
+					console.log(res)
+
+					client.clearStore()
+
+					history(`/news/${data.news.id}`)
 				},
 			})
-				.then(res => {
-					console.log(res)
-				})
-				.catch(e => console.log(e?.response?.data?.message || e.message))
+		} catch (error) {
+			setError2({
+				...error2,
+				other: { message: error?.response?.data?.message || error.message },
+			})
+			console.error(error?.response?.data?.message || error.message)
 		}
-
-		updateNews({
-			variables: {
-				id: data.news.id,
-				newsData: requestBody,
-			},
-			onCompleted: res => {
-				console.log(res)
-
-				client.clearStore()
-
-				history(`/news/${data.news.id}`)
-			},
-		})
 	}
 
 	const handleSource = e => {
-		e.preventDefault()
-
 		let sourceInput = e.target.value
 		setSource(sourceInput)
 
@@ -162,12 +188,18 @@ function CreateNews() {
 
 			if (isValidHttpUrl(sourceInput)) {
 				if (sources.findIndex(source => source === sourceInput) >= 0) {
-					setError2("Source already added")
+					setError2({
+						...error2,
+						sources: { message: "Source already added" },
+					})
 
 					return
 				}
 
-				setError2("")
+				setError2({
+					...error2,
+					sources: {},
+				})
 
 				setSources([...sources, sourceInput])
 
@@ -176,7 +208,10 @@ function CreateNews() {
 				return
 			}
 
-			setError2("Invalid source")
+			setError2({
+				...error2,
+				sources: { message: "Invalid source" },
+			})
 		}
 	}
 
@@ -193,8 +228,6 @@ function CreateNews() {
 	}
 
 	const handleTag = e => {
-		e.preventDefault()
-
 		let tagInput = e.target.value
 
 		setTag(tagInput)
@@ -204,12 +237,18 @@ function CreateNews() {
 
 			if (/^[A-Za-z0-9 ]*$/.test(tagInput)) {
 				if (tags.findIndex(tag => tag === tagInput) >= 0) {
-					setError2("Tag already added")
+					setError2({
+						...error2,
+						tags: { message: "Tag already added" },
+					})
 
 					return
 				}
 
-				setError2("")
+				setError2({
+					...error2,
+					tags: {},
+				})
 
 				setTags([...tags, tagInput])
 
@@ -218,7 +257,10 @@ function CreateNews() {
 				return
 			}
 
-			setError2("A tag should contain only letters and numbers")
+			setError2({
+				...error2,
+				tags: { message: "A tag should only contain letters and numbers" },
+			})
 		}
 	}
 
@@ -235,12 +277,10 @@ function CreateNews() {
 	}
 
 	const isSizeOk = value => {
-		if (value.length > 0) {
-			console.log(value[0].size)
+		// check if an image has been added and check if the size is less than 10MB
+		if (value.length > 0) return value[0].size < 10485760
 
-			return value[0].size < 10485760
-		}
-
+		// return true otherwise to avoid errors
 		return true
 	}
 
@@ -340,6 +380,12 @@ function CreateNews() {
 							toolbarClassName="editor_toolbar"
 						/>
 					</div>
+					{error2.editor.message && (
+						<p className="formItem_error">
+							<AiFillExclamationCircle className="formItem_error_icon" />
+							{error2.editor.message}
+						</p>
+					)}
 					<div className="sources">
 						<h4>Sources</h4>
 						{sources.map(s => (
@@ -366,6 +412,12 @@ function CreateNews() {
 							onFocus={handleInputFocus}
 							onBlur={handleInputBlur}
 						/>
+						{error2.sources.message && (
+							<p className="formItem_error">
+								<AiFillExclamationCircle className="formItem_error_icon" />
+								{error2.sources.message}
+							</p>
+						)}
 					</div>
 					<div className="tags">
 						<h4>Tags</h4>
@@ -389,11 +441,17 @@ function CreateNews() {
 							onFocus={handleInputFocus}
 							onBlur={handleInputBlur}
 						/>
+						{error2.tags.message && (
+							<p className="formItem_error">
+								<AiFillExclamationCircle className="formItem_error_icon" />
+								{error2.tags.message}
+							</p>
+						)}
 					</div>
-					{error2 && (
+					{error2.other.message && (
 						<p className="formItem_error">
 							<AiFillExclamationCircle className="formItem_error_icon" />
-							{error2}
+							{error2.other.message}
 						</p>
 					)}
 					<div>

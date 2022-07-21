@@ -21,8 +21,8 @@ function ForgotPassword() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const [error, setError] = useState("")
 	const [showModal, setShowModal] = useState(false)
+	const [error, setError] = useState("")
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Reset your password | YorkNews"
@@ -32,19 +32,20 @@ function ForgotPassword() {
 	useEffect(() => updateInputLabels())
 
 	const onSubmit = async data => {
-		console.log(data.email)
-
-		await axios({
-			method: "post",
-			url: `${ip}/users/verify-password-reset`,
-			data: {
-				email: data.email,
-			},
-		})
-			.then(res => {
-				setShowModal(true)
+		try {
+			await axios({
+				method: "post",
+				url: `${ip}/users/verify-password-reset`,
+				data: {
+					email: data.email,
+				},
 			})
-			.catch(e => setError(e?.response?.data?.message || e.message))
+
+			setShowModal(true)
+		} catch (error) {
+			setError(error?.response?.data?.message || error.message)
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const errorCheck = name => {

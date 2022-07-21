@@ -67,51 +67,51 @@ function Author() {
 	})
 
 	const handleFollow = async e => {
-		e.preventDefault()
+		try {
+			e.preventDefault()
 
-		await axios({
-			method: "patch",
-			url: `${ip}/users/follow/${authorId}`,
-			headers: {
-				authorization: token,
-			},
-		})
-			.then(res => {
-				console.log(res)
-
-				setProfile({
-					...profile,
-					followers: profile.followers + 1,
-					following: true,
-				})
-
-				client.clearStore()
+			await axios({
+				method: "patch",
+				url: `${ip}/users/follow/${authorId}`,
+				headers: {
+					authorization: token,
+				},
 			})
-			.catch(e => console.log(e?.response?.data?.message || e.message))
+
+			setProfile({
+				...profile,
+				followers: profile.followers + 1,
+				following: true,
+			})
+
+			client.clearStore()
+		} catch (error) {
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const handleUnfollow = async e => {
-		e.preventDefault()
+		try {
+			e.preventDefault()
 
-		await axios({
-			method: "patch",
-			url: `${ip}/users/unfollow/${authorId}`,
-			headers: {
-				authorization: token,
-			},
-		})
-			.then(res => {
-				console.log(res)
-
-				setProfile({
-					...profile,
-					followers: profile.followers - 1,
-					following: false,
-				})
-
-				client.clearStore()
+			await axios({
+				method: "patch",
+				url: `${ip}/users/unfollow/${authorId}`,
+				headers: {
+					authorization: token,
+				},
 			})
-			.catch(e => console.log(e?.response?.data?.message || e.message))
+
+			setProfile({
+				...profile,
+				followers: profile.followers - 1,
+				following: false,
+			})
+
+			client.clearStore()
+		} catch (error) {
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	return (

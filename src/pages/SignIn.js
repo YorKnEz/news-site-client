@@ -43,20 +43,20 @@ function SignIn() {
 	useEffect(() => updateInputLabels(), [password])
 
 	const onSubmit = async data => {
-		await axios({
-			method: "post",
-			url: `${ip}/users/login`,
-			data,
-		})
-			.then(res => {
-				signIn(res.data)
+		try {
+			const res = await axios({
+				method: "post",
+				url: `${ip}/users/login`,
+				data,
+			})
 
-				history("/")
-			})
-			.catch(e => {
-				console.log(e.response.data)
-				setError(e?.response?.data?.message || e.message)
-			})
+			signIn(res.data)
+
+			history("/")
+		} catch (error) {
+			setError(error?.response?.data?.message || error.message)
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const errorCheck = name => {

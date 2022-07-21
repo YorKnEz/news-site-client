@@ -45,17 +45,20 @@ function SignIn() {
 	useEffect(() => updateInputLabels(), [password])
 
 	const onSubmit = async data => {
-		await axios({
-			method: "patch",
-			url: `${ip}/users/reset-password?token=${params.token}`,
-			data: {
-				password: data.password,
-			},
-		})
-			.then(res => {
-				history("/sign-in")
+		try {
+			await axios({
+				method: "patch",
+				url: `${ip}/users/reset-password?token=${params.token}`,
+				data: {
+					password: data.password,
+				},
 			})
-			.catch(e => setError(e?.response?.data?.message || e.message))
+
+			history("/sign-in")
+		} catch (error) {
+			setError(error?.response?.data?.message || error.message)
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const handleShowPassword = e => {
@@ -82,14 +85,6 @@ function SignIn() {
 				<p className="formItem_error">
 					<AiFillExclamationCircle className="formItem_error_icon" />
 					The passwords must be the same.
-				</p>
-			)
-
-		if (name === "email" && error.includes("Email"))
-			return (
-				<p className="formItem_error">
-					<AiFillExclamationCircle className="formItem_error_icon" />
-					{error}
 				</p>
 			)
 	}
@@ -122,8 +117,8 @@ function SignIn() {
 									<AiOutlineEye className="password_icon" />
 								)}
 							</button>
-							{errorCheck("password")}
 						</div>
+						{errorCheck("password")}
 						<div className="formItem">
 							<label className="formItem_label" htmlFor="confirmPassword">
 								Confirm Password
