@@ -46,6 +46,7 @@ function CreateNews() {
 	const {
 		register,
 		watch,
+		setValue,
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
@@ -65,17 +66,11 @@ function CreateNews() {
 		"Write your news story | YorkNews"
 	)
 
-	// check if any input has been autofilled in order to change the label position
-	useEffect(() => {
-		if (data) updateInputLabels()
-	})
-
 	// set the news data to each input
 	useEffect(() => {
 		if (data) {
 			// set the title
-			const inputTitle = document.querySelector("#title")
-			inputTitle.value = data.news.title
+			setValue("title", data.news.title)
 
 			// set the thumbnail
 			const inputThumbnail = document.querySelector(".thumbnail")
@@ -93,9 +88,12 @@ function CreateNews() {
 			setSources(data.news.sources.split(","))
 
 			// set the tags
-			setTags(data.news.tags.split(","))
+			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
+
+			// check if any input has been autofilled in order to change the label position
+			updateInputLabels()
 		}
-	}, [data])
+	}, [data, setValue])
 
 	const onSubmit = async formData => {
 		// check if any sources were added, if not return error
