@@ -208,7 +208,7 @@ function SignUp() {
 							/>
 							{errorCheck("confirmPassword")}
 						</div>
-						{error(
+						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
 								{error}

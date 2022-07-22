@@ -1,5 +1,41 @@
 import { gql } from "@apollo/client"
 
+// MUTATIONS
+
+// creates a news
+export const CREATE_NEWS = gql`
+	mutation CreateNews($newsData: NewsInput!) {
+		createNews(newsData: $newsData) {
+			code
+			success
+			message
+			id
+		}
+	}
+`
+
+// updates a news
+export const UPDATE_NEWS = gql`
+	mutation UpdateNews($newsData: NewsInput!, $id: ID!) {
+		updateNews(newsData: $newsData, id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
+// deletes a news
+export const DELETE_NEWS = gql`
+	mutation DeleteNews($id: ID!) {
+		deleteNews(id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // like a news
 export const LIKE_NEWS = gql`
 	mutation LikeNews($action: String!, $id: ID!) {
@@ -12,6 +48,10 @@ export const LIKE_NEWS = gql`
 		}
 	}
 `
+
+// QUERIES
+
+// returns news for EditNews.js
 export const NEWS = gql`
 	query News($newsId: ID!) {
 		news(id: $newsId) {
@@ -28,6 +68,7 @@ export const NEWS = gql`
 	}
 `
 
+// returns news from yorknews
 export const NEWS_FOR_HOME = gql`
 	query NewsForHome($offsetIndex: Int) {
 		newsForHome(offsetIndex: $offsetIndex) {
@@ -50,6 +91,7 @@ export const NEWS_FOR_HOME = gql`
 	}
 `
 
+// returns news from reddit
 export const NEWS_FOR_REDDIT_HOME = gql`
 	query NewsForRedditHome($offsetIndex: Int) {
 		newsForRedditHome(offsetIndex: $offsetIndex) {
@@ -70,6 +112,7 @@ export const NEWS_FOR_REDDIT_HOME = gql`
 	}
 `
 
+// returns news by id
 export const NEWS2 = gql`
 	query News($newsId: ID!) {
 		news(id: $newsId) {
@@ -95,37 +138,7 @@ export const NEWS2 = gql`
 	}
 `
 
-export const CREATE_NEWS = gql`
-	mutation CreateNews($newsData: NewsInput!) {
-		createNews(newsData: $newsData) {
-			code
-			success
-			message
-			id
-		}
-	}
-`
-
-export const UPDATE_NEWS = gql`
-	mutation UpdateNews($newsData: NewsInput!, $id: ID!) {
-		updateNews(newsData: $newsData, id: $id) {
-			code
-			success
-			message
-		}
-	}
-`
-
-export const DELETE_NEWS = gql`
-	mutation DeleteNews($id: ID!) {
-		deleteNews(id: $id) {
-			code
-			success
-			message
-		}
-	}
-`
-
+// returns search results
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
 		search(search: $search, filter: $filter) {
@@ -161,6 +174,7 @@ export const SEARCH = gql`
 	}
 `
 
+// returns the news and profile of a certain author
 export const AUTHOR = gql`
 	query Query($offsetIndex: Int, $id: ID!) {
 		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
@@ -189,6 +203,7 @@ export const AUTHOR = gql`
 	}
 `
 
+// returns the authors followed by a user, paginated
 export const FOLLOWED_AUTHORS = gql`
 	query FollowedAuthors($offsetIndex: Int) {
 		followedAuthors(offsetIndex: $offsetIndex) {
@@ -200,6 +215,29 @@ export const FOLLOWED_AUTHORS = gql`
 			followers
 			createdAt
 			following
+		}
+	}
+`
+
+// returns the news a certain user liked
+export const LIKED_NEWS = gql`
+	query LikedNews($offsetIndex: Int) {
+		likedNews(offsetIndex: $offsetIndex) {
+			id
+			title
+			subreddit
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			updatedAt
+			author {
+				id
+				fullName
+				profilePicture
+			}
 		}
 	}
 `
