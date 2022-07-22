@@ -39,7 +39,7 @@ function News() {
 			div.innerHTML = data.news.body
 
 			setSources(data.news.sources.split(","))
-			setTags(data.news.tags.split(","))
+			setTags((data.news.tags || "").split(","))
 		}
 	}, [data, setDocumentTitle])
 
