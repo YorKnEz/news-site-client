@@ -1,16 +1,13 @@
 import React from "react"
 import { AiOutlineFrown } from "react-icons/ai"
-import { useNavigate } from "react-router"
 
 import { SpinnerCircular } from "spinners-react"
 
 function QueryResult({ loading, error, data, children }) {
-	const history = useNavigate()
-
 	if (error) {
 		console.log(error)
 
-		return history(-1)
+		return error
 	}
 
 	if (loading) {
