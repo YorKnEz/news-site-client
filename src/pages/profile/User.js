@@ -1,49 +1,45 @@
 import React, { useContext, useEffect, useState } from "react"
 
-import { useQuery } from "@apollo/client"
-
 import "./index.scss"
-import { AuthorCard, Page } from "../../components"
+import { Page } from "../../components"
 import { UserContext } from "../../context"
-import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
+import { UserFollowedAuthors, UserLikedNews } from "../profile"
 import { useDocumentTitle } from "../../utils/utils"
 
 function User() {
 	const { user } = useContext(UserContext)
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
-	const [authors, setAuthors] = useState([])
-	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
-		variables: { offsetIndex },
-	})
+	const [page, setPage] = useState("followedAuthors")
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
 
+	// highlight the current page
 	useEffect(() => {
-		if (data) {
-			console.log(data)
+		const button1 = document.getElementById("followedAuthors")
 
-			setAuthors(authors => [...authors, ...data.followedAuthors])
+		button1.classList.add("profile_pages_button_active")
+
+		return () => {
+			button1.classList.remove("profile_pages_button_active")
 		}
-	}, [data])
+	}, [])
 
-	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
+	const handlePage = (e, name) => {
+		e.preventDefault()
+
+		const button1 = document.getElementById("followedAuthors")
+		const button2 = document.getElementById("likedNews")
+
+		if (name === "followedAuthors") {
+			button1.classList.add("profile_pages_button_active")
+			button2.classList.remove("profile_pages_button_active")
+		} else {
+			button1.classList.remove("profile_pages_button_active")
+			button2.classList.add("profile_pages_button_active")
 		}
-	}, [reachedBottomOfPage, offsetIndex])
 
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+		setPage(name)
+	}
 
 	return (
 		<Page>
@@ -62,13 +58,27 @@ function User() {
 						<p>{user.email}</p>
 					</div>
 				</div>
-				<hr style={{ width: "100%" }} />
-				<h3>Followed authors:</h3>
-				<div className="profile_followedAuthors">
-					{authors.map(author => (
-						<AuthorCard key={author.id} data={author} infoBelow />
-					))}
+				<div className="profile_pages">
+					<button
+						onClick={e => handlePage(e, "followedAuthors")}
+						id="followedAuthors"
+						className="button profile_pages_button"
+					>
+						<h3 className="profile_pages_title">Followed authors</h3>
+					</button>
+					<button
+						onClick={e => handlePage(e, "likedNews")}
+						id="likedNews"
+						className="button profile_pages_button"
+					>
+						<h3 className="profile_pages_title">Liked news</h3>
+					</button>
 				</div>
+				{page === "followedAuthors" ? (
+					<UserFollowedAuthors />
+				) : (
+					<UserLikedNews />
+				)}
 			</div>
 		</Page>
 	)

@@ -1,6 +1,13 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
+import {
+	AiOutlineEdit,
+	AiOutlineDelete,
+	AiOutlineLike,
+	AiFillLike,
+	AiFillDislike,
+	AiOutlineDislike,
+} from "react-icons/ai"
 import { useNavigate, useParams } from "react-router"
 import { Link } from "react-router-dom"
 
@@ -10,7 +17,7 @@ import { format, fromUnixTime } from "date-fns"
 import "./News.scss"
 import { AuthorInfo, Modal, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { NEWS2, DELETE_NEWS } from "../utils/apollo-queries"
+import { NEWS2, DELETE_NEWS, LIKE_NEWS } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -22,8 +29,14 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
+	const [likeNews] = useMutation(LIKE_NEWS)
 	const { user } = useContext(UserContext)
 	const history = useNavigate()
+	const [likes, setLikes] = useState({
+		likeState: "none",
+		likes: 0,
+		dislikes: 0,
+	})
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	const [showModal, setShowModal] = useState(false)
@@ -32,14 +45,29 @@ function News() {
 
 	useEffect(() => {
 		if (data) {
+			console.log(data)
+
+			// update the title of the page
 			setDocumentTitle(data.news.title + " | YorkNews")
 
+			// get the body
 			const div = document.querySelector("#body")
 
+			// inject the html
 			div.innerHTML = data.news.body
 
+			// set the sources
 			setSources(data.news.sources.split(","))
-			setTags((data.news.tags || "").split(","))
+
+			// set the tags
+			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
+
+			// set the likes, dislikes and likeState
+			setLikes({
+				likeState: data.news.likeState,
+				likes: data.news.likes,
+				dislikes: data.news.dislikes,
+			})
 		}
 	}, [data, setDocumentTitle])
 
@@ -81,6 +109,29 @@ function News() {
 
 		history(`/news/${data.news.id}/edit`)
 	}
+
+	const handleLike = (e, action) => {
+		e.preventDefault()
+
+		likeNews({
+			variables: {
+				action,
+				id: data.news.id,
+			},
+			onCompleted: ({ likeNews }) => {
+				console.log(likeNews)
+
+				setLikes({
+					likeState: action === likes.likeState ? "none" : action,
+					likes: likeNews.likes,
+					dislikes: likeNews.dislikes,
+				})
+
+				client.clearStore()
+			},
+		})
+	}
+
 	return (
 		<Page>
 			{showModal && (
@@ -95,7 +146,47 @@ function News() {
 			)}
 			<QueryResult loading={loading} error={error} data={data}>
 				{data && (
-					<div className="news_container">
+					<div className="news">
+						<div className="news_likes">
+							<div className="news_likes_row">
+								<span
+									style={{
+										color:
+											likes.likeState === "like"
+												? "var(--button-color)"
+												: "var(--text-color)",
+									}}
+								>
+									{likes.likes}
+								</span>
+								<button onClick={e => handleLike(e, "like")}>
+									{likes.likeState === "like" ? (
+										<AiFillLike style={{ color: "var(--button-color)" }} />
+									) : (
+										<AiOutlineLike />
+									)}
+								</button>
+							</div>
+							<div className="news_likes_row">
+								<span
+									style={{
+										color:
+											likes.likeState === "dislike"
+												? "red"
+												: "var(--text-color)",
+									}}
+								>
+									{likes.dislikes}
+								</span>
+								<button onClick={e => handleLike(e, "dislike")}>
+									{likes.likeState === "dislike" ? (
+										<AiFillDislike style={{ color: "red" }} />
+									) : (
+										<AiOutlineDislike />
+									)}
+								</button>
+							</div>
+						</div>
 						<h1 className="news_title">{data.news.title}</h1>
 						{user.id == data.news.author.id && (
 							<div className="news_buttons">
@@ -157,15 +248,16 @@ function News() {
 						</div>
 						<div className="tags">
 							<h4>Tags</h4>
-							{tags.map(s => (
-								<Link
-									className="tags_item"
-									key={s}
-									to={`/search?search=${s}&filter=tags`}
-								>
-									{s}
-								</Link>
-							))}
+							{tags.length > 0 &&
+								tags.map(s => (
+									<Link
+										className="tags_item"
+										key={s}
+										to={`/search?search=${s}&filter=tags`}
+									>
+										{s}
+									</Link>
+								))}
 						</div>
 					</div>
 				)}

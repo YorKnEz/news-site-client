@@ -51,10 +51,11 @@ function SignIn() {
 			})
 
 			signIn(res.data)
+
 			history("/")
-		} catch (e) {
-			console.log(e)
-			setError(e?.response?.data?.message || e.message)
+		} catch (error) {
+			setError(error?.response?.data?.message || error.message)
+			console.error(error?.response?.data?.message || error.message)
 		}
 	}
 

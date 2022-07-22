@@ -1,5 +1,33 @@
 .news {
+	position: relative;
+
+	&_likes {
+		position: fixed;
+		left: calc(50% - 480px - 56px);
+
+		&_row {
+			display: flex;
+			align-items: center;
+		}
+
+		button {
+			cursor: pointer;
+			text-decoration: none;
+			display: table;
+
+			color: var(--text-color);
+			background-color: transparent;
+
+			border: none;
+			font-size: 32px;
+
+			transition: all 0.2s ease;
+		}
+	}
+
 	&_body {
+		word-wrap: break-word;
+
 		a {
 			text-decoration: none;
 			color: #44b6eb;

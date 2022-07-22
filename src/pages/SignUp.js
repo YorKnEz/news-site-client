@@ -42,21 +42,24 @@ function SignUp() {
 	useEffect(() => updateInputLabels(), [password])
 
 	const onSubmit = async data => {
-		await axios({
-			method: "post",
-			url: `${ip}/users/register`,
-			data: {
-				...data,
-				fullName: data.firstName + " " + data.lastName,
-				type: "user",
-			},
-		})
-			.then(res => {
-				setError("")
-
-				setShowModal(true)
+		try {
+			await axios({
+				method: "post",
+				url: `${ip}/users/register`,
+				data: {
+					...data,
+					fullName: data.firstName + " " + data.lastName,
+					type: "user",
+				},
 			})
-			.catch(e => setError(e?.response?.data?.message || e.message))
+
+			setError("")
+
+			setShowModal(true)
+		} catch (error) {
+			setError(error?.response?.data?.message || error.message)
+			console.error(error?.response?.data?.message || error.message)
+		}
 	}
 
 	const onModalSubmit = () => {
@@ -89,14 +92,6 @@ function SignUp() {
 				<p className="formItem_error">
 					<AiFillExclamationCircle className="formItem_error_icon" />
 					The passwords must be the same.
-				</p>
-			)
-
-		if (name === "email" && error.includes("Email"))
-			return (
-				<p className="formItem_error">
-					<AiFillExclamationCircle className="formItem_error_icon" />
-					{error}
 				</p>
 			)
 	}
@@ -158,6 +153,7 @@ function SignUp() {
 								Email
 							</label>
 							<input
+								autoComplete="off"
 								className="formItem_input"
 								id="email"
 								name="email"
@@ -192,8 +188,8 @@ function SignUp() {
 									<AiOutlineEye className="password_icon" />
 								)}
 							</button>
-							{errorCheck("password")}
 						</div>
+						{errorCheck("password")}
 						<div className="formItem">
 							<label className="formItem_label" htmlFor="confirmPassword">
 								Confirm Password
@@ -212,7 +208,7 @@ function SignUp() {
 							/>
 							{errorCheck("confirmPassword")}
 						</div>
-						{error && !error.includes("Email") && (
+						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
 								{error}
