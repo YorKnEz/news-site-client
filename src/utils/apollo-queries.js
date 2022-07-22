@@ -1,5 +1,17 @@
 import { gql } from "@apollo/client"
 
+// like a news
+export const LIKE_NEWS = gql`
+	mutation LikeNews($action: String!, $id: ID!) {
+		likeNews(action: $action, id: $id) {
+			code
+			success
+			message
+			likes
+			dislikes
+		}
+	}
+`
 export const NEWS = gql`
 	query News($newsId: ID!) {
 		news(id: $newsId) {
@@ -71,6 +83,9 @@ export const NEWS2 = gql`
 			type
 			createdAt
 			updatedAt
+			likeState
+			likes
+			dislikes
 			author {
 				id
 				fullName
