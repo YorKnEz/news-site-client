@@ -23,9 +23,12 @@ function NewsCard2({ data }) {
 	}, [data])
 
 	const showTags = () => {
-		// split the data.tags into an array of tags
-		let tags = data.tags.split(",")
+		let tags = []
 
+		// split the data.tags into an array of tags only if there is at least one element
+		if (data.tags.length > 0) tags = data.tags.split(",")
+
+		// map the tags
 		return tags.map(s => (
 			<span className="tags_item" key={s}>
 				{s}

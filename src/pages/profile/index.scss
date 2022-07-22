@@ -65,6 +65,38 @@
 		display: grid;
 		grid-template-columns: 50% 50%;
 	}
+
+	&_pages {
+		margin-top: 20px;
+		display: grid;
+		grid-template-columns: 50% 50%;
+		align-items: center;
+
+		&_title {
+			font-size: 20px;
+			margin: 0;
+		}
+
+		&_button {
+			border: none;
+			border-radius: 0;
+			border-bottom: 1px solid var(--text-color);
+			color: var(--text-color);
+
+			transition: border 0;
+
+			&:hover {
+				color: var(--button-color);
+				margin: 0;
+				border-bottom: 3px solid var(--button-color);
+			}
+
+			&_active {
+				color: var(--button-color);
+				border-bottom: 3px solid var(--button-color);
+			}
+		}
+	}
 }
 
 .info {
