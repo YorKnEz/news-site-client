@@ -12,17 +12,23 @@ function QueryResult({ loading, error, data, children }) {
 
 	if (loading) {
 		return (
-			<SpinnerCircular
-				size={50}
-				thickness={50}
-				color="#161616"
-				secondaryColor="#eee"
-				style={{
-					position: "absolute",
-					top: "calc(50% - 25px)",
-					left: "calc(50% - 25px)",
-				}}
-			/>
+			<>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						margin: "40px 0",
+					}}
+				>
+					<SpinnerCircular
+						size={50}
+						thickness={50}
+						color="#161616"
+						secondaryColor="#eee"
+					/>
+				</div>
+			</>
 		)
 	}
 
@@ -36,6 +42,7 @@ function QueryResult({ loading, error, data, children }) {
 					justifyContent: "center",
 					margin: "40px 0",
 					fontSize: "20px",
+					height: "50px",
 				}}
 			>
 				<AiOutlineFrown />
