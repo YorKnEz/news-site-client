@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import "./index.scss"
 import { Page } from "../../components"
 import { UserContext } from "../../context"
-import { UserFollowedAuthors, UserLikedNews } from "../profile"
+import { FollowedAuthors, LikedNews } from "../profile"
 import { useDocumentTitle } from "../../utils/utils"
 
 function User() {
@@ -74,11 +74,7 @@ function User() {
 						<h3 className="profile_pages_title">Liked news</h3>
 					</button>
 				</div>
-				{page === "followedAuthors" ? (
-					<UserFollowedAuthors />
-				) : (
-					<UserLikedNews />
-				)}
+				{page === "followedAuthors" ? <FollowedAuthors /> : <LikedNews />}
 			</div>
 		</Page>
 	)
