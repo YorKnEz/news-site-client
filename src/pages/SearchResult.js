@@ -4,7 +4,13 @@ import { AiOutlineFrown } from "react-icons/ai"
 import { useQuery } from "@apollo/client"
 
 import "./SearchResult.scss"
-import { AuthorCard, NewsCard, Page, QueryResult } from "../components"
+import {
+	AuthorCard,
+	NewsCard,
+	Page,
+	QueryResult,
+	RedditNewsCard,
+} from "../components"
 import { SEARCH } from "../utils/apollo-queries"
 
 function SearchResult() {
@@ -46,9 +52,17 @@ function SearchResult() {
 				))
 			}
 
-			return data.search.map(obj => (
-				<NewsCard data={obj.news} key={obj.news.id} matches={obj?.matches} />
-			))
+			return data.search.map(obj =>
+				obj.news.type === "created" ? (
+					<NewsCard data={obj.news} key={obj.news.id} matches={obj?.matches} />
+				) : (
+					<RedditNewsCard
+						data={obj.news}
+						key={obj.news.id}
+						matches={obj?.matches}
+					/>
+				)
+			)
 		}
 
 		return <></>
