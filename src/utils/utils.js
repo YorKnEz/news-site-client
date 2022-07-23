@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const useDocumentTitle = title => {
+export const useDocumentTitle = title => {
 	const [documentTitle, setDocumentTitle] = useState(title)
 	useEffect(() => {
 		document.title = documentTitle
@@ -10,7 +10,7 @@ const useDocumentTitle = title => {
 }
 
 // updates inputs from Sign In and Sign Up page
-const updateInputLabels = () => {
+export const updateInputLabels = () => {
 	const form = document.querySelector("#form")
 
 	for (let i = 0; i < form.elements.length; i++) {
@@ -27,7 +27,7 @@ const updateInputLabels = () => {
 }
 
 // handles focus event for Sing In and Sign Up pages forms
-const handleInputFocus = e => {
+export const handleInputFocus = e => {
 	const label = e.target.previousElementSibling
 
 	if (!e.target.value) {
@@ -41,7 +41,7 @@ const handleInputFocus = e => {
 }
 
 // handles blur event for Sing In and Sign Up pages forms
-const handleInputBlur = e => {
+export const handleInputBlur = e => {
 	const label = e.target.previousElementSibling
 
 	if (!e.target.value) {
@@ -54,7 +54,7 @@ const handleInputBlur = e => {
 	}
 }
 
-const isValidHttpUrl = string => {
+export const isValidHttpUrl = string => {
 	let url
 
 	try {
@@ -66,10 +66,35 @@ const isValidHttpUrl = string => {
 	return url.protocol === "http:" || url.protocol === "https:"
 }
 
-export {
-	useDocumentTitle,
-	updateInputLabels,
-	handleInputBlur,
-	handleInputFocus,
-	isValidHttpUrl,
+export const compressNumber = n => {
+	// the result
+	let result = ""
+
+	// if n is under 1000, return n
+	if (n < 1000) result = `${n}`
+	// if n is under 1000000, compress the last 3 zeroes
+	else if (n < 1000000) result = `${n / 1000}K`
+	// if n is under 1000000000, compress the last 6 zeroes
+	else if (n < 1000000000) result = `${n / 1000000}M`
+	// if n is under 1000000000000, compress the last 9 zeroes
+	else if (n < 1000000000000) result = `${n / 1000000000}B`
+
+	// check if the result has been modified
+	if (result !== "") {
+		// find the . (that means the result has decimals after the compression)
+		const index = result.indexOf(".")
+
+		// if there is no . then return the result as it is
+		if (index === -1) return result
+
+		// check if the first decimal is a 0
+		if (result[index + 1] === "0")
+			return result.slice(0, index) + result[result.length - 1]
+
+		// if there was a . keep only the first decimal
+		return result.slice(0, index + 2) + result[result.length - 1]
+	}
+
+	// if result was an empty string return N/A
+	return "N/A"
 }

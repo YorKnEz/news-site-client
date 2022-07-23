@@ -67,7 +67,7 @@
 	}
 
 	&_pages {
-		margin-top: 20px;
+		margin-top: 8px;
 		display: grid;
 		grid-template-columns: 50% 50%;
 		align-items: center;
@@ -80,7 +80,7 @@
 		&_button {
 			border: none;
 			border-radius: 0;
-			border-bottom: 1px solid var(--text-color);
+			border-bottom: 1px solid var(--secondText-color);
 			color: var(--text-color);
 
 			transition: border 0;
@@ -102,6 +102,7 @@
 .info {
 	display: grid;
 	grid-template-columns: 33% 33% 33%;
+	padding-top: 24px;
 
 	&_box {
 		display: flex;

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import { NewsCard2 } from "../../components"
-import { LIKED_NEWS } from "../../utils/apollo-queries"
+import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
+import { AuthorCard } from "../../components"
 
-function UserLikedNews() {
+function FollowedAuthors() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offsetIndex, setOffsetIndex] = useState(0)
-	const [likedNews, setLikedNews] = useState([])
-	const { loading, error, data } = useQuery(LIKED_NEWS, {
+	const [authors, setAuthors] = useState([])
+	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
 		variables: { offsetIndex },
 	})
 
@@ -17,7 +17,7 @@ function UserLikedNews() {
 		if (data) {
 			console.log(data)
 
-			setLikedNews(news => [...news, ...data.likedNews])
+			setAuthors(authors => [...authors, ...data.followedAuthors])
 		}
 	}, [data])
 
@@ -39,12 +39,12 @@ function UserLikedNews() {
 	})
 
 	return (
-		<div className="profile_news">
-			{likedNews.map(news => (
-				<NewsCard2 key={news.id} data={news} />
+		<div className="profile_followedAuthors">
+			{authors.map(author => (
+				<AuthorCard key={author.id} data={author} infoBelow />
 			))}
 		</div>
 	)
 }
 
-export default UserLikedNews
+export default FollowedAuthors
