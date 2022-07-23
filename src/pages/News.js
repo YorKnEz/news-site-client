@@ -18,7 +18,7 @@ import "./News.scss"
 import { AuthorInfo, Modal, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
 import { NEWS2, DELETE_NEWS, LIKE_NEWS } from "../utils/apollo-queries"
-import { useDocumentTitle } from "../utils/utils"
+import { compressNumber, useDocumentTitle } from "../utils/utils"
 
 function News() {
 	const client = useApolloClient()
@@ -157,7 +157,7 @@ function News() {
 												: "var(--text-color)",
 									}}
 								>
-									{likes.likes}
+									{compressNumber(likes.likes)}
 								</span>
 								<button onClick={e => handleLike(e, "like")}>
 									{likes.likeState === "like" ? (
@@ -176,7 +176,7 @@ function News() {
 												: "var(--text-color)",
 									}}
 								>
-									{likes.dislikes}
+									{compressNumber(likes.dislikes)}
 								</span>
 								<button onClick={e => handleLike(e, "dislike")}>
 									{likes.likeState === "dislike" ? (

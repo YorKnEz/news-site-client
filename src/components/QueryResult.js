@@ -5,9 +5,9 @@ import { SpinnerCircular } from "spinners-react"
 
 function QueryResult({ loading, error, data, children }) {
 	if (error) {
-		console.log(error)
+		console.log(error.message ? error.message : error)
 
-		return error
+		return error.message ? error.message : error
 	}
 
 	if (loading) {

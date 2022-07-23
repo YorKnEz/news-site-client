@@ -82,6 +82,9 @@ export const NEWS_FOR_HOME = gql`
 			type
 			createdAt
 			updatedAt
+			likeState
+			likes
+			dislikes
 			author {
 				profilePicture
 				fullName
@@ -103,10 +106,15 @@ export const NEWS_FOR_REDDIT_HOME = gql`
 			tags
 			body
 			type
+			createdAt
+			updatedAt
+			likeState
+			likes
+			dislikes
 			author {
-				id
-				fullName
 				profilePicture
+				fullName
+				id
 			}
 		}
 	}
@@ -154,6 +162,9 @@ export const SEARCH = gql`
 				type
 				createdAt
 				updatedAt
+				likeState
+				likes
+				dislikes
 				author {
 					id
 					fullName
@@ -242,6 +253,9 @@ export const LIKED_NEWS = gql`
 			type
 			createdAt
 			updatedAt
+			likeState
+			likes
+			dislikes
 			author {
 				id
 				fullName
