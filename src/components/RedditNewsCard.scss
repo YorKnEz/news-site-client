@@ -1,16 +1,42 @@
-.reddit_news_card {
+.redditnewscard {
+	position: relative;
+	max-width: 720px;
 	width: 100%;
-	margin: 20px 0px 20px 0px;
-	padding: 16px 24px;
-	text-decoration: none;
-	color: var(--text-color);
-	border-radius: 10px;
-	box-shadow: 0 2px 10px var(--shadow-color);
+	margin: 20px 0;
+	padding: 10px 0;
+	border-radius: 5px;
+	border: 1px solid var(--secondText-color);
 	display: flex;
-	flex-direction: column;
+
+	user-select: none;
+
+	&_matches {
+		position: absolute;
+		bottom: 16px;
+		right: 16px;
+
+		font-family: monospace;
+		font-size: 12px;
+
+		padding: 8px 10px;
+		border-radius: 5px;
+	}
+
+	&_container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		text-decoration: none;
+		color: var(--text-color);
+	}
 
 	&_title {
-		font-size: 24px;
-		margin-bottom: 32px;
+		font-size: 20px;
+		margin-bottom: 8px;
+	}
+
+	&:hover {
+		border: 1px solid var(--text-color);
 	}
 }

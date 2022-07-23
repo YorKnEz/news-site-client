@@ -14,9 +14,13 @@ function AuthorInfo({ data, type, subreddit, link }) {
 				></div>
 				<div className="author_info">
 					<span className="author_info_fullname">{data.fullName}</span>
-					<span>
+					<span className="author_info_origin">
 						From:{" "}
-						<div className="link" href={`https://www.reddit.com/${subreddit}`}>
+						<div
+							style={{ marginLeft: "4px" }}
+							className="link"
+							href={`https://www.reddit.com/${subreddit}`}
+						>
 							{subreddit}
 						</div>
 					</span>
