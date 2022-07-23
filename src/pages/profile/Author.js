@@ -18,6 +18,7 @@ const ip = process.env.REACT_APP_EXPRESS_API_IP
 function Author() {
 	const client = useApolloClient()
 	const { authorId } = useParams()
+	const [page, setPage] = useState("news")
 	const [profile, setProfile] = useState({})
 	const { user, token } = useContext(UserContext)
 	const { loading, error, data } = useQuery(AUTHOR, {
@@ -28,6 +29,17 @@ function Author() {
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
+
+	// highlight the current page
+	useEffect(() => {
+		const button1 = document.getElementById("news")
+
+		button1.classList.add("profile_pages_button_active")
+
+		return () => {
+			button1.classList.remove("profile_pages_button_active")
+		}
+	}, [])
 
 	// update the state after each apollo request
 	useEffect(() => {
@@ -41,8 +53,29 @@ function Author() {
 		}
 	}, [data])
 
+	const handlePage = (e, name) => {
+		e.preventDefault()
+
+		const button1 = document.getElementById("news")
+		const button2 = document.getElementById("followedAuthors")
+		const button3 = document.getElementById("likedNews")
+
+		if (name === "news") {
+			button1.classList.add("profile_pages_button_active")
+			button2.classList.remove("profile_pages_button_active")
+			button3.classList.remove("profile_pages_button_active")
+		} else if (name === "followedAuthors") {
+			button1.classList.remove("profile_pages_button_active")
+			button2.classList.add("profile_pages_button_active")
+			button3.classList.remove("profile_pages_button_active")
+		} else {
+			button1.classList.remove("profile_pages_button_active")
+			button2.classList.remove("profile_pages_button_active")
+			button3.classList.add("profile_pages_button_active")
 		}
 
+		setPage(name)
+	}
 
 	const handleFollow = async e => {
 		try {
@@ -129,7 +162,7 @@ function Author() {
 								</button>
 							))}
 					</div>
-					<hr style={{ width: "100%" }} />
+					<QueryResult loading={loading} error={error} data={data} />
 					<div className="info">
 						<div className="info_box">
 							<span className="info_box_title">Written News</span>
@@ -145,6 +178,39 @@ function Author() {
 						</div>
 					</div>
 					<hr style={{ width: "100%" }} />
+					<div
+						className="profile_pages"
+						style={{ gridTemplateColumns: "33.3% 33.4% 33.3%" }}
+					>
+						<button
+							onClick={e => handlePage(e, "news")}
+							id="news"
+							className="button profile_pages_button"
+						>
+							<h3 className="profile_pages_title">Your news</h3>
+						</button>
+						<button
+							onClick={e => handlePage(e, "followedAuthors")}
+							id="followedAuthors"
+							className="button profile_pages_button"
+						>
+							<h3 className="profile_pages_title">Followed authors</h3>
+						</button>
+						<button
+							onClick={e => handlePage(e, "likedNews")}
+							id="likedNews"
+							className="button profile_pages_button"
+						>
+							<h3 className="profile_pages_title">Liked news</h3>
+						</button>
+					</div>
+					{page === "news" ? (
+						<News />
+					) : page === "followedAuthors" ? (
+						<FollowedAuthors />
+					) : (
+						<LikedNews />
+					)}
 				</div>
 			)}
 		</Page>
