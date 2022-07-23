@@ -174,9 +174,9 @@ export const SEARCH = gql`
 	}
 `
 
-// returns the news and profile of a certain author
-export const AUTHOR = gql`
-	query Query($offsetIndex: Int, $id: ID!) {
+// return the news of an author
+export const NEWS_FOR_PROFILE = gql`
+	query NewsForProfile($offsetIndex: Int, $id: ID!) {
 		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
 			id
 			title
@@ -188,7 +188,16 @@ export const AUTHOR = gql`
 			type
 			createdAt
 			updatedAt
+			likeState
+			likes
+			dislikes
 		}
+	}
+`
+
+// returns the profile of a certain author
+export const AUTHOR = gql`
+	query Author($id: ID!) {
 		author(id: $id) {
 			id
 			fullName

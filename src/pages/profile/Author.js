@@ -7,8 +7,9 @@ import axios from "axios"
 import { format, fromUnixTime } from "date-fns"
 
 import "./index.scss"
-import { NewsCard2, Page, QueryResult } from "../../components"
+import { Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
+import { FollowedAuthors, LikedNews, News } from "../profile"
 import { AUTHOR } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
 
@@ -17,14 +18,10 @@ const ip = process.env.REACT_APP_EXPRESS_API_IP
 function Author() {
 	const client = useApolloClient()
 	const { authorId } = useParams()
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
-	const [news, setNews] = useState([])
 	const [profile, setProfile] = useState({})
 	const { user, token } = useContext(UserContext)
 	const { loading, error, data } = useQuery(AUTHOR, {
 		variables: {
-			offsetIndex,
 			id: authorId ? authorId : user.id,
 		},
 	})
@@ -35,36 +32,17 @@ function Author() {
 	// update the state after each apollo request
 	useEffect(() => {
 		if (data) {
-			console.log(data)
-
 			const createdAt = fromUnixTime(data.author.createdAt / 1000)
 
 			setProfile({
 				...data.author,
 				createdAt: format(createdAt, "MMMM d',' yyyy"),
 			})
-
-			setNews(news => [...news, ...data.newsForProfile])
 		}
 	}, [data])
 
-	// check if user has reached bottom of the page
-	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
 		}
-	}, [reachedBottomOfPage, offsetIndex])
 
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
 
 	const handleFollow = async e => {
 		try {
@@ -169,12 +147,6 @@ function Author() {
 					<hr style={{ width: "100%" }} />
 				</div>
 			)}
-			<div className="profile_news">
-				{news.map(item => (
-					<NewsCard2 data={item} key={item.id} />
-				))}
-			</div>
-			<QueryResult loading={loading} error={error} data={data} />
 		</Page>
 	)
 }
