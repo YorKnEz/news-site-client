@@ -1,28 +1,12 @@
-import React, { useEffect, useState } from "react"
-import {
-	AiFillDislike,
-	AiFillLike,
-	AiOutlineDislike,
-	AiOutlineLike,
-} from "react-icons/ai"
+import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
 
-import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import { LIKE_NEWS } from "../utils/apollo-queries"
-import { compressNumber } from "../utils/utils"
+import { CardVotes } from "../components"
 
 function NewsCard({ data, matches }) {
-	const client = useApolloClient()
-	const [likeNews] = useMutation(LIKE_NEWS)
-	const [likes, setLikes] = useState({
-		likeState: data.likeState,
-		likes: data.likes,
-		dislikes: data.dislikes,
-	})
-
 	useEffect(() => {
 		if (matches) {
 			const span = document.getElementById(data.id + "span")
@@ -45,28 +29,6 @@ function NewsCard({ data, matches }) {
 			span.style.color = "red"
 		}
 	}, [matches, data.id])
-
-	const handleLike = (e, action) => {
-		e.preventDefault()
-
-		likeNews({
-			variables: {
-				action,
-				id: data.id,
-			},
-			onCompleted: ({ likeNews }) => {
-				console.log(likeNews)
-
-				setLikes({
-					likeState: action === likes.likeState ? "none" : action,
-					likes: likeNews.likes,
-					dislikes: likeNews.dislikes,
-				})
-
-				client.clearStore()
-			},
-		})
-	}
 
 	const showTags = () => {
 		let tags = []
@@ -96,34 +58,7 @@ function NewsCard({ data, matches }) {
 
 	return (
 		<div className="newscard">
-			<div className="newscard_likes">
-				<button onClick={e => handleLike(e, "like")}>
-					{likes.likeState === "like" ? (
-						<AiFillLike style={{ color: "var(--button-color)" }} />
-					) : (
-						<AiOutlineLike />
-					)}
-				</button>
-				<span
-					style={{
-						color:
-							likes.likeState === "like"
-								? "var(--button-color)"
-								: likes.likeState === "dislike"
-								? "red"
-								: "var(--text-color)",
-					}}
-				>
-					{compressNumber(likes.likes - likes.dislikes)}
-				</span>
-				<button onClick={e => handleLike(e, "dislike")}>
-					{likes.likeState === "dislike" ? (
-						<AiFillDislike style={{ color: "red" }} />
-					) : (
-						<AiOutlineDislike />
-					)}
-				</button>
-			</div>
+			<CardVotes data={data} />
 			<div className="newscard_container">
 				<span className="newscard_posted">
 					{showDate()} by{" "}

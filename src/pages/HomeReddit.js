@@ -9,11 +9,11 @@ import { useDocumentTitle } from "../utils/utils"
 
 function HomeReddit() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
+	const [after, setAfter] = useState("")
 	const [news, setNews] = useState([])
 	const { loading, error, data } = useQuery(NEWS_FOR_REDDIT_HOME, {
 		variables: {
-			offsetIndex,
+			after,
 		},
 	})
 	// eslint-disable-next-line no-unused-vars
@@ -23,16 +23,18 @@ function HomeReddit() {
 
 	useEffect(() => {
 		if (data) {
-			setNews(news => [...news, ...data.newsForRedditHome])
+			console.log(data)
+
+			setNews(news => [...news, ...data.newsForRedditHome.news])
 		}
 	}, [data])
 
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
+			if (data) setAfter(data.newsForRedditHome.after)
 		}
-	}, [reachedBottomOfPage, offsetIndex])
+	}, [reachedBottomOfPage, after, data])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {
@@ -46,20 +48,6 @@ function HomeReddit() {
 
 	return (
 		<Page>
-			<h1>What is Lorem Ipsum?</h1>
-
-			<p>
-				Lorem Ipsum is simply dummy text of the printing and typesetting
-				industry. Lorem Ipsum has been the industry's standard dummy text ever
-				since the 1500s, when an unknown printer took a galley of type and
-				scrambled it to make a type specimen book. It has survived not only five
-				centuries, but also the leap into electronic typesetting, remaining
-				essentially unchanged. It was popularised in the 1960s with the release
-				of Letraset sheets containing Lorem Ipsum passages, and more recently
-				with desktop publishing software like Aldus PageMaker including versions
-				of Lorem Ipsum.
-			</p>
-
 			<div className="news_listReddit">
 				{news.map(item => (
 					<RedditNewsCard data={item} key={item.id} />
