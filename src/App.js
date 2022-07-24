@@ -24,7 +24,7 @@ import {
 export default function App() {
 	const client = useApolloClient()
 	const [theme, setTheme] = useState(
-		themes[localStorage.getItem("theme") || "light"]
+		themes[localStorage.getItem("theme") || ""]
 	)
 	const [token, setToken] = useState(localStorage.getItem("token") || "")
 	const [user, setUser] = useState(
@@ -40,16 +40,19 @@ export default function App() {
 	})
 
 	useEffect(() => {
-		// check if the os theme is dark
-		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-			// set the theme to dark
-			setTheme(themes.dark)
-			localStorage.setItem("theme", "dark")
-			// else the os theme is probably light
-		} else {
-			// set the theme to light
-			setTheme(themes.light)
-			localStorage.setItem("theme", "light")
+		// if theme has not been set
+		if (theme === "") {
+			// check if the os theme is dark
+			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				// set the theme to dark
+				setTheme(themes.dark)
+				localStorage.setItem("theme", "dark")
+				// else the os theme is probably light
+			} else {
+				// set the theme to light
+				setTheme(themes.light)
+				localStorage.setItem("theme", "light")
+			}
 		}
 	}, [])
 
@@ -64,14 +67,6 @@ export default function App() {
 			)
 		}
 	}, [theme])
-
-	window
-		.matchMedia("(prefers-color-scheme: dark)")
-		.addEventListener("change", event => {
-			if (event.matches) {
-			} else {
-			}
-		})
 
 	const toggleTheme = () => {
 		if (theme === themes.light) {
