@@ -151,7 +151,7 @@ function News() {
 									style={{
 										color:
 											votes.voteState === "like"
-												? "var(--button-color)"
+												? "var(--primary-color)"
 												: "var(--text-color)",
 									}}
 								>
@@ -159,7 +159,7 @@ function News() {
 								</span>
 								<button onClick={e => handleVote(e, "like")}>
 									{votes.voteState === "like" ? (
-										<AiFillLike style={{ color: "var(--button-color)" }} />
+										<AiFillLike style={{ color: "var(--primary-color)" }} />
 									) : (
 										<AiOutlineLike />
 									)}

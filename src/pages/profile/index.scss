@@ -2,15 +2,19 @@
 	display: flex;
 	flex-direction: column;
 
-	&_button {
-		font-size: 16px;
-		margin-left: 10px;
+	&_container {
+		background-color: var(--compBackground-color);
+		border: 1px solid var(--border-color);
+		border-radius: 5px;
+		padding: 10px 24px;
+
+		&:hover {
+			border: 1px solid var(--secondText-color);
+		}
 	}
 
-	&_news {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	&_button {
+		font-size: 16px;
 	}
 
 	&_row {
@@ -22,7 +26,6 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
-		margin-left: 24px;
 
 		img {
 			width: 64px;
@@ -61,11 +64,6 @@
 		}
 	}
 
-	&_followedAuthors {
-		display: grid;
-		grid-template-columns: 50% 50%;
-	}
-
 	&_pages {
 		margin-top: 8px;
 		display: grid;
@@ -80,22 +78,33 @@
 		&_button {
 			border: none;
 			border-radius: 0;
-			border-bottom: 1px solid var(--secondText-color);
+			border-bottom: 1px solid var(--border-color);
 			color: var(--text-color);
 
 			transition: border 0;
 
 			&:hover {
-				color: var(--button-color);
+				color: var(--primary-color);
 				margin: 0;
-				border-bottom: 3px solid var(--button-color);
+				border-bottom: 3px solid var(--primary-color);
 			}
 
 			&_active {
-				color: var(--button-color);
-				border-bottom: 3px solid var(--button-color);
+				color: var(--primary-color);
+				border-bottom: 3px solid var(--primary-color);
 			}
 		}
+	}
+
+	&_news {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&_followedAuthors {
+		display: grid;
+		grid-template-columns: 50% 50%;
 	}
 }
 

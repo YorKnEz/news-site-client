@@ -48,7 +48,6 @@ function NewsCard2({ data }) {
 
 	return (
 		<Link to={`/news/${data.id}`} className="news_card2">
-			<div className="news_card2_overlay" />
 			<div
 				className="news_card2_thumbnail"
 				style={{ backgroundImage: `url("${data.thumbnail}")` }}

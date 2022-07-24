@@ -17,7 +17,6 @@ function AuthorCard({ data, infoBelow }) {
 
 	return (
 		<Link to={`/profile/${data.id}`} className={className[0]}>
-			<div className={`${className[0]}_overlay`} />
 			<div className={`${className[0]}_info`}>
 				{data.profilePicture === "default" ? (
 					<img src="/default_avatar.png" alt="avatar of user" />

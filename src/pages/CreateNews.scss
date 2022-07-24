@@ -3,7 +3,7 @@
 
 	&_toolbar {
 		color: #161616;
-		background-color: var(--background-color) !important;
+		background-color: var(--compBackground-color) !important;
 	}
 }
 
@@ -43,8 +43,8 @@
 
 	&-option-active {
 		box-shadow: none !important;
-		border: 1px solid var(--button-color) !important;
-		background-color: var(--button-color) !important;
+		border: 1px solid var(--primary-color) !important;
+		background-color: var(--primary-color) !important;
 	}
 
 	&-link-decorator-wrapper {

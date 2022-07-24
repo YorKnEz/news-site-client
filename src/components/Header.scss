@@ -5,8 +5,8 @@
 	z-index: 999;
 	width: calc(100% - 20px);
 	padding: 5px 10px 5px 10px;
-	box-shadow: 0px 0px 5px var(--shadow-color);
-	background-color: var(--background-color);
+	border-bottom: 1px solid var(--border-color);
+	background-color: var(--compBackground-color);
 	// display: flex;
 	// align-items: center;
 	// justify-content: space-between;
@@ -17,7 +17,7 @@
 	&_branding {
 		font-family: "Chomsky";
 		text-decoration: none;
-		font-size: 45px;
+		font-size: 40px;
 		position: relative;
 		bottom: 4px;
 		color: var(--text-color);
@@ -66,14 +66,14 @@
 	}
 
 	&_search {
-		background-color: var(--background-color);
-		border: 1px var(--text-color) solid;
+		background-color: var(--compBackground-color);
+		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		font-size: 16px;
 		color: var(--text-color);
 
 		&_input {
-			background-color: var(--background-color);
+			background-color: var(--compBackground-color);
 			border: none;
 			border-radius: 5px;
 			font-size: 16px;
@@ -113,8 +113,12 @@
 			}
 
 			&:hover {
-				color: var(--button-color);
+				color: var(--primary-color);
 			}
+		}
+
+		&:hover {
+			border: 1px solid var(--secondText-color);
 		}
 
 		&:focus {
@@ -133,7 +137,7 @@
 	right: 10px;
 	padding: 20px 20px;
 	box-shadow: 0px 0px 5px var(--shadow-color);
-	background-color: var(--background-color);
+	background-color: var(--compBackground-color);
 	border-radius: 0 0 5px 5px;
 	display: flex;
 	flex-direction: column;

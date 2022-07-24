@@ -129,55 +129,56 @@ function Author() {
 		<Page>
 			{profile && (
 				<div className="profile">
-					<div className="profile_row">
-						<div className="profile_info">
-							{profile.profilePicture === "default" ? (
-								<img src="/default_avatar.png" alt="avatar of user" />
-							) : (
-								<img src={profile.profilePicture} alt="avatar of user" />
-							)}
-							<div className="profile_info_text">
-								<div className="profile_info_text2">
-									<h3>{profile.fullName}</h3>
-									<h4>{profile.type}</h4>
+					<div className="profile_container">
+						<div className="profile_row">
+							<div className="profile_info">
+								{profile.profilePicture === "default" ? (
+									<img src="/default_avatar.png" alt="avatar of user" />
+								) : (
+									<img src={profile.profilePicture} alt="avatar of user" />
+								)}
+								<div className="profile_info_text">
+									<div className="profile_info_text2">
+										<h3>{profile.fullName}</h3>
+										<h4>{profile.type}</h4>
+									</div>
+									<p>{profile.email}</p>
 								</div>
-								<p>{profile.email}</p>
+							</div>
+							{authorId &&
+								authorId != user.id &&
+								(profile.following ? (
+									<button
+										onClick={handleUnfollow}
+										className="button button_secondary profile_button"
+									>
+										Unfollow
+									</button>
+								) : (
+									<button
+										onClick={handleFollow}
+										className="button button_primary profile_button"
+									>
+										Follow
+									</button>
+								))}
+						</div>
+						<QueryResult loading={loading} error={error} data={data} />
+						<div className="info">
+							<div className="info_box">
+								<span className="info_box_title">Written News</span>
+								<span className="info_box_data">{profile.writtenNews}</span>
+							</div>
+							<div className="info_box">
+								<span className="info_box_title">Followers</span>
+								<span className="info_box_data">{profile.followers}</span>
+							</div>
+							<div className="info_box">
+								<span className="info_box_title">Joined</span>
+								<span className="info_box_data">{profile.createdAt}</span>
 							</div>
 						</div>
-						{authorId &&
-							authorId != user.id &&
-							(profile.following ? (
-								<button
-									onClick={handleUnfollow}
-									className="button button_secondary profile_button"
-								>
-									Unfollow
-								</button>
-							) : (
-								<button
-									onClick={handleFollow}
-									className="button button_primary profile_button"
-								>
-									Follow
-								</button>
-							))}
 					</div>
-					<QueryResult loading={loading} error={error} data={data} />
-					<div className="info">
-						<div className="info_box">
-							<span className="info_box_title">Written News</span>
-							<span className="info_box_data">{profile.writtenNews}</span>
-						</div>
-						<div className="info_box">
-							<span className="info_box_title">Followers</span>
-							<span className="info_box_data">{profile.followers}</span>
-						</div>
-						<div className="info_box">
-							<span className="info_box_title">Joined</span>
-							<span className="info_box_data">{profile.createdAt}</span>
-						</div>
-					</div>
-					<hr style={{ width: "100%" }} />
 					<div
 						className="profile_pages"
 						style={{ gridTemplateColumns: "33.3% 33.4% 33.3%" }}

@@ -47,16 +47,19 @@ function CardVotes({ data }) {
 		<div className="likes">
 			<button onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
-					<AiFillLike style={{ color: "var(--button-color)" }} />
+					<AiFillLike
+						className="likes_icon"
+						style={{ color: "var(--primary-color)" }}
+					/>
 				) : (
-					<AiOutlineLike />
+					<AiOutlineLike className="likes_icon" />
 				)}
 			</button>
 			<span
 				style={{
 					color:
 						votes.voteState === "like"
-							? "var(--button-color)"
+							? "var(--primary-color)"
 							: votes.voteState === "dislike"
 							? "red"
 							: "var(--text-color)",
@@ -66,9 +69,9 @@ function CardVotes({ data }) {
 			</span>
 			<button onClick={e => handleVote(e, "dislike")}>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike style={{ color: "red" }} />
+					<AiFillDislike className="likes_icon" style={{ color: "red" }} />
 				) : (
-					<AiOutlineDislike />
+					<AiOutlineDislike className="likes_icon" />
 				)}
 			</button>
 		</div>
