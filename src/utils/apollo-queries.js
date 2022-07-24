@@ -37,9 +37,9 @@ export const DELETE_NEWS = gql`
 `
 
 // like a news
-export const LIKE_NEWS = gql`
-	mutation LikeNews($action: String!, $id: ID!) {
-		likeNews(action: $action, id: $id) {
+export const VOTE_NEWS = gql`
+	mutation VoteNews($action: String!, $id: ID!) {
+		voteNews(action: $action, id: $id) {
 			code
 			success
 			message
@@ -82,7 +82,7 @@ export const NEWS_FOR_HOME = gql`
 			type
 			createdAt
 			updatedAt
-			likeState
+			voteState
 			likes
 			dislikes
 			author {
@@ -134,7 +134,7 @@ export const NEWS2 = gql`
 			type
 			createdAt
 			updatedAt
-			likeState
+			voteState
 			likes
 			dislikes
 			author {
@@ -162,7 +162,7 @@ export const SEARCH = gql`
 				type
 				createdAt
 				updatedAt
-				likeState
+				voteState
 				likes
 				dislikes
 				author {
@@ -199,7 +199,7 @@ export const NEWS_FOR_PROFILE = gql`
 			type
 			createdAt
 			updatedAt
-			likeState
+			voteState
 			likes
 			dislikes
 		}
@@ -253,7 +253,7 @@ export const LIKED_NEWS = gql`
 			type
 			createdAt
 			updatedAt
-			likeState
+			voteState
 			likes
 			dislikes
 			author {

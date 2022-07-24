@@ -17,7 +17,7 @@ import { format, fromUnixTime } from "date-fns"
 import "./News.scss"
 import { AuthorInfo, Modal, Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { NEWS2, DELETE_NEWS, LIKE_NEWS } from "../utils/apollo-queries"
+import { NEWS2, DELETE_NEWS, VOTE_NEWS } from "../utils/apollo-queries"
 import { compressNumber, useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -29,11 +29,11 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
-	const [likeNews] = useMutation(LIKE_NEWS)
+	const [voteNews] = useMutation(VOTE_NEWS)
 	const { user } = useContext(UserContext)
 	const history = useNavigate()
-	const [likes, setLikes] = useState({
-		likeState: "none",
+	const [votes, setVotes] = useState({
+		voteState: "none",
 		likes: 0,
 		dislikes: 0,
 	})
@@ -62,9 +62,9 @@ function News() {
 			// set the tags
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 
-			// set the likes, dislikes and likeState
-			setLikes({
-				likeState: data.news.likeState,
+			// set the likes, dislikes and voteState
+			setVotes({
+				voteState: data.news.voteState,
 				likes: data.news.likes,
 				dislikes: data.news.dislikes,
 			})
@@ -110,21 +110,19 @@ function News() {
 		history(`/news/${data.news.id}/edit`)
 	}
 
-	const handleLike = (e, action) => {
+	const handleVote = (e, action) => {
 		e.preventDefault()
 
-		likeNews({
+		voteNews({
 			variables: {
 				action,
 				id: data.news.id,
 			},
-			onCompleted: ({ likeNews }) => {
-				console.log(likeNews)
-
-				setLikes({
-					likeState: action === likes.likeState ? "none" : action,
-					likes: likeNews.likes,
-					dislikes: likeNews.dislikes,
+			onCompleted: ({ voteNews }) => {
+				setVotes({
+					voteState: action === votes.voteState ? "none" : action,
+					likes: voteNews.likes,
+					dislikes: voteNews.dislikes,
 				})
 
 				client.clearStore()
@@ -152,15 +150,15 @@ function News() {
 								<span
 									style={{
 										color:
-											likes.likeState === "like"
+											votes.voteState === "like"
 												? "var(--button-color)"
 												: "var(--text-color)",
 									}}
 								>
-									{compressNumber(likes.likes)}
+									{compressNumber(votes.likes)}
 								</span>
-								<button onClick={e => handleLike(e, "like")}>
-									{likes.likeState === "like" ? (
+								<button onClick={e => handleVote(e, "like")}>
+									{votes.voteState === "like" ? (
 										<AiFillLike style={{ color: "var(--button-color)" }} />
 									) : (
 										<AiOutlineLike />
@@ -171,15 +169,15 @@ function News() {
 								<span
 									style={{
 										color:
-											likes.likeState === "dislike"
+											votes.voteState === "dislike"
 												? "red"
 												: "var(--text-color)",
 									}}
 								>
-									{compressNumber(likes.dislikes)}
+									{compressNumber(votes.dislikes)}
 								</span>
-								<button onClick={e => handleLike(e, "dislike")}>
-									{likes.likeState === "dislike" ? (
+								<button onClick={e => handleVote(e, "dislike")}>
+									{votes.voteState === "dislike" ? (
 										<AiFillDislike style={{ color: "red" }} />
 									) : (
 										<AiOutlineDislike />
