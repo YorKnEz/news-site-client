@@ -9,11 +9,11 @@ import { useDocumentTitle } from "../utils/utils"
 
 function HomeReddit() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
+	const [after, setAfter] = useState("")
 	const [news, setNews] = useState([])
 	const { loading, error, data } = useQuery(NEWS_FOR_REDDIT_HOME, {
 		variables: {
-			offsetIndex,
+			after,
 		},
 	})
 	// eslint-disable-next-line no-unused-vars
@@ -23,16 +23,18 @@ function HomeReddit() {
 
 	useEffect(() => {
 		if (data) {
-			setNews(news => [...news, ...data.newsForRedditHome])
+			console.log(data)
+
+			setNews(news => [...news, ...data.newsForRedditHome.news])
 		}
 	}, [data])
 
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
+			if (data) setAfter(data.newsForRedditHome.after)
 		}
-	}, [reachedBottomOfPage, offsetIndex])
+	}, [reachedBottomOfPage, after, data])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {

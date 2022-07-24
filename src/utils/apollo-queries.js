@@ -96,26 +96,29 @@ export const NEWS_FOR_HOME = gql`
 
 // returns news from reddit
 export const NEWS_FOR_REDDIT_HOME = gql`
-	query NewsForRedditHome($offsetIndex: Int) {
-		newsForRedditHome(offsetIndex: $offsetIndex) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			likeState
-			likes
-			dislikes
-			author {
-				profilePicture
-				fullName
+	query NewsForRedditHome($after: String) {
+		newsForRedditHome(after: $after) {
+			news {
 				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				updatedAt
+				voteState
+				likes
+				dislikes
+				author {
+					profilePicture
+					fullName
+					id
+				}
 			}
+			after
 		}
 	}
 `
