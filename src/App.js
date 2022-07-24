@@ -39,6 +39,20 @@ export default function App() {
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
 
+	useEffect(() => {
+		// check if the os theme is dark
+		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			// set the theme to dark
+			setTheme(themes.dark)
+			localStorage.setItem("theme", "dark")
+			// else the os theme is probably light
+		} else {
+			// set the theme to light
+			setTheme(themes.light)
+			localStorage.setItem("theme", "light")
+		}
+	}, [])
+
 	// set a property for each color in the theme object
 	useEffect(() => {
 		for (const color in theme) {
@@ -50,6 +64,14 @@ export default function App() {
 			)
 		}
 	}, [theme])
+
+	window
+		.matchMedia("(prefers-color-scheme: dark)")
+		.addEventListener("change", event => {
+			if (event.matches) {
+			} else {
+			}
+		})
 
 	const toggleTheme = () => {
 		if (theme === themes.light) {
