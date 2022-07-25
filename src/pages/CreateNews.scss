@@ -1,9 +1,26 @@
+.createnews {
+	background-color: var(--compBackground-color);
+	border: 1px solid var(--border-color);
+	border-radius: 5px;
+	padding: 10px;
+}
+
 .editor {
 	padding: 10px;
+
+	&_container {
+		background-color: var(--compBackground-color);
+		border: 1px solid var(--border-color);
+		border-radius: 5px;
+		min-height: 400px;
+	}
 
 	&_toolbar {
 		color: #161616;
 		background-color: var(--compBackground-color) !important;
+		border: none !important;
+		border-radius: 5px 5px 0 0 !important;
+		border-bottom: 1px solid var(--border-color) !important;
 	}
 }
 
@@ -33,7 +50,16 @@
 
 .rdw {
 	&-option-wrapper {
-		border-radius: 5px;
+		border-radius: 5px !important;
+		background-color: var(--text-color) !important;
+
+		&:hover {
+			box-shadow: none !important;
+		}
+	}
+
+	&-dropdown-wrapper {
+		border-radius: 5px !important;
 		background-color: var(--text-color) !important;
 
 		&:hover {

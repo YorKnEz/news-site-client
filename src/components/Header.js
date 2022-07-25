@@ -45,7 +45,7 @@ function Header() {
 
 		setShowDropdown(!showDropdown)
 
-		dropdown.style.top = !showDropdown ? "58px" : "-1000px"
+		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
 	}
 
 	const handleBlur = e => {
@@ -53,7 +53,7 @@ function Header() {
 
 		setShowDropdown(false)
 
-		dropdown.style.top = !showDropdown ? "58px" : "-1000px"
+		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
 	}
 
 	const handleSignOut = async e => {
