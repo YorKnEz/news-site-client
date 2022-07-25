@@ -30,7 +30,7 @@ function RedditNewsCard({ data, matches }) {
 	}, [matches, data.id])
 
 	const showDate = () => {
-		const createdAt = fromUnixTime(data.createdAt)
+		const createdAt = fromUnixTime(data.createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
 		const distance = formatDistance(createdAt, currentDate)
 

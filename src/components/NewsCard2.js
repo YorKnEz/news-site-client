@@ -37,13 +37,11 @@ function NewsCard2({ data }) {
 	}
 
 	const showDate = () => {
-		const updatedAt = fromUnixTime(data.updatedAt / 1000)
+		const createdAt = fromUnixTime(data.createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(updatedAt, currentDate)
+		const distance = formatDistance(createdAt, currentDate)
 
-		return data.createdAt === data.updatedAt
-			? `Posted ${distance} ago`
-			: `Edited ${distance} ago`
+		return `Posted ${distance} ago`
 	}
 
 	return (

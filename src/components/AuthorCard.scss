@@ -1,13 +1,12 @@
 .authorcard {
 	text-decoration: none;
 	width: calc(100% - 40px);
-	margin: 20px 0px;
+	margin: 4px 0px;
 	padding: 20px;
 	color: var(--text-color);
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBackground-color);
-	max-width: 720px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -52,7 +51,6 @@
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBackground-color);
-	max-width: 720px;
 	position: relative;
 	overflow: hidden;
 	display: flex;

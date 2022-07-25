@@ -56,7 +56,7 @@ function QueryResult({ loading, error, data, children }) {
 		if (data.newsForHome && data.newsForHome.length === 0) {
 			return notFound
 		}
-		if (data.newsForRedditHome && data.newsForRedditHome.length === 0) {
+		if (data.newsForHomeReddit && data.newsForHomeReddit.length === 0) {
 			return notFound
 		}
 		if (data.newsForProfile && data.newsForProfile.length === 0) {

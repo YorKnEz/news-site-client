@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client"
 
 import { UserContext } from "../../context"
 import { NEWS_FOR_PROFILE } from "../../utils/apollo-queries"
-import { NewsCard2, QueryResult } from "../../components"
+import { NewsCard, QueryResult } from "../../components"
 
 function News() {
 	const { authorId } = useParams()
@@ -50,7 +50,7 @@ function News() {
 		<>
 			<div className="profile_news">
 				{news.map(item => (
-					<NewsCard2 data={item} key={item.id} />
+					<NewsCard data={item} key={item.id} />
 				))}
 			</div>
 			<QueryResult loading={loading} error={error} data={data} />

@@ -4,15 +4,14 @@
 
 	display: flex;
 	width: 100%;
-	max-width: 720px;
-	margin: 8px 0;
+	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBackground-color);
 
+	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
-	user-select: none;
 
 	&_matches {
 		position: absolute;
