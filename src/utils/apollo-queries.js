@@ -95,9 +95,9 @@ export const NEWS_FOR_HOME = gql`
 `
 
 // returns news from reddit
-export const NEWS_FOR_REDDIT_HOME = gql`
+export const NEWS_FOR_HOME_REDDIT = gql`
 	query NewsForRedditHome($after: String) {
-		newsForRedditHome(after: $after) {
+		newsForHomeReddit(after: $after) {
 			news {
 				id
 				title
