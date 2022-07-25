@@ -94,7 +94,7 @@ function Header() {
 		<>
 			<div className="header">
 				<div className="header_section1">
-					<Link to="/" className="header_branding">
+					<Link to="/" reloadDocument className="header_branding">
 						YorkNews
 					</Link>
 				</div>

@@ -17,26 +17,25 @@ function User() {
 	useEffect(() => {
 		const button1 = document.getElementById("followedAuthors")
 
-		button1.classList.add("profile_pages_button_active")
+		button1.classList.add("profile_pages_item_active")
 
 		return () => {
-			button1.classList.remove("profile_pages_button_active")
+			button1.classList.remove("profile_pages_item_active")
 		}
 	}, [])
 
 	const handlePage = (e, name) => {
 		e.preventDefault()
 
-		const button1 = document.getElementById("followedAuthors")
-		const button2 = document.getElementById("likedNews")
+		// find the old active button
+		const oldActiveButton = document.getElementById(page)
+		// remove the active class
+		oldActiveButton.classList.remove("profile_pages_item_active")
 
-		if (name === "followedAuthors") {
-			button1.classList.add("profile_pages_button_active")
-			button2.classList.remove("profile_pages_button_active")
-		} else {
-			button1.classList.remove("profile_pages_button_active")
-			button2.classList.add("profile_pages_button_active")
-		}
+		// find the new active button
+		const activeButton = document.getElementById(name)
+		// add the active class
+		activeButton.classList.add("profile_pages_item_active")
 
 		setPage(name)
 	}
@@ -64,14 +63,14 @@ function User() {
 					<button
 						onClick={e => handlePage(e, "followedAuthors")}
 						id="followedAuthors"
-						className="button profile_pages_button"
+						className="button profile_pages_item profile_pages_item_active"
 					>
 						<h3 className="profile_pages_title">Followed authors</h3>
 					</button>
 					<button
 						onClick={e => handlePage(e, "likedNews")}
 						id="likedNews"
-						className="button profile_pages_button"
+						className="button profile_pages_item"
 					>
 						<h3 className="profile_pages_title">Liked news</h3>
 					</button>

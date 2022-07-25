@@ -51,23 +51,6 @@ export const VOTE_NEWS = gql`
 
 // QUERIES
 
-// returns news for EditNews.js
-export const NEWS = gql`
-	query News($newsId: ID!) {
-		news(id: $newsId) {
-			id
-			title
-			thumbnail
-			sources
-			tags
-			body
-			author {
-				id
-			}
-		}
-	}
-`
-
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
 	query NewsForHome($offsetIndex: Int) {
@@ -149,6 +132,66 @@ export const NEWS2 = gql`
 	}
 `
 
+// returns the profile of a certain author
+export const AUTHOR = gql`
+	query Author($id: ID!) {
+		author(id: $id) {
+			id
+			fullName
+			email
+			profilePicture
+			type
+			writtenNews
+			followers
+			createdAt
+			following
+		}
+	}
+`
+
+// return the news of an author
+export const NEWS_FOR_PROFILE = gql`
+	query NewsForProfile($offsetIndex: Int, $id: ID!) {
+		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
+			id
+			title
+			subreddit
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			updatedAt
+			voteState
+			likes
+			dislikes
+			author {
+				profilePicture
+				fullName
+				id
+			}
+		}
+	}
+`
+
+// returns news for EditNews.js
+export const NEWS = gql`
+	query News($newsId: ID!) {
+		news(id: $newsId) {
+			id
+			title
+			thumbnail
+			sources
+			tags
+			body
+			author {
+				id
+			}
+		}
+	}
+`
+
 // returns search results
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
@@ -184,44 +227,6 @@ export const SEARCH = gql`
 				createdAt
 				following
 			}
-		}
-	}
-`
-
-// return the news of an author
-export const NEWS_FOR_PROFILE = gql`
-	query NewsForProfile($offsetIndex: Int, $id: ID!) {
-		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-		}
-	}
-`
-
-// returns the profile of a certain author
-export const AUTHOR = gql`
-	query Author($id: ID!) {
-		author(id: $id) {
-			id
-			fullName
-			email
-			profilePicture
-			type
-			writtenNews
-			followers
-			createdAt
-			following
 		}
 	}
 `
