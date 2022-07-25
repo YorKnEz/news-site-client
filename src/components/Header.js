@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineMenu, AiOutlineReddit, AiOutlineSearch } from "react-icons/ai"
+import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom"
 
 import axios from "axios"
@@ -96,10 +96,6 @@ function Header() {
 				<div className="header_section1">
 					<Link to="/" className="header_branding">
 						YorkNews
-					</Link>
-
-					<Link to="/reddit" className="header_menuBtn header_reddit">
-						<AiOutlineReddit className="header_reddit_icon" />
 					</Link>
 				</div>
 

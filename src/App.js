@@ -8,7 +8,6 @@ import { PrivateRoutes } from "./components"
 import { ThemeContext, themes, UserContext } from "./context"
 import {
 	Home,
-	HomeReddit,
 	News,
 	SignUp,
 	SignIn,
@@ -124,7 +123,6 @@ export default function App() {
 						<Route exact path="/forgot-password" element={<ForgotPassword />} />
 						<Route exact path="/reset-password" element={<ResetPassword />} />
 						<Route exact path="/" element={<Home />} />
-						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/news/:newsId" element={<News />} />
 
 						{/* private routes, accessible by all users */}

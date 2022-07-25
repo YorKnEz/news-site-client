@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import "./Home.scss"
-import { NewsCard, Page, QueryResult } from "../components"
-import { NEWS_FOR_HOME } from "../utils/apollo-queries"
-import { useDocumentTitle } from "../utils/utils"
+import "./index.scss"
+import { NewsCard, QueryResult } from "../../components"
+import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
 
-function Home() {
+function CreatedNews() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offsetIndex, setOffsetIndex] = useState(0)
 	const [news, setNews] = useState([])
@@ -16,8 +15,6 @@ function Home() {
 			offsetIndex,
 		},
 	})
-	// eslint-disable-next-line no-unused-vars
-	const [documentTitle, setDocumentTitle] = useDocumentTitle("Home | YorkNews")
 
 	useEffect(() => {
 		if (data) {
@@ -43,15 +40,13 @@ function Home() {
 	})
 
 	return (
-		<Page>
-			<div className="news_list">
-				{news.map(item => (
-					<NewsCard data={item} key={item.id} />
-				))}
-			</div>
+		<div className="news_list">
+			{news.map(item => (
+				<NewsCard data={item} key={item.id} />
+			))}
 			<QueryResult loading={loading} error={error} data={data} />
-		</Page>
+		</div>
 	)
 }
 
-export default Home
+export default CreatedNews
