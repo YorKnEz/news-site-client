@@ -1,4 +1,6 @@
 import React, { useEffect } from "react"
+import { AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
+import { BsChatSquare } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { formatDistance, fromUnixTime } from "date-fns"
@@ -56,6 +58,10 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
+	const handleShare = e => {}
+
+	const handleSave = e => {}
+
 	return (
 		<div className="newscard">
 			<CardVotes data={data} />
@@ -84,6 +90,20 @@ function NewsCard({ data, matches }) {
 					</div>
 				</Link>
 				<div className="newscard_tags">{showTags()}</div>
+				<div className="newscard_options">
+					<Link to={`/news/${data.id}`} className="newscard_options_item">
+						<BsChatSquare className="newscard_options_item_icon" />
+						{data.comments}
+					</Link>
+					<button onClick={handleShare} className="newscard_options_item">
+						<AiOutlineShareAlt className="newscard_options_item_icon" />
+						Share
+					</button>
+					<button onClick={handleSave} className="newscard_options_item">
+						<AiOutlineSave className="newscard_options_item_icon" />
+						Save
+					</button>
+				</div>
 			</div>
 		</div>
 	)
