@@ -2,7 +2,7 @@ import React, { useState } from "react"
 
 import "./index.scss"
 import { Page } from "../../components"
-import { CreatedNews, MixedNews, RedditNews } from "../home"
+import { CreatedNews, RedditNews } from "../home"
 import { useDocumentTitle } from "../../utils/utils"
 
 function Home() {
@@ -43,21 +43,8 @@ function Home() {
 				>
 					r/Romania
 				</button>
-				<button
-					id="mixed"
-					onClick={e => handleClick("mixed", e)}
-					className="news_pages_item"
-				>
-					Mix
-				</button>
 			</div>
-			{page === "yorknews" ? (
-				<CreatedNews />
-			) : page === "reddit" ? (
-				<RedditNews />
-			) : (
-				<MixedNews />
-			)}
+			{page === "yorknews" ? <CreatedNews /> : <RedditNews />}
 		</Page>
 	)
 }
