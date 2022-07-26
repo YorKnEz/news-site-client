@@ -68,6 +68,7 @@ export const NEWS_FOR_HOME = gql`
 			voteState
 			likes
 			dislikes
+			comments
 			author {
 				profilePicture
 				fullName
@@ -123,6 +124,7 @@ export const NEWS2 = gql`
 			voteState
 			likes
 			dislikes
+			comments
 			author {
 				id
 				fullName
@@ -166,6 +168,7 @@ export const NEWS_FOR_PROFILE = gql`
 			voteState
 			likes
 			dislikes
+			comments
 			author {
 				profilePicture
 				fullName
@@ -211,6 +214,7 @@ export const SEARCH = gql`
 				voteState
 				likes
 				dislikes
+				comments
 				author {
 					id
 					fullName
