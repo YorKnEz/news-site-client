@@ -49,6 +49,41 @@ export const VOTE_NEWS = gql`
 	}
 `
 
+// add a comment to a news or post
+export const ADD_COMMENT = gql`
+	mutation AddComment($commentData: CommentInput) {
+		addComment(commentData: $commentData) {
+			code
+			success
+			message
+			comment
+		}
+	}
+`
+
+// edit a comment
+export const EDIT_COMMENT = gql`
+	mutation EditComment($commentData: CommentInput) {
+		editComment(commentData: $commentData) {
+			code
+			success
+			message
+			comment
+		}
+	}
+`
+
+// remove a comment
+export const REMOVE_COMMENT = gql`
+	mutation RemoveComment($commentData: CommentInput) {
+		removeComment(commentData: $commentData) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // QUERIES
 
 // returns news from yorknews
@@ -273,6 +308,22 @@ export const LIKED_NEWS = gql`
 				fullName
 				profilePicture
 			}
+		}
+	}
+`
+
+// retrieve the first comments of a news
+export const COMMENTS_FOR_NEWS = gql`
+	query CommentsForNews($offsetIndex: Int, $newsId: ID!) {
+		commentsForNews(offsetIndex: $offsetIndex, newsId: $newsId) {
+			id
+			parentId
+			parentType
+			body
+			likes
+			dislikes
+			replies
+			createdAt
 		}
 	}
 `
