@@ -1,24 +1,28 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiOutlineEdit,
 	AiOutlineDelete,
-	AiOutlineLike,
-	AiFillLike,
-	AiFillDislike,
-	AiOutlineDislike,
+	AiOutlineEdit,
+	AiOutlineSave,
+	AiOutlineShareAlt,
 } from "react-icons/ai"
-import { useNavigate, useParams } from "react-router"
-import { Link } from "react-router-dom"
+import { BsChatSquare } from "react-icons/bs"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
-import { useQuery, useMutation, useApolloClient } from "@apollo/client"
-import { format, fromUnixTime } from "date-fns"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
+import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./News.scss"
-import { AuthorInfo, Modal, Page, QueryResult } from "../components"
+import {
+	CardVotes,
+	Modal,
+	NewsComments,
+	Page,
+	QueryResult,
+} from "../components"
 import { UserContext } from "../context"
-import { NEWS2, DELETE_NEWS, VOTE_NEWS } from "../utils/apollo-queries"
-import { compressNumber, useDocumentTitle } from "../utils/utils"
+import { DELETE_NEWS, NEWS2 } from "../utils/apollo-queries"
+import { useDocumentTitle } from "../utils/utils"
 
 function News() {
 	const client = useApolloClient()
@@ -29,14 +33,8 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
-	const [voteNews] = useMutation(VOTE_NEWS)
 	const { user } = useContext(UserContext)
 	const history = useNavigate()
-	const [votes, setVotes] = useState({
-		voteState: "none",
-		likes: 0,
-		dislikes: 0,
-	})
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	const [showModal, setShowModal] = useState(false)
@@ -61,20 +59,15 @@ function News() {
 
 			// set the tags
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
-
-			// set the likes, dislikes and voteState
-			setVotes({
-				voteState: data.news.voteState,
-				likes: data.news.likes,
-				dislikes: data.news.dislikes,
-			})
 		}
 	}, [data, setDocumentTitle])
 
-	const getDate = () => {
-		const updatedAt = fromUnixTime(data.news.updatedAt / 1000)
+	const showDate = () => {
+		const createdAt = fromUnixTime(data.news.createdAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(createdAt, currentDate)
 
-		return format(updatedAt, "MMMM d',' yyyy H':'mm")
+		return `Posted ${distance} ago`
 	}
 
 	const onModalSubmit = async () => {
@@ -110,25 +103,9 @@ function News() {
 		history(`/news/${data.news.id}/edit`)
 	}
 
-	const handleVote = (e, action) => {
-		e.preventDefault()
+	const handleShare = e => {}
 
-		voteNews({
-			variables: {
-				action,
-				id: data.news.id,
-			},
-			onCompleted: ({ voteNews }) => {
-				setVotes({
-					voteState: action === votes.voteState ? "none" : action,
-					likes: voteNews.likes,
-					dislikes: voteNews.dislikes,
-				})
-
-				client.clearStore()
-			},
-		})
-	}
+	const handleSave = e => {}
 
 	return (
 		<Page>
@@ -144,120 +121,98 @@ function News() {
 			)}
 			<QueryResult loading={loading} error={error} data={data}>
 				{data && (
-					<div className="news">
-						<div className="news_likes">
-							<div className="news_likes_row">
-								<span
-									style={{
-										color:
-											votes.voteState === "like"
-												? "var(--primary-color)"
-												: "var(--text-color)",
-									}}
-								>
-									{compressNumber(votes.likes)}
-								</span>
-								<button onClick={e => handleVote(e, "like")}>
-									{votes.voteState === "like" ? (
-										<AiFillLike style={{ color: "var(--primary-color)" }} />
-									) : (
-										<AiOutlineLike />
-									)}
-								</button>
-							</div>
-							<div className="news_likes_row">
-								<span
-									style={{
-										color:
-											votes.voteState === "dislike"
-												? "red"
-												: "var(--text-color)",
-									}}
-								>
-									{compressNumber(votes.dislikes)}
-								</span>
-								<button onClick={e => handleVote(e, "dislike")}>
-									{votes.voteState === "dislike" ? (
-										<AiFillDislike style={{ color: "red" }} />
-									) : (
-										<AiOutlineDislike />
-									)}
-								</button>
-							</div>
-						</div>
-						<h1 className="news_title">{data.news.title}</h1>
-						{user.id == data.news.author.id && (
-							<div className="news_buttons">
-								<button
-									onClick={handleDelete}
-									className="button button_primary news_buttons_delete"
-								>
-									<AiOutlineDelete />
-								</button>
-								<button
-									onClick={handleEdit}
-									className="button button_primary news_buttons_edit"
-								>
-									<AiOutlineEdit />
-								</button>
-							</div>
-						)}
-
-						<hr />
-
-						<div className="news_info">
-							<AuthorInfo
-								data={data.news.author}
-								type={data.news.type}
-								subreddit={data.news.subreddit}
-								link
-							/>
-
-							<p>Last edited on: {getDate()}</p>
-						</div>
-
-						<hr />
-
-						<img
-							className="news_thumbnail"
-							src={data.news.thumbnail}
-							alt="thumbnail"
-						/>
-
-						<hr />
-
-						<div className="news_body" id="body"></div>
-
-						<hr />
-
-						<div className="sources">
-							<h4>Sources</h4>
-							{sources.map(s => (
-								<a
-									className="sources_item"
-									key={s}
-									href={s}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{s}
-								</a>
-							))}
-						</div>
-						<div className="tags">
-							<h4>Tags</h4>
-							{tags.length > 0 &&
-								tags.map(s => (
+					<>
+						<div className="news">
+							<CardVotes data={data.news} />
+							<div className="news_container">
+								<span className="news_posted news_padding">
+									{showDate()} by{" "}
 									<Link
-										className="tags_item"
-										key={s}
-										to={`/search?search=${s}&filter=tags`}
+										to={`/profile/${data.news.author.id}`}
+										className="news_authorlink"
 									>
-										{s}
+										{data.news.author.fullName}
 									</Link>
-								))}
+								</span>
+								<Link
+									to={`/news/${data.news.id}`}
+									className="news_link news_padding"
+								>
+									<span className="news_title">{data.news.title}</span>
+									<img
+										className="news_thumbnail"
+										src={data.news.thumbnail}
+										alt={data.news.title}
+									/>
+								</Link>
+								<div className="news_body news_padding" id="body"></div>
+								{/* <div className="news_tags">{showTags()}</div> */}
+								<div className="news_sources news_padding">
+									<h4>Sources</h4>
+									{sources.map(s => (
+										<a
+											className="news_sources_item"
+											key={s}
+											href={s}
+											target="_blank"
+											rel="noreferrer"
+										>
+											{s}
+										</a>
+									))}
+								</div>
+								<div className="tags news_padding">
+									<h4>Tags</h4>
+									{tags.length > 0 &&
+										tags.map(s => (
+											<Link
+												className="tags_item"
+												key={s}
+												to={`/search?search=${s}&filter=tags`}
+											>
+												{s}
+											</Link>
+										))}
+								</div>
+								<div className="news_options news_padding">
+									<Link
+										to={`/news/${data.news.id}`}
+										className="news_options_item"
+									>
+										<BsChatSquare className="news_options_item_icon" />
+										{data.news.comments}
+									</Link>
+									<button onClick={handleShare} className="news_options_item">
+										<AiOutlineShareAlt className="news_options_item_icon" />
+										Share
+									</button>
+									<button onClick={handleSave} className="news_options_item">
+										<AiOutlineSave className="news_options_item_icon" />
+										Save
+									</button>
+									{user.id == data.news.author.id && (
+										<>
+											<button
+												onClick={handleDelete}
+												className="news_options_item"
+											>
+												<AiOutlineDelete className="news_options_item_icon" />
+												Delete
+											</button>
+											<button
+												onClick={handleEdit}
+												className="news_options_item"
+											>
+												<AiOutlineEdit className="news_options_item_icon" />
+												Edit
+											</button>
+										</>
+									)}
+								</div>
+							</div>
 						</div>
-					</div>
+						<NewsComments />
+					</>
 				)}
 			</QueryResult>
 		</Page>
