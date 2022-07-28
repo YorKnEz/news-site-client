@@ -1,18 +1,15 @@
-.cardlikes {
-	display: flex;
-	flex-direction: column;
+.commlikes {
+	display: inline-flex;
 	align-items: center;
-	width: calc(48px - 4px);
-	padding: 8px 2px;
 	font-size: 12px;
-	background-color: var(--compBackground2-color);
 
 	&_button {
+		padding: 0;
 		cursor: pointer;
 		text-decoration: none;
 		display: table;
 
-		color: var(--text-color);
+		color: var(--secondText-color);
 		background-color: transparent;
 
 		border: none;
@@ -23,5 +20,9 @@
 
 	&_icon {
 		font-size: 20px;
+	}
+
+	&_number {
+		padding: 0 8px;
 	}
 }

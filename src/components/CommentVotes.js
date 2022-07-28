@@ -8,14 +8,14 @@ import {
 
 import { useApolloClient, useMutation } from "@apollo/client"
 
-import "./CardVotes.scss"
+import "./CommentVotes.scss"
 import { Modal } from "../components"
-import { VOTE_NEWS } from "../utils/apollo-queries"
+import { VOTE_COMMENT } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
-function CardVotes({ data }) {
+function CommentVotes({ data }) {
 	const client = useApolloClient()
-	const [voteNews] = useMutation(VOTE_NEWS)
+	const [voteComment] = useMutation(VOTE_COMMENT)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
 		likes: data.likes,
@@ -26,18 +26,18 @@ function CardVotes({ data }) {
 	const handleVote = (e, action) => {
 		e.preventDefault()
 
-		voteNews({
+		voteComment({
 			variables: {
 				action,
 				id: data.id,
 			},
-			onCompleted: ({ voteNews }) => {
-				console.log(voteNews)
+			onCompleted: ({ voteComment }) => {
+				console.log(voteComment)
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: voteNews.likes,
-					dislikes: voteNews.dislikes,
+					likes: voteComment.likes,
+					dislikes: voteComment.dislikes,
 				})
 
 				client.clearStore()
@@ -48,46 +48,47 @@ function CardVotes({ data }) {
 	}
 
 	return (
-		<div className="cardlikes">
+		<div className="commlikes">
 			{error && (
 				<Modal onSubmit={() => setError("")}>
 					<p>{error}</p>
 				</Modal>
 			)}
-			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
+			<button className="commlikes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike
-						className="cardlikes_icon"
+						className="commlikes_icon"
 						style={{ color: "var(--primary-color)" }}
 					/>
 				) : (
-					<AiOutlineLike className="cardlikes_icon" />
+					<AiOutlineLike className="commlikes_icon" />
 				)}
 			</button>
 			<span
+				className="commlikes_number"
 				style={{
 					color:
 						votes.voteState === "like"
 							? "var(--primary-color)"
 							: votes.voteState === "dislike"
 							? "red"
-							: "var(--text-color)",
+							: "var(--secondText-color)",
 				}}
 			>
 				{compressNumber(votes.likes - votes.dislikes)}
 			</span>
 			<button
-				className="cardlikes_button"
+				className="commlikes_button"
 				onClick={e => handleVote(e, "dislike")}
 			>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardlikes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="commlikes_icon" style={{ color: "red" }} />
 				) : (
-					<AiOutlineDislike className="cardlikes_icon" />
+					<AiOutlineDislike className="commlikes_icon" />
 				)}
 			</button>
 		</div>
 	)
 }
 
-export default CardVotes
+export default CommentVotes

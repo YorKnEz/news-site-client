@@ -311,7 +311,7 @@ function CreateNews() {
 							{errorCheck("thumbnail")}
 						</div>
 					</div>
-					<div className="editor_container" style={{}}>
+					<div className="editor_container">
 						<Editor
 							placeholder="Write here..."
 							editorState={editorState}

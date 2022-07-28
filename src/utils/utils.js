@@ -16,7 +16,8 @@ export const updateInputLabels = () => {
 	for (let i = 0; i < form.elements.length; i++) {
 		const input = form.elements[i]
 
-		if (input.value) {
+		// check if the input is a form input
+		if (input.value && input.classList.contains("formItem_input")) {
 			const label = input.previousElementSibling
 
 			label.style.top = "var(--labelOutTop)"
@@ -28,29 +29,33 @@ export const updateInputLabels = () => {
 
 // handles focus event for Sing In and Sign Up pages forms
 export const handleInputFocus = e => {
-	const label = e.target.previousElementSibling
+	if (e.target.classList.contains("formItem_input")) {
+		const label = e.target.previousElementSibling
 
-	if (!e.target.value) {
-		label.style.animationName = "labelOut"
-		label.style.animationDuration = "0.2s"
+		if (!e.target.value) {
+			label.style.animationName = "labelOut"
+			label.style.animationDuration = "0.2s"
 
-		label.style.top = "var(--labelOutTop)"
-		label.style.left = "var(--labelOutLeft)"
-		label.style.color = "var(--text-color)"
+			label.style.top = "var(--labelOutTop)"
+			label.style.left = "var(--labelOutLeft)"
+			label.style.color = "var(--text-color)"
+		}
 	}
 }
 
 // handles blur event for Sing In and Sign Up pages forms
 export const handleInputBlur = e => {
-	const label = e.target.previousElementSibling
+	if (e.target.classList.contains("formItem_input")) {
+		const label = e.target.previousElementSibling
 
-	if (!e.target.value) {
-		label.style.animationName = "labelIn"
-		label.style.animationDuration = "0.2s"
+		if (!e.target.value) {
+			label.style.animationName = "labelIn"
+			label.style.animationDuration = "0.2s"
 
-		label.style.top = "var(--labelInTop)"
-		label.style.left = "var(--labelInLeft)"
-		label.style.color = "var(--secondText-color)"
+			label.style.top = "var(--labelInTop)"
+			label.style.left = "var(--labelInLeft)"
+			label.style.color = "var(--secondText-color)"
+		}
 	}
 }
 
