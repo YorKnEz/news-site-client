@@ -9,9 +9,9 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CardVotes.scss"
+import { Modal } from "../components"
 import { VOTE_NEWS } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
-import Modal from "./Modal"
 
 function CardVotes({ data }) {
 	const client = useApolloClient()
@@ -48,20 +48,20 @@ function CardVotes({ data }) {
 	}
 
 	return (
-		<div className="likes">
+		<div className="cardlikes">
 			{error && (
 				<Modal onSubmit={() => setError("")}>
 					<p>{error}</p>
 				</Modal>
 			)}
-			<button className="likes_button" onClick={e => handleVote(e, "like")}>
+			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike
-						className="likes_icon"
+						className="cardlikes_icon"
 						style={{ color: "var(--primary-color)" }}
 					/>
 				) : (
-					<AiOutlineLike className="likes_icon" />
+					<AiOutlineLike className="cardlikes_icon" />
 				)}
 			</button>
 			<span
@@ -76,11 +76,14 @@ function CardVotes({ data }) {
 			>
 				{compressNumber(votes.likes - votes.dislikes)}
 			</span>
-			<button className="likes_button" onClick={e => handleVote(e, "dislike")}>
+			<button
+				className="cardlikes_button"
+				onClick={e => handleVote(e, "dislike")}
+			>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="likes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="cardlikes_icon" style={{ color: "red" }} />
 				) : (
-					<AiOutlineDislike className="likes_icon" />
+					<AiOutlineDislike className="cardlikes_icon" />
 				)}
 			</button>
 		</div>
