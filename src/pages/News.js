@@ -211,7 +211,10 @@ function News() {
 								</div>
 							</div>
 						</div>
-						<NewsComments />
+						<NewsComments
+							newsId={newsId}
+							commentsCounter={data.news.comments}
+						/>
 					</>
 				)}
 			</QueryResult>
