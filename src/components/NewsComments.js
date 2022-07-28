@@ -1,10 +1,16 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Editor } from "react-draft-wysiwyg"
-import { EditorState } from "draft-js"
+import { convertToRaw, EditorState } from "draft-js"
+import draftToHtml from "draftjs-to-html"
 import { Link } from "react-router-dom"
 
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
+
 import "./NewsComments.scss"
+import { Comment } from "../components"
 import { UserContext } from "../context"
+import { ADD_COMMENT, COMMENTS_FOR_NEWS } from "../utils/apollo-queries"
+import QueryResult from "./QueryResult"
 
 const editorOptions = {
 	options: [
@@ -342,14 +348,60 @@ const editorOptions = {
 	},
 }
 
-function NewsComments() {
+function NewsComments({ newsId, commentsCounter }) {
+	const client = useApolloClient()
+	const { user } = useContext(UserContext)
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
-	const { user } = useContext(UserContext)
+	const [offsetIndex, setOffsetIndex] = useState(0)
+	const [comments, setComments] = useState([])
+	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
+		variables: {
+			offsetIndex: offsetIndex,
+			newsId: newsId,
+		},
+	})
+	const [addComment] = useMutation(ADD_COMMENT)
+
+	useEffect(() => {
+		if (data) {
+			console.log(data)
+			setComments(comms => [...comms, ...data.commentsForNews])
+		}
+	}, [data])
+
+	const onCommentRemove = id => {
+		let tempArr = comments
+
+		const commentIndex = tempArr.findIndex(comment => comment.id === id)
+
+		tempArr.splice(commentIndex, 1)
+
+		setComments(tempArr)
+	}
 
 	const handlePost = e => {
 		e.preventDefault()
+
+		// body of the news in html format
+		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+
+		addComment({
+			variables: {
+				commentData: {
+					parentId: newsId,
+					parentType: "news",
+					body: html,
+				},
+			},
+			onCompleted: data => {
+				client.clearStore()
+
+				console.log(data)
+				setComments(comms => [data.addComment.comment, ...comms])
+			},
+		})
 	}
 
 	return (
@@ -381,7 +433,19 @@ function NewsComments() {
 					/>
 				</div>
 			</div>
-			<div className="comments_list"></div>
+			<div className="comments_list">
+				{comments.map(comment => (
+					<Comment
+						key={comment.id}
+						data={comment}
+						onCommentRemove={onCommentRemove}
+					/>
+				))}
+				<button className="comments_more">
+					Show {commentsCounter - comments.length} more comments
+				</button>
+				<QueryResult loading={loading} error={error} data={data} />
+			</div>
 		</div>
 	)
 }
