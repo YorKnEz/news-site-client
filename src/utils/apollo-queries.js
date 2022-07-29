@@ -78,8 +78,8 @@ export const ADD_COMMENT = gql`
 
 // edit a comment
 export const EDIT_COMMENT = gql`
-	mutation EditComment($commentData: CommentInput!) {
-		editComment(commentData: $commentData) {
+	mutation EditComment($commentData: CommentInput!, $id: ID!) {
+		editComment(commentData: $commentData, id: $id) {
 			code
 			success
 			message
