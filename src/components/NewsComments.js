@@ -49,6 +49,12 @@ function NewsComments({ newsId, commentsCounter }) {
 		setComments([...tempArr])
 	}
 
+	const handleFetchComments = e => {
+		e.preventDefault()
+
+		setOffsetIndex(index => index + 1)
+	}
+
 	return (
 		<div className="comments">
 			<div className="comments_input news_padding">
@@ -69,9 +75,11 @@ function NewsComments({ newsId, commentsCounter }) {
 						onCommentRemove={onCommentRemove}
 					/>
 				))}
-				<button className="comments_more">
-					Show {commentsCounter - comments.length} more comments
-				</button>
+				{commentsCounter - comments.length > 0 && (
+					<button onClick={handleFetchComments} className="comments_more">
+						Show {commentsCounter - comments.length} more comments
+					</button>
+				)}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>
 		</div>

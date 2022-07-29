@@ -25,4 +25,17 @@
 	&_list {
 		margin-right: 44px;
 	}
+
+	&_more {
+		background-color: transparent;
+		color: var(--link-color);
+		border: none;
+		font-size: 12px;
+		cursor: pointer;
+		padding: 0 0 8px 16px;
+
+		&:hover {
+			color: var(--linkHover-color);
+		}
+	}
 }
