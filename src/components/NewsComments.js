@@ -378,7 +378,6 @@ function NewsComments({ newsId, commentsCounter }) {
 
 		tempArr.splice(commentIndex, 1)
 
-		setComments(tempArr)
 	}
 
 	const handlePost = e => {
@@ -402,6 +401,7 @@ function NewsComments({ newsId, commentsCounter }) {
 				setComments(comms => [data.addComment.comment, ...comms])
 			},
 		})
+		setComments([...tempArr])
 	}
 
 	return (
