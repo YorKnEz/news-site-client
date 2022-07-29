@@ -26,13 +26,17 @@ function NewsComments({ newsId, commentsCounter }) {
 		}
 	}, [data])
 
-	const onCommentRemove = id => {
+	const onCommentAdd = comment =>
+		setComments(comments => [comment, ...comments])
+
+	const onCommentEdit = comment => {
 		let tempArr = comments
 
-		const commentIndex = tempArr.findIndex(comment => comment.id === id)
+		const commentIndex = tempArr.findIndex(c => c.id === comment.id)
 
-		tempArr.splice(commentIndex, 1)
+		tempArr.splice(commentIndex, 1, comment)
 
+		setComments([...tempArr])
 	}
 
 	const onCommentRemove = id => {
