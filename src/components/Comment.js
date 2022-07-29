@@ -18,7 +18,7 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 	const [showEdit, setShowEdit] = useState(false)
 
 	const showDate = () => {
-		const createdAt = fromUnixTime(data.createdAt / 1000)
+		const createdAt = fromUnixTime(comment.createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
 		const distance = formatDistance(createdAt, currentDate)
 
@@ -26,27 +26,27 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 	}
 
 	useEffect(() => {
-		if (data) {
+		if (comment) {
 			// get the body
-			const div = document.getElementById(`body${data.id}`)
+			const div = document.getElementById(`body${comment.id}`)
 
 			// inject the html
-			div.innerHTML = data.body
+			div.innerHTML = comment.body
 		}
-	}, [data])
+	}, [comment])
 
 	const handleDelete = e => {
 		e.preventDefault()
 
 		removeComment({
 			variables: {
-				id: parseInt(data.id),
+				id: parseInt(comment.id),
 			},
-			onCompleted: res => {
-				console.log(res)
-
+			onCompleted: data => {
 				client.clearStore()
-				onCommentRemove(data.id)
+
+				console.log(data)
+				onCommentRemove(comment.id)
 			},
 		})
 	}
@@ -64,8 +64,8 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 					className="comment_avatar"
 					style={{
 						backgroundImage: `url(${
-							data.author.profilePicture !== "default"
-								? data.author.profilePicture
+							comment.author.profilePicture !== "default"
+								? comment.author.profilePicture
 								: "/default_avatar.png"
 						})`,
 					}}
@@ -76,10 +76,10 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 				<div className="comment_posted">
 					<span className="comment_posted_author">
 						<Link
-							to={`/profile/${data.author.id}`}
+							to={`/profile/${comment.author.id}`}
 							className="comment_posted_author_link"
 						>
-							{data.author.fullName}
+							{comment.author.fullName}
 						</Link>
 						{showDate()}
 					</span>
@@ -90,8 +90,8 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 					<div className="comment_body" id={`body${comment.id}`}></div>
 				)}
 				<div className="comment_options">
-					<CommentVotes data={data} />
-					{user.id == data.author.id && (
+					<CommentVotes data={comment} />
+					{user.id == comment.author.id && (
 						<>
 							<button onClick={handleDelete} className="comment_options_item">
 								<AiOutlineDelete className="comment_options_item_icon" />
