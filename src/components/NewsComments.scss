@@ -14,7 +14,7 @@
 	&_input {
 		display: flex;
 		flex-direction: column;
-		margin: 48px;
+		margin: 44px;
 
 		&_title {
 			font-size: 12px;
@@ -22,5 +22,7 @@
 		}
 	}
 
+	&_list {
+		margin-right: 44px;
 	}
 }
