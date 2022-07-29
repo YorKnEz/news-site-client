@@ -35,8 +35,12 @@ function NewsComments({ newsId, commentsCounter }) {
 
 	}
 
+	const onCommentRemove = id => {
+		let tempArr = comments
 
+		const commentIndex = tempArr.findIndex(comment => comment.id === id)
 
+		tempArr.splice(commentIndex, 1)
 
 		setComments([...tempArr])
 	}
