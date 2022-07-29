@@ -76,10 +76,10 @@
 	&-link-decorator-wrapper {
 		a {
 			text-decoration: none;
-			color: #44b6eb;
+			color: var(--link-color);
 
 			&:hover {
-				color: #75c9f0;
+				color: var(--linkHover-color);
 			}
 		}
 	}

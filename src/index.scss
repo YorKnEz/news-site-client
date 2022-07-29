@@ -28,10 +28,10 @@ select:-webkit-autofill:focus {
 
 .link {
 	text-decoration: none;
-	color: #44b6eb;
+	color: var(--link-color);
 
 	&:hover {
-		color: #75c9f0;
+		color: var(--linkHover-color);
 	}
 }
 
@@ -50,7 +50,7 @@ select:-webkit-autofill:focus {
 		user-select: none;
 		margin-left: 10px;
 		text-decoration: none;
-		color: rgb(27, 145, 204);
+		color: var(--link-color);
 
 		padding: 5px;
 		border-radius: 5px;
@@ -59,7 +59,7 @@ select:-webkit-autofill:focus {
 		transition: all 0.3s ease;
 
 		&:hover {
-			color: rgb(97, 188, 234);
+			color: var(--linkHover-color);
 		}
 
 		&:first-child {
@@ -86,8 +86,8 @@ select:-webkit-autofill:focus {
 		margin-top: 10px;
 		margin-right: 10px;
 		text-decoration: none;
-		color: rgb(27, 145, 204);
-		background-color: rgba(27, 145, 204, 0.3);
+		color: var(--link-color);
+		background-color: var(--linkBg-color);
 
 		padding: 5px;
 		border-radius: 5px;
@@ -96,8 +96,8 @@ select:-webkit-autofill:focus {
 		transition: all 0.3s ease;
 
 		&:hover {
-			color: rgb(97, 188, 234);
-			background-color: rgba(97, 188, 234, 0.3);
+			color: var(--linkHover-color);
+			background-color: var(--linkHoverBg-color);
 		}
 
 		&:last-child {
@@ -262,10 +262,10 @@ select:-webkit-autofill:focus {
 			background-color: transparent;
 			align-self: flex-start;
 			text-decoration: none;
-			color: #44b6eb;
+			color: var(--link-color);
 
 			&:hover {
-				color: #75c9f0;
+				color: var(--linkHover-color);
 			}
 		}
 	}
