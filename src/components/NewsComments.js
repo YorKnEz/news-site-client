@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { useQuery } from "@apollo/client"
 
 import "./NewsComments.scss"
-import { Comment } from "../components"
+import { Comment, QueryResult, CommentEditor } from "../components"
 import { UserContext } from "../context"
 import { COMMENTS_FOR_NEWS } from "../utils/apollo-queries"
 
@@ -64,7 +64,8 @@ function NewsComments({ newsId, commentsCounter }) {
 				{comments.map(comment => (
 					<Comment
 						key={comment.id}
-						data={comment}
+						comment={comment}
+						onCommentEdit={onCommentEdit}
 						onCommentRemove={onCommentRemove}
 					/>
 				))}
