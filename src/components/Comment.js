@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react"
+/* eslint-disable eqeqeq */
+import React, { useContext, useEffect, useState } from "react"
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
@@ -6,15 +7,15 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./Comment.scss"
-import { CommentVotes } from "../components"
+import { CommentEditor, CommentVotes } from "../components"
 import { UserContext } from "../context"
-import { EDIT_COMMENT, REMOVE_COMMENT } from "../utils/apollo-queries"
+import { REMOVE_COMMENT } from "../utils/apollo-queries"
 
-function Comment({ data, onCommentRemove }) {
+function Comment({ comment, onCommentRemove, onCommentEdit }) {
 	const client = useApolloClient()
 	const { user } = useContext(UserContext)
-	const [editComment] = useMutation(EDIT_COMMENT)
 	const [removeComment] = useMutation(REMOVE_COMMENT)
+	const [showEdit, setShowEdit] = useState(false)
 
 	const showDate = () => {
 		const createdAt = fromUnixTime(data.createdAt / 1000)
@@ -50,7 +51,11 @@ function Comment({ data, onCommentRemove }) {
 		})
 	}
 
-	const handleEdit = e => {}
+	const handleEdit = comment => {
+		onCommentEdit(comment)
+
+		setShowEdit(false)
+	}
 
 	return (
 		<div className="comment">
@@ -79,7 +84,11 @@ function Comment({ data, onCommentRemove }) {
 						{showDate()}
 					</span>
 				</div>
-				<div className="comment_body" id={`body${data.id}`}></div>
+				{showEdit ? (
+					<CommentEditor commentToEdit={comment} onCommentEdit={handleEdit} />
+				) : (
+					<div className="comment_body" id={`body${comment.id}`}></div>
+				)}
 				<div className="comment_options">
 					<CommentVotes data={data} />
 					{user.id == data.author.id && (
@@ -88,7 +97,13 @@ function Comment({ data, onCommentRemove }) {
 								<AiOutlineDelete className="comment_options_item_icon" />
 								Delete
 							</button>
-							<button onClick={handleEdit} className="comment_options_item">
+							<button
+								onClick={e => {
+									e.preventDefault()
+									setShowEdit(true)
+								}}
+								className="comment_options_item"
+							>
 								<AiOutlineEdit className="comment_options_item_icon" />
 								Edit
 							</button>
