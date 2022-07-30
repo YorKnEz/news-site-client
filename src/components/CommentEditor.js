@@ -345,7 +345,14 @@ const editorOptions = {
 	},
 }
 
-function CommentEditor({ newsId, onCommentAdd, commentToEdit, onCommentEdit }) {
+function CommentEditor({
+	parentId,
+	parentType,
+	onCommentAdd,
+	commentToEdit,
+	onCommentEdit,
+	onCommentReplyCancel,
+}) {
 	const client = useApolloClient()
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
@@ -374,8 +381,8 @@ function CommentEditor({ newsId, onCommentAdd, commentToEdit, onCommentEdit }) {
 		addComment({
 			variables: {
 				commentData: {
-					parentId: newsId,
-					parentType: "news",
+					parentId,
+					parentType,
 					body: html,
 				},
 			},
@@ -415,32 +422,36 @@ function CommentEditor({ newsId, onCommentAdd, commentToEdit, onCommentEdit }) {
 	}
 
 	// required to avoid a warning
-	function Button({ modalHandle, editorState, ...rest }) {
-		if (commentToEdit)
-			return (
-				<button
-					onClick={handleEdit}
-					className="rdw-option-wrapper comment-editor_postbtn "
-				>
-					Edit comment
-				</button>
-			)
-		else
-			return (
-				<button
-					onClick={handlePost}
-					className="rdw-option-wrapper comment-editor_postbtn "
-				>
-					Post comment
-				</button>
-			)
+	function Buttons({ modalHandle, editorState, ...rest }) {
+		return (
+			<div className="comment-editor_buttons">
+				{commentToEdit && (
+					<button onClick={handleEdit} className="comment-editor_buttons_item">
+						Edit comment
+					</button>
+				)}
+				{onCommentReplyCancel && (
+					<button
+						onClick={onCommentReplyCancel}
+						className="comment-editor_buttons_item"
+					>
+						Cancel
+					</button>
+				)}
+				{!commentToEdit && (
+					<button onClick={handlePost} className="comment-editor_buttons_item">
+						Post comment
+					</button>
+				)}
+			</div>
+		)
 	}
 
 	return (
 		<div className="comment-editor_container">
 			<Editor
 				toolbar={editorOptions}
-				toolbarCustomButtons={[<Button />]}
+				toolbarCustomButtons={[<Buttons />]}
 				placeholder="Write here..."
 				editorState={editorState}
 				onEditorStateChange={setEditorState}

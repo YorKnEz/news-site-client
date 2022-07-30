@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
+import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"
@@ -11,7 +12,7 @@ import { CommentEditor, CommentVotes } from "../components"
 import { UserContext } from "../context"
 import { REMOVE_COMMENT } from "../utils/apollo-queries"
 
-function Comment({ comment, onCommentRemove, onCommentEdit }) {
+function Comment({ comment, onCommentAdd, onCommentEdit, onCommentRemove }) {
 	const client = useApolloClient()
 	const { user } = useContext(UserContext)
 	const [removeComment] = useMutation(REMOVE_COMMENT)
@@ -24,6 +25,7 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 
 		return `  -  Posted ${distance} ago`
 	}
+	const [showReply, setShowReply] = useState(false)
 
 	useEffect(() => {
 		if (comment) {
@@ -34,6 +36,25 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 			div.innerHTML = comment.body
 		}
 	}, [comment])
+
+
+	const onCommentReplyCancel = e => {
+		e.preventDefault()
+
+		setShowReply(false)
+	}
+
+	const onReplyAdd = reply => {
+		setReplies(replies => [reply, ...replies])
+
+		setShowReply(false)
+	}
+
+	const handleReply = e => {
+		e.preventDefault()
+
+		setShowReply(value => !value)
+	}
 
 	const handleDelete = e => {
 		e.preventDefault()
@@ -91,6 +112,10 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 				)}
 				<div className="comment_options">
 					<CommentVotes data={comment} />
+					<button onClick={handleReply} className="comment_options_item">
+						<BsReply className="comment_options_item_icon" />
+						Reply
+					</button>
 					{user.id == comment.author.id && (
 						<>
 							<button onClick={handleDelete} className="comment_options_item">
@@ -110,6 +135,36 @@ function Comment({ comment, onCommentRemove, onCommentEdit }) {
 						</>
 					)}
 				</div>
+				{showReply && (
+					// <div className="comment_reply">
+					// 	<div className="comment_reply_container">
+					// 		<div className="comment_reply_line" />
+					// 	</div>
+					// 	<CommentEditor
+					// 		parentId={comment.id}
+					// 		parentType="comment"
+					// 		onCommentAdd={onReplyAdd}
+					// 		onCommentReplyCancel={onCommentReplyCancel}
+					// 	/>
+					// </div>
+					<div
+						className="comment"
+						style={{
+							left: "-27px",
+							width: `calc(100% + 27px)`,
+						}}
+					>
+						<div className="comment_container1">
+							<div className="comment_line" style={{ height: "100%" }} />
+						</div>
+						<CommentEditor
+							parentId={comment.id}
+							parentType="comment"
+							onCommentAdd={onReplyAdd}
+							onCommentReplyCancel={onCommentReplyCancel}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	)

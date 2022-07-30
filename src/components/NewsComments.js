@@ -64,7 +64,11 @@ function NewsComments({ newsId, commentsCounter }) {
 						{user.fullName}
 					</Link>
 				</span>
-				<CommentEditor newsId={newsId} onCommentAdd={onCommentAdd} />
+				<CommentEditor
+					parentId={newsId}
+					parentType="news"
+					onCommentAdd={onCommentAdd}
+				/>
 			</div>
 			<div className="comments_list">
 				{comments.map(comment => (
