@@ -6,7 +6,7 @@
 	width: calc(100% - 20px);
 	padding: 5px 10px 5px 10px;
 	border-bottom: 1px solid var(--border-color);
-	background-color: var(--compBackground-color);
+	background-color: var(--compBg-color);
 	display: grid;
 	grid-template-columns: [col1] 25% [col2] 50% [col3] 25% [col4];
 	align-items: center;
@@ -54,14 +54,14 @@
 	}
 
 	&_search {
-		background-color: var(--compBackground-color);
+		background-color: var(--compBg-color);
 		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		font-size: 16px;
 		color: var(--text-color);
 
 		&_input {
-			background-color: var(--compBackground-color);
+			background-color: var(--compBg-color);
 			border: none;
 			border-radius: 5px;
 			font-size: 16px;
@@ -124,7 +124,7 @@
 	top: -1000px;
 	right: 10px;
 	padding: 20px 20px;
-	background-color: var(--compBackground-color);
+	background-color: var(--compBg-color);
 	border: 1px solid var(--border-color);
 	border-radius: 0 0 5px 5px;
 	display: flex;
