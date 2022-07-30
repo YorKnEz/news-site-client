@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	color: var(--text-color);
-	background-color: var(--pageBackground-color);
+	background-color: var(--pageBg-color);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
 		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
@@ -22,7 +22,7 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
 	color: var(--text-color);
-	box-shadow: 0 0 0px 1000px var(--compBackground-color) inset;
+	box-shadow: 0 0 0px 1000px var(--compBg-color) inset;
 	transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -177,13 +177,13 @@ select:-webkit-autofill:focus {
 		color: var(--secondText-color);
 		padding: 0 5px 0 5px;
 		font-size: 16px;
-		background-color: var(--compBackground-color);
+		background-color: var(--compBg-color);
 		display: inline-block;
 		user-select: none;
 	}
 
 	&_input {
-		background-color: var(--compBackground-color);
+		background-color: var(--compBg-color);
 		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		padding: 16px 20px;
