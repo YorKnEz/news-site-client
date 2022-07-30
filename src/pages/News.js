@@ -37,7 +37,8 @@ function News() {
 	const history = useNavigate()
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
-	const [showModal, setShowModal] = useState(false)
+	const [showDeleteModal, setShowDeleteModal] = useState(false)
+	const [showShareModal, setShowShareModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
@@ -70,8 +71,8 @@ function News() {
 		return `Posted ${distance} ago`
 	}
 
-	const onModalSubmit = async () => {
-		setShowModal(false)
+	const onDeleteModalSubmit = async () => {
+		setShowDeleteModal(false)
 
 		deleteNews({
 			variables: {
@@ -87,14 +88,18 @@ function News() {
 		})
 	}
 
-	const onModalDecline = () => {
-		setShowModal(false)
+	const onDeleteModalDecline = () => {
+		setShowDeleteModal(false)
+	}
+
+	const onShareModalSubmit = async () => {
+		setShowShareModal(false)
 	}
 
 	const handleDelete = e => {
 		e.preventDefault()
 
-		setShowModal(true)
+		setShowDeleteModal(true)
 	}
 
 	const handleEdit = e => {
@@ -103,20 +108,33 @@ function News() {
 		history(`/news/${data.news.id}/edit`)
 	}
 
-	const handleShare = e => {}
+	const handleShare = e => {
+		setShowShareModal(true)
+	}
 
 	const handleSave = e => {}
 
 	return (
 		<Page>
-			{showModal && (
-				<Modal onSubmit={onModalSubmit} onDecline={onModalDecline}>
+			{showDeleteModal && (
+				<Modal onSubmit={onDeleteModalSubmit} onDecline={onDeleteModalDecline}>
 					<h3 style={{ margin: 0 }}>Delete news</h3>
 					<hr />
 					<p>
 						Are you sure you want to delete this news? You won't be able to
 						recover it afterwards.
 					</p>
+				</Modal>
+			)}
+			{showShareModal && (
+				<Modal onSubmit={onShareModalSubmit}>
+					<h3 style={{ margin: 0 }}>Share this with your friends</h3>
+					<hr />
+					<input
+						className="formItem_input"
+						type="text"
+						defaultValue={window.location}
+					/>
 				</Modal>
 			)}
 			<QueryResult loading={loading} error={error} data={data}>
