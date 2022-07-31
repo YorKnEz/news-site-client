@@ -10,12 +10,16 @@ import { COMMENTS_FOR_NEWS } from "../utils/apollo-queries"
 
 function NewsComments({ newsId, commentsCounter }) {
 	const { user } = useContext(UserContext)
-	const [offsetIndex, setOffsetIndex] = useState(0)
+	const [offset, setOffset] = useState(0)
+	const [oldestCommentDate, setOldestCommentDate] = useState(
+		`${new Date().getTime()}`
+	)
 	const [comments, setComments] = useState([])
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: {
-			offsetIndex: offsetIndex,
-			newsId: newsId,
+			offset,
+			oldestCommentDate,
+			newsId,
 		},
 	})
 
@@ -52,7 +56,8 @@ function NewsComments({ newsId, commentsCounter }) {
 	const handleFetchComments = e => {
 		e.preventDefault()
 
-		setOffsetIndex(index => index + 1)
+		setOffset(comments.length)
+		setOldestCommentDate(comments[comments.length - 1].createdAt)
 	}
 
 	return (

@@ -4,19 +4,34 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
-import { useApolloClient, useMutation } from "@apollo/client"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./Comment.scss"
-import { CommentEditor, CommentVotes } from "../components"
+import { CommentEditor, CommentVotes, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { REMOVE_COMMENT } from "../utils/apollo-queries"
+import { COMMENT_REPLIES, REMOVE_COMMENT } from "../utils/apollo-queries"
 
-function Comment({ comment, onCommentAdd, onCommentEdit, onCommentRemove }) {
+function Comment({ comment, onCommentEdit, onCommentRemove }) {
 	const client = useApolloClient()
 	const { user } = useContext(UserContext)
 	const [removeComment] = useMutation(REMOVE_COMMENT)
 	const [showEdit, setShowEdit] = useState(false)
+	const [showCommentReplies, setShowCommentReplies] = useState(false)
+	const [showReply, setShowReply] = useState(false)
+	const [replies, setReplies] = useState([])
+	const [offset, setOffset] = useState(0)
+	const [oldestCommentDate, setOldestCommentDate] = useState(
+		`${new Date().getTime()}`
+	)
+	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
+		variables: {
+			offset,
+			oldestCommentDate,
+			commentId: comment.id,
+		},
+		skip: !showCommentReplies,
+	})
 
 	const showDate = () => {
 		const createdAt = fromUnixTime(comment.createdAt / 1000)
@@ -46,6 +61,7 @@ function Comment({ comment, onCommentAdd, onCommentEdit, onCommentRemove }) {
 
 	const onReplyAdd = reply => {
 		setReplies(replies => [reply, ...replies])
+		if (!showCommentReplies) setOldestCommentDate(reply.createdAt)
 
 		setShowReply(false)
 	}
@@ -74,8 +90,17 @@ function Comment({ comment, onCommentAdd, onCommentEdit, onCommentRemove }) {
 
 	const handleEdit = comment => {
 		onCommentEdit(comment)
+	const handleFetchComments = e => {
+		e.preventDefault()
 
-		setShowEdit(false)
+		if (!showCommentReplies) {
+			setShowCommentReplies(true)
+
+			return
+		}
+
+		setOffset(replies.length)
+		setOldestCommentDate(replies[replies.length - 1].createdAt)
 	}
 
 	return (
