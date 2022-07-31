@@ -1,20 +1,26 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 
 import "./NewsComments.scss"
 import { Comment, QueryResult, CommentEditor } from "../components"
 import { UserContext } from "../context"
-import { COMMENTS_FOR_NEWS } from "../utils/apollo-queries"
+import {
+	COMMENTS_FOR_NEWS,
+	UPDATE_COMMENTS_COUNTER,
+} from "../utils/apollo-queries"
 
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
+	const [comments, setComments] = useState([])
 	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
 	)
-	const [comments, setComments] = useState([])
+	const [totalReplies, setTotalReplies] = useState(0)
+
+	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: {
 			offset,
@@ -26,13 +32,25 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	useEffect(() => {
 		if (data) {
 			console.log(data)
-			setComments(comms => [...comms, ...data.commentsForNews])
+
+			setComments(comms => {
+				let tempArr = [...comms, ...data.commentsForNews]
+
+				setTotalReplies(
+					tempArr.length +
+						tempArr.reduce((prev, curr) => prev + curr.replies, 0)
+				)
+
+				return [...tempArr]
+			})
 		}
 	}, [data])
 
 	const onCommentAdd = comment => {
 		setComments(comments => [comment, ...comments])
+
 		setCommentsCounter(counter => counter + 1)
+		setTotalReplies(counter => counter + 1)
 	}
 
 	const onCommentEdit = comment => {
@@ -50,6 +68,21 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 		setOffset(comments.length)
 		setOldestCommentDate(comments[comments.length - 1].createdAt)
+	}
+
+	const updateCounterLocal = () => {
+		updateCommentsCounter({
+			variables: {
+				action: "up",
+				id: newsId,
+			},
+			onCompleted: res => {
+				console.log(res)
+
+				setCommentsCounter(counter => counter + 1)
+				setTotalReplies(counter => counter + 1)
+			},
+		})
 	}
 
 	return (
@@ -71,13 +104,16 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 				{comments.map(comment => (
 					<Comment
 						key={comment.id}
+						newsId={newsId}
 						comment={comment}
 						onCommentEdit={onCommentEdit}
+						updateCounter={updateCounterLocal}
 					/>
 				))}
-				{commentsCounter - comments.length > 0 && (
+				{console.log(commentsCounter, totalReplies)}
+				{commentsCounter - totalReplies > 0 && (
 					<button onClick={handleFetchComments} className="comments_more">
-						Show {commentsCounter - comments.length} more comments
+						Show {commentsCounter - totalReplies} more comments
 					</button>
 				)}
 				<QueryResult loading={loading} error={error} data={data} />

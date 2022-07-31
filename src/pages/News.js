@@ -25,16 +25,10 @@ import { DELETE_NEWS, NEWS2 } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
-	const client = useApolloClient()
 	const { newsId } = useParams()
-	const { loading, error, data } = useQuery(NEWS2, {
-		variables: {
-			newsId: newsId,
-		},
-	})
-	const [deleteNews] = useMutation(DELETE_NEWS)
-	const { user } = useContext(UserContext)
 	const history = useNavigate()
+
+	const { user } = useContext(UserContext)
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	const [commentsCounter, setCommentsCounter] = useState(0)
@@ -42,6 +36,14 @@ function News() {
 	const [showShareModal, setShowShareModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
+
+	const client = useApolloClient()
+	const { loading, error, data } = useQuery(NEWS2, {
+		variables: {
+			newsId: newsId,
+		},
+	})
+	const [deleteNews] = useMutation(DELETE_NEWS)
 
 	useEffect(() => {
 		if (data) {

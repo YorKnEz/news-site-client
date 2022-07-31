@@ -143,6 +143,30 @@ export const VOTE_COMMENT = gql`
 	}
 `
 
+// udpate the comments counter of a news
+export const UPDATE_COMMENTS_COUNTER = gql`
+	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
+		updateCommentsCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			comments
+		}
+	}
+`
+
+// udpate the replies counter of a comment
+export const UPDATE_REPLIES_COUNTER = gql`
+	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
+		updateRepliesCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			replies
+		}
+	}
+`
+
 // QUERIES
 
 // returns news from yorknews

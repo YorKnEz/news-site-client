@@ -10,21 +10,28 @@ import { formatDistance, fromUnixTime } from "date-fns"
 import "./Comment.scss"
 import { CommentEditor, CommentVotes, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { COMMENT_REPLIES, REMOVE_COMMENT } from "../utils/apollo-queries"
+import {
+	COMMENT_REPLIES,
+	REMOVE_COMMENT,
+	UPDATE_REPLIES_COUNTER,
+} from "../utils/apollo-queries"
 
-function Comment({ comment, onCommentEdit, onCommentRemove }) {
-	const client = useApolloClient()
+function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-	const [removeComment] = useMutation(REMOVE_COMMENT)
 	const [showEdit, setShowEdit] = useState(false)
 	const [showCommentReplies, setShowCommentReplies] = useState(false)
 	const [showReply, setShowReply] = useState(false)
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
+	const [totalReplies, setTotalReplies] = useState(0)
 	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
 	)
+
+	const client = useApolloClient()
+	const [removeComment] = useMutation(REMOVE_COMMENT)
+	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
 			offset,
@@ -38,7 +45,16 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 		if (data) {
 			console.log(data)
 
-			setReplies(comms => [...comms, ...data.commentReplies])
+			setReplies(comms => {
+				let tempArr = [...comms, ...data.commentReplies]
+
+				setTotalReplies(
+					tempArr.length +
+						tempArr.reduce((prev, curr) => prev + curr.replies, 0)
+				)
+
+				return [...tempArr]
+			})
 		}
 	}, [data])
 
@@ -68,7 +84,11 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 
 	const onReplyAdd = reply => {
 		setReplies(replies => [reply, ...replies])
+
 		setRepliesCounter(counter => counter + 1)
+		setTotalReplies(counter => counter + 1)
+
+		updateCounter()
 
 		if (!showCommentReplies) setOldestCommentDate(reply.createdAt)
 
@@ -126,6 +146,23 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 
 		setOffset(replies.length)
 		setOldestCommentDate(replies[replies.length - 1].createdAt)
+	}
+
+	const updateCounterLocal = () => {
+		updateRepliesCounter({
+			variables: {
+				action: "up",
+				id: comment.id,
+			},
+			onCompleted: res => {
+				console.log(res)
+
+				setRepliesCounter(counter => counter + 1)
+				setTotalReplies(counter => counter + 1)
+			},
+		})
+
+		updateCounter()
 	}
 
 	return (
@@ -211,16 +248,18 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 					{replies.map(comment => (
 						<Comment
 							key={comment.id}
+							newsId={newsId}
 							comment={comment}
 							onCommentEdit={onReplyEdit}
+							updateCounter={updateCounterLocal}
 						/>
 					))}
-					{repliesCounter - replies.length > 0 && (
+					{repliesCounter - totalReplies > 0 && (
 						<button
 							onClick={handleFetchComments}
 							className="comments_more comments_more_replies"
 						>
-							Show {repliesCounter - replies.length} more comments
+							Show {repliesCounter - totalReplies} more comments
 						</button>
 					)}
 					<QueryResult loading={loading} error={error} data={data} />
