@@ -1,9 +1,21 @@
 .comment {
+	width: 100%;
 	display: grid;
 	grid-template-columns: 44px calc(100% - 44px);
-	margin-bottom: 24px;
+	position: relative;
+	margin-top: 24px;
+
+	&_replies {
+		width: calc(100% + 27px);
+		left: -27px;
+	}
+
+	&_reply {
+		margin-top: 8px;
+	}
 
 	&_container1 {
+		padding-left: 8px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -19,9 +31,26 @@
 	}
 
 	&_line {
-		height: calc(100% - 32px - 8px);
+		height: 100%;
 		width: 2px;
 		background-color: var(--border-color);
+
+		&:hover {
+			background-color: var(--secondText-color);
+		}
+
+		&_container {
+			height: calc(100% - 32px - 8px);
+			width: 24px;
+			display: flex;
+			justify-content: center;
+
+			&:hover {
+				.comment_line {
+					background-color: var(--secondText-color);
+				}
+			}
+		}
 	}
 
 	&_container2 {
@@ -67,6 +96,7 @@
 
 	&_options {
 		display: flex;
+		margin-bottom: 8px;
 
 		&_item {
 			margin-left: 16px;
@@ -87,6 +117,14 @@
 			&_icon {
 				font-size: 20px;
 				margin-right: 4px;
+			}
+		}
+
+		&_collapse {
+			margin: 0;
+
+			&_icon {
+				margin: 0;
 			}
 		}
 	}

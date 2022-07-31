@@ -10,6 +10,21 @@ import { CardVotes } from "../components"
 
 function NewsCard({ data, matches }) {
 	useEffect(() => {
+		const div = document.querySelector("#body")
+
+		let body = data.body
+
+		// replace all html tags from Draft-js to get raw text body
+		body = body.replaceAll(/<\/?[\s\S]*?>/g, "")
+
+		// get first 400 chars of that
+		body = body.slice(0, 396) + "..."
+
+		// render it
+		div.innerHTML = body
+	})
+
+	useEffect(() => {
 		if (matches) {
 			const span = document.getElementById(data.id + "span")
 
@@ -77,17 +92,21 @@ function NewsCard({ data, matches }) {
 				</span>
 				<Link to={`/news/${data.id}`} className="newscard_link">
 					<span className="newscard_title">{data.title}</span>
-					<div
-						className="newscard_thumbnail"
-						style={{ backgroundImage: `url("${data.thumbnail}")` }}
-					>
-						{matches && (
-							<span
-								id={data.id + "span"}
-								className="newscard_matches"
-							>{`Matches ${matches}%`}</span>
-						)}
-					</div>
+					{data.thumbnail ? (
+						<div
+							className="newscard_thumbnail"
+							style={{ backgroundImage: `url("${data.thumbnail}")` }}
+						>
+							{matches && (
+								<span
+									id={data.id + "span"}
+									className="newscard_matches"
+								>{`Matches ${matches}%`}</span>
+							)}
+						</div>
+					) : (
+						<div className="newscard_body" id="body"></div>
+					)}
 				</Link>
 				<div className="newscard_tags">{showTags()}</div>
 				<div className="newscard_options">

@@ -406,8 +406,8 @@ function CommentEditor({
 		editComment({
 			variables: {
 				commentData: {
-					parentId: commentToEdit.parentId,
-					parentType: "news",
+					parentId,
+					parentType,
 					body: html,
 				},
 				id: commentToEdit.id,

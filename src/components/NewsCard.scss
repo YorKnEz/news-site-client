@@ -26,7 +26,7 @@
 	}
 
 	&_container {
-		width: 100%;
+		width: calc(100% - 44px);
 		padding: 10px 0;
 		display: flex;
 		flex-direction: column;
@@ -51,6 +51,7 @@
 	&_link {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 
 		text-decoration: none;
 		color: var(--text-color);
@@ -68,6 +69,15 @@
 		background-position: center;
 		width: 100%;
 		padding-top: 56.25%;
+	}
+
+	&_body {
+		padding: 0 8px;
+		width: calc(100% - 16px);
+
+		word-wrap: break-word;
+		font-size: 16px;
+		color: var(--secondText-color);
 	}
 
 	&_tags {

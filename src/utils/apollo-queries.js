@@ -110,6 +110,22 @@ export const REMOVE_COMMENT = gql`
 			code
 			success
 			message
+			comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
 		}
 	}
 `
@@ -123,6 +139,30 @@ export const VOTE_COMMENT = gql`
 			message
 			likes
 			dislikes
+		}
+	}
+`
+
+// udpate the comments counter of a news
+export const UPDATE_COMMENTS_COUNTER = gql`
+	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
+		updateCommentsCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			comments
+		}
+	}
+`
+
+// udpate the replies counter of a comment
+export const UPDATE_REPLIES_COUNTER = gql`
+	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
+		updateRepliesCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			replies
 		}
 	}
 `
@@ -357,8 +397,46 @@ export const LIKED_NEWS = gql`
 
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
-	query CommentsForNews($offsetIndex: Int, $newsId: ID!) {
-		commentsForNews(offsetIndex: $offsetIndex, newsId: $newsId) {
+	query CommentsForNews(
+		$offset: Int
+		$oldestCommentDate: String!
+		$newsId: ID!
+	) {
+		commentsForNews(
+			offset: $offset
+			oldestCommentDate: $oldestCommentDate
+			newsId: $newsId
+		) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			replies
+			createdAt
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+	}
+`
+
+// retrieve the replies of a comment
+export const COMMENT_REPLIES = gql`
+	query CommentReplies(
+		$offset: Int
+		$oldestCommentDate: String!
+		$commentId: ID!
+	) {
+		commentReplies(
+			offset: $offset
+			oldestCommentDate: $oldestCommentDate
+			commentId: $commentId
+		) {
 			id
 			parentId
 			parentType
