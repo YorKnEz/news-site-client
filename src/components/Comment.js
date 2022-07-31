@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineExpand } from "react-icons/ai"
 import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
@@ -21,6 +21,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const [showEdit, setShowEdit] = useState(false)
 	const [showCommentReplies, setShowCommentReplies] = useState(false)
 	const [showReply, setShowReply] = useState(false)
+	const [collapse, setCollapse] = useState(false)
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [totalReplies, setTotalReplies] = useState(0)
@@ -148,6 +149,12 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 		setOldestCommentDate(replies[replies.length - 1].createdAt)
 	}
 
+	const toggleCollapse = e => {
+		e.preventDefault()
+
+		setCollapse(value => !value)
+	}
+
 	const updateCounterLocal = () => {
 		updateRepliesCounter({
 			variables: {
@@ -182,7 +189,18 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						})`,
 					}}
 				></div>
-				<div className="comment_line" />
+				{collapse ? (
+					<button
+						onClick={toggleCollapse}
+						className="comment_options_item comment_options_collapse"
+					>
+						<AiOutlineExpand className="comment_options_item_icon comment_options_collapse_icon" />
+					</button>
+				) : (
+					<div onClick={toggleCollapse} className="comment_line_container">
+						<div className="comment_line" />
+					</div>
+				)}
 			</div>
 			<div className="comment_container2">
 				<div className="comment_posted">
@@ -196,42 +214,45 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						{showDate()}
 					</span>
 				</div>
-				{showEdit ? (
-					<CommentEditor
-						parentId={comment.parentId}
-						parentType={comment.parentType}
-						commentToEdit={comment}
-						onCommentEdit={handleEdit}
-					/>
-				) : (
-					<div className="comment_body" id={`body${comment.id}`}></div>
+				{!collapse &&
+					(showEdit ? (
+						<CommentEditor
+							parentId={comment.parentId}
+							parentType={comment.parentType}
+							commentToEdit={comment}
+							onCommentEdit={handleEdit}
+						/>
+					) : (
+						<div className="comment_body" id={`body${comment.id}`}></div>
+					))}
+				{!collapse && (
+					<div className="comment_options">
+						<CommentVotes data={comment} />
+						<button onClick={handleReply} className="comment_options_item">
+							<BsReply className="comment_options_item_icon" />
+							Reply
+						</button>
+						{user.id == comment.author.id && (
+							<>
+								<button onClick={handleDelete} className="comment_options_item">
+									<AiOutlineDelete className="comment_options_item_icon" />
+									Delete
+								</button>
+								<button
+									onClick={e => {
+										e.preventDefault()
+										setShowEdit(true)
+									}}
+									className="comment_options_item"
+								>
+									<AiOutlineEdit className="comment_options_item_icon" />
+									Edit
+								</button>
+							</>
+						)}
+					</div>
 				)}
-				<div className="comment_options">
-					<CommentVotes data={comment} />
-					<button onClick={handleReply} className="comment_options_item">
-						<BsReply className="comment_options_item_icon" />
-						Reply
-					</button>
-					{user.id == comment.author.id && (
-						<>
-							<button onClick={handleDelete} className="comment_options_item">
-								<AiOutlineDelete className="comment_options_item_icon" />
-								Delete
-							</button>
-							<button
-								onClick={e => {
-									e.preventDefault()
-									setShowEdit(true)
-								}}
-								className="comment_options_item"
-							>
-								<AiOutlineEdit className="comment_options_item_icon" />
-								Edit
-							</button>
-						</>
-					)}
-				</div>
-				{showReply && (
+				{!collapse && showReply && (
 					<div className="comment comment_replies comment_reply">
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
@@ -244,26 +265,28 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						/>
 					</div>
 				)}
-				<div className="comments_list">
-					{replies.map(comment => (
-						<Comment
-							key={comment.id}
-							newsId={newsId}
-							comment={comment}
-							onCommentEdit={onReplyEdit}
-							updateCounter={updateCounterLocal}
-						/>
-					))}
-					{repliesCounter - totalReplies > 0 && (
-						<button
-							onClick={handleFetchComments}
-							className="comments_more comments_more_replies"
-						>
-							Show {repliesCounter - totalReplies} more comments
-						</button>
-					)}
-					<QueryResult loading={loading} error={error} data={data} />
-				</div>
+				{!collapse && (
+					<div className="comments_list">
+						{replies.map(comment => (
+							<Comment
+								key={comment.id}
+								newsId={newsId}
+								comment={comment}
+								onCommentEdit={onReplyEdit}
+								updateCounter={updateCounterLocal}
+							/>
+						))}
+						{repliesCounter - totalReplies > 0 && (
+							<button
+								onClick={handleFetchComments}
+								className="comments_more comments_more_replies"
+							>
+								Show {repliesCounter - totalReplies} more comments
+							</button>
+						)}
+						<QueryResult loading={loading} error={error} data={data} />
+					</div>
+				)}
 			</div>
 		</div>
 	)

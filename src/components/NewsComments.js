@@ -110,7 +110,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 						updateCounter={updateCounterLocal}
 					/>
 				))}
-				{console.log(commentsCounter, totalReplies)}
 				{commentsCounter - totalReplies > 0 && (
 					<button onClick={handleFetchComments} className="comments_more">
 						Show {commentsCounter - totalReplies} more comments

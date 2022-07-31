@@ -31,9 +31,26 @@
 	}
 
 	&_line {
-		height: calc(100% - 32px - 8px);
+		height: 100%;
 		width: 2px;
 		background-color: var(--border-color);
+
+		&:hover {
+			background-color: var(--secondText-color);
+		}
+
+		&_container {
+			height: calc(100% - 32px - 8px);
+			width: 24px;
+			display: flex;
+			justify-content: center;
+
+			&:hover {
+				.comment_line {
+					background-color: var(--secondText-color);
+				}
+			}
+		}
 	}
 
 	&_container2 {
@@ -100,6 +117,14 @@
 			&_icon {
 				font-size: 20px;
 				margin-right: 4px;
+			}
+		}
+
+		&_collapse {
+			margin: 0;
+
+			&_icon {
+				margin: 0;
 			}
 		}
 	}
