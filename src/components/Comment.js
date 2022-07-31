@@ -213,23 +213,8 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 							key={comment.id}
 							comment={comment}
 							onCommentEdit={onReplyEdit}
-							// onCommentRemove={onReplyRemove}
 						/>
 					))}
-					{/* {(!showCommentReplies
-						? repliesCounter
-						: repliesCounter - replies.length) > 0 && (
-						<button
-							onClick={handleFetchComments}
-							className="comments_more comments_more_replies"
-						>
-							Show{" "}
-							{!showCommentReplies
-								? repliesCounter
-								: repliesCounter - replies.length}{" "}
-							more comments
-						</button>
-					)} */}
 					{repliesCounter - replies.length > 0 && (
 						<button
 							onClick={handleFetchComments}

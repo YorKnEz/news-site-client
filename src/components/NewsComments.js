@@ -45,17 +45,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 		setComments([...tempArr])
 	}
 
-	// const onCommentRemove = id => {
-	// 	let tempArr = comments
-
-	// 	const commentIndex = tempArr.findIndex(comment => comment.id === id)
-
-	// 	tempArr.splice(commentIndex, 1)
-
-	// 	setComments([...tempArr])
-	// 	setCommentsCounter(counter => counter - 1)
-	// }
-
 	const handleFetchComments = e => {
 		e.preventDefault()
 
@@ -84,7 +73,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 						key={comment.id}
 						comment={comment}
 						onCommentEdit={onCommentEdit}
-						// onCommentRemove={onCommentRemove}
 					/>
 				))}
 				{commentsCounter - comments.length > 0 && (
