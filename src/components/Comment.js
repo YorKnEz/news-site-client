@@ -160,7 +160,12 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 					</span>
 				</div>
 				{showEdit ? (
-					<CommentEditor commentToEdit={comment} onCommentEdit={handleEdit} />
+					<CommentEditor
+						parentId={comment.parentId}
+						parentType={comment.parentType}
+						commentToEdit={comment}
+						onCommentEdit={handleEdit}
+					/>
 				) : (
 					<div className="comment_body" id={`body${comment.id}`}></div>
 				)}
