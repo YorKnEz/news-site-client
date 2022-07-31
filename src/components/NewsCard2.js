@@ -10,7 +10,6 @@ function NewsCard2({ data }) {
 		const div = document.getElementById(data.id)
 
 		let body = data.body
-		// find the last line break to get exactly 5 lines to display
 
 		// replace all html tags from Draft-js to get raw text body
 		body = body.replaceAll(/<\/?[\s\S]*?>/g, "")

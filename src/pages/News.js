@@ -163,11 +163,13 @@ function News() {
 									className="news_link news_padding"
 								>
 									<span className="news_title">{data.news.title}</span>
-									<img
-										className="news_thumbnail"
-										src={data.news.thumbnail}
-										alt={data.news.title}
-									/>
+									{data.news.thumbnail && (
+										<img
+											className="news_thumbnail"
+											src={data.news.thumbnail}
+											alt={data.news.title}
+										/>
+									)}
 								</Link>
 								<div className="news_body news_padding" id="body"></div>
 								<div className="news_sources news_padding">

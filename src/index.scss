@@ -167,6 +167,8 @@ select:-webkit-autofill:focus {
 	--labelOutTop: 0;
 	--labelOutLeft: 8px;
 
+	width: 100%;
+
 	display: inline-block;
 	position: relative;
 
@@ -206,25 +208,63 @@ select:-webkit-autofill:focus {
 		}
 	}
 
-	&_fileLabel {
-		cursor: pointer;
-		color: var(--text-color) !important;
-		display: flex;
-		align-items: center;
-		font-size: 16px;
-		margin: 16px 16px;
+	&_file {
+		&_label {
+			cursor: pointer;
+			color: var(--text-color) !important;
+			display: flex;
+			align-items: center;
+			font-size: 16px;
+			margin: 16px 16px;
+		}
+
+		&_icon {
+			width: 32px;
+			height: 32px;
+			margin-right: 8px;
+		}
+
+		&_input {
+			opacity: 0;
+			position: absolute;
+			z-index: -1;
+		}
 	}
 
-	&_fileIcon {
-		width: 32px;
-		height: 32px;
-		margin-right: 8px;
-	}
+	&_image {
+		&_label {
+			cursor: pointer;
+			color: var(--text-color) !important;
+			font-size: 16px;
+			margin-bottom: 16px;
 
-	&_fileInput {
-		opacity: 0;
-		position: absolute;
-		z-index: -1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		&_title {
+			display: flex;
+			align-items: center;
+		}
+
+		&_icon {
+			width: 32px;
+			height: 32px;
+			margin-right: 8px;
+		}
+
+		&_thumbnail {
+			background-size: cover;
+			background-position: center;
+			width: 100%;
+			padding-top: 56.25%;
+		}
+
+		&_input {
+			opacity: 0;
+			position: absolute;
+			z-index: -1;
+		}
 	}
 
 	textarea {

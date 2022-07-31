@@ -96,28 +96,32 @@ function CreateNews() {
 			let tagsFinal = ""
 			tagsFinal = tagsFinal.concat(tags)
 
-			const thumbnail = data.thumbnail[0] ? data.thumbnail[0] : ""
-			const fileName = Date.now() + "-" + thumbnail.name
-
-			const form = new FormData()
-
-			form.append("file", thumbnail, fileName)
-
-			await axios({
-				method: "post",
-				url: `${ip}/news/upload-thumbnail`,
-				data: form,
-				headers: {
-					authorization: token,
-				},
-			})
-
 			const requestBody = {
 				title: data.title,
-				thumbnail: `${ip}/public/${fileName}`,
 				sources: sourcesFinal,
 				tags: tagsFinal,
 				body: html,
+			}
+
+			const thumbnail = data.thumbnail[0] ? data.thumbnail[0] : ""
+
+			if (thumbnail) {
+				const fileName = Date.now() + "-" + thumbnail.name
+
+				const form = new FormData()
+
+				form.append("file", thumbnail, fileName)
+
+				requestBody.thumbnail = `${ip}/public/${fileName}`
+
+				await axios({
+					method: "post",
+					url: `${ip}/news/upload-thumbnail`,
+					data: form,
+					headers: {
+						authorization: token,
+					},
+				})
 			}
 
 			createNews({
@@ -254,7 +258,7 @@ function CreateNews() {
 			)
 	}
 
-	const isSizeOk = value => value[0].size < 10485760
+	const isSizeOk = value => (value[0] ? value[0].size < 10485760 : true)
 
 	return (
 		<Page>
@@ -281,30 +285,32 @@ function CreateNews() {
 						{errorCheck("title")}
 					</div>
 					<div className="thumbnail_wrapper">
-						<div
-							style={{
-								backgroundImage:
-									watchThumbnail.length > 0
-										? `url(${URL.createObjectURL(watchThumbnail[0])})`
-										: "url(/default_thumbnail.png)",
-							}}
-							className="thumbnail"
-						></div>
 						<div className="formItem">
-							<label className="formItem_fileLabel" htmlFor="thumbnail">
-								<AiOutlinePicture className="formItem_fileIcon" />
-								{watchThumbnail.length > 0
-									? watchThumbnail[0].name
-									: "Your thumbnail"}
+							<label className="formItem_image_label" htmlFor="thumbnail">
+								<span className="formItem_image_title">
+									<AiOutlinePicture className="formItem_image_icon" />
+									{watchThumbnail.length > 0
+										? watchThumbnail[0].name
+										: "Your thumbnail"}
+								</span>
+								<div
+									className="formItem_image_thumbnail"
+									style={{
+										backgroundImage:
+											watchThumbnail.length > 0
+												? `url(${URL.createObjectURL(watchThumbnail[0])})`
+												: "url(/default_thumbnail.png)",
+									}}
+								/>
 							</label>
 							<input
-								className="formItem_fileInput"
+								className="formItem_image_input"
 								id="thumbnail"
 								name="thumbnail"
 								type="file"
 								accept="image/*"
 								{...register("thumbnail", {
-									required: true,
+									required: false,
 									validate: isSizeOk,
 								})}
 							/>
