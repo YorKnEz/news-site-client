@@ -110,6 +110,22 @@ export const REMOVE_COMMENT = gql`
 			code
 			success
 			message
+			comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
 		}
 	}
 `

@@ -34,14 +34,13 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 		skip: !showCommentReplies,
 	})
 
-	const showDate = () => {
-		const createdAt = fromUnixTime(comment.createdAt / 1000)
-		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(createdAt, currentDate)
+	useEffect(() => {
+		if (data) {
+			console.log(data)
 
-		return `  -  Posted ${distance} ago`
-	}
-	const [showReply, setShowReply] = useState(false)
+			setReplies(comms => [...comms, ...data.commentReplies])
+		}
+	}, [data])
 
 	useEffect(() => {
 		if (comment) {
@@ -53,6 +52,13 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 		}
 	}, [comment])
 
+	const showDate = () => {
+		const createdAt = fromUnixTime(comment.createdAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(createdAt, currentDate)
+
+		return ` - Posted ${distance} ago`
+	}
 
 	const onCommentReplyCancel = e => {
 		e.preventDefault()
@@ -69,14 +75,32 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 		setShowReply(false)
 	}
 
+	const onReplyEdit = comment => {
+		let tempArr = replies
+
+		const commentIndex = tempArr.findIndex(c => c.id === comment.id)
+
+		tempArr.splice(commentIndex, 1, comment)
+
+		setReplies([...tempArr])
+	}
+
 	const handleReply = e => {
 		e.preventDefault()
 
 		setShowReply(value => !value)
 	}
 
+	const handleEdit = comment => {
+		onCommentEdit(comment)
+
+		setShowEdit(false)
+	}
+
 	const handleDelete = e => {
 		e.preventDefault()
+
+		client.clearStore()
 
 		removeComment({
 			variables: {
@@ -86,13 +110,11 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 				client.clearStore()
 
 				console.log(data)
-				onCommentRemove(comment.id)
+				onCommentEdit(data.removeComment.comment)
 			},
 		})
 	}
 
-	const handleEdit = comment => {
-		onCommentEdit(comment)
 	const handleFetchComments = e => {
 		e.preventDefault()
 
@@ -107,7 +129,11 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 	}
 
 	return (
-		<div className="comment">
+		<div
+			className={`comment ${
+				comment.parentType === "comment" && "comment_replies"
+			}`}
+		>
 			<div className="comment_container1">
 				<div
 					className="comment_avatar"
@@ -164,24 +190,7 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 					)}
 				</div>
 				{showReply && (
-					// <div className="comment_reply">
-					// 	<div className="comment_reply_container">
-					// 		<div className="comment_reply_line" />
-					// 	</div>
-					// 	<CommentEditor
-					// 		parentId={comment.id}
-					// 		parentType="comment"
-					// 		onCommentAdd={onReplyAdd}
-					// 		onCommentReplyCancel={onCommentReplyCancel}
-					// 	/>
-					// </div>
-					<div
-						className="comment"
-						style={{
-							left: "-27px",
-							width: `calc(100% + 27px)`,
-						}}
-					>
+					<div className="comment comment_replies comment_reply">
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
@@ -193,6 +202,39 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 						/>
 					</div>
 				)}
+				<div className="comments_list">
+					{replies.map(comment => (
+						<Comment
+							key={comment.id}
+							comment={comment}
+							onCommentEdit={onReplyEdit}
+							// onCommentRemove={onReplyRemove}
+						/>
+					))}
+					{/* {(!showCommentReplies
+						? repliesCounter
+						: repliesCounter - replies.length) > 0 && (
+						<button
+							onClick={handleFetchComments}
+							className="comments_more comments_more_replies"
+						>
+							Show{" "}
+							{!showCommentReplies
+								? repliesCounter
+								: repliesCounter - replies.length}{" "}
+							more comments
+						</button>
+					)} */}
+					{repliesCounter - replies.length > 0 && (
+						<button
+							onClick={handleFetchComments}
+							className="comments_more comments_more_replies"
+						>
+							Show {repliesCounter - replies.length} more comments
+						</button>
+					)}
+					<QueryResult loading={loading} error={error} data={data} />
+				</div>
 			</div>
 		</div>
 	)

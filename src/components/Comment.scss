@@ -1,9 +1,21 @@
 .comment {
+	width: 100%;
 	display: grid;
 	grid-template-columns: 44px calc(100% - 44px);
-	margin-bottom: 24px;
+	position: relative;
+	margin-top: 24px;
+
+	&_replies {
+		width: calc(100% + 27px);
+		left: -27px;
+	}
+
+	&_reply {
+		margin-top: 8px;
+	}
 
 	&_container1 {
+		padding-left: 8px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -67,6 +79,7 @@
 
 	&_options {
 		display: flex;
+		margin-bottom: 8px;
 
 		&_item {
 			margin-left: 16px;

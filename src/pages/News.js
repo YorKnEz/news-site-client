@@ -168,7 +168,6 @@ function News() {
 									/>
 								</Link>
 								<div className="news_body news_padding" id="body"></div>
-								{/* <div className="news_tags">{showTags()}</div> */}
 								<div className="news_sources news_padding">
 									<h4>Sources</h4>
 									{sources.map(s => (

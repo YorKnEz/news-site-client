@@ -45,15 +45,16 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 		setComments([...tempArr])
 	}
 
-	const onCommentRemove = id => {
-		let tempArr = comments
+	// const onCommentRemove = id => {
+	// 	let tempArr = comments
 
-		const commentIndex = tempArr.findIndex(comment => comment.id === id)
+	// 	const commentIndex = tempArr.findIndex(comment => comment.id === id)
 
-		tempArr.splice(commentIndex, 1)
+	// 	tempArr.splice(commentIndex, 1)
 
-		setComments([...tempArr])
-	}
+	// 	setComments([...tempArr])
+	// 	setCommentsCounter(counter => counter - 1)
+	// }
 
 	const handleFetchComments = e => {
 		e.preventDefault()
@@ -64,8 +65,8 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	return (
 		<div className="comments">
-			<div className="comments_input news_padding">
-				<span className="comments_input_title">
+			<div className="comments_input">
+				<span className="comments_input_title news_padding">
 					Comment as{" "}
 					<Link to={`/profile/${user.id}`} className="news_authorlink">
 						{user.fullName}
@@ -83,7 +84,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 						key={comment.id}
 						comment={comment}
 						onCommentEdit={onCommentEdit}
-						onCommentRemove={onCommentRemove}
+						// onCommentRemove={onCommentRemove}
 					/>
 				))}
 				{commentsCounter - comments.length > 0 && (

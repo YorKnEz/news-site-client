@@ -1,11 +1,12 @@
 .comments {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: calc(100% - 44px);
 	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
+	padding-right: 44px;
 
 	user-select: none;
 	text-decoration: none;
@@ -14,16 +15,12 @@
 	&_input {
 		display: flex;
 		flex-direction: column;
-		margin: 44px;
+		margin: 44px 0 20px 44px;
 
 		&_title {
 			font-size: 12px;
 			margin-bottom: 8px;
 		}
-	}
-
-	&_list {
-		margin-right: 44px;
 	}
 
 	&_more {
@@ -32,7 +29,11 @@
 		border: none;
 		font-size: 12px;
 		cursor: pointer;
-		padding: 0 0 8px 16px;
+		padding: 8px 0 8px 21px;
+
+		&_replies {
+			padding: 8px 0 8px 0;
+		}
 
 		&:hover {
 			color: var(--linkHover-color);
