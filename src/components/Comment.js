@@ -20,6 +20,7 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 	const [showCommentReplies, setShowCommentReplies] = useState(false)
 	const [showReply, setShowReply] = useState(false)
 	const [replies, setReplies] = useState([])
+	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
@@ -61,6 +62,8 @@ function Comment({ comment, onCommentEdit, onCommentRemove }) {
 
 	const onReplyAdd = reply => {
 		setReplies(replies => [reply, ...replies])
+		setRepliesCounter(counter => counter + 1)
+
 		if (!showCommentReplies) setOldestCommentDate(reply.createdAt)
 
 		setShowReply(false)

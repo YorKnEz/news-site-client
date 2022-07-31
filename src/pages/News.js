@@ -37,6 +37,7 @@ function News() {
 	const history = useNavigate()
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
+	const [commentsCounter, setCommentsCounter] = useState(0)
 	const [showDeleteModal, setShowDeleteModal] = useState(false)
 	const [showShareModal, setShowShareModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
@@ -60,6 +61,9 @@ function News() {
 
 			// set the tags
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
+
+			// set the comments counter
+			setCommentsCounter(data.news.comments)
 		}
 	}, [data, setDocumentTitle])
 
@@ -198,7 +202,7 @@ function News() {
 										className="news_options_item"
 									>
 										<BsChatSquare className="news_options_item_icon" />
-										{data.news.comments}
+										{commentsCounter}
 									</Link>
 									<button onClick={handleShare} className="news_options_item">
 										<AiOutlineShareAlt className="news_options_item_icon" />
@@ -231,7 +235,8 @@ function News() {
 						</div>
 						<NewsComments
 							newsId={newsId}
-							commentsCounter={data.news.comments}
+							commentsCounter={commentsCounter}
+							setCommentsCounter={setCommentsCounter}
 						/>
 					</>
 				)}

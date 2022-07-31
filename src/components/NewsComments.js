@@ -8,7 +8,7 @@ import { Comment, QueryResult, CommentEditor } from "../components"
 import { UserContext } from "../context"
 import { COMMENTS_FOR_NEWS } from "../utils/apollo-queries"
 
-function NewsComments({ newsId, commentsCounter }) {
+function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
 	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
@@ -30,8 +30,10 @@ function NewsComments({ newsId, commentsCounter }) {
 		}
 	}, [data])
 
-	const onCommentAdd = comment =>
+	const onCommentAdd = comment => {
 		setComments(comments => [comment, ...comments])
+		setCommentsCounter(counter => counter + 1)
+	}
 
 	const onCommentEdit = comment => {
 		let tempArr = comments
