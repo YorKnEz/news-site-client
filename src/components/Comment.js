@@ -25,7 +25,6 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [totalReplies, setTotalReplies] = useState(0)
-	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
 	)
@@ -35,7 +34,6 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
-			offset,
 			oldestCommentDate,
 			commentId: comment.id,
 		},
@@ -145,7 +143,6 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			return
 		}
 
-		setOffset(replies.length)
 		setOldestCommentDate(replies[replies.length - 1].createdAt)
 	}
 

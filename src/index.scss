@@ -51,6 +51,7 @@ select:-webkit-autofill:focus {
 		margin-left: 10px;
 		text-decoration: none;
 		color: var(--link-color);
+		word-break: break-word;
 
 		padding: 5px;
 		border-radius: 5px;
@@ -88,6 +89,7 @@ select:-webkit-autofill:focus {
 		text-decoration: none;
 		color: var(--link-color);
 		background-color: var(--linkBg-color);
+		word-break: break-word;
 
 		padding: 5px;
 		border-radius: 5px;

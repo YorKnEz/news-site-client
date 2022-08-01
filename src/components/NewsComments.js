@@ -14,7 +14,6 @@ import {
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
 	const [comments, setComments] = useState([])
-	const [offset, setOffset] = useState(0)
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
 	)
@@ -23,7 +22,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: {
-			offset,
 			oldestCommentDate,
 			newsId,
 		},
@@ -66,7 +64,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const handleFetchComments = e => {
 		e.preventDefault()
 
-		setOffset(comments.length)
 		setOldestCommentDate(comments[comments.length - 1].createdAt)
 	}
 
