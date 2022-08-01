@@ -171,8 +171,8 @@ export const UPDATE_REPLIES_COUNTER = gql`
 
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($offsetIndex: Int) {
-		newsForHome(offsetIndex: $offsetIndex) {
+	query NewsForHome($offset: Int) {
+		newsForHome(offset: $offset) {
 			id
 			title
 			subreddit
@@ -271,8 +271,8 @@ export const AUTHOR = gql`
 
 // return the news of an author
 export const NEWS_FOR_PROFILE = gql`
-	query NewsForProfile($offsetIndex: Int, $id: ID!) {
-		newsForProfile(offsetIndex: $offsetIndex, id: $id) {
+	query NewsForProfile($offset: Int, $id: ID!) {
+		newsForProfile(offset: $offset, id: $id) {
 			id
 			title
 			subreddit
@@ -355,8 +355,8 @@ export const SEARCH = gql`
 
 // returns the authors followed by a user, paginated
 export const FOLLOWED_AUTHORS = gql`
-	query FollowedAuthors($offsetIndex: Int) {
-		followedAuthors(offsetIndex: $offsetIndex) {
+	query FollowedAuthors($offset: Int) {
+		followedAuthors(offset: $offset) {
 			id
 			fullName
 			email
@@ -371,8 +371,8 @@ export const FOLLOWED_AUTHORS = gql`
 
 // returns the news a certain user liked
 export const LIKED_NEWS = gql`
-	query LikedNews($offsetIndex: Int) {
-		likedNews(offsetIndex: $offsetIndex) {
+	query LikedNews($offset: Int) {
+		likedNews(offset: $offset) {
 			id
 			title
 			subreddit

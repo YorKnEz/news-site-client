@@ -7,10 +7,10 @@ import { AuthorCard } from "../../components"
 
 function FollowedAuthors() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
+	const [offset, setOffset] = useState(0)
 	const [authors, setAuthors] = useState([])
 	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
-		variables: { offsetIndex },
+		variables: { offset },
 	})
 
 	useEffect(() => {
@@ -24,9 +24,9 @@ function FollowedAuthors() {
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
+			setOffset(authors.length)
 		}
-	}, [reachedBottomOfPage, offsetIndex])
+	}, [reachedBottomOfPage, authors.length])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {
