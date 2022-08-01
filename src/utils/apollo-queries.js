@@ -171,8 +171,8 @@ export const UPDATE_REPLIES_COUNTER = gql`
 
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($offset: Int) {
-		newsForHome(offset: $offset) {
+	query NewsForHome($oldestId: ID!) {
+		newsForHome(oldestId: $oldestId) {
 			id
 			title
 			subreddit
@@ -271,8 +271,8 @@ export const AUTHOR = gql`
 
 // return the news of an author
 export const NEWS_FOR_PROFILE = gql`
-	query NewsForProfile($offset: Int, $id: ID!) {
-		newsForProfile(offset: $offset, id: $id) {
+	query NewsForProfile($oldestId: ID!, $id: ID!) {
+		newsForProfile(oldestId: $oldestId, id: $id) {
 			id
 			title
 			subreddit
@@ -355,8 +355,8 @@ export const SEARCH = gql`
 
 // returns the authors followed by a user, paginated
 export const FOLLOWED_AUTHORS = gql`
-	query FollowedAuthors($offset: Int) {
-		followedAuthors(offset: $offset) {
+	query FollowedAuthors($oldestId: Int) {
+		followedAuthors(oldestId: $oldestId) {
 			id
 			fullName
 			email
@@ -397,16 +397,8 @@ export const LIKED_NEWS = gql`
 
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
-	query CommentsForNews(
-		$offset: Int
-		$oldestCommentDate: String!
-		$newsId: ID!
-	) {
-		commentsForNews(
-			offset: $offset
-			oldestCommentDate: $oldestCommentDate
-			newsId: $newsId
-		) {
+	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
+		commentsForNews(oldestCommentDate: $oldestCommentDate, newsId: $newsId) {
 			id
 			parentId
 			parentType
@@ -427,13 +419,8 @@ export const COMMENTS_FOR_NEWS = gql`
 
 // retrieve the replies of a comment
 export const COMMENT_REPLIES = gql`
-	query CommentReplies(
-		$offset: Int
-		$oldestCommentDate: String!
-		$commentId: ID!
-	) {
+	query CommentReplies($oldestCommentDate: String!, $commentId: ID!) {
 		commentReplies(
-			offset: $offset
 			oldestCommentDate: $oldestCommentDate
 			commentId: $commentId
 		) {

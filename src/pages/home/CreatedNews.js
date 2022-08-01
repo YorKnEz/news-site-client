@@ -8,16 +8,18 @@ import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
 
 function CreatedNews() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offset, setOffset] = useState(0)
 	const [news, setNews] = useState([])
+	const [oldestId, setOldestId] = useState("")
+
 	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
 		variables: {
-			offset,
+			oldestId,
 		},
 	})
 
 	useEffect(() => {
 		if (data) {
+			console.log(data)
 			setNews(news => [...news, ...data.newsForHome])
 		}
 	}, [data])
@@ -25,9 +27,9 @@ function CreatedNews() {
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffset(news.length)
+			if (news.length > 0) setOldestId(news[news.length - 1].id)
 		}
-	}, [reachedBottomOfPage, news.length])
+	}, [reachedBottomOfPage, news])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {

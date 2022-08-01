@@ -9,13 +9,15 @@ import { NewsCard, QueryResult } from "../../components"
 
 function News() {
 	const { authorId } = useParams()
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offset, setOffset] = useState(0)
-	const [news, setNews] = useState([])
 	const { user } = useContext(UserContext)
+
+	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
+	const [news, setNews] = useState([])
+	const [oldestId, setOldestId] = useState("")
+
 	const { loading, error, data } = useQuery(NEWS_FOR_PROFILE, {
 		variables: {
-			offset,
+			oldestId,
 			id: authorId ? authorId : user.id,
 		},
 	})
@@ -33,9 +35,9 @@ function News() {
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffset(news.length)
+			if (news.length > 0) setOldestId(news[news.length - 1].id)
 		}
-	}, [reachedBottomOfPage, news.length])
+	}, [reachedBottomOfPage, news])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {
