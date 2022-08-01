@@ -9,6 +9,7 @@ function FollowedAuthors() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offset, setOffset] = useState(0)
 	const [authors, setAuthors] = useState([])
+
 	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
 		variables: { offset },
 	})
