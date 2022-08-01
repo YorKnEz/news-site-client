@@ -10,18 +10,20 @@ import { CardVotes } from "../components"
 
 function NewsCard({ data, matches }) {
 	useEffect(() => {
-		const div = document.querySelector("#body")
+		if (!data.thumbnail) {
+			const div = document.querySelector("#body")
 
-		let body = data.body
+			let body = data.body
 
-		// replace all html tags from Draft-js to get raw text body
-		body = body.replaceAll(/<\/?[\s\S]*?>/g, "")
+			// replace all html tags from Draft-js to get raw text body
+			body = body.replaceAll(/<\/?[\s\S]*?>/g, "")
 
-		// get first 400 chars of that
-		body = body.slice(0, 396) + "..."
+			// get first 400 chars of that
+			body = body.slice(0, 396) + "..."
 
-		// render it
-		div.innerHTML = body
+			// render it
+			div.innerHTML = body
+		}
 	})
 
 	useEffect(() => {
