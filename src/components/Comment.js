@@ -70,7 +70,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			// inject the html
 			if (div) div.innerHTML = comment.body
 		}
-	}, [comment, collapse])
+	}, [comment, collapse, showEdit])
 
 	const showDate = () => {
 		const createdAt = fromUnixTime(comment.createdAt / 1000)
@@ -80,7 +80,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 		return ` - Posted ${distance} ago`
 	}
 
-	const onCommentReplyCancel = e => {
+	const onEditorCancel = e => {
 		e.preventDefault()
 
 		setShowReply(false)
@@ -154,6 +154,12 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 		}
 
 		setOldestCommentDate(replies[replies.length - 1].createdAt)
+	}
+
+	const toggleEdit = e => {
+		e.preventDefault()
+
+		setShowEdit(value => !value)
 	}
 
 	const toggleCollapse = e => {
@@ -230,6 +236,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 								parentType={comment.parentType}
 								commentToEdit={comment}
 								onCommentEdit={handleEdit}
+								onEditorCancel={toggleEdit}
 							/>
 							{editError && (
 								<p className="comment_error">
@@ -254,13 +261,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 									<AiOutlineDelete className="comment_options_item_icon" />
 									Delete
 								</button>
-								<button
-									onClick={e => {
-										e.preventDefault()
-										setShowEdit(true)
-									}}
-									className="comment_options_item"
-								>
+								<button onClick={toggleEdit} className="comment_options_item">
 									<AiOutlineEdit className="comment_options_item_icon" />
 									Edit
 								</button>
@@ -278,7 +279,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 							parentId={comment.id}
 							parentType="comment"
 							onCommentAdd={onReplyAdd}
-							onCommentReplyCancel={onCommentReplyCancel}
+							onEditorCancel={onEditorCancel}
 						/>
 						{replyError && (
 							<p className="comment_error">

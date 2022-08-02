@@ -10,6 +10,11 @@
 		width: calc(100% - 8px - 2px);
 	}
 
+	&_edit-container {
+		margin-left: 0;
+		margin-bottom: 8px;
+	}
+
 	&_toolbar {
 		color: #161616;
 		background-color: var(--compBgLight-color) !important;

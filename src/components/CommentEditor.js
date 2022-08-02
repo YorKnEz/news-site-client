@@ -352,7 +352,7 @@ function CommentEditor({
 	onCommentAdd,
 	commentToEdit,
 	onCommentEdit,
-	onCommentReplyCancel,
+	onEditorCancel,
 }) {
 	const client = useApolloClient()
 	const [editorState, setEditorState] = useState(() =>
@@ -444,9 +444,9 @@ function CommentEditor({
 						Edit comment
 					</button>
 				)}
-				{onCommentReplyCancel && (
+				{onEditorCancel && (
 					<button
-						onClick={onCommentReplyCancel}
+						onClick={onEditorCancel}
 						className="comment-editor_buttons_item"
 					>
 						Cancel
@@ -462,7 +462,11 @@ function CommentEditor({
 	}
 
 	return (
-		<div className="comment-editor_container">
+		<div
+			className={`comment-editor_container ${
+				commentToEdit && "comment-editor_edit-container"
+			}`}
+		>
 			<Editor
 				toolbar={editorOptions}
 				toolbarCustomButtons={[<Buttons />]}
