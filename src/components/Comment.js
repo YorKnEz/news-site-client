@@ -274,19 +274,21 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
-						<CommentEditor
-							setError={setReplyError}
-							parentId={comment.id}
-							parentType="comment"
-							onCommentAdd={onReplyAdd}
-							onEditorCancel={onEditorCancel}
-						/>
-						{replyError && (
-							<p className="comment_error">
-								<AiFillExclamationCircle className="comment_error_icon" />
-								{replyError}
-							</p>
-						)}
+						<div>
+							<CommentEditor
+								setError={setReplyError}
+								parentId={comment.id}
+								parentType="comment"
+								onCommentAdd={onReplyAdd}
+								onEditorCancel={onEditorCancel}
+							/>
+							{replyError && (
+								<p className="comment_error">
+									<AiFillExclamationCircle className="comment_error_icon" />
+									{replyError}
+								</p>
+							)}
+						</div>
 					</div>
 				)}
 				{!collapse && (
