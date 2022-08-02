@@ -63,9 +63,9 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			const div = document.getElementById(`body${comment.id}`)
 
 			// inject the html
-			div.innerHTML = comment.body
+			if (div) div.innerHTML = comment.body
 		}
-	}, [comment])
+	}, [comment, collapse])
 
 	const showDate = () => {
 		const createdAt = fromUnixTime(comment.createdAt / 1000)
