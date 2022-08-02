@@ -9,7 +9,9 @@ const PrivateRoutes = ({ authorOnly }) => {
 
 	if (!token) return <Error code="401" />
 
-	if (authorOnly && user.type !== "author") return <Error code="403" />
+	if (authorOnly && user.type !== "author") return <Error code="403_1" />
+
+	if (authorOnly && !user.verified) return <Error code="403_2" />
 
 	return <Outlet />
 }

@@ -18,10 +18,15 @@ function Error({ code }) {
 			to: "/sign-in",
 			buttonText: "Sign in",
 		},
-		"403": {
+		"403_1": {
 			message: "You must be an author to access this page.",
 			to: "/become-editor",
 			buttonText: "Become an editor",
+		},
+		"403_2": {
+			message: "You must verify your email to access this page.",
+			to: "/",
+			buttonText: "Return home",
 		},
 		"404": {
 			message: "Page not found.",
@@ -34,10 +39,10 @@ function Error({ code }) {
 		<Page>
 			<div className="error404">
 				<div className="error404_message">
-					<span>
+					{/* <span>
 						<AiFillExclamationCircle />
 						{`Error ${code}`}
-					</span>
+					</span> */}
 					<span>{`${errors[code].message}`}</span>
 				</div>
 				<Link to={errors[code].to} className="button button_primary">
