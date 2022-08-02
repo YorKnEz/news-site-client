@@ -1,5 +1,4 @@
 import React from "react"
-import { AiFillExclamationCircle } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
 import "./Error.scss"
@@ -39,10 +38,6 @@ function Error({ code }) {
 		<Page>
 			<div className="error404">
 				<div className="error404_message">
-					{/* <span>
-						<AiFillExclamationCircle />
-						{`Error ${code}`}
-					</span> */}
 					<span>{`${errors[code].message}`}</span>
 				</div>
 				<Link to={errors[code].to} className="button button_primary">
