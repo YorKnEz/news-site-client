@@ -346,6 +346,7 @@ const editorOptions = {
 }
 
 function CommentEditor({
+	setError,
 	parentId,
 	parentType,
 	onCommentAdd,
@@ -357,6 +358,7 @@ function CommentEditor({
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+
 	const [addComment] = useMutation(ADD_COMMENT)
 	const [editComment] = useMutation(EDIT_COMMENT)
 
@@ -390,6 +392,13 @@ function CommentEditor({
 				client.clearStore()
 
 				console.log(data)
+
+				if (!data.addComment.success) {
+					setError(data.addComment.message)
+
+					return
+				}
+
 				onCommentAdd(data.addComment.comment)
 			},
 		})
@@ -415,7 +424,12 @@ function CommentEditor({
 			onCompleted: data => {
 				client.clearStore()
 
-				console.log(data)
+				if (!data.editComment.success) {
+					setError(data.editComment.message)
+
+					return
+				}
+
 				onCommentEdit(data.editComment.comment)
 			},
 		})

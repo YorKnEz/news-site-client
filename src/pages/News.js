@@ -87,6 +87,12 @@ function News() {
 			onCompleted: data => {
 				console.log(data)
 
+				if (!data.deleteNews.success) {
+					console.log(data.deleteNews.message)
+
+					return
+				}
+
 				client.clearStore()
 
 				history(-1)

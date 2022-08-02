@@ -169,6 +169,15 @@ function CreateNews() {
 
 					client.clearStore()
 
+					if (!res.editNews.success) {
+						setError2({
+							...error2,
+							other: { message: res.editNews.message },
+						})
+
+						return
+					}
+
 					history(`/news/${data.news.id}`)
 				},
 			})

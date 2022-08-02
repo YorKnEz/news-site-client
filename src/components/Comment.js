@@ -1,6 +1,11 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineExpand } from "react-icons/ai"
+import {
+	AiFillExclamationCircle,
+	AiOutlineDelete,
+	AiOutlineEdit,
+	AiOutlineExpand,
+} from "react-icons/ai"
 import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
@@ -18,6 +23,8 @@ import {
 
 function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
+	const [replyError, setReplyError] = useState("")
+	const [editError, setEditError] = useState("")
 	const [showEdit, setShowEdit] = useState(false)
 	const [showCommentReplies, setShowCommentReplies] = useState(false)
 	const [showReply, setShowReply] = useState(false)
@@ -42,8 +49,6 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
-
 			setReplies(comms => {
 				let tempArr = [...comms, ...data.commentReplies]
 
@@ -128,7 +133,12 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			onCompleted: data => {
 				client.clearStore()
 
-				console.log(data)
+				if (!data.removeComment.success) {
+					console.log(data.removeComment.message)
+
+					return
+				}
+
 				onCommentEdit(data.removeComment.comment)
 			},
 		})
@@ -213,12 +223,21 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 				</div>
 				{!collapse &&
 					(showEdit ? (
-						<CommentEditor
-							parentId={comment.parentId}
-							parentType={comment.parentType}
-							commentToEdit={comment}
-							onCommentEdit={handleEdit}
-						/>
+						<>
+							<CommentEditor
+								setError={setEditError}
+								parentId={comment.parentId}
+								parentType={comment.parentType}
+								commentToEdit={comment}
+								onCommentEdit={handleEdit}
+							/>
+							{editError && (
+								<p className="comment_error">
+									<AiFillExclamationCircle className="comment_error_icon" />
+									{editError}
+								</p>
+							)}
+						</>
 					) : (
 						<div className="comment_body" id={`body${comment.id}`}></div>
 					))}
@@ -255,11 +274,18 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
 						<CommentEditor
+							setError={setReplyError}
 							parentId={comment.id}
 							parentType="comment"
 							onCommentAdd={onReplyAdd}
 							onCommentReplyCancel={onCommentReplyCancel}
 						/>
+						{replyError && (
+							<p className="comment_error">
+								<AiFillExclamationCircle className="comment_error_icon" />
+								{replyError}
+							</p>
+						)}
 					</div>
 				)}
 				{!collapse && (

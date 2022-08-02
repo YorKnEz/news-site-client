@@ -131,6 +131,15 @@ function CreateNews() {
 				onCompleted: data => {
 					client.clearStore()
 
+					if (!data.createNews.success) {
+						setError2({
+							...error2,
+							other: { message: data.createNews.message },
+						})
+
+						return
+					}
+
 					history(`/news/${data.createNews.id}`)
 				},
 			})
