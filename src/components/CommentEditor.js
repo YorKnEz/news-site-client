@@ -346,17 +346,19 @@ const editorOptions = {
 }
 
 function CommentEditor({
+	setError,
 	parentId,
 	parentType,
 	onCommentAdd,
 	commentToEdit,
 	onCommentEdit,
-	onCommentReplyCancel,
+	onEditorCancel,
 }) {
 	const client = useApolloClient()
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+
 	const [addComment] = useMutation(ADD_COMMENT)
 	const [editComment] = useMutation(EDIT_COMMENT)
 
@@ -390,6 +392,13 @@ function CommentEditor({
 				client.clearStore()
 
 				console.log(data)
+
+				if (!data.addComment.success) {
+					setError(data.addComment.message)
+
+					return
+				}
+
 				onCommentAdd(data.addComment.comment)
 			},
 		})
@@ -415,7 +424,12 @@ function CommentEditor({
 			onCompleted: data => {
 				client.clearStore()
 
-				console.log(data)
+				if (!data.editComment.success) {
+					setError(data.editComment.message)
+
+					return
+				}
+
 				onCommentEdit(data.editComment.comment)
 			},
 		})
@@ -430,9 +444,9 @@ function CommentEditor({
 						Edit comment
 					</button>
 				)}
-				{onCommentReplyCancel && (
+				{onEditorCancel && (
 					<button
-						onClick={onCommentReplyCancel}
+						onClick={onEditorCancel}
 						className="comment-editor_buttons_item"
 					>
 						Cancel
@@ -448,7 +462,11 @@ function CommentEditor({
 	}
 
 	return (
-		<div className="comment-editor_container">
+		<div
+			className={`comment-editor_container ${
+				commentToEdit && "comment-editor_edit-container"
+			}`}
+		>
 			<Editor
 				toolbar={editorOptions}
 				toolbarCustomButtons={[<Buttons />]}

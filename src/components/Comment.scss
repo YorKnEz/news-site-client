@@ -5,6 +5,17 @@
 	position: relative;
 	margin-top: 24px;
 
+	&_error {
+		color: red;
+		margin: 10px 0 10px 8px;
+		display: flex;
+
+		&_icon {
+			font-size: 20px;
+			margin-right: 5px;
+		}
+	}
+
 	&_replies {
 		width: calc(100% + 27px);
 		left: -27px;

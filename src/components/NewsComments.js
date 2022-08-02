@@ -10,9 +10,11 @@ import {
 	COMMENTS_FOR_NEWS,
 	UPDATE_COMMENTS_COUNTER,
 } from "../utils/apollo-queries"
+import { AiFillExclamationCircle } from "react-icons/ai"
 
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
+	const [editorError, setEditorError] = useState("")
 	const [comments, setComments] = useState([])
 	const [oldestCommentDate, setOldestCommentDate] = useState(
 		`${new Date().getTime()}`
@@ -29,8 +31,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
-
 			setComments(comms => {
 				let tempArr = [...comms, ...data.commentsForNews]
 
@@ -79,6 +79,9 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 				setCommentsCounter(counter => counter + 1)
 				setTotalReplies(counter => counter + 1)
 			},
+			onError: error => {
+				console.log(error)
+			},
 		})
 	}
 
@@ -92,10 +95,17 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 					</Link>
 				</span>
 				<CommentEditor
+					setError={setEditorError}
 					parentId={newsId}
 					parentType="news"
 					onCommentAdd={onCommentAdd}
 				/>
+				{editorError && (
+					<p className="comment_error">
+						<AiFillExclamationCircle className="comment_error_icon" />
+						{editorError}
+					</p>
+				)}
 			</div>
 			<div className="comments_list">
 				{comments.map(comment => (
