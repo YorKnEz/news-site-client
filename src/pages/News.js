@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
+	AiFillSave,
 	AiOutlineDelete,
 	AiOutlineEdit,
 	AiOutlineSave,
@@ -21,7 +22,7 @@ import {
 	QueryResult,
 } from "../components"
 import { UserContext } from "../context"
-import { DELETE_NEWS, NEWS2 } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS2, SAVE_NEWS } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -32,6 +33,7 @@ function News() {
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	const [commentsCounter, setCommentsCounter] = useState(0)
+	const [saved, setSaved] = useState(false)
 	const [showDeleteModal, setShowDeleteModal] = useState(false)
 	const [showShareModal, setShowShareModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
@@ -44,6 +46,7 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
+	const [saveNews] = useMutation(SAVE_NEWS)
 
 	useEffect(() => {
 		if (data) {
@@ -66,6 +69,9 @@ function News() {
 
 			// set the comments counter
 			setCommentsCounter(data.news.comments)
+
+			// set the save state
+			if (data.news.saveState === "save") setSaved(true)
 		}
 	}, [data, setDocumentTitle])
 
@@ -124,7 +130,25 @@ function News() {
 		setShowShareModal(true)
 	}
 
-	const handleSave = e => {}
+	const handleSave = e => {
+		e.preventDefault()
+
+		saveNews({
+			variables: {
+				action: saved ? "unsave" : "save",
+				id: newsId,
+			},
+			onCompleted: res => {
+				console.log(res)
+
+				client.clearStore()
+
+				if (res.saveNews.success) {
+					setSaved(value => !value)
+				}
+			},
+		})
+	}
 
 	return (
 		<Page>
@@ -164,10 +188,7 @@ function News() {
 										{data.news.author.fullName}
 									</Link>
 								</span>
-								<Link
-									to={`/news/${data.news.id}`}
-									className="news_link news_padding"
-								>
+								<div className="news_link news_padding">
 									<span className="news_title">{data.news.title}</span>
 									{data.news.thumbnail && (
 										<img
@@ -176,7 +197,7 @@ function News() {
 											alt={data.news.title}
 										/>
 									)}
-								</Link>
+								</div>
 								<div className="news_body news_padding" id="body"></div>
 								<div className="news_sources news_padding">
 									<h4>Sources</h4>
@@ -218,8 +239,17 @@ function News() {
 										Share
 									</button>
 									<button onClick={handleSave} className="news_options_item">
-										<AiOutlineSave className="news_options_item_icon" />
-										Save
+										{saved ? (
+											<>
+												<AiFillSave className="news_options_item_icon" />
+												Unsave
+											</>
+										) : (
+											<>
+												<AiOutlineSave className="news_options_item_icon" />
+												Save
+											</>
+										)}
 									</button>
 									{user.id == data.news.author.id && (
 										<>

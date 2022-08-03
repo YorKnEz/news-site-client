@@ -1,14 +1,29 @@
-import React, { useEffect } from "react"
-import { AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
+import React, { useEffect, useState } from "react"
+import { AiFillSave, AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
+import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
 import { CardVotes } from "../components"
+import { SAVE_NEWS } from "../utils/apollo-queries"
 
 function NewsCard({ data, matches }) {
+	const [saved, setSaved] = useState(false)
+
+	const client = useApolloClient()
+	const [saveNews] = useMutation(SAVE_NEWS)
+
+	// set the save state
+	useEffect(() => {
+		if (data.saveState === "save") {
+			setSaved(true)
+		}
+	}, [data])
+
+	// set the body if there is no thumbnail
 	useEffect(() => {
 		if (!data.thumbnail) {
 			const div = document.querySelector("#body")
@@ -26,6 +41,7 @@ function NewsCard({ data, matches }) {
 		}
 	})
 
+	// set the matches (for searches only)
 	useEffect(() => {
 		if (matches) {
 			const span = document.getElementById(data.id + "span")
@@ -77,7 +93,25 @@ function NewsCard({ data, matches }) {
 
 	const handleShare = e => {}
 
-	const handleSave = e => {}
+	const handleSave = e => {
+		e.preventDefault()
+
+		saveNews({
+			variables: {
+				action: saved ? "unsave" : "save",
+				id: data.id,
+			},
+			onCompleted: res => {
+				console.log(res)
+
+				client.clearStore()
+
+				if (res.saveNews.success) {
+					setSaved(value => !value)
+				}
+			},
+		})
+	}
 
 	return (
 		<div className="newscard">
@@ -121,8 +155,17 @@ function NewsCard({ data, matches }) {
 						Share
 					</button>
 					<button onClick={handleSave} className="newscard_options_item">
-						<AiOutlineSave className="newscard_options_item_icon" />
-						Save
+						{saved ? (
+							<>
+								<AiFillSave className="newscard_options_item_icon" />
+								Unsave
+							</>
+						) : (
+							<>
+								<AiOutlineSave className="newscard_options_item_icon" />
+								Save
+							</>
+						)}
 					</button>
 				</div>
 			</div>

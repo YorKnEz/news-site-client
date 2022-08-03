@@ -5,4 +5,5 @@ export const UserContext = React.createContext({
 	user: {},
 	signIn: () => {},
 	signOut: () => {},
+	verifyEmail: () => {},
 })

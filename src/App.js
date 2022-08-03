@@ -19,6 +19,7 @@ import {
 	SearchResult,
 	ForgotPassword,
 	ResetPassword,
+	VerifyEmail,
 } from "./pages"
 
 export default function App() {
@@ -98,6 +99,14 @@ export default function App() {
 		client.link.options.headers.authorization = ""
 	}
 
+	const verifyEmail = () => {
+		setUser({
+			...user,
+			verified: true,
+		})
+		localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+	}
+
 	return (
 		<ThemeContext.Provider
 			value={{
@@ -111,6 +120,7 @@ export default function App() {
 					user,
 					signIn,
 					signOut,
+					verifyEmail,
 				}}
 			>
 				<Router>
@@ -122,6 +132,11 @@ export default function App() {
 						<Route exact path="/sign-in" element={<SignIn />} />
 						<Route exact path="/forgot-password" element={<ForgotPassword />} />
 						<Route exact path="/reset-password" element={<ResetPassword />} />
+						<Route
+							exact
+							path="/verify-email/:token"
+							element={<VerifyEmail />}
+						/>
 						<Route exact path="/" element={<Home />} />
 						<Route exact path="/news/:newsId" element={<News />} />
 
