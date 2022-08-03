@@ -25,7 +25,7 @@ import {
 export default function App() {
 	const client = useApolloClient()
 	const [theme, setTheme] = useState(
-		themes[localStorage.getItem("theme") || ""]
+		themes[localStorage.getItem("theme")] || ""
 	)
 	const [token, setToken] = useState(localStorage.getItem("token") || "")
 	const [user, setUser] = useState(
