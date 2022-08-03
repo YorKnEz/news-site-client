@@ -2,31 +2,34 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
-import { AuthorCard } from "../../components"
+import "./index.scss"
+import { NewsCard, QueryResult } from "../../components"
+import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
 
-function UserFollowedAuthors() {
+function CreatedNews() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offsetIndex, setOffsetIndex] = useState(0)
-	const [authors, setAuthors] = useState([])
-	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
-		variables: { offsetIndex },
+	const [news, setNews] = useState([])
+	const [oldestId, setOldestId] = useState("")
+
+	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
+		variables: {
+			oldestId,
+		},
 	})
 
 	useEffect(() => {
 		if (data) {
 			console.log(data)
-
-			setAuthors(authors => [...authors, ...data.followedAuthors])
+			setNews(news => [...news, ...data.newsForHome])
 		}
 	}, [data])
 
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffsetIndex(offsetIndex + 1)
+			if (news.length > 0) setOldestId(news[news.length - 1].id)
 		}
-	}, [reachedBottomOfPage, offsetIndex])
+	}, [reachedBottomOfPage, news])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {
@@ -39,12 +42,13 @@ function UserFollowedAuthors() {
 	})
 
 	return (
-		<div className="profile_followedAuthors">
-			{authors.map(author => (
-				<AuthorCard key={author.id} data={author} infoBelow />
+		<div className="news_list">
+			{news.map(item => (
+				<NewsCard data={item} key={item.id} />
 			))}
+			<QueryResult loading={loading} error={error} data={data} />
 		</div>
 	)
 }
 
-export default UserFollowedAuthors
+export default CreatedNews

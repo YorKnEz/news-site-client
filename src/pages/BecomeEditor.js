@@ -101,12 +101,12 @@ function BecomeEditor() {
 							{errorCheck("email")}
 						</div>
 						<div className="formItem">
-							<label className="formItem_fileLabel" htmlFor="cv">
-								<AiOutlineFileText className="formItem_fileIcon" />
+							<label className="formItem_file_label" htmlFor="cv">
+								<AiOutlineFileText className="formItem_file_icon" />
 								Your CV
 							</label>
 							<input
-								className="formItem_fileInput"
+								className="formItem_file_input"
 								id="cv"
 								name="cv"
 								type="file"

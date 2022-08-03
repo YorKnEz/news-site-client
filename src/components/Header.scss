@@ -5,11 +5,8 @@
 	z-index: 999;
 	width: calc(100% - 20px);
 	padding: 5px 10px 5px 10px;
-	box-shadow: 0px 0px 5px var(--shadow-color);
-	background-color: var(--background-color);
-	// display: flex;
-	// align-items: center;
-	// justify-content: space-between;
+	border-bottom: 1px solid var(--border-color);
+	background-color: var(--compBg-color);
 	display: grid;
 	grid-template-columns: [col1] 25% [col2] 50% [col3] 25% [col4];
 	align-items: center;
@@ -17,20 +14,11 @@
 	&_branding {
 		font-family: "Chomsky";
 		text-decoration: none;
-		font-size: 45px;
+		font-size: 40px;
 		position: relative;
 		bottom: 4px;
 		color: var(--text-color);
 		user-select: none;
-	}
-
-	&_reddit {
-		margin-left: 24px;
-
-		&_icon {
-			font-size: 32px;
-			color: var(--text-color);
-		}
 	}
 
 	&_menuBtn {
@@ -66,14 +54,14 @@
 	}
 
 	&_search {
-		background-color: var(--background-color);
-		border: 1px var(--text-color) solid;
+		background-color: var(--compBg-color);
+		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		font-size: 16px;
 		color: var(--text-color);
 
 		&_input {
-			background-color: var(--background-color);
+			background-color: var(--compBg-color);
 			border: none;
 			border-radius: 5px;
 			font-size: 16px;
@@ -113,13 +101,17 @@
 			}
 
 			&:hover {
-				color: var(--button-color);
+				color: var(--primary-color);
 			}
+		}
+
+		&:hover {
+			border: 1px solid var(--secondText-color);
 		}
 
 		&:focus {
 			outline-style: solid;
-			outline-color: lightseagreen;
+			outline-color: var(--button-color);
 			outline-width: 2px;
 			transition: outline-width 0.1s ease;
 		}
@@ -128,13 +120,13 @@
 
 .dropdown {
 	position: fixed;
-	z-index: 998;
+	z-index: 1000;
 	top: -1000px;
 	right: 10px;
 	padding: 20px 20px;
-	box-shadow: 0px 0px 5px var(--shadow-color);
-	background-color: var(--background-color);
-	border-radius: 0 0 10px 10px;
+	background-color: var(--compBg-color);
+	border: 1px solid var(--border-color);
+	border-radius: 0 0 5px 5px;
 	display: flex;
 	flex-direction: column;
 	transition: top 0.5s ease;

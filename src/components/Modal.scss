@@ -1,6 +1,6 @@
 .modal {
 	position: relative;
-	background-color: var(--background-color);
+	background-color: var(--compBg-color);
 	border: 1px var(--text-color) solid;
 	border-radius: 5px;
 	padding: 20px 20px;
@@ -47,7 +47,7 @@
 	}
 
 	&_submit {
-		background-color: lightseagreen;
+		background-color: var(--button-color);
 	}
 
 	&_buttons {

@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	color: var(--text-color);
-	background-color: var(--background-color);
+	background-color: var(--pageBg-color);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
 		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
@@ -22,16 +22,16 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
 	color: var(--text-color);
-	box-shadow: 0 0 0px 1000px var(--background-color) inset;
+	box-shadow: 0 0 0px 1000px var(--compBg-color) inset;
 	transition: background-color 5000s ease-in-out 0s;
 }
 
 .link {
 	text-decoration: none;
-	color: #44b6eb;
+	color: var(--link-color);
 
 	&:hover {
-		color: #75c9f0;
+		color: var(--linkHover-color);
 	}
 }
 
@@ -50,7 +50,8 @@ select:-webkit-autofill:focus {
 		user-select: none;
 		margin-left: 10px;
 		text-decoration: none;
-		color: rgb(27, 145, 204);
+		color: var(--link-color);
+		word-break: break-word;
 
 		padding: 5px;
 		border-radius: 5px;
@@ -59,7 +60,7 @@ select:-webkit-autofill:focus {
 		transition: all 0.3s ease;
 
 		&:hover {
-			color: rgb(97, 188, 234);
+			color: var(--linkHover-color);
 		}
 
 		&:first-child {
@@ -86,8 +87,9 @@ select:-webkit-autofill:focus {
 		margin-top: 10px;
 		margin-right: 10px;
 		text-decoration: none;
-		color: rgb(27, 145, 204);
-		background-color: rgba(27, 145, 204, 0.3);
+		color: var(--link-color);
+		background-color: var(--linkBg-color);
+		word-break: break-word;
 
 		padding: 5px;
 		border-radius: 5px;
@@ -96,8 +98,8 @@ select:-webkit-autofill:focus {
 		transition: all 0.3s ease;
 
 		&:hover {
-			color: rgb(97, 188, 234);
-			background-color: rgba(97, 188, 234, 0.3);
+			color: var(--linkHover-color);
+			background-color: var(--linkHoverBg-color);
 		}
 
 		&:last-child {
@@ -116,17 +118,17 @@ select:-webkit-autofill:focus {
 	border-radius: 5px;
 	margin: auto 0;
 	padding: 10px;
-	font-size: 24px;
+	font-size: 20px;
 
 	transition: all 0.2s ease;
 
 	&_primary {
-		border: 1px solid var(--button-color);
+		border: 1px solid var(--primary-color);
 
-		color: var(--button-color);
+		color: var(--primary-color);
 
 		&:hover {
-			background-color: var(--button-color);
+			background-color: var(--primary-color);
 		}
 	}
 
@@ -167,6 +169,8 @@ select:-webkit-autofill:focus {
 	--labelOutTop: 0;
 	--labelOutLeft: 8px;
 
+	width: 100%;
+
 	display: inline-block;
 	position: relative;
 
@@ -177,14 +181,14 @@ select:-webkit-autofill:focus {
 		color: var(--secondText-color);
 		padding: 0 5px 0 5px;
 		font-size: 16px;
-		background-color: var(--background-color);
+		background-color: var(--compBg-color);
 		display: inline-block;
 		user-select: none;
 	}
 
 	&_input {
-		background-color: var(--background-color);
-		border: 1px var(--text-color) solid;
+		background-color: var(--compBg-color);
+		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		padding: 16px 20px;
 		margin: 10px 0;
@@ -193,7 +197,12 @@ select:-webkit-autofill:focus {
 		caret-color: var(--text-color);
 		color: var(--text-color);
 
+		&:hover {
+			border: 1px solid var(--secondText-color);
+		}
+
 		&:focus {
+			border: 1px solid var(--secondText-color);
 			outline-style: solid;
 			outline-color: lightseagreen;
 			outline-width: 2px;
@@ -201,25 +210,63 @@ select:-webkit-autofill:focus {
 		}
 	}
 
-	&_fileLabel {
-		cursor: pointer;
-		color: var(--text-color) !important;
-		display: flex;
-		align-items: center;
-		font-size: 16px;
-		margin: 16px 16px;
+	&_file {
+		&_label {
+			cursor: pointer;
+			color: var(--text-color) !important;
+			display: flex;
+			align-items: center;
+			font-size: 16px;
+			margin: 16px 16px;
+		}
+
+		&_icon {
+			width: 32px;
+			height: 32px;
+			margin-right: 8px;
+		}
+
+		&_input {
+			opacity: 0;
+			position: absolute;
+			z-index: -1;
+		}
 	}
 
-	&_fileIcon {
-		width: 32px;
-		height: 32px;
-		margin-right: 8px;
-	}
+	&_image {
+		&_label {
+			cursor: pointer;
+			color: var(--text-color) !important;
+			font-size: 16px;
+			margin-bottom: 16px;
 
-	&_fileInput {
-		opacity: 0;
-		position: absolute;
-		z-index: -1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		&_title {
+			display: flex;
+			align-items: center;
+		}
+
+		&_icon {
+			width: 32px;
+			height: 32px;
+			margin-right: 8px;
+		}
+
+		&_thumbnail {
+			background-size: cover;
+			background-position: center;
+			width: 100%;
+			padding-top: 56.25%;
+		}
+
+		&_input {
+			opacity: 0;
+			position: absolute;
+			z-index: -1;
+		}
 	}
 
 	textarea {
@@ -228,7 +275,7 @@ select:-webkit-autofill:focus {
 
 	&_error {
 		color: red;
-		margin: 0;
+		margin: 10px 0;
 		display: flex;
 
 		&_icon {
@@ -257,10 +304,10 @@ select:-webkit-autofill:focus {
 			background-color: transparent;
 			align-self: flex-start;
 			text-decoration: none;
-			color: #44b6eb;
+			color: var(--link-color);
 
 			&:hover {
-				color: #75c9f0;
+				color: var(--linkHover-color);
 			}
 		}
 	}

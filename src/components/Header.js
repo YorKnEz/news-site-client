@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineMenu, AiOutlineReddit, AiOutlineSearch } from "react-icons/ai"
+import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom"
 
 import axios from "axios"
@@ -45,7 +45,7 @@ function Header() {
 
 		setShowDropdown(!showDropdown)
 
-		dropdown.style.top = !showDropdown ? "58px" : "-1000px"
+		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
 	}
 
 	const handleBlur = e => {
@@ -53,7 +53,7 @@ function Header() {
 
 		setShowDropdown(false)
 
-		dropdown.style.top = !showDropdown ? "58px" : "-1000px"
+		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
 	}
 
 	const handleSignOut = async e => {
@@ -94,12 +94,8 @@ function Header() {
 		<>
 			<div className="header">
 				<div className="header_section1">
-					<Link to="/" className="header_branding">
+					<Link to="/" reloadDocument className="header_branding">
 						YorkNews
-					</Link>
-
-					<Link to="/reddit" className="header_menuBtn header_reddit">
-						<AiOutlineReddit className="header_reddit_icon" />
 					</Link>
 				</div>
 

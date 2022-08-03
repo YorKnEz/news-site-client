@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useApolloClient } from "@apollo/client"
 import React, { useEffect, useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
+import { useApolloClient } from "@apollo/client"
 
 import { PrivateRoutes } from "./components"
 import { ThemeContext, themes, UserContext } from "./context"
 import {
 	Home,
-	HomeReddit,
 	News,
 	SignUp,
 	SignIn,
@@ -24,7 +24,7 @@ import {
 export default function App() {
 	const client = useApolloClient()
 	const [theme, setTheme] = useState(
-		themes[localStorage.getItem("theme") || "light"]
+		themes[localStorage.getItem("theme") || ""]
 	)
 	const [token, setToken] = useState(localStorage.getItem("token") || "")
 	const [user, setUser] = useState(
@@ -38,6 +38,23 @@ export default function App() {
 		let vh = window.innerHeight * 0.01
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
+
+	useEffect(() => {
+		// if theme has not been set
+		if (theme === "") {
+			// check if the os theme is dark
+			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				// set the theme to dark
+				setTheme(themes.dark)
+				localStorage.setItem("theme", "dark")
+				// else the os theme is probably light
+			} else {
+				// set the theme to light
+				setTheme(themes.light)
+				localStorage.setItem("theme", "light")
+			}
+		}
+	}, [])
 
 	// set a property for each color in the theme object
 	useEffect(() => {
@@ -106,7 +123,6 @@ export default function App() {
 						<Route exact path="/forgot-password" element={<ForgotPassword />} />
 						<Route exact path="/reset-password" element={<ResetPassword />} />
 						<Route exact path="/" element={<Home />} />
-						<Route exact path="/reddit" element={<HomeReddit />} />
 						<Route exact path="/news/:newsId" element={<News />} />
 
 						{/* private routes, accessible by all users */}

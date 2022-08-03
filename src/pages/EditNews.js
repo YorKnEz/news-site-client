@@ -74,8 +74,10 @@ function CreateNews() {
 			setValue("title", data.news.title)
 
 			// set the thumbnail
-			const inputThumbnail = document.querySelector(".thumbnail")
-			inputThumbnail.style.backgroundImage = `url("${data.news.thumbnail}")`
+			const inputThumbnail = document.querySelector(".formItem_image_thumbnail")
+			inputThumbnail.style.backgroundImage = data.news.thumbnail
+				? `url("${data.news.thumbnail}")`
+				: "url(/default_thumbnail.png)"
 
 			// set the editorState
 			const { contentBlocks, entityMap } = htmlToDraft(data.news.body)
@@ -166,6 +168,15 @@ function CreateNews() {
 					console.log(res)
 
 					client.clearStore()
+
+					if (!res.editNews.success) {
+						setError2({
+							...error2,
+							other: { message: res.editNews.message },
+						})
+
+						return
+					}
 
 					history(`/news/${data.news.id}`)
 				},
@@ -284,14 +295,6 @@ function CreateNews() {
 		return true
 	}
 
-	const getBackgroundImage = () => {
-		if (watchThumbnail && watchThumbnail.length > 0) {
-			return `url(${URL.createObjectURL(watchThumbnail[0])})`
-		}
-
-		return "url(/default_thumbnail.png)"
-	}
-
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
@@ -312,168 +315,161 @@ function CreateNews() {
 
 	return (
 		<Page>
-			<QueryResult loading={loading} error={error} data={data}>
-				{data?.news.author.id != user.id && <Navigate to="/" replace />}
+			<div className="createnews">
+				<QueryResult loading={loading} error={error} data={data}>
+					{data?.news.author.id != user.id && <Navigate to="/" replace />}
 
-				<h1>Write your news story</h1>
-				<h2>Start editing to see some magic happen!</h2>
+					<h3>Write your news story</h3>
 
-				<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="title">
-							Title
-						</label>
-						<input
-							className="formItem_input"
-							id="title"
-							name="title"
-							autoComplete="off"
-							type="text"
-							onFocus={handleInputFocus}
-							{...register("title", {
-								required: true,
-								onBlur: handleInputBlur,
-							})}
-						/>
-						{errorCheck("title")}
-					</div>
-					<div className="thumbnail_wrapper">
-						<div
-							style={{
-								backgroundImage: getBackgroundImage(),
-							}}
-							className="thumbnail"
-						></div>
+					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<div className="formItem">
-							<label className="formItem_fileLabel" htmlFor="thumbnail">
-								<AiOutlinePicture className="formItem_fileIcon" />
-								{watchThumbnail.length > 0
-									? watchThumbnail[0].name
-									: "Your thumbnail"}
+							<label className="formItem_label" htmlFor="title">
+								Title
 							</label>
 							<input
-								className="formItem_fileInput"
-								id="thumbnail"
-								name="thumbnail"
-								type="file"
-								accept="image/*"
-								{...register("thumbnail", {
-									required: false,
-									validate: isSizeOk,
+								className="formItem_input"
+								id="title"
+								name="title"
+								autoComplete="off"
+								type="text"
+								onFocus={handleInputFocus}
+								{...register("title", {
+									required: true,
+									onBlur: handleInputBlur,
 								})}
 							/>
-							{errorCheck("thumbnail")}
+							{errorCheck("title")}
 						</div>
-					</div>
-					<div
-						style={{
-							border: "1px solid var(--text-color)",
-							minHeight: "400px",
-						}}
-					>
-						<Editor
-							placeholder="Write here..."
-							editorState={editorState}
-							onEditorStateChange={setEditorState}
-							wrapperClassName="editor_wrapper"
-							editorClassName="editor"
-							toolbarClassName="editor_toolbar"
-						/>
-					</div>
-					{error2.editor.message && (
-						<p className="formItem_error">
-							<AiFillExclamationCircle className="formItem_error_icon" />
-							{error2.editor.message}
-						</p>
-					)}
-					<div className="sources">
-						<h4>Sources</h4>
-						{sources.map(s => (
-							<div
-								className="sources_item"
-								key={s}
-								onClick={handleDeleteSource}
-							>
-								{s}
+						<div className="thumbnail_wrapper">
+							<div className="formItem">
+								<label className="formItem_image_label" htmlFor="thumbnail">
+									<span className="formItem_image_title">
+										<AiOutlinePicture className="formItem_image_icon" />
+										{watchThumbnail.length > 0
+											? watchThumbnail[0].name
+											: "Your thumbnail"}
+									</span>
+									<div className="formItem_image_thumbnail" />
+								</label>
+								<input
+									className="formItem_image_input"
+									id="thumbnail"
+									name="thumbnail"
+									type="file"
+									accept="image/*"
+									{...register("thumbnail", {
+										required: false,
+										validate: isSizeOk,
+									})}
+								/>
+								{errorCheck("thumbnail")}
 							</div>
-						))}
-					</div>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="source">
-							Add Source
-						</label>
-						<input
-							className="formItem_input"
-							id="source"
-							name="source"
-							type="text"
-							value={source}
-							onChange={handleSource}
-							onFocus={handleInputFocus}
-							onBlur={handleInputBlur}
-						/>
-						{error2.sources.message && (
+						</div>
+						<div className="editor_container">
+							<Editor
+								placeholder="Write here..."
+								editorState={editorState}
+								onEditorStateChange={setEditorState}
+								wrapperClassName="editor_wrapper"
+								editorClassName="editor"
+								toolbarClassName="editor_toolbar"
+							/>
+						</div>
+						{error2.editor.message && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
-								{error2.sources.message}
+								{error2.editor.message}
 							</p>
 						)}
-					</div>
-					<div className="tags">
-						<h4>Tags</h4>
-						{tags.map(s => (
-							<div className="tags_item" key={s} onClick={handleDeleteTag}>
-								{s}
-							</div>
-						))}
-					</div>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="tag">
-							Add Tag
-						</label>
-						<input
-							className="formItem_input"
-							id="tag"
-							name="tag"
-							type="text"
-							value={tag}
-							onChange={handleTag}
-							onFocus={handleInputFocus}
-							onBlur={handleInputBlur}
-						/>
-						{error2.tags.message && (
+						<div className="sources">
+							<h4>Sources</h4>
+							{sources.map(s => (
+								<div
+									className="sources_item"
+									key={s}
+									onClick={handleDeleteSource}
+								>
+									{s}
+								</div>
+							))}
+						</div>
+						<div className="formItem">
+							<label className="formItem_label" htmlFor="source">
+								Add Source
+							</label>
+							<input
+								className="formItem_input"
+								id="source"
+								name="source"
+								type="text"
+								value={source}
+								onChange={handleSource}
+								onFocus={handleInputFocus}
+								onBlur={handleInputBlur}
+							/>
+							{error2.sources.message && (
+								<p className="formItem_error">
+									<AiFillExclamationCircle className="formItem_error_icon" />
+									{error2.sources.message}
+								</p>
+							)}
+						</div>
+						<div className="tags">
+							<h4>Tags</h4>
+							{tags.map(s => (
+								<div className="tags_item" key={s} onClick={handleDeleteTag}>
+									{s}
+								</div>
+							))}
+						</div>
+						<div className="formItem">
+							<label className="formItem_label" htmlFor="tag">
+								Add Tag
+							</label>
+							<input
+								className="formItem_input"
+								id="tag"
+								name="tag"
+								type="text"
+								value={tag}
+								onChange={handleTag}
+								onFocus={handleInputFocus}
+								onBlur={handleInputBlur}
+							/>
+							{error2.tags.message && (
+								<p className="formItem_error">
+									<AiFillExclamationCircle className="formItem_error_icon" />
+									{error2.tags.message}
+								</p>
+							)}
+						</div>
+						{error2.other.message && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
-								{error2.tags.message}
+								{error2.other.message}
 							</p>
 						)}
-					</div>
-					{error2.other.message && (
-						<p className="formItem_error">
-							<AiFillExclamationCircle className="formItem_error_icon" />
-							{error2.other.message}
-						</p>
-					)}
-					<div>
-						<div className="tooltip">
-							<AiOutlineQuestionCircle className="tooltip_icon" />
-							<p className="tooltip_text">
-								Thumbnail size should be under 10MB.
-							</p>
+						<div>
+							<div className="tooltip">
+								<AiOutlineQuestionCircle className="tooltip_icon" />
+								<p className="tooltip_text">
+									Thumbnail size should be under 10MB.
+								</p>
+							</div>
+							<div className="tooltip">
+								<AiOutlineQuestionCircle className="tooltip_icon" />
+								<p className="tooltip_text">
+									In order to add sources and tags, write it down then type ','
+									to add it to the list.
+								</p>
+							</div>
 						</div>
-						<div className="tooltip">
-							<AiOutlineQuestionCircle className="tooltip_icon" />
-							<p className="tooltip_text">
-								In order to add sources and tags, write it down then type ',' to
-								add it to the list.
-							</p>
-						</div>
-					</div>
-					<button className="button button_primary form_submit">
-						Edit your story
-					</button>
-				</form>
-			</QueryResult>
+						<button className="button button_primary form_submit">
+							Edit your story
+						</button>
+					</form>
+				</QueryResult>
+			</div>
 		</Page>
 	)
 }

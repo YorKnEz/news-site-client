@@ -1,47 +1,49 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiOutlineEdit,
 	AiOutlineDelete,
-	AiOutlineLike,
-	AiFillLike,
-	AiFillDislike,
-	AiOutlineDislike,
+	AiOutlineEdit,
+	AiOutlineSave,
+	AiOutlineShareAlt,
 } from "react-icons/ai"
-import { useNavigate, useParams } from "react-router"
-import { Link } from "react-router-dom"
+import { BsChatSquare } from "react-icons/bs"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
-import { useQuery, useMutation, useApolloClient } from "@apollo/client"
-import { format, fromUnixTime } from "date-fns"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
+import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./News.scss"
-import { AuthorInfo, Modal, Page, QueryResult } from "../components"
+import {
+	CardVotes,
+	Modal,
+	NewsComments,
+	Page,
+	QueryResult,
+} from "../components"
 import { UserContext } from "../context"
-import { NEWS2, DELETE_NEWS, LIKE_NEWS } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS2 } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
-	const client = useApolloClient()
 	const { newsId } = useParams()
+	const history = useNavigate()
+
+	const { user } = useContext(UserContext)
+	const [sources, setSources] = useState([])
+	const [tags, setTags] = useState([])
+	const [commentsCounter, setCommentsCounter] = useState(0)
+	const [showDeleteModal, setShowDeleteModal] = useState(false)
+	const [showShareModal, setShowShareModal] = useState(false)
+	// eslint-disable-next-line no-unused-vars
+	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
+
+	const client = useApolloClient()
 	const { loading, error, data } = useQuery(NEWS2, {
 		variables: {
 			newsId: newsId,
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
-	const [likeNews] = useMutation(LIKE_NEWS)
-	const { user } = useContext(UserContext)
-	const history = useNavigate()
-	const [likes, setLikes] = useState({
-		likeState: "none",
-		likes: 0,
-		dislikes: 0,
-	})
-	const [sources, setSources] = useState([])
-	const [tags, setTags] = useState([])
-	const [showModal, setShowModal] = useState(false)
-	// eslint-disable-next-line no-unused-vars
-	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
 	useEffect(() => {
 		if (data) {
@@ -62,23 +64,21 @@ function News() {
 			// set the tags
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 
-			// set the likes, dislikes and likeState
-			setLikes({
-				likeState: data.news.likeState,
-				likes: data.news.likes,
-				dislikes: data.news.dislikes,
-			})
+			// set the comments counter
+			setCommentsCounter(data.news.comments)
 		}
 	}, [data, setDocumentTitle])
 
-	const getDate = () => {
-		const updatedAt = fromUnixTime(data.news.updatedAt / 1000)
+	const showDate = () => {
+		const createdAt = fromUnixTime(data.news.createdAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(createdAt, currentDate)
 
-		return format(updatedAt, "MMMM d',' yyyy H':'mm")
+		return `Posted ${distance} ago`
 	}
 
-	const onModalSubmit = async () => {
-		setShowModal(false)
+	const onDeleteModalSubmit = async () => {
+		setShowDeleteModal(false)
 
 		deleteNews({
 			variables: {
@@ -87,6 +87,12 @@ function News() {
 			onCompleted: data => {
 				console.log(data)
 
+				if (!data.deleteNews.success) {
+					console.log(data.deleteNews.message)
+
+					return
+				}
+
 				client.clearStore()
 
 				history(-1)
@@ -94,14 +100,18 @@ function News() {
 		})
 	}
 
-	const onModalDecline = () => {
-		setShowModal(false)
+	const onDeleteModalDecline = () => {
+		setShowDeleteModal(false)
+	}
+
+	const onShareModalSubmit = async () => {
+		setShowShareModal(false)
 	}
 
 	const handleDelete = e => {
 		e.preventDefault()
 
-		setShowModal(true)
+		setShowDeleteModal(true)
 	}
 
 	const handleEdit = e => {
@@ -110,32 +120,16 @@ function News() {
 		history(`/news/${data.news.id}/edit`)
 	}
 
-	const handleLike = (e, action) => {
-		e.preventDefault()
-
-		likeNews({
-			variables: {
-				action,
-				id: data.news.id,
-			},
-			onCompleted: ({ likeNews }) => {
-				console.log(likeNews)
-
-				setLikes({
-					likeState: action === likes.likeState ? "none" : action,
-					likes: likeNews.likes,
-					dislikes: likeNews.dislikes,
-				})
-
-				client.clearStore()
-			},
-		})
+	const handleShare = e => {
+		setShowShareModal(true)
 	}
+
+	const handleSave = e => {}
 
 	return (
 		<Page>
-			{showModal && (
-				<Modal onSubmit={onModalSubmit} onDecline={onModalDecline}>
+			{showDeleteModal && (
+				<Modal onSubmit={onDeleteModalSubmit} onDecline={onDeleteModalDecline}>
 					<h3 style={{ margin: 0 }}>Delete news</h3>
 					<hr />
 					<p>
@@ -144,122 +138,116 @@ function News() {
 					</p>
 				</Modal>
 			)}
+			{showShareModal && (
+				<Modal onSubmit={onShareModalSubmit}>
+					<h3 style={{ margin: 0 }}>Share this with your friends</h3>
+					<hr />
+					<input
+						className="formItem_input"
+						type="text"
+						defaultValue={window.location}
+					/>
+				</Modal>
+			)}
 			<QueryResult loading={loading} error={error} data={data}>
 				{data && (
-					<div className="news">
-						<div className="news_likes">
-							<div className="news_likes_row">
-								<span
-									style={{
-										color:
-											likes.likeState === "like"
-												? "var(--button-color)"
-												: "var(--text-color)",
-									}}
-								>
-									{likes.likes}
-								</span>
-								<button onClick={e => handleLike(e, "like")}>
-									{likes.likeState === "like" ? (
-										<AiFillLike style={{ color: "var(--button-color)" }} />
-									) : (
-										<AiOutlineLike />
-									)}
-								</button>
-							</div>
-							<div className="news_likes_row">
-								<span
-									style={{
-										color:
-											likes.likeState === "dislike"
-												? "red"
-												: "var(--text-color)",
-									}}
-								>
-									{likes.dislikes}
-								</span>
-								<button onClick={e => handleLike(e, "dislike")}>
-									{likes.likeState === "dislike" ? (
-										<AiFillDislike style={{ color: "red" }} />
-									) : (
-										<AiOutlineDislike />
-									)}
-								</button>
-							</div>
-						</div>
-						<h1 className="news_title">{data.news.title}</h1>
-						{user.id == data.news.author.id && (
-							<div className="news_buttons">
-								<button
-									onClick={handleDelete}
-									className="button button_primary news_buttons_delete"
-								>
-									<AiOutlineDelete />
-								</button>
-								<button
-									onClick={handleEdit}
-									className="button button_primary news_buttons_edit"
-								>
-									<AiOutlineEdit />
-								</button>
-							</div>
-						)}
-
-						<hr />
-
-						<div className="news_info">
-							<AuthorInfo
-								data={data.news.author}
-								type={data.news.type}
-								subreddit={data.news.subreddit}
-								link
-							/>
-
-							<p>Last edited on: {getDate()}</p>
-						</div>
-
-						<hr />
-
-						<img
-							className="news_thumbnail"
-							src={data.news.thumbnail}
-							alt="thumbnail"
-						/>
-
-						<hr />
-
-						<div className="news_body" id="body"></div>
-
-						<hr />
-
-						<div className="sources">
-							<h4>Sources</h4>
-							{sources.map(s => (
-								<a
-									className="sources_item"
-									key={s}
-									href={s}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{s}
-								</a>
-							))}
-						</div>
-						<div className="tags">
-							<h4>Tags</h4>
-							{tags.length > 0 &&
-								tags.map(s => (
+					<>
+						<div className="news">
+							<CardVotes data={data.news} />
+							<div className="news_container">
+								<span className="news_posted news_padding">
+									{showDate()} by{" "}
 									<Link
-										className="tags_item"
-										key={s}
-										to={`/search?search=${s}&filter=tags`}
+										to={`/profile/${data.news.author.id}`}
+										className="news_authorlink"
 									>
-										{s}
+										{data.news.author.fullName}
 									</Link>
-								))}
+								</span>
+								<Link
+									to={`/news/${data.news.id}`}
+									className="news_link news_padding"
+								>
+									<span className="news_title">{data.news.title}</span>
+									{data.news.thumbnail && (
+										<img
+											className="news_thumbnail"
+											src={data.news.thumbnail}
+											alt={data.news.title}
+										/>
+									)}
+								</Link>
+								<div className="news_body news_padding" id="body"></div>
+								<div className="news_sources news_padding">
+									<h4>Sources</h4>
+									{sources.map(s => (
+										<a
+											className="news_sources_item"
+											key={s}
+											href={s}
+											target="_blank"
+											rel="noreferrer"
+										>
+											{s}
+										</a>
+									))}
+								</div>
+								<div className="tags news_padding">
+									<h4>Tags</h4>
+									{tags.length > 0 &&
+										tags.map(s => (
+											<Link
+												className="tags_item"
+												key={s}
+												to={`/search?search=${s}&filter=tags`}
+											>
+												{s}
+											</Link>
+										))}
+								</div>
+								<div className="news_options news_padding">
+									<Link
+										to={`/news/${data.news.id}`}
+										className="news_options_item"
+									>
+										<BsChatSquare className="news_options_item_icon" />
+										{commentsCounter}
+									</Link>
+									<button onClick={handleShare} className="news_options_item">
+										<AiOutlineShareAlt className="news_options_item_icon" />
+										Share
+									</button>
+									<button onClick={handleSave} className="news_options_item">
+										<AiOutlineSave className="news_options_item_icon" />
+										Save
+									</button>
+									{user.id == data.news.author.id && (
+										<>
+											<button
+												onClick={handleDelete}
+												className="news_options_item"
+											>
+												<AiOutlineDelete className="news_options_item_icon" />
+												Delete
+											</button>
+											<button
+												onClick={handleEdit}
+												className="news_options_item"
+											>
+												<AiOutlineEdit className="news_options_item_icon" />
+												Edit
+											</button>
+										</>
+									)}
+								</div>
+							</div>
 						</div>
-					</div>
+						<NewsComments
+							newsId={newsId}
+							commentsCounter={commentsCounter}
+							setCommentsCounter={setCommentsCounter}
+						/>
+					</>
 				)}
 			</QueryResult>
 		</Page>

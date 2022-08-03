@@ -4,7 +4,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	box-shadow: 0px 0px 5px var(--shadow-color);
+	border-top: 1px solid var(--border-color);
+	background-color: var(--compBg-color);
 
 	&_text {
 		color: var(--text-color);

@@ -10,7 +10,6 @@ function NewsCard2({ data }) {
 		const div = document.getElementById(data.id)
 
 		let body = data.body
-		// find the last line break to get exactly 5 lines to display
 
 		// replace all html tags from Draft-js to get raw text body
 		body = body.replaceAll(/<\/?[\s\S]*?>/g, "")
@@ -37,18 +36,15 @@ function NewsCard2({ data }) {
 	}
 
 	const showDate = () => {
-		const updatedAt = fromUnixTime(data.updatedAt / 1000)
+		const createdAt = fromUnixTime(data.createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(updatedAt, currentDate)
+		const distance = formatDistance(createdAt, currentDate)
 
-		return data.createdAt === data.updatedAt
-			? `Posted ${distance} ago`
-			: `Edited ${distance} ago`
+		return `Posted ${distance} ago`
 	}
 
 	return (
 		<Link to={`/news/${data.id}`} className="news_card2">
-			<div className="news_card2_overlay" />
 			<div
 				className="news_card2_thumbnail"
 				style={{ backgroundImage: `url("${data.thumbnail}")` }}

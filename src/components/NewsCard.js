@@ -1,19 +1,30 @@
 import React, { useEffect } from "react"
+import { AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
+import { BsChatSquare } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import { AuthorInfo } from "../components"
+import { CardVotes } from "../components"
 
 function NewsCard({ data, matches }) {
-	const showDate = () => {
-		const createdAt = fromUnixTime(data.createdAt / 1000)
-		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(createdAt, currentDate)
+	useEffect(() => {
+		if (!data.thumbnail) {
+			const div = document.querySelector("#body")
 
-		return `Posted ${distance} ago`
-	}
+			let body = data.body
+
+			// replace all html tags from Draft-js to get raw text body
+			body = body.replaceAll(/<\/?[\s\S]*?>/g, "")
+
+			// get first 400 chars of that
+			body = body.slice(0, 396) + "..."
+
+			// render it
+			div.innerHTML = body
+		}
+	})
 
 	useEffect(() => {
 		if (matches) {
@@ -38,33 +49,85 @@ function NewsCard({ data, matches }) {
 		}
 	}, [matches, data.id])
 
-	return (
-		<Link to={`/news/${data.id}`} className="news_card">
-			<div className="news_card_overlay">
-				{matches && (
-					<span
-						id={data.id + "span"}
-						className="news_card_matches"
-					>{`Matches ${matches}%`}</span>
-				)}
-			</div>
-			<div
-				className="news_card_thumbnail"
-				style={{ backgroundImage: `url("${data.thumbnail}")` }}
-			/>
-			<div className="news_card_info">
-				<span className="news_card_info_title">{data.title}</span>
+	const showTags = () => {
+		let tags = []
 
-				<div className="news_card_info_wrapper">
-					<AuthorInfo
-						data={data.author}
-						type={data.type}
-						subreddit={data.subreddit}
-					/>
-					<p className="news_card_info_date">{showDate()}</p>
+		// split the data.tags into an array of tags only if there is at least one element
+		if (data.tags.length > 0) tags = data.tags.split(",")
+
+		// map the tags
+		return tags.map(s => (
+			<Link
+				className="tags_item"
+				key={s}
+				to={`/search?search=${s}&filter=tags`}
+			>
+				{s}
+			</Link>
+		))
+	}
+
+	const showDate = () => {
+		const createdAt = fromUnixTime(data.createdAt / 1000)
+		const currentDate = fromUnixTime(Date.now() / 1000)
+		const distance = formatDistance(createdAt, currentDate)
+
+		return `Posted ${distance} ago`
+	}
+
+	const handleShare = e => {}
+
+	const handleSave = e => {}
+
+	return (
+		<div className="newscard">
+			<CardVotes data={data} />
+			<div className="newscard_container">
+				<span className="newscard_posted">
+					{showDate()} by{" "}
+					<Link
+						to={`/profile/${data.author.id}`}
+						className="newscard_authorlink"
+					>
+						{data.author.fullName}
+					</Link>
+				</span>
+				<Link to={`/news/${data.id}`} className="newscard_link">
+					<span className="newscard_title">{data.title}</span>
+					{data.thumbnail ? (
+						<div
+							className="newscard_thumbnail"
+							style={{ backgroundImage: `url("${data.thumbnail}")` }}
+						>
+							{matches && (
+								<span
+									id={data.id + "span"}
+									className="newscard_matches"
+								>{`Matches ${matches}%`}</span>
+							)}
+						</div>
+					) : (
+						<div className="newscard_body" id="body"></div>
+					)}
+				</Link>
+				<div className="newscard_tags">{showTags()}</div>
+				<div className="newscard_options">
+					<Link to={`/news/${data.id}`} className="newscard_options_item">
+						<BsChatSquare className="newscard_options_item_icon" />
+						{data.comments}
+					</Link>
+					<button onClick={handleShare} className="newscard_options_item">
+						<AiOutlineShareAlt className="newscard_options_item_icon" />
+						Share
+					</button>
+					<button onClick={handleSave} className="newscard_options_item">
+						<AiOutlineSave className="newscard_options_item_icon" />
+						Save
+					</button>
 				</div>
 			</div>
-		</Link>
+		</div>
 	)
 }
+
 export default NewsCard

@@ -4,10 +4,12 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	font-size: 16px;
+	padding-left: 8px;
 
 	&_avatar {
-		width: 50px;
-		height: 50px;
+		width: 40px;
+		height: 40px;
 		border-radius: 50px;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -19,13 +21,13 @@
 		display: flex;
 		flex-direction: column;
 
-		&_fullname {
-			font-size: 20px;
+		&_origin {
+			display: flex;
+			margin-top: 2px;
 		}
 
 		&_newscount {
 			color: var(--secondText-color);
-			font-size: 16px;
 		}
 
 		&_from em {
