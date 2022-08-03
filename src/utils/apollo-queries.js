@@ -49,6 +49,29 @@ export const VOTE_NEWS = gql`
 	}
 `
 
+// udpate the comments counter of a news
+export const UPDATE_COMMENTS_COUNTER = gql`
+	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
+		updateCommentsCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			comments
+		}
+	}
+`
+
+// save a news
+export const SAVE_NEWS = gql`
+	mutation SaveNews($action: String!, $id: ID!) {
+		saveNews(action: $action, id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // add a comment to a news or post
 export const ADD_COMMENT = gql`
 	mutation AddComment($commentData: CommentInput!) {
@@ -143,18 +166,6 @@ export const VOTE_COMMENT = gql`
 	}
 `
 
-// udpate the comments counter of a news
-export const UPDATE_COMMENTS_COUNTER = gql`
-	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
-		updateCommentsCounter(action: $action, id: $id) {
-			code
-			success
-			message
-			comments
-		}
-	}
-`
-
 // udpate the replies counter of a comment
 export const UPDATE_REPLIES_COUNTER = gql`
 	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
@@ -187,6 +198,7 @@ export const NEWS_FOR_HOME = gql`
 			likes
 			dislikes
 			comments
+			saveState
 			author {
 				profilePicture
 				fullName
@@ -243,6 +255,7 @@ export const NEWS2 = gql`
 			likes
 			dislikes
 			comments
+			saveState
 			author {
 				id
 				fullName
@@ -287,6 +300,7 @@ export const NEWS_FOR_PROFILE = gql`
 			likes
 			dislikes
 			comments
+			saveState
 			author {
 				profilePicture
 				fullName
@@ -333,6 +347,7 @@ export const SEARCH = gql`
 				likes
 				dislikes
 				comments
+				saveState
 				author {
 					id
 					fullName
@@ -386,6 +401,7 @@ export const LIKED_NEWS = gql`
 			voteState
 			likes
 			dislikes
+			saveState
 			author {
 				id
 				fullName
