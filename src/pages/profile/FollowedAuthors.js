@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useQuery } from "@apollo/client"
 
 import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
-import { AuthorCard } from "../../components"
+import { AuthorCard, QueryResult } from "../../components"
 
 function FollowedAuthors() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
@@ -44,6 +44,7 @@ function FollowedAuthors() {
 			{authors.map(author => (
 				<AuthorCard key={author.id} data={author} infoBelow />
 			))}
+			<QueryResult loading={loading} error={error} data={data} />
 		</div>
 	)
 }

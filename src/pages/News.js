@@ -22,7 +22,7 @@ import {
 	QueryResult,
 } from "../components"
 import { UserContext } from "../context"
-import { DELETE_NEWS, NEWS2, SAVE_NEWS } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS2, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -46,7 +46,7 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
-	const [saveNews] = useMutation(SAVE_NEWS)
+	const [save] = useMutation(SAVE_ITEM)
 
 	useEffect(() => {
 		if (data) {
@@ -90,11 +90,9 @@ function News() {
 			variables: {
 				id: data.news.id,
 			},
-			onCompleted: data => {
-				console.log(data)
-
-				if (!data.deleteNews.success) {
-					console.log(data.deleteNews.message)
+			onCompleted: ({ deleteNews }) => {
+				if (!deleteNews.success) {
+					console.log(deleteNews.message)
 
 					return
 				}
@@ -103,6 +101,7 @@ function News() {
 
 				history(-1)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
@@ -133,20 +132,24 @@ function News() {
 	const handleSave = e => {
 		e.preventDefault()
 
-		saveNews({
+		save({
 			variables: {
 				action: saved ? "unsave" : "save",
-				id: newsId,
+				parentId: newsId,
+				parentType: "news",
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
+
+					return
+				}
 
 				client.clearStore()
 
-				if (res.saveNews.success) {
-					setSaved(value => !value)
-				}
+				setSaved(value => !value)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 

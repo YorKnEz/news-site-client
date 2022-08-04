@@ -9,7 +9,7 @@ import { format, fromUnixTime } from "date-fns"
 import "./index.scss"
 import { Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
-import { FollowedAuthors, LikedNews, News } from "../profile"
+import { FollowedAuthors, LikedItems, News, SavedItems } from "../profile"
 import { AUTHOR } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
 
@@ -29,6 +29,13 @@ function Author() {
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
+
+	const pages = [
+		{ id: "news", text: "News", component: <News /> },
+		{ id: "followedAuthors", text: "Followed", component: <FollowedAuthors /> },
+		{ id: "likedNews", text: "Liked", component: <LikedItems /> },
+		{ id: "savedNews", text: "Saved", component: <SavedItems /> },
+	]
 
 	// highlight the current page
 	useEffect(() => {
@@ -173,37 +180,22 @@ function Author() {
 					</div>
 					<div
 						className="profile_pages"
-						style={{ gridTemplateColumns: "33.3% 33.4% 33.3%" }}
+						style={{
+							gridTemplateColumns: `repeat(${pages.length}, calc(100% / ${pages.length}))`,
+						}}
 					>
-						<button
-							onClick={e => handlePage(e, "news")}
-							id="news"
-							className="button profile_pages_item profile_pages_item_active"
-						>
-							<h3 className="profile_pages_title">Your news</h3>
-						</button>
-						<button
-							onClick={e => handlePage(e, "followedAuthors")}
-							id="followedAuthors"
-							className="button profile_pages_item"
-						>
-							<h3 className="profile_pages_title">Followed authors</h3>
-						</button>
-						<button
-							onClick={e => handlePage(e, "likedNews")}
-							id="likedNews"
-							className="button profile_pages_item"
-						>
-							<h3 className="profile_pages_title">Liked news</h3>
-						</button>
+						{pages.map(page => (
+							<button
+								onClick={e => handlePage(e, page.id)}
+								key={page.id}
+								id={page.id}
+								className="button profile_pages_item"
+							>
+								<h3 className="profile_pages_title">{page.text}</h3>
+							</button>
+						))}
 					</div>
-					{page === "news" ? (
-						<News />
-					) : page === "followedAuthors" ? (
-						<FollowedAuthors />
-					) : (
-						<LikedNews />
-					)}
+					{pages.find(item => item.id === page).component}
 				</div>
 			)}
 		</Page>

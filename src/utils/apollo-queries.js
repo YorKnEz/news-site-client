@@ -36,19 +36,6 @@ export const DELETE_NEWS = gql`
 	}
 `
 
-// like a news
-export const VOTE_NEWS = gql`
-	mutation VoteNews($action: String!, $id: ID!) {
-		voteNews(action: $action, id: $id) {
-			code
-			success
-			message
-			likes
-			dislikes
-		}
-	}
-`
-
 // udpate the comments counter of a news
 export const UPDATE_COMMENTS_COUNTER = gql`
 	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
@@ -57,17 +44,6 @@ export const UPDATE_COMMENTS_COUNTER = gql`
 			success
 			message
 			comments
-		}
-	}
-`
-
-// save a news
-export const SAVE_NEWS = gql`
-	mutation SaveNews($action: String!, $id: ID!) {
-		saveNews(action: $action, id: $id) {
-			code
-			success
-			message
 		}
 	}
 `
@@ -153,10 +129,22 @@ export const REMOVE_COMMENT = gql`
 	}
 `
 
+// udpate the replies counter of a comment
+export const UPDATE_REPLIES_COUNTER = gql`
+	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
+		updateRepliesCounter(action: $action, id: $id) {
+			code
+			success
+			message
+			replies
+		}
+	}
+`
+
 // like a comment
-export const VOTE_COMMENT = gql`
-	mutation VoteComment($action: String!, $id: ID!) {
-		voteComment(action: $action, id: $id) {
+export const VOTE_ITEM = gql`
+	mutation Vote($action: String!, $parentId: ID!, $parentType: String!) {
+		vote(action: $action, parentId: $parentId, parentType: $parentType) {
 			code
 			success
 			message
@@ -166,14 +154,12 @@ export const VOTE_COMMENT = gql`
 	}
 `
 
-// udpate the replies counter of a comment
-export const UPDATE_REPLIES_COUNTER = gql`
-	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
-		updateRepliesCounter(action: $action, id: $id) {
+export const SAVE_ITEM = gql`
+	mutation Save($action: String!, $parentId: ID!, $parentType: String!) {
+		save(action: $action, parentId: $parentId, parentType: $parentType) {
 			code
 			success
 			message
-			replies
 		}
 	}
 `
@@ -257,9 +243,9 @@ export const NEWS2 = gql`
 			comments
 			saveState
 			author {
-				id
-				fullName
 				profilePicture
+				fullName
+				id
 			}
 		}
 	}
@@ -349,9 +335,9 @@ export const SEARCH = gql`
 				comments
 				saveState
 				author {
-					id
-					fullName
 					profilePicture
+					fullName
+					id
 				}
 			}
 			author {
@@ -384,33 +370,6 @@ export const FOLLOWED_AUTHORS = gql`
 	}
 `
 
-// returns the news a certain user liked
-export const LIKED_NEWS = gql`
-	query LikedNews($offset: Int) {
-		likedNews(offset: $offset) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-			saveState
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
 	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
@@ -424,6 +383,7 @@ export const COMMENTS_FOR_NEWS = gql`
 			dislikes
 			replies
 			createdAt
+			saveState
 			author {
 				id
 				fullName
@@ -449,10 +409,107 @@ export const COMMENT_REPLIES = gql`
 			dislikes
 			replies
 			createdAt
+			saveState
 			author {
 				id
 				fullName
 				profilePicture
+			}
+		}
+	}
+`
+
+// returns the news and comments a certain user liked
+export const LIKED_ITEMS = gql`
+	query Liked($oldestId: ID!, $oldestType: String!) {
+		liked(oldestId: $oldestId, oldestType: $oldestType) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				updatedAt
+				voteState
+				likes
+				dislikes
+				comments
+				saveState
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on Comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				saveState
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`
+
+// returns the news and comments a certain user liked
+export const SAVED_ITEMS = gql`
+	query Saved($oldestId: ID!, $oldestType: String!) {
+		saved(oldestId: $oldestId, oldestType: $oldestType) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				updatedAt
+				voteState
+				likes
+				dislikes
+				comments
+				saveState
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on Comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				saveState
+				author {
+					id
+					fullName
+					profilePicture
+				}
 			}
 		}
 	}

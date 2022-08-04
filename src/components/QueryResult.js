@@ -40,7 +40,7 @@ function QueryResult({ loading, error, data, children }) {
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "center",
-					margin: "40px 0",
+					margin: "24px 0",
 					fontSize: "20px",
 					height: "50px",
 				}}
@@ -52,15 +52,19 @@ function QueryResult({ loading, error, data, children }) {
 			</div>
 		)
 
+		const queryNames = [
+			"newsForHome",
+			"newsForHomeReddit",
+			"newsForProfile",
+			"followedAuthors",
+			"liked",
+			"saved",
+		]
+
 		// check for each array if it is empty and return notFound if so
-		if (data.newsForHome && data.newsForHome.length === 0) {
-			return notFound
-		}
-		if (data.newsForHomeReddit && data.newsForHomeReddit.length === 0) {
-			return notFound
-		}
-		if (data.newsForProfile && data.newsForProfile.length === 0) {
-			return notFound
+		for (const index in queryNames) {
+			if (data[queryNames[index]] && data[queryNames[index]].length === 0)
+				return notFound
 		}
 
 		// otherwise return the children

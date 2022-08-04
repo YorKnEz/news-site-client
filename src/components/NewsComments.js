@@ -73,15 +73,17 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 				action: "up",
 				id: newsId,
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ updateCommentsCounter }) => {
+				if (!updateCommentsCounter.success) {
+					console.log(updateCommentsCounter.message)
+
+					return
+				}
 
 				setCommentsCounter(counter => counter + 1)
 				setTotalReplies(counter => counter + 1)
 			},
-			onError: error => {
-				console.log(error)
-			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 

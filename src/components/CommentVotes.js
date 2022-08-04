@@ -9,51 +9,48 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CommentVotes.scss"
-import { Modal } from "../components"
-import { VOTE_COMMENT } from "../utils/apollo-queries"
+import { VOTE_ITEM } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
 function CommentVotes({ data }) {
 	const client = useApolloClient()
-	const [voteComment] = useMutation(VOTE_COMMENT)
+	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
 		likes: data.likes,
 		dislikes: data.dislikes,
 	})
-	const [error, setError] = useState("")
 
 	const handleVote = (e, action) => {
 		e.preventDefault()
 
-		voteComment({
+		vote({
 			variables: {
 				action,
-				id: data.id,
+				parentId: data.id,
+				parentType: "comment",
 			},
-			onCompleted: ({ voteComment }) => {
-				console.log(voteComment)
+			onCompleted: ({ vote }) => {
+				if (!vote.success) {
+					console.log(vote.message)
+
+					return
+				}
+
+				client.clearStore()
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: voteComment.likes,
-					dislikes: voteComment.dislikes,
+					likes: vote.likes,
+					dislikes: vote.dislikes,
 				})
-
-				client.clearStore()
 			},
-			onError: error =>
-				setError(error?.response?.data.message || error.message),
+			onError: error => console.log({ ...error }),
 		})
 	}
 
 	return (
 		<div className="commlikes">
-			{error && (
-				<Modal onSubmit={() => setError("")}>
-					<p>{error}</p>
-				</Modal>
-			)}
 			<button className="commlikes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike

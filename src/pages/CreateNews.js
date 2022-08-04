@@ -128,20 +128,21 @@ function CreateNews() {
 				variables: {
 					newsData: requestBody,
 				},
-				onCompleted: data => {
-					client.clearStore()
-
-					if (!data.createNews.success) {
+				onCompleted: ({ createNews }) => {
+					if (!createNews.success) {
 						setError2({
 							...error2,
-							other: { message: data.createNews.message },
+							other: { message: createNews.message },
 						})
 
 						return
 					}
 
-					history(`/news/${data.createNews.id}`)
+					client.clearStore()
+
+					history(`/news/${createNews.id}`)
 				},
+				onError: error => console.log({ ...error }),
 			})
 		} catch (error) {
 			setError2({

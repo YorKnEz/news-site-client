@@ -2,9 +2,11 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
 	AiFillExclamationCircle,
+	AiFillSave,
 	AiOutlineDelete,
 	AiOutlineEdit,
 	AiOutlineExpand,
+	AiOutlineSave,
 } from "react-icons/ai"
 import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
@@ -18,11 +20,13 @@ import { UserContext } from "../context"
 import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
+	SAVE_ITEM,
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
 function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
+	const [saved, setSaved] = useState(false)
 	const [replyError, setReplyError] = useState("")
 	const [editError, setEditError] = useState("")
 	const [showEdit, setShowEdit] = useState(false)
@@ -39,6 +43,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
+	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
 			oldestCommentDate,
@@ -130,17 +135,42 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			variables: {
 				id: parseInt(comment.id),
 			},
-			onCompleted: data => {
-				client.clearStore()
-
-				if (!data.removeComment.success) {
-					console.log(data.removeComment.message)
+			onCompleted: ({ removeComment }) => {
+				if (!removeComment.success) {
+					console.log(removeComment.message)
 
 					return
 				}
 
-				onCommentEdit(data.removeComment.comment)
+				client.clearStore()
+
+				onCommentEdit(removeComment.comment)
 			},
+			onError: error => console.log({ ...error }),
+		})
+	}
+
+	const handleSave = e => {
+		e.preventDefault()
+
+		save({
+			variables: {
+				action: saved ? "unsave" : "save",
+				parentId: comment.id,
+				parentType: "comment",
+			},
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
+
+					return
+				}
+
+				client.clearStore()
+
+				setSaved(value => !value)
+			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
@@ -174,12 +204,17 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 				action: "up",
 				id: comment.id,
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ updateRepliesCounter }) => {
+				if (!updateRepliesCounter.success) {
+					console.log(updateRepliesCounter.message)
+
+					return
+				}
 
 				setRepliesCounter(counter => counter + 1)
 				setTotalReplies(counter => counter + 1)
 			},
+			onError: error => console.log({ ...error }),
 		})
 
 		updateCounter()
@@ -227,50 +262,70 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						{showDate()}
 					</span>
 				</div>
-				{!collapse &&
-					(showEdit ? (
-						<>
-							<CommentEditor
-								setError={setEditError}
-								parentId={comment.parentId}
-								parentType={comment.parentType}
-								commentToEdit={comment}
-								onCommentEdit={handleEdit}
-								onEditorCancel={toggleEdit}
-							/>
-							{editError && (
-								<p className="comment_error">
-									<AiFillExclamationCircle className="comment_error_icon" />
-									{editError}
-								</p>
-							)}
-						</>
-					) : (
-						<div className="comment_body" id={`body${comment.id}`}></div>
-					))}
-				{!collapse && (
-					<div className="comment_options">
-						<CommentVotes data={comment} />
-						<button onClick={handleReply} className="comment_options_item">
-							<BsReply className="comment_options_item_icon" />
-							Reply
-						</button>
-						{user.id == comment.author.id && (
-							<>
-								<button onClick={handleDelete} className="comment_options_item">
-									<AiOutlineDelete className="comment_options_item_icon" />
-									Delete
-								</button>
-								<button onClick={toggleEdit} className="comment_options_item">
-									<AiOutlineEdit className="comment_options_item_icon" />
-									Edit
-								</button>
-							</>
+				{showEdit ? (
+					<div style={collapse ? { display: "none" } : {}}>
+						<CommentEditor
+							setError={setEditError}
+							parentId={comment.parentId}
+							parentType={comment.parentType}
+							commentToEdit={comment}
+							onCommentEdit={handleEdit}
+							onEditorCancel={toggleEdit}
+						/>
+						{editError && (
+							<p className="comment_error">
+								<AiFillExclamationCircle className="comment_error_icon" />
+								{editError}
+							</p>
 						)}
 					</div>
+				) : (
+					<div
+						style={collapse ? { display: "none" } : {}}
+						className="comment_body"
+						id={`body${comment.id}`}
+					></div>
 				)}
-				{!collapse && showReply && (
-					<div className="comment comment_replies comment_reply">
+				<div
+					style={collapse ? { display: "none" } : {}}
+					className="comment_options"
+				>
+					<CommentVotes data={comment} />
+					<button onClick={handleReply} className="comment_options_item">
+						<BsReply className="comment_options_item_icon" />
+						Reply
+					</button>
+					<button onClick={handleSave} className="comment_options_item">
+						{saved ? (
+							<>
+								<AiFillSave className="comment_options_item_icon" />
+								Unsave
+							</>
+						) : (
+							<>
+								<AiOutlineSave className="comment_options_item_icon" />
+								Save
+							</>
+						)}
+					</button>
+					{user.id == comment.author.id && (
+						<>
+							<button onClick={handleDelete} className="comment_options_item">
+								<AiOutlineDelete className="comment_options_item_icon" />
+								Delete
+							</button>
+							<button onClick={toggleEdit} className="comment_options_item">
+								<AiOutlineEdit className="comment_options_item_icon" />
+								Edit
+							</button>
+						</>
+					)}
+				</div>
+				{showReply && (
+					<div
+						style={collapse ? { display: "none" } : {}}
+						className="comment comment_replies comment_reply"
+					>
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
@@ -291,28 +346,29 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						</div>
 					</div>
 				)}
-				{!collapse && (
-					<div className="comments_list">
-						{replies.map(comment => (
-							<Comment
-								key={comment.id}
-								newsId={newsId}
-								comment={comment}
-								onCommentEdit={onReplyEdit}
-								updateCounter={updateCounterLocal}
-							/>
-						))}
-						{repliesCounter - totalReplies > 0 && (
-							<button
-								onClick={handleFetchComments}
-								className="comments_more comments_more_replies"
-							>
-								Show {repliesCounter - totalReplies} more comments
-							</button>
-						)}
-						<QueryResult loading={loading} error={error} data={data} />
-					</div>
-				)}
+				<div
+					style={collapse ? { display: "none" } : {}}
+					className="comments_list"
+				>
+					{replies.map(comment => (
+						<Comment
+							key={comment.id}
+							newsId={newsId}
+							comment={comment}
+							onCommentEdit={onReplyEdit}
+							updateCounter={updateCounterLocal}
+						/>
+					))}
+					{repliesCounter - totalReplies > 0 && (
+						<button
+							onClick={handleFetchComments}
+							className="comments_more comments_more_replies"
+						>
+							Show {repliesCounter - totalReplies} more comments
+						</button>
+					)}
+					<QueryResult loading={loading} error={error} data={data} />
+				</div>
 			</div>
 		</div>
 	)
