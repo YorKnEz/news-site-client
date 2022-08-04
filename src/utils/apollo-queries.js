@@ -36,19 +36,6 @@ export const DELETE_NEWS = gql`
 	}
 `
 
-// like a news
-export const VOTE_NEWS = gql`
-	mutation VoteNews($action: String!, $id: ID!) {
-		voteNews(action: $action, id: $id) {
-			code
-			success
-			message
-			likes
-			dislikes
-		}
-	}
-`
-
 // udpate the comments counter of a news
 export const UPDATE_COMMENTS_COUNTER = gql`
 	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
@@ -153,19 +140,6 @@ export const REMOVE_COMMENT = gql`
 	}
 `
 
-// like a comment
-export const VOTE_COMMENT = gql`
-	mutation VoteComment($action: String!, $id: ID!) {
-		voteComment(action: $action, id: $id) {
-			code
-			success
-			message
-			likes
-			dislikes
-		}
-	}
-`
-
 // udpate the replies counter of a comment
 export const UPDATE_REPLIES_COUNTER = gql`
 	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
@@ -174,6 +148,19 @@ export const UPDATE_REPLIES_COUNTER = gql`
 			success
 			message
 			replies
+		}
+	}
+`
+
+// like a comment
+export const VOTE_ITEM = gql`
+	mutation Vote($action: String!, $parentId: ID!, $parentType: String!) {
+		vote(action: $action, parentId: $parentId, parentType: $parentType) {
+			code
+			success
+			message
+			likes
+			dislikes
 		}
 	}
 `

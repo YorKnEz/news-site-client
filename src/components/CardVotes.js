@@ -9,12 +9,12 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CardVotes.scss"
-import { VOTE_NEWS } from "../utils/apollo-queries"
+import { VOTE_ITEM } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
 function CardVotes({ data }) {
 	const client = useApolloClient()
-	const [voteNews] = useMutation(VOTE_NEWS)
+	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
 		likes: data.likes,
@@ -24,14 +24,15 @@ function CardVotes({ data }) {
 	const handleVote = (e, action) => {
 		e.preventDefault()
 
-		voteNews({
+		vote({
 			variables: {
 				action,
-				id: data.id,
+				parentId: data.id,
+				parentType: "news",
 			},
-			onCompleted: ({ voteNews }) => {
-				if (!voteNews.success) {
-					console.log(voteNews.message)
+			onCompleted: ({ vote }) => {
+				if (!vote.success) {
+					console.log(vote.message)
 
 					return
 				}
@@ -40,8 +41,8 @@ function CardVotes({ data }) {
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: voteNews.likes,
-					dislikes: voteNews.dislikes,
+					likes: vote.likes,
+					dislikes: vote.dislikes,
 				})
 			},
 			onError: error => console.log({ ...error }),

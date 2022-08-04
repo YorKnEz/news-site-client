@@ -9,12 +9,12 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CommentVotes.scss"
-import { VOTE_COMMENT } from "../utils/apollo-queries"
+import { VOTE_ITEM } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
 function CommentVotes({ data }) {
 	const client = useApolloClient()
-	const [voteComment] = useMutation(VOTE_COMMENT)
+	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
 		likes: data.likes,
@@ -24,14 +24,15 @@ function CommentVotes({ data }) {
 	const handleVote = (e, action) => {
 		e.preventDefault()
 
-		voteComment({
+		vote({
 			variables: {
 				action,
-				id: data.id,
+				parentId: data.id,
+				parentType: "comment",
 			},
-			onCompleted: ({ voteComment }) => {
-				if (!voteComment.success) {
-					console.log(voteComment.message)
+			onCompleted: ({ vote }) => {
+				if (!vote.success) {
+					console.log(vote.message)
 
 					return
 				}
@@ -40,8 +41,8 @@ function CommentVotes({ data }) {
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: voteComment.likes,
-					dislikes: voteComment.dislikes,
+					likes: vote.likes,
+					dislikes: vote.dislikes,
 				})
 			},
 			onError: error => console.log({ ...error }),
