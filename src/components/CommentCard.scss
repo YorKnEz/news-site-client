@@ -1,0 +1,106 @@
+.commentcard {
+	display: flex;
+	width: 100%;
+	margin: 4px 0;
+	border-radius: 5px;
+	border: 1px solid var(--border-color);
+	background-color: var(--compBg-color);
+
+	user-select: none;
+	text-decoration: none;
+	color: var(--text-color);
+
+	&_container {
+		width: 100%;
+		padding: 10px 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&_posted {
+		padding-left: 8px;
+		font-size: 12px;
+		margin: 5px 0;
+		color: var(--secondText-color);
+	}
+
+	&_authorlink {
+		color: var(--secondText-color);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&_link {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		text-decoration: none;
+		color: var(--text-color);
+	}
+
+	&_body {
+		padding: 0 8px;
+		width: calc(100% - 16px);
+
+		word-wrap: break-word;
+		font-size: 16px;
+		color: var(--text-color);
+
+		a {
+			text-decoration: none;
+			color: var(--link-color);
+
+			&:hover {
+				color: var(--linkHover-color);
+			}
+		}
+
+		p {
+			margin: 8px 0;
+		}
+	}
+
+	&_options {
+		display: flex;
+		padding-left: 8px;
+
+		&_item {
+			margin-left: 4px;
+			padding-right: 8px;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+
+			color: var(--secondText-color);
+			background-color: transparent;
+
+			border: none;
+			font-size: 12px;
+
+			transition: all 0.2s ease;
+
+			&_icon {
+				font-size: 20px;
+				margin-right: 4px;
+			}
+
+			&:hover {
+				background-color: var(--border-color);
+				border-radius: 5px;
+			}
+
+			&:nth-child(2) {
+				margin-left: 8px;
+			}
+		}
+	}
+
+	&:hover {
+		border: 1px solid var(--secondText-color);
+	}
+}
