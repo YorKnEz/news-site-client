@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import "./index.scss"
 import { Page } from "../../components"
 import { UserContext } from "../../context"
-import { FollowedAuthors, LikedNews, SavedNews } from "../profile"
+import { FollowedAuthors, LikedItems, SavedItems } from "../profile"
 import { useDocumentTitle } from "../../utils/utils"
 
 function User() {
@@ -15,8 +15,8 @@ function User() {
 
 	const pages = [
 		{ id: "followedAuthors", text: "Followed", component: <FollowedAuthors /> },
-		{ id: "likedNews", text: "Liked", component: <LikedNews /> },
 		{ id: "savedNews", text: "Saved", component: <SavedNews /> },
+		{ id: "likedNews", text: "Liked", component: <LikedItems /> },
 	]
 
 	// highlight the current page

@@ -370,33 +370,6 @@ export const FOLLOWED_AUTHORS = gql`
 	}
 `
 
-// returns the news a certain user liked
-export const LIKED_NEWS = gql`
-	query LikedNews($oldestId: ID!) {
-		likedNews(oldestId: $oldestId) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-			saveState
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
 // returns the news a certain user saved
 export const SAVED_NEWS = gql`
 	query SavedNews($oldestId: ID!) {
@@ -470,3 +443,52 @@ export const COMMENT_REPLIES = gql`
 		}
 	}
 `
+
+// returns the news and comments a certain user liked
+export const LIKED_ITEMS = gql`
+	query Liked($oldestId: ID!, $oldestType: String!) {
+		liked(oldestId: $oldestId, oldestType: $oldestType) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				updatedAt
+				voteState
+				likes
+				dislikes
+				comments
+				saveState
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on Comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				saveState
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`
+
