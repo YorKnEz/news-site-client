@@ -2,9 +2,11 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
 	AiFillExclamationCircle,
+	AiFillSave,
 	AiOutlineDelete,
 	AiOutlineEdit,
 	AiOutlineExpand,
+	AiOutlineSave,
 } from "react-icons/ai"
 import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
@@ -18,11 +20,13 @@ import { UserContext } from "../context"
 import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
+	SAVE_COMMENT,
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
 function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
+	const [saved, setSaved] = useState(false)
 	const [replyError, setReplyError] = useState("")
 	const [editError, setEditError] = useState("")
 	const [showEdit, setShowEdit] = useState(false)
@@ -39,6 +43,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
+	const [saveComment] = useMutation(SAVE_COMMENT)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
 			oldestCommentDate,
@@ -140,6 +145,29 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 				client.clearStore()
 
 				onCommentEdit(removeComment.comment)
+			},
+			onError: error => console.log({ ...error }),
+		})
+	}
+
+	const handleSave = e => {
+		e.preventDefault()
+
+		saveComment({
+			variables: {
+				action: saved ? "unsave" : "save",
+				id: comment.id,
+			},
+			onCompleted: ({ saveComment }) => {
+				if (!saveComment.success) {
+					console.log(saveComment.message)
+
+					return
+				}
+
+				client.clearStore()
+
+				setSaved(value => !value)
 			},
 			onError: error => console.log({ ...error }),
 		})
@@ -265,6 +293,19 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 					<button onClick={handleReply} className="comment_options_item">
 						<BsReply className="comment_options_item_icon" />
 						Reply
+					</button>
+					<button onClick={handleSave} className="comment_options_item">
+						{saved ? (
+							<>
+								<AiFillSave className="comment_options_item_icon" />
+								Unsave
+							</>
+						) : (
+							<>
+								<AiOutlineSave className="comment_options_item_icon" />
+								Save
+							</>
+						)}
 					</button>
 					{user.id == comment.author.id && (
 						<>

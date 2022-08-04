@@ -178,6 +178,16 @@ export const UPDATE_REPLIES_COUNTER = gql`
 	}
 `
 
+export const SAVE_COMMENT = gql`
+	mutation SaveComment($action: String!, $id: ID!) {
+		saveComment(action: $action, id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // QUERIES
 
 // returns news from yorknews
