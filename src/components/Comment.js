@@ -233,50 +233,57 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						{showDate()}
 					</span>
 				</div>
-				{!collapse &&
-					(showEdit ? (
-						<>
-							<CommentEditor
-								setError={setEditError}
-								parentId={comment.parentId}
-								parentType={comment.parentType}
-								commentToEdit={comment}
-								onCommentEdit={handleEdit}
-								onEditorCancel={toggleEdit}
-							/>
-							{editError && (
-								<p className="comment_error">
-									<AiFillExclamationCircle className="comment_error_icon" />
-									{editError}
-								</p>
-							)}
-						</>
-					) : (
-						<div className="comment_body" id={`body${comment.id}`}></div>
-					))}
-				{!collapse && (
-					<div className="comment_options">
-						<CommentVotes data={comment} />
-						<button onClick={handleReply} className="comment_options_item">
-							<BsReply className="comment_options_item_icon" />
-							Reply
-						</button>
-						{user.id == comment.author.id && (
-							<>
-								<button onClick={handleDelete} className="comment_options_item">
-									<AiOutlineDelete className="comment_options_item_icon" />
-									Delete
-								</button>
-								<button onClick={toggleEdit} className="comment_options_item">
-									<AiOutlineEdit className="comment_options_item_icon" />
-									Edit
-								</button>
-							</>
+				{showEdit ? (
+					<div style={collapse ? { display: "none" } : {}}>
+						<CommentEditor
+							setError={setEditError}
+							parentId={comment.parentId}
+							parentType={comment.parentType}
+							commentToEdit={comment}
+							onCommentEdit={handleEdit}
+							onEditorCancel={toggleEdit}
+						/>
+						{editError && (
+							<p className="comment_error">
+								<AiFillExclamationCircle className="comment_error_icon" />
+								{editError}
+							</p>
 						)}
 					</div>
+				) : (
+					<div
+						style={collapse ? { display: "none" } : {}}
+						className="comment_body"
+						id={`body${comment.id}`}
+					></div>
 				)}
-				{!collapse && showReply && (
-					<div className="comment comment_replies comment_reply">
+				<div
+					style={collapse ? { display: "none" } : {}}
+					className="comment_options"
+				>
+					<CommentVotes data={comment} />
+					<button onClick={handleReply} className="comment_options_item">
+						<BsReply className="comment_options_item_icon" />
+						Reply
+					</button>
+					{user.id == comment.author.id && (
+						<>
+							<button onClick={handleDelete} className="comment_options_item">
+								<AiOutlineDelete className="comment_options_item_icon" />
+								Delete
+							</button>
+							<button onClick={toggleEdit} className="comment_options_item">
+								<AiOutlineEdit className="comment_options_item_icon" />
+								Edit
+							</button>
+						</>
+					)}
+				</div>
+				{showReply && (
+					<div
+						style={collapse ? { display: "none" } : {}}
+						className="comment comment_replies comment_reply"
+					>
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
@@ -297,28 +304,29 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						</div>
 					</div>
 				)}
-				{!collapse && (
-					<div className="comments_list">
-						{replies.map(comment => (
-							<Comment
-								key={comment.id}
-								newsId={newsId}
-								comment={comment}
-								onCommentEdit={onReplyEdit}
-								updateCounter={updateCounterLocal}
-							/>
-						))}
-						{repliesCounter - totalReplies > 0 && (
-							<button
-								onClick={handleFetchComments}
-								className="comments_more comments_more_replies"
-							>
-								Show {repliesCounter - totalReplies} more comments
-							</button>
-						)}
-						<QueryResult loading={loading} error={error} data={data} />
-					</div>
-				)}
+				<div
+					style={collapse ? { display: "none" } : {}}
+					className="comments_list"
+				>
+					{replies.map(comment => (
+						<Comment
+							key={comment.id}
+							newsId={newsId}
+							comment={comment}
+							onCommentEdit={onReplyEdit}
+							updateCounter={updateCounterLocal}
+						/>
+					))}
+					{repliesCounter - totalReplies > 0 && (
+						<button
+							onClick={handleFetchComments}
+							className="comments_more comments_more_replies"
+						>
+							Show {repliesCounter - totalReplies} more comments
+						</button>
+					)}
+					<QueryResult loading={loading} error={error} data={data} />
+				</div>
 			</div>
 		</div>
 	)
