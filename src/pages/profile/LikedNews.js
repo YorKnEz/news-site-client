@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import { NewsCard } from "../../components"
+import { NewsCard, QueryResult } from "../../components"
 import { LIKED_NEWS } from "../../utils/apollo-queries"
 
 function LikedNews() {
@@ -43,6 +43,7 @@ function LikedNews() {
 			{likedNews.map(news => (
 				<NewsCard key={news.id} data={news} />
 			))}
+			<QueryResult loading={loading} error={error} data={data} />
 		</div>
 	)
 }
