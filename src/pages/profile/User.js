@@ -15,8 +15,8 @@ function User() {
 
 	const pages = [
 		{ id: "followedAuthors", text: "Followed", component: <FollowedAuthors /> },
-		{ id: "savedNews", text: "Saved", component: <SavedNews /> },
 		{ id: "likedNews", text: "Liked", component: <LikedItems /> },
+		{ id: "savedNews", text: "Saved", component: <SavedItems /> },
 	]
 
 	// highlight the current page

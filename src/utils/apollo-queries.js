@@ -370,33 +370,6 @@ export const FOLLOWED_AUTHORS = gql`
 	}
 `
 
-// returns the news a certain user saved
-export const SAVED_NEWS = gql`
-	query SavedNews($oldestId: ID!) {
-		savedNews(oldestId: $oldestId) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-			saveState
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
 	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
@@ -410,6 +383,7 @@ export const COMMENTS_FOR_NEWS = gql`
 			dislikes
 			replies
 			createdAt
+			saveState
 			author {
 				id
 				fullName
@@ -435,6 +409,7 @@ export const COMMENT_REPLIES = gql`
 			dislikes
 			replies
 			createdAt
+			saveState
 			author {
 				id
 				fullName
@@ -492,3 +467,50 @@ export const LIKED_ITEMS = gql`
 	}
 `
 
+// returns the news and comments a certain user liked
+export const SAVED_ITEMS = gql`
+	query Saved($oldestId: ID!, $oldestType: String!) {
+		saved(oldestId: $oldestId, oldestType: $oldestType) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				updatedAt
+				voteState
+				likes
+				dislikes
+				comments
+				saveState
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on Comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				replies
+				createdAt
+				saveState
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`

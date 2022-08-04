@@ -57,8 +57,8 @@ function QueryResult({ loading, error, data, children }) {
 			"newsForHomeReddit",
 			"newsForProfile",
 			"followedAuthors",
-			"savedNews",
 			"liked",
+			"saved",
 		]
 
 		// check for each array if it is empty and return notFound if so

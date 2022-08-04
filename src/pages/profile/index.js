@@ -1,6 +1,6 @@
 export { default as Author } from "./Author"
 export { default as FollowedAuthors } from "./FollowedAuthors"
-export { default as SavedNews } from "./SavedNews"
 export { default as LikedItems } from "./LikedItems"
+export { default as SavedItems } from "./SavedItems"
 export { default as News } from "./News"
 export { default as User } from "./User"
