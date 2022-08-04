@@ -348,7 +348,15 @@ function CreateNews() {
 											? watchThumbnail[0].name
 											: "Your thumbnail"}
 									</span>
-									<div className="formItem_image_thumbnail" />
+									<div
+										className="formItem_image_thumbnail"
+										style={{
+											backgroundImage:
+												watchThumbnail.length > 0
+													? `url(${URL.createObjectURL(watchThumbnail[0])})`
+													: "url(/default_thumbnail.png)",
+										}}
+									/>
 								</label>
 								<input
 									className="formItem_image_input"
