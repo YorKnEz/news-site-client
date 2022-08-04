@@ -420,6 +420,11 @@ export const LIKED_NEWS = gql`
 		}
 	}
 `
+
+// returns the news a certain user saved
+export const SAVED_NEWS = gql`
+	query SavedNews($oldestId: ID!) {
+		savedNews(oldestId: $oldestId) {
 			id
 			title
 			subreddit

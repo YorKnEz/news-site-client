@@ -9,7 +9,7 @@ import { format, fromUnixTime } from "date-fns"
 import "./index.scss"
 import { Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
-import { FollowedAuthors, LikedNews, News } from "../profile"
+import { FollowedAuthors, LikedNews, News, SavedNews } from "../profile"
 import { AUTHOR } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
 
@@ -34,6 +34,7 @@ function Author() {
 		{ id: "news", text: "News", component: <News /> },
 		{ id: "followedAuthors", text: "Followed", component: <FollowedAuthors /> },
 		{ id: "likedNews", text: "Liked", component: <LikedNews /> },
+		{ id: "savedNews", text: "Saved", component: <SavedNews /> },
 	]
 
 	// highlight the current page
