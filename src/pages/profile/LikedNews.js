@@ -7,10 +7,11 @@ import { LIKED_NEWS } from "../../utils/apollo-queries"
 
 function LikedNews() {
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
-	const [offset, setOffset] = useState(0)
 	const [likedNews, setLikedNews] = useState([])
+	const [oldestId, setOldestId] = useState("")
+
 	const { loading, error, data } = useQuery(LIKED_NEWS, {
-		variables: { offset },
+		variables: { oldestId },
 	})
 
 	useEffect(() => {
@@ -24,9 +25,9 @@ function LikedNews() {
 	useEffect(() => {
 		if (reachedBottomOfPage) {
 			setReachedBottomOfPage(false)
-			setOffset(likedNews.length)
+			if (likedNews.length > 0) setOldestId(likedNews[likedNews.length - 1].id)
 		}
-	}, [reachedBottomOfPage, likedNews.length])
+	}, [reachedBottomOfPage, likedNews])
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {

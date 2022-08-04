@@ -396,8 +396,30 @@ export const FOLLOWED_AUTHORS = gql`
 
 // returns the news a certain user liked
 export const LIKED_NEWS = gql`
-	query LikedNews($offset: Int) {
-		likedNews(offset: $offset) {
+	query LikedNews($oldestId: ID!) {
+		likedNews(oldestId: $oldestId) {
+			id
+			title
+			subreddit
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			updatedAt
+			voteState
+			likes
+			dislikes
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+	}
+`
 			id
 			title
 			subreddit
