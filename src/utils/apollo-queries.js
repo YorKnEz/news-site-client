@@ -48,17 +48,6 @@ export const UPDATE_COMMENTS_COUNTER = gql`
 	}
 `
 
-// save a news
-export const SAVE_NEWS = gql`
-	mutation SaveNews($action: String!, $id: ID!) {
-		saveNews(action: $action, id: $id) {
-			code
-			success
-			message
-		}
-	}
-`
-
 // add a comment to a news or post
 export const ADD_COMMENT = gql`
 	mutation AddComment($commentData: CommentInput!) {
@@ -165,9 +154,9 @@ export const VOTE_ITEM = gql`
 	}
 `
 
-export const SAVE_COMMENT = gql`
-	mutation SaveComment($action: String!, $id: ID!) {
-		saveComment(action: $action, id: $id) {
+export const SAVE_ITEM = gql`
+	mutation Save($action: String!, $parentId: ID!, $parentType: String!) {
+		save(action: $action, parentId: $parentId, parentType: $parentType) {
 			code
 			success
 			message
@@ -254,9 +243,9 @@ export const NEWS2 = gql`
 			comments
 			saveState
 			author {
-				id
-				fullName
 				profilePicture
+				fullName
+				id
 			}
 		}
 	}
@@ -346,9 +335,9 @@ export const SEARCH = gql`
 				comments
 				saveState
 				author {
-					id
-					fullName
 					profilePicture
+					fullName
+					id
 				}
 			}
 			author {

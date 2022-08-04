@@ -8,13 +8,13 @@ import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
 import { CardVotes } from "../components"
-import { SAVE_NEWS } from "../utils/apollo-queries"
+import { SAVE_ITEM } from "../utils/apollo-queries"
 
 function NewsCard({ data, matches }) {
 	const [saved, setSaved] = useState(false)
 
 	const client = useApolloClient()
-	const [saveNews] = useMutation(SAVE_NEWS)
+	const [save] = useMutation(SAVE_ITEM)
 
 	// set the save state
 	useEffect(() => {
@@ -96,14 +96,15 @@ function NewsCard({ data, matches }) {
 	const handleSave = e => {
 		e.preventDefault()
 
-		saveNews({
+		save({
 			variables: {
 				action: saved ? "unsave" : "save",
-				id: data.id,
+				parentId: data.id,
+				parentType: "news",
 			},
-			onCompleted: ({ saveNews }) => {
-				if (!saveNews.success) {
-					console.log(saveNews.message)
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
 
 					return
 				}

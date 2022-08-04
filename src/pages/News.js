@@ -22,7 +22,7 @@ import {
 	QueryResult,
 } from "../components"
 import { UserContext } from "../context"
-import { DELETE_NEWS, NEWS2, SAVE_NEWS } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS2, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -46,7 +46,7 @@ function News() {
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
-	const [saveNews] = useMutation(SAVE_NEWS)
+	const [save] = useMutation(SAVE_ITEM)
 
 	useEffect(() => {
 		if (data) {
@@ -132,14 +132,15 @@ function News() {
 	const handleSave = e => {
 		e.preventDefault()
 
-		saveNews({
+		save({
 			variables: {
 				action: saved ? "unsave" : "save",
-				id: newsId,
+				parentId: newsId,
+				parentType: "news",
 			},
-			onCompleted: ({ saveNews }) => {
-				if (!saveNews.success) {
-					console.log(saveNews.message)
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
 
 					return
 				}

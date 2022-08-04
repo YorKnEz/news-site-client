@@ -20,7 +20,7 @@ import { UserContext } from "../context"
 import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
-	SAVE_COMMENT,
+	SAVE_ITEM,
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
@@ -43,7 +43,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
-	const [saveComment] = useMutation(SAVE_COMMENT)
+	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
 			oldestCommentDate,
@@ -153,14 +153,15 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const handleSave = e => {
 		e.preventDefault()
 
-		saveComment({
+		save({
 			variables: {
 				action: saved ? "unsave" : "save",
-				id: comment.id,
+				parentId: comment.id,
+				parentType: "comment",
 			},
-			onCompleted: ({ saveComment }) => {
-				if (!saveComment.success) {
-					console.log(saveComment.message)
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
 
 					return
 				}
