@@ -13,6 +13,11 @@ function User() {
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
 
+	const pages = [
+		{ id: "followedAuthors", text: "Followed", component: <FollowedAuthors /> },
+		{ id: "likedNews", text: "Liked", component: <LikedNews /> },
+	]
+
 	// highlight the current page
 	useEffect(() => {
 		const button1 = document.getElementById("followedAuthors")
@@ -59,23 +64,24 @@ function User() {
 						</div>
 					</div>
 				</div>
-				<div className="profile_pages">
-					<button
-						onClick={e => handlePage(e, "followedAuthors")}
-						id="followedAuthors"
-						className="button profile_pages_item profile_pages_item_active"
-					>
-						<h3 className="profile_pages_title">Followed authors</h3>
-					</button>
-					<button
-						onClick={e => handlePage(e, "likedNews")}
-						id="likedNews"
-						className="button profile_pages_item"
-					>
-						<h3 className="profile_pages_title">Liked news</h3>
-					</button>
+				<div
+					className="profile_pages"
+					style={{
+						gridTemplateColumns: `repeat(${pages.length}, calc(100% / ${pages.length}))`,
+					}}
+				>
+					{pages.map(page => (
+						<button
+							onClick={e => handlePage(e, page.id)}
+							key={page.id}
+							id={page.id}
+							className="button profile_pages_item"
+						>
+							<h3 className="profile_pages_title">{page.text}</h3>
+						</button>
+					))}
 				</div>
-				{page === "followedAuthors" ? <FollowedAuthors /> : <LikedNews />}
+				{pages.find(item => item.id === page).component}
 			</div>
 		</Page>
 	)
