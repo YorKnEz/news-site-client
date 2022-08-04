@@ -388,19 +388,18 @@ function CommentEditor({
 					body: html,
 				},
 			},
-			onCompleted: data => {
-				client.clearStore()
-
-				console.log(data)
-
-				if (!data.addComment.success) {
-					setError(data.addComment.message)
+			onCompleted: ({ addComment }) => {
+				if (!addComment.success) {
+					setError(addComment.message)
 
 					return
 				}
 
-				onCommentAdd(data.addComment.comment)
+				client.clearStore()
+
+				onCommentAdd(addComment.comment)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
@@ -421,17 +420,18 @@ function CommentEditor({
 				},
 				id: commentToEdit.id,
 			},
-			onCompleted: data => {
-				client.clearStore()
-
-				if (!data.editComment.success) {
-					setError(data.editComment.message)
+			onCompleted: ({ editComment }) => {
+				if (!editComment.success) {
+					setError(editComment.message)
 
 					return
 				}
 
-				onCommentEdit(data.editComment.comment)
+				client.clearStore()
+
+				onCommentEdit(editComment.comment)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 

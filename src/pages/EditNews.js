@@ -164,22 +164,21 @@ function CreateNews() {
 					id: data.news.id,
 					newsData: requestBody,
 				},
-				onCompleted: res => {
-					console.log(res)
-
-					client.clearStore()
-
-					if (!res.editNews.success) {
+				onCompleted: ({ updateNews }) => {
+					if (!updateNews.success) {
 						setError2({
 							...error2,
-							other: { message: res.editNews.message },
+							other: { message: updateNews.message },
 						})
 
 						return
 					}
 
+					client.clearStore()
+
 					history(`/news/${data.news.id}`)
 				},
+				onError: error => console.log({ ...error }),
 			})
 		} catch (error) {
 			setError2({

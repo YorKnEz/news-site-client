@@ -9,7 +9,6 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CardVotes.scss"
-import { Modal } from "../components"
 import { VOTE_NEWS } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
@@ -21,7 +20,6 @@ function CardVotes({ data }) {
 		likes: data.likes,
 		dislikes: data.dislikes,
 	})
-	const [error, setError] = useState("")
 
 	const handleVote = (e, action) => {
 		e.preventDefault()
@@ -32,28 +30,26 @@ function CardVotes({ data }) {
 				id: data.id,
 			},
 			onCompleted: ({ voteNews }) => {
-				console.log(voteNews)
+				if (!voteNews.success) {
+					console.log(voteNews.message)
+
+					return
+				}
+
+				client.clearStore()
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
 					likes: voteNews.likes,
 					dislikes: voteNews.dislikes,
 				})
-
-				client.clearStore()
 			},
-			onError: error =>
-				setError(error?.response?.data.message || error.message),
+			onError: error => console.log({ ...error }),
 		})
 	}
 
 	return (
 		<div className="cardlikes">
-			{error && (
-				<Modal onSubmit={() => setError("")}>
-					<p>{error}</p>
-				</Modal>
-			)}
 			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike

@@ -101,15 +101,18 @@ function NewsCard({ data, matches }) {
 				action: saved ? "unsave" : "save",
 				id: data.id,
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ saveNews }) => {
+				if (!saveNews.success) {
+					console.log(saveNews.message)
+
+					return
+				}
 
 				client.clearStore()
 
-				if (res.saveNews.success) {
-					setSaved(value => !value)
-				}
+				setSaved(value => !value)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 

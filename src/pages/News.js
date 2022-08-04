@@ -90,11 +90,9 @@ function News() {
 			variables: {
 				id: data.news.id,
 			},
-			onCompleted: data => {
-				console.log(data)
-
-				if (!data.deleteNews.success) {
-					console.log(data.deleteNews.message)
+			onCompleted: ({ deleteNews }) => {
+				if (!deleteNews.success) {
+					console.log(deleteNews.message)
 
 					return
 				}
@@ -103,6 +101,7 @@ function News() {
 
 				history(-1)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
@@ -138,15 +137,18 @@ function News() {
 				action: saved ? "unsave" : "save",
 				id: newsId,
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ saveNews }) => {
+				if (!saveNews.success) {
+					console.log(saveNews.message)
+
+					return
+				}
 
 				client.clearStore()
 
-				if (res.saveNews.success) {
-					setSaved(value => !value)
-				}
+				setSaved(value => !value)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 

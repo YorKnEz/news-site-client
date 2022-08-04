@@ -130,17 +130,18 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			variables: {
 				id: parseInt(comment.id),
 			},
-			onCompleted: data => {
-				client.clearStore()
-
-				if (!data.removeComment.success) {
-					console.log(data.removeComment.message)
+			onCompleted: ({ removeComment }) => {
+				if (!removeComment.success) {
+					console.log(removeComment.message)
 
 					return
 				}
 
-				onCommentEdit(data.removeComment.comment)
+				client.clearStore()
+
+				onCommentEdit(removeComment.comment)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
@@ -174,12 +175,17 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 				action: "up",
 				id: comment.id,
 			},
-			onCompleted: res => {
-				console.log(res)
+			onCompleted: ({ updateRepliesCounter }) => {
+				if (!updateRepliesCounter.success) {
+					console.log(updateRepliesCounter.message)
+
+					return
+				}
 
 				setRepliesCounter(counter => counter + 1)
 				setTotalReplies(counter => counter + 1)
 			},
+			onError: error => console.log({ ...error }),
 		})
 
 		updateCounter()
