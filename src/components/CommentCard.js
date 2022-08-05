@@ -3,11 +3,9 @@ import React, { useContext, useEffect, useState } from "react"
 import {
 	AiFillSave,
 	AiOutlineDelete,
-	AiOutlineEdit,
 	AiOutlineSave,
 	AiOutlineShareAlt,
 } from "react-icons/ai"
-import { BsReply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"

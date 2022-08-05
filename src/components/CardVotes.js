@@ -48,15 +48,15 @@ function CardVotes({ data }) {
 	}
 
 	return (
-		<div className="cardlikes">
-			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
+		<div className="cardvotes">
+			<button className="cardvotes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike
-						className="cardlikes_icon"
+						className="cardvotes_icon"
 						style={{ color: "var(--primary-color)" }}
 					/>
 				) : (
-					<AiOutlineLike className="cardlikes_icon" />
+					<AiOutlineLike className="cardvotes_icon" />
 				)}
 			</button>
 			<span
@@ -72,13 +72,13 @@ function CardVotes({ data }) {
 				{compressNumber(votes.score)}
 			</span>
 			<button
-				className="cardlikes_button"
+				className="cardvotes_button"
 				onClick={e => handleVote(e, "dislike")}
 			>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardlikes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="cardvotes_icon" style={{ color: "red" }} />
 				) : (
-					<AiOutlineDislike className="cardlikes_icon" />
+					<AiOutlineDislike className="cardvotes_icon" />
 				)}
 			</button>
 		</div>
