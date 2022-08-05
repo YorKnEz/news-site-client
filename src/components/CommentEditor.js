@@ -347,6 +347,7 @@ const editorOptions = {
 
 function CommentEditor({
 	setError,
+	newsId,
 	parentId,
 	parentType,
 	onCommentAdd,
@@ -383,9 +384,10 @@ function CommentEditor({
 		addComment({
 			variables: {
 				commentData: {
+					body: html,
+					newsId,
 					parentId,
 					parentType,
-					body: html,
 				},
 			},
 			onCompleted: ({ addComment }) => {
@@ -414,9 +416,10 @@ function CommentEditor({
 		editComment({
 			variables: {
 				commentData: {
+					body: html,
+					newsId,
 					parentId,
 					parentType,
-					body: html,
 				},
 				id: commentToEdit.id,
 			},
