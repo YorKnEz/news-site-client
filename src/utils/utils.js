@@ -75,14 +75,20 @@ export const compressNumber = n => {
 	// the result
 	let result = ""
 
-	// if n is under 1000, return n
-	if (n < 1000) result = `${n}`
-	// if n is under 1000000, compress the last 3 zeroes
-	else if (n < 1000000) result = `${n / 1000}K`
-	// if n is under 1000000000, compress the last 6 zeroes
-	else if (n < 1000000000) result = `${n / 1000000}M`
-	// if n is under 1000000000000, compress the last 9 zeroes
-	else if (n < 1000000000000) result = `${n / 1000000000}B`
+	const size = ["", "K", "M", "B"]
+
+	let powerOf10 = n > 0 ? 1000 : -1000
+	let sign = n > 0 ? "" : "-"
+
+	for (let i in size) {
+		if ((n < powerOf10 && n >= 0) || (n > powerOf10 && n < 0)) {
+			result = `${sign}${n / (powerOf10 / 1000)}${size[i]}`
+
+			break
+		}
+
+		powerOf10 *= 1000
+	}
 
 	// check if the result has been modified
 	if (result !== "") {
