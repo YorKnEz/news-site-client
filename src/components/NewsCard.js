@@ -26,7 +26,7 @@ function NewsCard({ data, matches }) {
 	// set the body if there is no thumbnail
 	useEffect(() => {
 		if (!data.thumbnail) {
-			const div = document.querySelector("#body")
+			const div = document.getElementById(`body${data.id}`)
 
 			let body = data.body
 
@@ -145,7 +145,7 @@ function NewsCard({ data, matches }) {
 							)}
 						</div>
 					) : (
-						<div className="newscard_body" id="body"></div>
+						<div className="newscard_body" id={`body${data.id}`}></div>
 					)}
 				</Link>
 				<div className="newscard_tags">{showTags()}</div>

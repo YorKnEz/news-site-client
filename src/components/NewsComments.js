@@ -98,6 +98,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 				</span>
 				<CommentEditor
 					setError={setEditorError}
+					newsId={newsId}
 					parentId={newsId}
 					parentType="news"
 					onCommentAdd={onCommentAdd}

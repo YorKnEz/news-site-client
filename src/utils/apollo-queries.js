@@ -63,6 +63,7 @@ export const ADD_COMMENT = gql`
 				voteState
 				likes
 				dislikes
+				score
 				replies
 				createdAt
 				author {
@@ -90,6 +91,7 @@ export const EDIT_COMMENT = gql`
 				voteState
 				likes
 				dislikes
+				score
 				replies
 				createdAt
 				author {
@@ -117,6 +119,7 @@ export const REMOVE_COMMENT = gql`
 				voteState
 				likes
 				dislikes
+				score
 				replies
 				createdAt
 				author {
@@ -150,6 +153,7 @@ export const VOTE_ITEM = gql`
 			message
 			likes
 			dislikes
+			score
 		}
 	}
 `
@@ -168,8 +172,8 @@ export const SAVE_ITEM = gql`
 
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($oldestId: ID!) {
-		newsForHome(oldestId: $oldestId) {
+	query NewsForHome($oldestId: ID!, $sortBy: String!) {
+		newsForHome(oldestId: $oldestId, sortBy: $sortBy) {
 			id
 			title
 			subreddit
@@ -183,6 +187,7 @@ export const NEWS_FOR_HOME = gql`
 			voteState
 			likes
 			dislikes
+			score
 			comments
 			saveState
 			author {
@@ -212,6 +217,7 @@ export const NEWS_FOR_HOME_REDDIT = gql`
 				voteState
 				likes
 				dislikes
+				score
 				author {
 					profilePicture
 					fullName
@@ -240,6 +246,7 @@ export const NEWS2 = gql`
 			voteState
 			likes
 			dislikes
+			score
 			comments
 			saveState
 			author {
@@ -285,6 +292,7 @@ export const NEWS_FOR_PROFILE = gql`
 			voteState
 			likes
 			dislikes
+			score
 			comments
 			saveState
 			author {
@@ -332,6 +340,7 @@ export const SEARCH = gql`
 				voteState
 				likes
 				dislikes
+				score
 				comments
 				saveState
 				author {
@@ -381,6 +390,7 @@ export const COMMENTS_FOR_NEWS = gql`
 			voteState
 			likes
 			dislikes
+			score
 			replies
 			createdAt
 			saveState
@@ -407,6 +417,7 @@ export const COMMENT_REPLIES = gql`
 			voteState
 			likes
 			dislikes
+			score
 			replies
 			createdAt
 			saveState
@@ -438,6 +449,7 @@ export const LIKED_ITEMS = gql`
 				voteState
 				likes
 				dislikes
+				score
 				comments
 				saveState
 				author {
@@ -454,6 +466,7 @@ export const LIKED_ITEMS = gql`
 				voteState
 				likes
 				dislikes
+				score
 				replies
 				createdAt
 				saveState
@@ -486,6 +499,7 @@ export const SAVED_ITEMS = gql`
 				voteState
 				likes
 				dislikes
+				score
 				comments
 				saveState
 				author {
@@ -502,6 +516,7 @@ export const SAVED_ITEMS = gql`
 				voteState
 				likes
 				dislikes
+				score
 				replies
 				createdAt
 				saveState

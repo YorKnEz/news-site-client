@@ -17,8 +17,7 @@ function CardVotes({ data }) {
 	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
-		likes: data.likes,
-		dislikes: data.dislikes,
+		score: data.score,
 	})
 
 	const handleVote = (e, action) => {
@@ -41,8 +40,7 @@ function CardVotes({ data }) {
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: vote.likes,
-					dislikes: vote.dislikes,
+					score: vote.score,
 				})
 			},
 			onError: error => console.log({ ...error }),
@@ -50,15 +48,15 @@ function CardVotes({ data }) {
 	}
 
 	return (
-		<div className="cardlikes">
-			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
+		<div className="cardvotes">
+			<button className="cardvotes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike
-						className="cardlikes_icon"
+						className="cardvotes_icon"
 						style={{ color: "var(--primary-color)" }}
 					/>
 				) : (
-					<AiOutlineLike className="cardlikes_icon" />
+					<AiOutlineLike className="cardvotes_icon" />
 				)}
 			</button>
 			<span
@@ -71,16 +69,16 @@ function CardVotes({ data }) {
 							: "var(--text-color)",
 				}}
 			>
-				{compressNumber(votes.likes - votes.dislikes)}
+				{compressNumber(votes.score)}
 			</span>
 			<button
-				className="cardlikes_button"
+				className="cardvotes_button"
 				onClick={e => handleVote(e, "dislike")}
 			>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardlikes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="cardvotes_icon" style={{ color: "red" }} />
 				) : (
-					<AiOutlineDislike className="cardlikes_icon" />
+					<AiOutlineDislike className="cardvotes_icon" />
 				)}
 			</button>
 		</div>

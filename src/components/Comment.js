@@ -266,6 +266,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 					<div style={collapse ? { display: "none" } : {}}>
 						<CommentEditor
 							setError={setEditError}
+							newsId={newsId}
 							parentId={comment.parentId}
 							parentType={comment.parentType}
 							commentToEdit={comment}
@@ -332,6 +333,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 						<div>
 							<CommentEditor
 								setError={setReplyError}
+								newsId={newsId}
 								parentId={comment.id}
 								parentType="comment"
 								onCommentAdd={onReplyAdd}
