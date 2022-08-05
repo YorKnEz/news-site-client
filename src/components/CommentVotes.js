@@ -17,8 +17,7 @@ function CommentVotes({ data }) {
 	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
-		likes: data.likes,
-		dislikes: data.dislikes,
+		score: data.score,
 	})
 
 	const handleVote = (e, action) => {
@@ -41,8 +40,7 @@ function CommentVotes({ data }) {
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: vote.likes,
-					dislikes: vote.dislikes,
+					score: vote.score,
 				})
 			},
 			onError: error => console.log({ ...error }),
@@ -72,7 +70,7 @@ function CommentVotes({ data }) {
 							: "var(--secondText-color)",
 				}}
 			>
-				{compressNumber(votes.likes - votes.dislikes)}
+				{compressNumber(votes.score)}
 			</span>
 			<button
 				className="commlikes_button"
