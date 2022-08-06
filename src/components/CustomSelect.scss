@@ -1,0 +1,45 @@
+.select {
+	position: relative;
+	width: max-content;
+
+	&_list {
+		position: absolute;
+		top: 27px;
+		z-index: 5;
+
+		width: fit-content;
+		min-width: 80px;
+		background-color: var(--compBg-color);
+		border: 1px solid var(--border-color);
+		border-radius: 5px;
+		padding: 8px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		&_item {
+			background-color: transparent;
+			color: var(--text-color);
+			cursor: pointer;
+			border: none;
+			padding: 0px;
+			font-size: 14px;
+			padding: 4px 0;
+		}
+
+		&_selected {
+			color: var(--link-color);
+			font-size: 12px;
+			padding: 0;
+
+			&:hover {
+				color: var(--linkHover-color);
+			}
+
+			&_text::after {
+				content: " ▾";
+			}
+		}
+	}
+}
