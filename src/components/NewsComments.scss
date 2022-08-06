@@ -24,6 +24,15 @@
 		}
 	}
 
+	&_sort {
+		margin-left: 44px;
+		padding-left: 8px;
+
+		hr {
+			color: var(--border-color);
+		}
+	}
+
 	&_more {
 		background-color: transparent;
 		color: var(--link-color);

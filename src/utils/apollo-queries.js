@@ -381,8 +381,8 @@ export const FOLLOWED_AUTHORS = gql`
 
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
-	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
-		commentsForNews(oldestCommentDate: $oldestCommentDate, newsId: $newsId) {
+	query CommentsForNews($oldestId: ID!, $newsId: ID!, $sortBy: String!) {
+		commentsForNews(oldestId: $oldestId, newsId: $newsId, sortBy: $sortBy) {
 			id
 			parentId
 			parentType
@@ -405,10 +405,11 @@ export const COMMENTS_FOR_NEWS = gql`
 
 // retrieve the replies of a comment
 export const COMMENT_REPLIES = gql`
-	query CommentReplies($oldestCommentDate: String!, $commentId: ID!) {
+	query CommentReplies($oldestId: ID!, $commentId: ID!, $sortBy: String!) {
 		commentReplies(
-			oldestCommentDate: $oldestCommentDate
+			oldestId: $oldestId
 			commentId: $commentId
+			sortBy: $sortBy
 		) {
 			id
 			parentId
