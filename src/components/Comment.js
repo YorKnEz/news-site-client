@@ -98,7 +98,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 
 		updateCounter()
 
-		if (!showCommentReplies) setOldestId(reply.id)
+		if (!showCommentReplies && sortBy === "date") setOldestId(reply.id)
 
 		setShowReply(false)
 	}
@@ -353,6 +353,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 				>
 					{replies.map(comment => (
 						<Comment
+							sortBy={sortBy}
 							key={comment.id}
 							newsId={newsId}
 							comment={comment}

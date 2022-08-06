@@ -23,7 +23,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const [comments, setComments] = useState([])
 	const [totalReplies, setTotalReplies] = useState(0)
 	const [oldestId, setOldestId] = useState("")
-	const [sortBy, setSortBy] = useState("date")
+	const [sortBy, setSortBy] = useState("score")
 
 	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
@@ -35,10 +35,10 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	})
 
 	const options = [
-		// {
-		// 	id: "score",
-		// 	text: "Best",
-		// },
+		{
+			id: "score",
+			text: "Best",
+		},
 		{
 			id: "date",
 			text: "New",
