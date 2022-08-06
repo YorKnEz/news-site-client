@@ -151,8 +151,6 @@ export const VOTE_ITEM = gql`
 			code
 			success
 			message
-			likes
-			dislikes
 			score
 		}
 	}
