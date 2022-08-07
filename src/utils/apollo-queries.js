@@ -323,39 +323,44 @@ export const NEWS = gql`
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
 		search(search: $search, filter: $filter) {
-			matches
-			news {
-				id
-				title
-				subreddit
-				thumbnail
-				sources
-				tags
-				body
-				type
-				createdAt
-				updatedAt
-				voteState
-				likes
-				dislikes
-				score
-				comments
-				saveState
-				author {
-					profilePicture
-					fullName
+			__typename
+			... on NewsSearch {
+				matches
+				result {
 					id
+					title
+					subreddit
+					thumbnail
+					sources
+					tags
+					body
+					type
+					createdAt
+					updatedAt
+					voteState
+					likes
+					dislikes
+					score
+					comments
+					saveState
+					author {
+						profilePicture
+						fullName
+						id
+					}
 				}
 			}
-			author {
-				id
-				fullName
-				email
-				profilePicture
-				writtenNews
-				followers
-				createdAt
-				following
+			... on AuthorSearch {
+				result {
+					id
+					fullName
+					email
+					profilePicture
+					writtenNews
+					followers
+					createdAt
+					following
+				}
 			}
 		}
 	}
