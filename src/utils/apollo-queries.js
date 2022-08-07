@@ -151,8 +151,6 @@ export const VOTE_ITEM = gql`
 			code
 			success
 			message
-			likes
-			dislikes
 			score
 		}
 	}
@@ -325,39 +323,44 @@ export const NEWS = gql`
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
 		search(search: $search, filter: $filter) {
-			matches
-			news {
-				id
-				title
-				subreddit
-				thumbnail
-				sources
-				tags
-				body
-				type
-				createdAt
-				updatedAt
-				voteState
-				likes
-				dislikes
-				score
-				comments
-				saveState
-				author {
-					profilePicture
-					fullName
+			__typename
+			... on NewsSearch {
+				matches
+				result {
 					id
+					title
+					subreddit
+					thumbnail
+					sources
+					tags
+					body
+					type
+					createdAt
+					updatedAt
+					voteState
+					likes
+					dislikes
+					score
+					comments
+					saveState
+					author {
+						profilePicture
+						fullName
+						id
+					}
 				}
 			}
-			author {
-				id
-				fullName
-				email
-				profilePicture
-				writtenNews
-				followers
-				createdAt
-				following
+			... on AuthorSearch {
+				result {
+					id
+					fullName
+					email
+					profilePicture
+					writtenNews
+					followers
+					createdAt
+					following
+				}
 			}
 		}
 	}
@@ -381,8 +384,8 @@ export const FOLLOWED_AUTHORS = gql`
 
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
-	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
-		commentsForNews(oldestCommentDate: $oldestCommentDate, newsId: $newsId) {
+	query CommentsForNews($oldestId: ID!, $newsId: ID!, $sortBy: String!) {
+		commentsForNews(oldestId: $oldestId, newsId: $newsId, sortBy: $sortBy) {
 			id
 			parentId
 			parentType
@@ -405,10 +408,11 @@ export const COMMENTS_FOR_NEWS = gql`
 
 // retrieve the replies of a comment
 export const COMMENT_REPLIES = gql`
-	query CommentReplies($oldestCommentDate: String!, $commentId: ID!) {
+	query CommentReplies($oldestId: ID!, $commentId: ID!, $sortBy: String!) {
 		commentReplies(
-			oldestCommentDate: $oldestCommentDate
+			oldestId: $oldestId
 			commentId: $commentId
+			sortBy: $sortBy
 		) {
 			id
 			parentId

@@ -49,7 +49,7 @@ function News() {
 	const [save] = useMutation(SAVE_ITEM)
 
 	useEffect(() => {
-		if (data) {
+		if (data && data.news.type !== "[deleted]") {
 			console.log(data)
 
 			// update the title of the page
@@ -185,7 +185,9 @@ function News() {
 								<span className="news_posted news_padding">
 									{showDate()} by{" "}
 									<Link
-										to={`/profile/${data.news.author.id}`}
+										to={`/profile/${
+											data.news.type === "[deleted]" ? "" : data.news.author.id
+										}`}
 										className="news_authorlink"
 									>
 										{data.news.author.fullName}
@@ -201,78 +203,88 @@ function News() {
 										/>
 									)}
 								</div>
-								<div className="news_body news_padding" id="body"></div>
-								<div className="news_sources news_padding">
-									<h4>Sources</h4>
-									{sources.map(s => (
-										<a
-											className="news_sources_item"
-											key={s}
-											href={s}
-											target="_blank"
-											rel="noreferrer"
-										>
-											{s}
-										</a>
-									))}
-								</div>
-								<div className="tags news_padding">
-									<h4>Tags</h4>
-									{tags.length > 0 &&
-										tags.map(s => (
+								{data.news.type !== "[deleted]" && (
+									<>
+										<div className="news_body news_padding" id="body"></div>
+										<div className="sources news_padding">
+											<h4>Sources</h4>
+											{sources.map(s => (
+												<a
+													className="sources_item"
+													key={s}
+													href={s}
+													target="_blank"
+													rel="noreferrer"
+												>
+													{s}
+												</a>
+											))}
+										</div>
+										<div className="tags news_padding">
+											<h4>Tags</h4>
+											{tags.length > 0 &&
+												tags.map(s => (
+													<Link
+														className="tags_item"
+														key={s}
+														to={`/search?search=${s}&filter=tags`}
+													>
+														{s}
+													</Link>
+												))}
+										</div>
+										<div className="news_options news_padding">
 											<Link
-												className="tags_item"
-												key={s}
-												to={`/search?search=${s}&filter=tags`}
+												to={`/news/${data.news.id}`}
+												className="news_options_item"
 											>
-												{s}
+												<BsChatSquare className="news_options_item_icon" />
+												{commentsCounter}
 											</Link>
-										))}
-								</div>
-								<div className="news_options news_padding">
-									<Link
-										to={`/news/${data.news.id}`}
-										className="news_options_item"
-									>
-										<BsChatSquare className="news_options_item_icon" />
-										{commentsCounter}
-									</Link>
-									<button onClick={handleShare} className="news_options_item">
-										<AiOutlineShareAlt className="news_options_item_icon" />
-										Share
-									</button>
-									<button onClick={handleSave} className="news_options_item">
-										{saved ? (
-											<>
-												<AiFillSave className="news_options_item_icon" />
-												Unsave
-											</>
-										) : (
-											<>
-												<AiOutlineSave className="news_options_item_icon" />
-												Save
-											</>
-										)}
-									</button>
-									{user.id == data.news.author.id && (
-										<>
 											<button
-												onClick={handleDelete}
+												onClick={handleShare}
 												className="news_options_item"
 											>
-												<AiOutlineDelete className="news_options_item_icon" />
-												Delete
+												<AiOutlineShareAlt className="news_options_item_icon" />
+												Share
 											</button>
 											<button
-												onClick={handleEdit}
+												onClick={handleSave}
 												className="news_options_item"
 											>
-												<AiOutlineEdit className="news_options_item_icon" />
-												Edit
+												{saved ? (
+													<>
+														<AiFillSave className="news_options_item_icon" />
+														Unsave
+													</>
+												) : (
+													<>
+														<AiOutlineSave className="news_options_item_icon" />
+														Save
+													</>
+												)}
 											</button>
-										</>
-									)}
-								</div>
+											{user.id == data.news.author.id && (
+												<>
+													<button
+														onClick={handleDelete}
+														className="news_options_item"
+													>
+														<AiOutlineDelete className="news_options_item_icon" />
+														Delete
+													</button>
+													<button
+														onClick={handleEdit}
+														className="news_options_item"
+													>
+														<AiOutlineEdit className="news_options_item_icon" />
+														Edit
+													</button>
+												</>
+											)}
+										</div>
+									</>
+								)}
 							</div>
 						</div>
 						<NewsComments

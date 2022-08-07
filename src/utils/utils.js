@@ -75,13 +75,15 @@ export const compressNumber = n => {
 	// the result
 	let result = ""
 
+	if (n === 0) return "0"
+
 	const size = ["", "K", "M", "B"]
 
 	let powerOf10 = n > 0 ? 1000 : -1000
 	let sign = n > 0 ? "" : "-"
 
 	for (let i in size) {
-		if ((n < powerOf10 && n >= 0) || (n > powerOf10 && n < 0)) {
+		if ((n < powerOf10 && n > 0) || (n > powerOf10 && n < 0)) {
 			result = `${sign}${n / (powerOf10 / 1000)}${size[i]}`
 
 			break

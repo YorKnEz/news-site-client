@@ -4,7 +4,12 @@ import { Link } from "react-router-dom"
 import { useMutation, useQuery } from "@apollo/client"
 
 import "./NewsComments.scss"
-import { Comment, QueryResult, CommentEditor } from "../components"
+import {
+	Comment,
+	CustomSelect,
+	QueryResult,
+	CommentEditor,
+} from "../components"
 import { UserContext } from "../context"
 import {
 	COMMENTS_FOR_NEWS,
@@ -16,21 +21,33 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
 	const [editorError, setEditorError] = useState("")
 	const [comments, setComments] = useState([])
-	const [oldestCommentDate, setOldestCommentDate] = useState(
-		`${new Date().getTime()}`
-	)
 	const [totalReplies, setTotalReplies] = useState(0)
+	const [oldestId, setOldestId] = useState("")
+	const [sortBy, setSortBy] = useState("score")
 
 	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: {
-			oldestCommentDate,
+			oldestId,
 			newsId,
+			sortBy,
 		},
 	})
 
+	const options = [
+		{
+			id: "score",
+			text: "Best",
+		},
+		{
+			id: "date",
+			text: "New",
+		},
+	]
+
 	useEffect(() => {
 		if (data) {
+			console.log(data)
 			setComments(comms => {
 				let tempArr = [...comms, ...data.commentsForNews]
 
@@ -64,7 +81,13 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const handleFetchComments = e => {
 		e.preventDefault()
 
-		setOldestCommentDate(comments[comments.length - 1].createdAt)
+		setOldestId(comments[comments.length - 1].id)
+	}
+
+	const handlePage = ({ id }) => {
+		setComments([])
+		setOldestId("")
+		setSortBy(id)
 	}
 
 	const updateCounterLocal = () => {
@@ -110,9 +133,18 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 					</p>
 				)}
 			</div>
+			<div className="comments_sort">
+				<CustomSelect
+					defaultItem={options[0]}
+					list={options}
+					setSelectedItem={handlePage}
+				/>
+				<hr />
+			</div>
 			<div className="comments_list">
 				{comments.map(comment => (
 					<Comment
+						sortBy={sortBy}
 						key={comment.id}
 						newsId={newsId}
 						comment={comment}

@@ -24,7 +24,7 @@ import {
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
-function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
+function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
 	const [saved, setSaved] = useState(false)
 	const [replyError, setReplyError] = useState("")
@@ -36,9 +36,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [totalReplies, setTotalReplies] = useState(0)
-	const [oldestCommentDate, setOldestCommentDate] = useState(
-		`${new Date().getTime()}`
-	)
+	const [oldestId, setOldestId] = useState("")
 
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
@@ -46,8 +44,9 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: {
-			oldestCommentDate,
+			oldestId,
 			commentId: comment.id,
+			sortBy,
 		},
 		skip: !showCommentReplies,
 	})
@@ -99,7 +98,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 
 		updateCounter()
 
-		if (!showCommentReplies) setOldestCommentDate(reply.createdAt)
+		if (!showCommentReplies && sortBy === "date") setOldestId(reply.id)
 
 		setShowReply(false)
 	}
@@ -183,7 +182,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 			return
 		}
 
-		setOldestCommentDate(replies[replies.length - 1].createdAt)
+		if (replies.length > 0) setOldestId(replies[replies.length - 1].id)
 	}
 
 	const toggleEdit = e => {
@@ -354,6 +353,7 @@ function Comment({ newsId, comment, onCommentEdit, updateCounter }) {
 				>
 					{replies.map(comment => (
 						<Comment
+							sortBy={sortBy}
 							key={comment.id}
 							newsId={newsId}
 							comment={comment}

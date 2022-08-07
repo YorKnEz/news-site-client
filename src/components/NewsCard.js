@@ -44,7 +44,7 @@ function NewsCard({ data, matches }) {
 	// set the matches (for searches only)
 	useEffect(() => {
 		if (matches) {
-			const span = document.getElementById(data.id + "span")
+			const span = document.getElementById(`${data.id}span`)
 
 			if (matches > 70) {
 				span.style.backgroundColor = "#73ff7e"
@@ -121,6 +121,12 @@ function NewsCard({ data, matches }) {
 		<div className="newscard">
 			<CardVotes data={data} />
 			<div className="newscard_container">
+				{matches && (
+					<span
+						id={`${data.id}span`}
+						className="newscard_matches"
+					>{`Matches ${matches}%`}</span>
+				)}
 				<span className="newscard_posted">
 					{showDate()} by{" "}
 					<Link
@@ -136,19 +142,12 @@ function NewsCard({ data, matches }) {
 						<div
 							className="newscard_thumbnail"
 							style={{ backgroundImage: `url("${data.thumbnail}")` }}
-						>
-							{matches && (
-								<span
-									id={data.id + "span"}
-									className="newscard_matches"
-								>{`Matches ${matches}%`}</span>
-							)}
-						</div>
+						></div>
 					) : (
 						<div className="newscard_body" id={`body${data.id}`}></div>
 					)}
 				</Link>
-				<div className="newscard_tags">{showTags()}</div>
+				<div className="tags newscard_tags">{showTags()}</div>
 				<div className="newscard_options">
 					<Link to={`/news/${data.id}`} className="newscard_options_item">
 						<BsChatSquare className="newscard_options_item_icon" />

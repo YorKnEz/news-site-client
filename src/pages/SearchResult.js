@@ -47,20 +47,16 @@ function SearchResult() {
 			}
 
 			if (params.filter === "author") {
-				return data.search.map(obj => (
-					<AuthorCard data={obj.author} key={obj.author.id} />
+				return data.search.map(({ result }) => (
+					<AuthorCard data={result} key={result.id} />
 				))
 			}
 
-			return data.search.map(obj =>
-				obj.news.type === "created" ? (
-					<NewsCard data={obj.news} key={obj.news.id} matches={obj?.matches} />
+			return data.search.map(({ matches, result }) =>
+				result.type === "created" ? (
+					<NewsCard data={result} key={result.id} matches={matches} />
 				) : (
-					<RedditNewsCard
-						data={obj.news}
-						key={obj.news.id}
-						matches={obj?.matches}
-					/>
+					<RedditNewsCard data={result} key={result.id} matches={matches} />
 				)
 			)
 		}
@@ -71,7 +67,6 @@ function SearchResult() {
 	return (
 		<Page>
 			<div className="searchResult">
-				{data && console.log(data)}
 				{dataToDisplay()}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>
