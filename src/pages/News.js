@@ -202,11 +202,11 @@ function News() {
 									)}
 								</div>
 								<div className="news_body news_padding" id="body"></div>
-								<div className="news_sources news_padding">
+								<div className="sources news_padding">
 									<h4>Sources</h4>
 									{sources.map(s => (
 										<a
-											className="news_sources_item"
+											className="sources_item"
 											key={s}
 											href={s}
 											target="_blank"

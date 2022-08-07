@@ -70,38 +70,7 @@
 		}
 	}
 
-	&_tags {
-		display: flex;
-		flex-wrap: wrap;
-	}
-
-	&_sources {
-		margin-top: 8px 0;
-		display: flex;
-		flex-direction: column;
-
-		h4 {
-			margin: 0;
-		}
-
-		&_item {
-			word-wrap: break-word;
-			cursor: pointer;
-			user-select: none;
-			text-decoration: none;
-			color: var(--link-color);
-
-			padding: 5px;
-			transition: all 0.3s ease;
-
-			&:hover {
-				color: var(--linkHover-color);
-			}
-		}
-	}
-
 	&_options {
-		margin-top: 10px;
 		padding-left: 8px;
 		display: flex;
 
@@ -112,10 +81,10 @@
 			border: none;
 			background-color: transparent;
 			color: var(--secondText-color);
-			font-size: 16px;
+			font-size: 14px;
 			cursor: pointer;
 
-			padding: 8px 16px;
+			padding: 4px 8px;
 
 			&_icon {
 				margin-right: 4px;

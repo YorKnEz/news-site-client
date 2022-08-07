@@ -148,7 +148,7 @@ function NewsCard({ data, matches }) {
 						<div className="newscard_body" id={`body${data.id}`}></div>
 					)}
 				</Link>
-				<div className="newscard_tags">{showTags()}</div>
+				<div className="tags newscard_tags">{showTags()}</div>
 				<div className="newscard_options">
 					<Link to={`/news/${data.id}`} className="newscard_options_item">
 						<BsChatSquare className="newscard_options_item_icon" />
