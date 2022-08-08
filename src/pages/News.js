@@ -122,7 +122,7 @@ function News() {
 	const handleEdit = e => {
 		e.preventDefault()
 
-		history(`/news/${data.news.id}/edit`)
+		history(`/news/${data.news.link}-${data.news.id}/edit`)
 	}
 
 	const handleShare = e => {
@@ -235,7 +235,7 @@ function News() {
 										</div>
 										<div className="news_options news_padding">
 											<Link
-												to={`/news/${data.news.id}`}
+												to={`/news/${data.news.link}-${data.news.id}`}
 												className="news_options_item"
 											>
 												<BsChatSquare className="news_options_item_icon" />

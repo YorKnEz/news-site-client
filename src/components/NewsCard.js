@@ -136,7 +136,7 @@ function NewsCard({ data, matches }) {
 						{data.author.fullName}
 					</Link>
 				</span>
-				<Link to={`/news/${data.id}`} className="newscard_link">
+				<Link to={`/news/${data.link}-${data.id}`} className="newscard_link">
 					<span className="newscard_title">{data.title}</span>
 					{data.thumbnail ? (
 						<div
@@ -149,7 +149,10 @@ function NewsCard({ data, matches }) {
 				</Link>
 				<div className="tags newscard_tags">{showTags()}</div>
 				<div className="newscard_options">
-					<Link to={`/news/${data.id}`} className="newscard_options_item">
+					<Link
+						to={`/news/${data.link}-${data.id}`}
+						className="newscard_options_item"
+					>
 						<BsChatSquare className="newscard_options_item_icon" />
 						{data.comments}
 					</Link>

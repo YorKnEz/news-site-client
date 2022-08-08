@@ -176,7 +176,7 @@ function CreateNews() {
 
 					client.clearStore()
 
-					history(`/news/${data.news.id}`)
+					history(`/news/${data.news.link}-${data.news.id}`)
 				},
 				onError: error => console.log({ ...error }),
 			})

@@ -188,6 +188,7 @@ export const NEWS_FOR_HOME = gql`
 			score
 			comments
 			saveState
+			link
 			author {
 				profilePicture
 				fullName
@@ -247,6 +248,7 @@ export const NEWS2 = gql`
 			score
 			comments
 			saveState
+			link
 			author {
 				profilePicture
 				fullName
@@ -293,6 +295,7 @@ export const NEWS_FOR_PROFILE = gql`
 			score
 			comments
 			saveState
+			link
 			author {
 				profilePicture
 				fullName
@@ -343,6 +346,7 @@ export const SEARCH = gql`
 					score
 					comments
 					saveState
+					link
 					author {
 						profilePicture
 						fullName
@@ -456,6 +460,7 @@ export const LIKED_ITEMS = gql`
 				score
 				comments
 				saveState
+				link
 				author {
 					profilePicture
 					fullName
@@ -506,6 +511,7 @@ export const SAVED_ITEMS = gql`
 				score
 				comments
 				saveState
+				link
 				author {
 					profilePicture
 					fullName
