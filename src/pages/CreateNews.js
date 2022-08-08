@@ -140,7 +140,7 @@ function CreateNews() {
 
 					client.clearStore()
 
-					history(`/news/${createNews.id}`)
+					history(`/news/${createNews.link}-${createNews.id}`)
 				},
 				onError: error => console.log({ ...error }),
 			})

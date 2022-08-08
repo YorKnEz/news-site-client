@@ -138,7 +138,7 @@ export default function App() {
 							element={<VerifyEmail />}
 						/>
 						<Route exact path="/" element={<Home />} />
-						<Route exact path="/news/:newsId" element={<News />} />
+						<Route exact path="/news/:link-:newsId" element={<News />} />
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
@@ -150,7 +150,11 @@ export default function App() {
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
 							<Route exact path="/create" element={<CreateNews />} />
-							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
+							<Route
+								exact
+								path="/news/:link-:newsId/edit"
+								element={<EditNews />}
+							/>
 						</Route>
 					</Routes>
 				</Router>
