@@ -381,6 +381,12 @@ function CommentEditor({
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
+		// check that the message is at least 10 characters long to avoid empty messages
+		if (html.length < 10) return setError("Comment is too short.")
+
+		// reset the error if it's the case
+		setError("")
+
 		addComment({
 			variables: {
 				commentData: {
