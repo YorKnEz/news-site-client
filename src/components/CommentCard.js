@@ -17,6 +17,7 @@ import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
 import { UserContext } from "../context"
 
 function CommentCard({ data }) {
+	const { news, comment } = data
 	const { user } = useContext(UserContext)
 	const [saved, setSaved] = useState(false)
 
@@ -26,23 +27,24 @@ function CommentCard({ data }) {
 
 	// set the save state
 	useEffect(() => {
-		if (data.saveState === "save") {
+		if (comment.saveState === "save") {
 			setSaved(true)
 		}
-	}, [data])
+	}, [comment])
 
 	useEffect(() => {
-		if (data) {
+		if (comment) {
+			console.log(comment)
 			// get the body
-			const div = document.getElementById(`body${data.id}`)
+			const div = document.getElementById(`body${comment.id}`)
 
 			// inject the html
-			if (div) div.innerHTML = data.body
+			if (div) div.innerHTML = comment.body
 		}
-	}, [data])
+	}, [comment])
 
 	const showDate = () => {
-		const createdAt = fromUnixTime(data.createdAt / 1000)
+		const createdAt = fromUnixTime(comment.createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
 		const distance = formatDistance(createdAt, currentDate)
 
@@ -56,7 +58,7 @@ function CommentCard({ data }) {
 
 		removeComment({
 			variables: {
-				id: parseInt(data.id),
+				id: parseInt(comment.id),
 			},
 			onCompleted: ({ removeComment }) => {
 				if (!removeComment.success) {
@@ -79,7 +81,7 @@ function CommentCard({ data }) {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
-				parentId: data.id,
+				parentId: comment.id,
 				parentType: "comment",
 			},
 			onCompleted: ({ save }) => {
@@ -100,48 +102,75 @@ function CommentCard({ data }) {
 	return (
 		<div className="commentcard">
 			<div className="commentcard_container">
-				<span className="commentcard_posted">
-					{showDate()} by{" "}
-					<Link
-						to={`/profile/${data.author.id}`}
-						className="commentcard_authorlink"
-					>
-						{data.author.fullName}
-					</Link>
-				</span>
-				{/* <Link to={`/news/${data.id}`} className="commentcard_link"> */}
-				<div className="commentcard_body" id={`body${data.id}`}></div>
-				{/* </Link> */}
-				<div className="commentcard_options">
-					<CommentVotes data={data} />
-					<button onClick={handleShare} className="commentcard_options_item">
-						<AiOutlineShareAlt className="commentcard_options_item_icon" />
-						Share
-					</button>
-					<button onClick={handleSave} className="commentcard_options_item">
-						{saved ? (
+				<div className="commentcard_news">
+					<span className="commentcard_posted">
+						<Link
+							to={`/profile/${comment.author.id}`}
+							className="commentcard_link commentcard_link_light"
+						>
+							{comment.author.fullName}
+						</Link>{" "}
+						comment on{" "}
+						<Link
+							to={`/news/${news.link}-${news.id}`}
+							className="commentcard_link commentcard_link_light"
+						>
+							{news.title}
+						</Link>{" "}
+						· {showDate()} by{" "}
+						<Link
+							to={`/profile/${news.author.id}`}
+							className="commentcard_link"
+						>
+							{news.author.fullName}
+						</Link>
+					</span>
+				</div>
+				<hr className="commentcard_separator" />
+				<div className="commentcard_comment">
+					<span className="commentcard_posted">
+						{showDate()} by{" "}
+						<Link
+							to={`/profile/${comment.author.id}`}
+							className="commentcard_link"
+						>
+							{comment.author.fullName}
+						</Link>
+					</span>
+					{/* <Link to={`/news/${comment.id}`} className="commentcard_link"> */}
+					<div className="commentcard_body" id={`body${comment.id}`}></div>
+					{/* </Link> */}
+					<div className="commentcard_options">
+						<CommentVotes data={comment} />
+						<button onClick={handleShare} className="commentcard_options_item">
+							<AiOutlineShareAlt className="commentcard_options_item_icon" />
+							Share
+						</button>
+						<button onClick={handleSave} className="commentcard_options_item">
+							{saved ? (
+								<>
+									<AiFillSave className="commentcard_options_item_icon" />
+									Unsave
+								</>
+							) : (
+								<>
+									<AiOutlineSave className="commentcard_options_item_icon" />
+									Save
+								</>
+							)}
+						</button>
+						{user.id == comment.author.id && (
 							<>
-								<AiFillSave className="commentcard_options_item_icon" />
-								Unsave
-							</>
-						) : (
-							<>
-								<AiOutlineSave className="commentcard_options_item_icon" />
-								Save
+								<button
+									onClick={handleDelete}
+									className="commentcard_options_item"
+								>
+									<AiOutlineDelete className="commentcard_options_item_icon" />
+									Delete
+								</button>
 							</>
 						)}
-					</button>
-					{user.id == data.author.id && (
-						<>
-							<button
-								onClick={handleDelete}
-								className="commentcard_options_item"
-							>
-								<AiOutlineDelete className="commentcard_options_item_icon" />
-								Delete
-							</button>
-						</>
-					)}
+					</div>
 				</div>
 			</div>
 		</div>

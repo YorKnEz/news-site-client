@@ -53,7 +53,7 @@ function LikedItems() {
 		<div className="profile_news">
 			{likedItems.map(item => {
 				if (item.title) return <NewsCard key={`news-${item.id}`} data={item} />
-				else return <CommentCard key={`comm-${item.id}`} data={item} />
+				else return <CommentCard key={`comm-${item.comment.id}`} data={item} />
 			})}
 			<QueryResult loading={loading} error={error} data={data} />
 		</div>
