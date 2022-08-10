@@ -406,6 +406,7 @@ function CommentEditor({
 				client.clearStore()
 
 				onCommentAdd(addComment.comment)
+				setEditorState(EditorState.createEmpty())
 			},
 			onError: error => console.log({ ...error }),
 		})
