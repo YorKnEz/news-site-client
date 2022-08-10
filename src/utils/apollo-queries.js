@@ -467,22 +467,35 @@ export const LIKED_ITEMS = gql`
 					id
 				}
 			}
-			... on Comment {
-				id
-				parentId
-				parentType
-				body
-				voteState
-				likes
-				dislikes
-				score
-				replies
-				createdAt
-				saveState
-				author {
+			... on CommentCard {
+				comment {
 					id
-					fullName
-					profilePicture
+					parentId
+					parentType
+					body
+					voteState
+					likes
+					dislikes
+					score
+					replies
+					createdAt
+					saveState
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+				news {
+					id
+					title
+					type
+					link
+					author {
+						id
+						fullName
+						profilePicture
+					}
 				}
 			}
 		}
@@ -518,22 +531,35 @@ export const SAVED_ITEMS = gql`
 					id
 				}
 			}
-			... on Comment {
-				id
-				parentId
-				parentType
-				body
-				voteState
-				likes
-				dislikes
-				score
-				replies
-				createdAt
-				saveState
-				author {
+			... on CommentCard {
+				comment {
 					id
-					fullName
-					profilePicture
+					parentId
+					parentType
+					body
+					voteState
+					likes
+					dislikes
+					score
+					replies
+					createdAt
+					saveState
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+				news {
+					id
+					title
+					type
+					link
+					author {
+						id
+						fullName
+						profilePicture
+					}
 				}
 			}
 		}

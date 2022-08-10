@@ -6,44 +6,62 @@
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 
+	overflow: hidden;
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
 
+	&_news {
+		padding: 8px 0;
+		background-color: var(--compBg-color);
+		padding-left: 8px;
+	}
+
+	&_comment {
+		background-color: var(--compBgDark-color);
+		padding: 8px;
+	}
+
 	&_container {
 		width: 100%;
-		padding: 10px 0;
 		display: flex;
 		flex-direction: column;
 	}
 
 	&_posted {
-		padding-left: 8px;
 		font-size: 12px;
 		margin: 5px 0;
 		color: var(--secondText-color);
 	}
 
-	&_authorlink {
+	&_link {
 		color: var(--secondText-color);
 		text-decoration: none;
+
+		&_light {
+			color: var(--text-color);
+		}
 
 		&:hover {
 			text-decoration: underline;
 		}
 	}
 
-	&_link {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-
-		text-decoration: none;
-		color: var(--text-color);
+	&_separator {
+		color: var(--border-color);
+		margin: 0;
 	}
 
+	// &_link {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	width: 100%;
+
+	// 	text-decoration: none;
+	// 	color: var(--text-color);
+	// }
+
 	&_body {
-		padding: 0 8px;
 		width: calc(100% - 16px);
 
 		word-wrap: break-word;
