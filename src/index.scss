@@ -38,6 +38,7 @@ select:-webkit-autofill:focus {
 .sources {
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 8px;
 
 	h4 {
 		margin: 0;
@@ -51,7 +52,6 @@ select:-webkit-autofill:focus {
 		color: var(--link-color);
 		word-break: break-word;
 
-		// padding: 5px;
 		margin-top: 12px;
 		border-radius: 5px;
 		align-self: flex-start;
@@ -63,7 +63,7 @@ select:-webkit-autofill:focus {
 		}
 
 		&:last-child {
-			margin-bottom: 12px;
+			margin-bottom: 0;
 		}
 	}
 }
@@ -146,6 +146,7 @@ select:-webkit-autofill:focus {
 .form {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 
 	&_row {
 		display: grid;

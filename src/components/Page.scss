@@ -1,8 +1,8 @@
 .page {
 	max-width: 720px;
-	margin: 64px auto 0 auto;
+	margin: 64px auto 8px auto;
 	padding: 0 10px 0 10px;
-	min-height: calc(100vh - 64px - 59px);
+	min-height: calc(100vh - 64px - 8px - 59px);
 	background-color: var(--pageBg-color);
 
 	display: flex;
