@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 import "./index.scss"
-import { Page } from "../../components"
+import { PageWithCards } from "../../components"
 import { CreatedNews, RedditNews } from "../home"
 import { useDocumentTitle } from "../../utils/utils"
 
@@ -27,7 +27,7 @@ function Home() {
 	}
 
 	return (
-		<Page>
+		<PageWithCards>
 			<div className="news_pages">
 				<button
 					id="yorknews"
@@ -45,7 +45,7 @@ function Home() {
 				</button>
 			</div>
 			{page === "yorknews" ? <CreatedNews /> : <RedditNews />}
-		</Page>
+		</PageWithCards>
 	)
 }
 
