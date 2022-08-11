@@ -34,7 +34,6 @@ function CommentCard({ data }) {
 
 	useEffect(() => {
 		if (comment) {
-			console.log(comment)
 			// get the body
 			const div = document.getElementById(`comm-body-${comment.id}`)
 

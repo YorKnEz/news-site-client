@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import "./SignUp.scss"
-import Page from "../components/Page"
+import { Page } from "../components"
 import {
 	handleInputBlur,
 	handleInputFocus,
