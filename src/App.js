@@ -126,7 +126,7 @@ export default function App() {
 				<Router>
 					<Routes>
 						{/* public routes */}
-						<Route path="*" element={<Error />} />
+						<Route path="*" element={<Error code="404" />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn />} />
