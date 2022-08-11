@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import "./Header.scss"
-import { Switch } from "../components"
+import { ProfileHeader, Switch } from "../components"
 import { ThemeContext, UserContext } from "../context"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-function Header() {
+function Header({ userData, profileHeader }) {
 	const params = new Proxy(new URLSearchParams(window.location.search), {
 		get: (searchParams, prop) => searchParams.get(prop),
 	})
@@ -45,7 +45,11 @@ function Header() {
 
 		setShowDropdown(!showDropdown)
 
-		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
+		dropdown.style.top = !showDropdown
+			? profileHeader && userData
+				? "calc(55px + 40px)"
+				: "55px"
+			: "-1000px"
 	}
 
 	const handleBlur = e => {
@@ -53,7 +57,11 @@ function Header() {
 
 		setShowDropdown(false)
 
-		dropdown.style.top = !showDropdown ? "53px" : "-1000px"
+		dropdown.style.top = !showDropdown
+			? profileHeader && userData
+				? "calc(55px + 40px)"
+				: "55px"
+			: "-1000px"
 	}
 
 	const handleSignOut = async e => {
@@ -135,10 +143,11 @@ function Header() {
 					</button>
 				</div>
 			</div>
+			{profileHeader && userData && <ProfileHeader user={userData} />}
 			<div className="dropdown" onMouseLeave={handleBlur}>
 				{token ? (
 					<>
-						<Link className="dropdown_link" to="/profile">
+						<Link className="dropdown_link" to={`/profile/${user.id}/overview`}>
 							Profile
 						</Link>
 						{user.type === "author" && (

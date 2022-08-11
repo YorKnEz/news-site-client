@@ -26,7 +26,9 @@ import {
 
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-	const [saved, setSaved] = useState(false)
+	const [saved, setSaved] = useState(
+		comment.saveState === "unsave" ? false : true
+	)
 	const [replyError, setReplyError] = useState("")
 	const [editError, setEditError] = useState("")
 	const [showEdit, setShowEdit] = useState(false)
@@ -253,7 +255,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 				<div className="comment_posted">
 					<span className="comment_posted_author">
 						<Link
-							to={`/profile/${comment.author.id}`}
+							to={`/profile/${comment.author.id}/overview`}
 							className="comment_posted_author_link"
 						>
 							{comment.author.fullName}

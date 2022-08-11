@@ -18,7 +18,7 @@ import {
 	CardVotes,
 	Modal,
 	NewsComments,
-	Page,
+	PageWithCards,
 	QueryResult,
 } from "../components"
 import { UserContext } from "../context"
@@ -154,7 +154,7 @@ function News() {
 	}
 
 	return (
-		<Page>
+		<PageWithCards>
 			{showDeleteModal && (
 				<Modal onSubmit={onDeleteModalSubmit} onDecline={onDeleteModalDecline}>
 					<h3 style={{ margin: 0 }}>Delete news</h3>
@@ -187,7 +187,7 @@ function News() {
 									<Link
 										to={`/profile/${
 											data.news.type === "[deleted]" ? "" : data.news.author.id
-										}`}
+										}/overview`}
 										className="news_authorlink"
 									>
 										{data.news.author.fullName}
@@ -295,7 +295,7 @@ function News() {
 					</>
 				)}
 			</QueryResult>
-		</Page>
+		</PageWithCards>
 	)
 }
 

@@ -11,7 +11,6 @@ import {
 	News,
 	SignUp,
 	SignIn,
-	Profile,
 	BecomeEditor,
 	CreateNews,
 	EditNews,
@@ -21,6 +20,13 @@ import {
 	ResetPassword,
 	VerifyEmail,
 } from "./pages"
+import {
+	FollowedAuthors,
+	LikedItems,
+	News as Posts,
+	Profile,
+	SavedItems,
+} from "./pages/profile"
 
 export default function App() {
 	const client = useApolloClient()
@@ -126,7 +132,7 @@ export default function App() {
 				<Router>
 					<Routes>
 						{/* public routes */}
-						<Route path="*" element={<Error />} />
+						<Route path="*" element={<Error code="404" />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn />} />
@@ -142,8 +148,28 @@ export default function App() {
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
-							<Route exact path="/profile" element={<Profile />} />
-							<Route exact path="/profile/:authorId" element={<Profile />} />
+							<Route
+								exact
+								path="/profile/:id/overview/"
+								element={<Profile />}
+							/>
+							<Route exact path="/profile/:id/news/" element={<Posts />} />
+							<Route
+								exact
+								path="/profile/:id/followed/"
+								element={<FollowedAuthors />}
+							/>
+							<Route
+								exact
+								path="/profile/:id/liked/"
+								element={<LikedItems />}
+							/>
+							<Route
+								exact
+								path="/profile/:id/saved/"
+								element={<SavedItems />}
+							/>
+
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 

@@ -34,7 +34,7 @@ function VerifyEmail() {
 		}
 
 		verify()
-	}, [token])
+	}, [token, verifyEmail])
 
 	return (
 		<Page>

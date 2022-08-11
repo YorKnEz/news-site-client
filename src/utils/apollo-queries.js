@@ -258,10 +258,10 @@ export const NEWS2 = gql`
 	}
 `
 
-// returns the profile of a certain author
-export const AUTHOR = gql`
-	query Author($id: ID!) {
-		author(id: $id) {
+// returns the profile of a certain user
+export const USER = gql`
+	query User($id: ID!) {
+		user(id: $id) {
 			id
 			fullName
 			email

@@ -1,17 +1,16 @@
-.authorcard {
+.authorprofilecard {
 	text-decoration: none;
 	width: calc(100% - 40px);
-	margin: 4px 0px;
 	padding: 20px;
+	margin: 4px 0;
 	color: var(--text-color);
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
-	position: relative;
-	overflow: hidden;
+	// position: relative;
+	// overflow: hidden;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
 
 	&_info {
 		display: flex;
@@ -40,24 +39,14 @@
 	&:hover {
 		border: 1px solid var(--secondText-color);
 	}
-}
 
-.acinfo {
-	display: flex;
-	flex-direction: column;
-
-	&_box {
+	&_stats {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		flex-direction: column;
+		margin: 16px 0;
 
-		&_title {
-			font-size: 14px;
-			font-weight: 700;
-			margin-right: 20px;
-		}
-
-		&_data {
+		&_item {
+			margin: 2px 0;
 			font-size: 14px;
 		}
 	}

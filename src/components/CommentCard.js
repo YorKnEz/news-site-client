@@ -34,9 +34,8 @@ function CommentCard({ data }) {
 
 	useEffect(() => {
 		if (comment) {
-			console.log(comment)
 			// get the body
-			const div = document.getElementById(`body${comment.id}`)
+			const div = document.getElementById(`comm-body-${comment.id}`)
 
 			// inject the html
 			if (div) div.innerHTML = comment.body
@@ -105,7 +104,7 @@ function CommentCard({ data }) {
 				<div className="commentcard_news">
 					<span className="commentcard_posted">
 						<Link
-							to={`/profile/${comment.author.id}`}
+							to={`/profile/${comment.author.id}/overview`}
 							className="commentcard_link commentcard_link_light"
 						>
 							{comment.author.fullName}
@@ -119,7 +118,7 @@ function CommentCard({ data }) {
 						</Link>{" "}
 						· {showDate()} by{" "}
 						<Link
-							to={`/profile/${news.author.id}`}
+							to={`/profile/${news.author.id}/overview`}
 							className="commentcard_link"
 						>
 							{news.author.fullName}
@@ -131,14 +130,17 @@ function CommentCard({ data }) {
 					<span className="commentcard_posted">
 						{showDate()} by{" "}
 						<Link
-							to={`/profile/${comment.author.id}`}
+							to={`/profile/${comment.author.id}/overview`}
 							className="commentcard_link"
 						>
 							{comment.author.fullName}
 						</Link>
 					</span>
 					{/* <Link to={`/news/${comment.id}`} className="commentcard_link"> */}
-					<div className="commentcard_body" id={`body${comment.id}`}></div>
+					<div
+						className="commentcard_body"
+						id={`comm-body-${comment.id}`}
+					></div>
 					{/* </Link> */}
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />

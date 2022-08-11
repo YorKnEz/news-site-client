@@ -55,7 +55,7 @@ function AuthorInfo({ data, type, subreddit, link }) {
 	return (
 		<>
 			{link ? (
-				<Link className="author" to={`/profile/${data.id}`}>
+				<Link className="author" to={`/profile/${data.id}/overview`}>
 					{authorBody}
 				</Link>
 			) : (

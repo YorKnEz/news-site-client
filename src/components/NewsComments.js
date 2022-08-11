@@ -115,7 +115,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 			<div className="comments_input">
 				<span className="comments_input_title news_padding">
 					Comment as{" "}
-					<Link to={`/profile/${user.id}`} className="news_authorlink">
+					<Link to={`/profile/${user.id}/overview`} className="news_authorlink">
 						{user.fullName}
 					</Link>
 				</span>

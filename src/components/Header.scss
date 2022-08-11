@@ -3,8 +3,9 @@
 	top: 0;
 	left: 0;
 	z-index: 999;
+	height: calc(56px - 1px - 10px);
 	width: calc(100% - 20px);
-	padding: 5px 10px 5px 10px;
+	padding: 5px 10px;
 	border-bottom: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 	display: grid;
@@ -120,7 +121,7 @@
 
 .dropdown {
 	position: fixed;
-	z-index: 1000;
+	z-index: 998;
 	top: -1000px;
 	right: 10px;
 	padding: 20px 20px;
