@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
 
-import { CommentCard, NewsCard, QueryResult } from "../../components"
+import {
+	CommentCard,
+	NewsCard,
+	PageWithCards,
+	QueryResult,
+} from "../../components"
+import { UserContext } from "../../context"
 import { SAVED_ITEMS } from "../../utils/apollo-queries"
 
 function SavedItems() {
+	const { id } = useParams()
+	const { user } = useContext(UserContext)
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [savedItems, setSavedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
@@ -30,7 +39,7 @@ function SavedItems() {
 			if (savedItems.length > 0) {
 				const oldestItem = savedItems[savedItems.length - 1]
 
-				setOldestId(oldestItem.id)
+				setOldestId(oldestItem.id || oldestItem.comment.id)
 
 				// if the oldest item has a title, then it's a news, else it's a comment
 				if (oldestItem.title) setOldestType("news")
@@ -50,13 +59,17 @@ function SavedItems() {
 	})
 
 	return (
-		<div className="profile_news">
-			{savedItems.map(item => {
-				if (item.title) return <NewsCard key={`news-${item.id}`} data={item} />
-				else return <CommentCard key={`comm-${item.comment.id}`} data={item} />
-			})}
-			<QueryResult loading={loading} error={error} data={data} />
-		</div>
+		<PageWithCards userId={id ? id : user.id} userType={id ? "author" : "news"}>
+			<div className="profile_news">
+				{savedItems.map(item => {
+					if (item.title)
+						return <NewsCard key={`news-${item.id}`} data={item} />
+					else
+						return <CommentCard key={`comm-${item.comment.id}`} data={item} />
+				})}
+				<QueryResult loading={loading} error={error} data={data} />
+			</div>
+		</PageWithCards>
 	)
 }
 

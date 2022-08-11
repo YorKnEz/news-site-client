@@ -25,6 +25,7 @@ import {
 	LikedItems,
 	News as Posts,
 	Profile,
+	SavedItems,
 } from "./pages/profile"
 
 export default function App() {
@@ -163,6 +164,12 @@ export default function App() {
 								path="/profile/:id/liked/"
 								element={<LikedItems />}
 							/>
+							<Route
+								exact
+								path="/profile/:id/saved/"
+								element={<SavedItems />}
+							/>
+
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
