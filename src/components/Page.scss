@@ -7,4 +7,9 @@
 
 	display: flex;
 	flex-direction: column;
+
+	&_margin-top {
+		margin: calc(8px + 56px + 40px) auto 8px auto;
+		min-height: calc(100vh - 16px - 56px - 40px - 59px);
+	}
 }
