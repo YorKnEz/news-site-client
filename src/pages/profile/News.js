@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
 
-import { UserContext } from "../../context"
 import { NEWS_FOR_PROFILE } from "../../utils/apollo-queries"
-import { NewsCard, QueryResult } from "../../components"
+import { NewsCard, PageWithCards, QueryResult } from "../../components"
 
 function News() {
-	const { authorId } = useParams()
-	const { user } = useContext(UserContext)
+	const { id } = useParams()
 
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [news, setNews] = useState([])
@@ -18,7 +16,7 @@ function News() {
 	const { loading, error, data } = useQuery(NEWS_FOR_PROFILE, {
 		variables: {
 			oldestId,
-			id: authorId ? authorId : user.id,
+			id,
 		},
 	})
 
@@ -49,14 +47,14 @@ function News() {
 		}
 	})
 	return (
-		<>
+		<PageWithCards>
 			<div className="profile_news">
 				{news.map(item => (
 					<NewsCard data={item} key={item.id} />
 				))}
+				<QueryResult loading={loading} error={error} data={data} />
 			</div>
-			<QueryResult loading={loading} error={error} data={data} />
-		</>
+		</PageWithCards>
 	)
 }
 

@@ -21,6 +21,7 @@ import {
 	VerifyEmail,
 } from "./pages"
 import {
+	News as Posts,
 	Profile,
 } from "./pages/profile"
 
@@ -149,6 +150,7 @@ export default function App() {
 								path="/profile/:id/overview/"
 								element={<Profile />}
 							/>
+							<Route exact path="/profile/:id/news/" element={<Posts />} />
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
