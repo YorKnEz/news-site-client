@@ -255,7 +255,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 				<div className="comment_posted">
 					<span className="comment_posted_author">
 						<Link
-							to={`/profile/${comment.author.id}`}
+							to={`/profile/${comment.author.id}/overview`}
 							className="comment_posted_author_link"
 						>
 							{comment.author.fullName}

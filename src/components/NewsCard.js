@@ -130,7 +130,7 @@ function NewsCard({ data, matches }) {
 				<span className="newscard_posted">
 					{showDate()} by{" "}
 					<Link
-						to={`/profile/${data.author.id}`}
+						to={`/profile/${data.author.id}/overview`}
 						className="newscard_authorlink"
 					>
 						{data.author.fullName}

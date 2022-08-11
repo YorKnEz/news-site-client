@@ -187,7 +187,7 @@ function News() {
 									<Link
 										to={`/profile/${
 											data.news.type === "[deleted]" ? "" : data.news.author.id
-										}`}
+										}/overview`}
 										className="news_authorlink"
 									>
 										{data.news.author.fullName}

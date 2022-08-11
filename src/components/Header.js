@@ -138,7 +138,7 @@ function Header() {
 			<div className="dropdown" onMouseLeave={handleBlur}>
 				{token ? (
 					<>
-						<Link className="dropdown_link" to="/profile">
+						<Link className="dropdown_link" to={`/profile/${user.id}/overview`}>
 							Profile
 						</Link>
 						{user.type === "author" && (

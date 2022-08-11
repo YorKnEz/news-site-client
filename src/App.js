@@ -11,7 +11,6 @@ import {
 	News,
 	SignUp,
 	SignIn,
-	Profile,
 	BecomeEditor,
 	CreateNews,
 	EditNews,
@@ -21,6 +20,9 @@ import {
 	ResetPassword,
 	VerifyEmail,
 } from "./pages"
+import {
+	Profile,
+} from "./pages/profile"
 
 export default function App() {
 	const client = useApolloClient()
@@ -142,8 +144,11 @@ export default function App() {
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
-							<Route exact path="/profile" element={<Profile />} />
-							<Route exact path="/profile/:authorId" element={<Profile />} />
+							<Route
+								exact
+								path="/profile/:id/overview/"
+								element={<Profile />}
+							/>
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
