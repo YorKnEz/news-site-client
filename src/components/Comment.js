@@ -26,7 +26,9 @@ import {
 
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-	const [saved, setSaved] = useState(false)
+	const [saved, setSaved] = useState(
+		comment.saveState === "unsave" ? false : true
+	)
 	const [replyError, setReplyError] = useState("")
 	const [editError, setEditError] = useState("")
 	const [showEdit, setShowEdit] = useState(false)
