@@ -22,6 +22,7 @@ import {
 } from "./pages"
 import {
 	FollowedAuthors,
+	LikedItems,
 	News as Posts,
 	Profile,
 } from "./pages/profile"
@@ -156,6 +157,11 @@ export default function App() {
 								exact
 								path="/profile/:id/followed/"
 								element={<FollowedAuthors />}
+							/>
+							<Route
+								exact
+								path="/profile/:id/liked/"
+								element={<LikedItems />}
 							/>
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>

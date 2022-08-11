@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import { CommentCard, NewsCard, QueryResult } from "../../components"
+import {
+	CommentCard,
+	NewsCard,
+	PageWithCards,
+	QueryResult,
+} from "../../components"
 import { LIKED_ITEMS } from "../../utils/apollo-queries"
 
 function LikedItems() {
@@ -30,7 +35,7 @@ function LikedItems() {
 			if (likedItems.length > 0) {
 				const oldestItem = likedItems[likedItems.length - 1]
 
-				setOldestId(oldestItem.id)
+				setOldestId(oldestItem.id || oldestItem.comment.id)
 
 				// if the oldest item has a title, then it's a news, else it's a comment
 				if (oldestItem.title) setOldestType("news")
@@ -50,13 +55,17 @@ function LikedItems() {
 	})
 
 	return (
-		<div className="profile_news">
-			{likedItems.map(item => {
-				if (item.title) return <NewsCard key={`news-${item.id}`} data={item} />
-				else return <CommentCard key={`comm-${item.comment.id}`} data={item} />
-			})}
-			<QueryResult loading={loading} error={error} data={data} />
-		</div>
+		<PageWithCards>
+			<div className="profile_news">
+				{likedItems.map(item => {
+					if (item.title)
+						return <NewsCard key={`news-${item.id}`} data={item} />
+					else
+						return <CommentCard key={`comm-${item.comment.id}`} data={item} />
+				})}
+				<QueryResult loading={loading} error={error} data={data} />
+			</div>
+		</PageWithCards>
 	)
 }
 
