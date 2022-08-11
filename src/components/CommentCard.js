@@ -36,7 +36,7 @@ function CommentCard({ data }) {
 		if (comment) {
 			console.log(comment)
 			// get the body
-			const div = document.getElementById(`body${comment.id}`)
+			const div = document.getElementById(`comm-body-${comment.id}`)
 
 			// inject the html
 			if (div) div.innerHTML = comment.body
@@ -138,7 +138,10 @@ function CommentCard({ data }) {
 						</Link>
 					</span>
 					{/* <Link to={`/news/${comment.id}`} className="commentcard_link"> */}
-					<div className="commentcard_body" id={`body${comment.id}`}></div>
+					<div
+						className="commentcard_body"
+						id={`comm-body-${comment.id}`}
+					></div>
 					{/* </Link> */}
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
