@@ -42,10 +42,10 @@ function FollowedAuthors() {
 	return (
 		<div className="profile_followedAuthors">
 			{authors.map(author => (
-				<AuthorCard key={author.id} data={author} infoBelow />
 			))}
 			<QueryResult loading={loading} error={error} data={data} />
 		</div>
+					<AuthorCard key={author.id} data={author} />
 	)
 }
 
