@@ -1,5 +1,6 @@
 export { default as AuthorCard } from "./AuthorCard"
 export { default as AuthorInfo } from "./AuthorInfo"
+export { default as AuthorProfileCard } from "./AuthorProfileCard"
 export { default as CardVotes } from "./CardVotes"
 export { default as Comment } from "./Comment"
 export { default as CommentCard } from "./CommentCard"

@@ -1,0 +1,53 @@
+.authorprofilecard {
+	text-decoration: none;
+	width: calc(100% - 40px);
+	padding: 20px;
+	margin: 4px 0;
+	color: var(--text-color);
+	border-radius: 5px;
+	border: 1px solid var(--border-color);
+	background-color: var(--compBg-color);
+	// position: relative;
+	// overflow: hidden;
+	display: flex;
+	flex-direction: column;
+
+	&_info {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+
+		&_text {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		img {
+			width: 64px;
+			height: 64px;
+			border-radius: 100px;
+			margin-right: 16px;
+		}
+
+		h3,
+		p {
+			margin: 0;
+		}
+	}
+
+	&:hover {
+		border: 1px solid var(--secondText-color);
+	}
+
+	&_stats {
+		display: flex;
+		flex-direction: column;
+		margin: 16px 0;
+
+		&_item {
+			margin: 2px 0;
+			font-size: 14px;
+		}
+	}
+}
