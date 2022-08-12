@@ -181,7 +181,6 @@ export const NEWS_FOR_HOME = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -212,7 +211,6 @@ export const NEWS_FOR_HOME_REDDIT = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
@@ -241,7 +239,6 @@ export const NEWS2 = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -288,7 +285,6 @@ export const NEWS_FOR_PROFILE = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -322,6 +318,27 @@ export const NEWS = gql`
 	}
 `
 
+export const NEWS_FOR_PROFILE_CARD = gql`
+	query NewsForProfileCard($id: ID, $newsId: ID) {
+		newsForProfileCard(id: $id, newsId: $newsId) {
+			id
+			title
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			score
+			comments
+			link
+			author {
+				fullName
+			}
+		}
+	}
+`
+
 // returns search results
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
@@ -339,7 +356,6 @@ export const SEARCH = gql`
 					body
 					type
 					createdAt
-					updatedAt
 					voteState
 					likes
 					dislikes
@@ -381,6 +397,17 @@ export const FOLLOWED_AUTHORS = gql`
 			writtenNews
 			followers
 			createdAt
+			following
+		}
+	}
+`
+
+export const BEST_AUTHORS = gql`
+	query BestAuthors {
+		bestAuthors {
+			id
+			fullName
+			profilePicture
 			following
 		}
 	}
@@ -453,7 +480,6 @@ export const LIKED_ITEMS = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
@@ -517,7 +543,6 @@ export const SAVED_ITEMS = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes

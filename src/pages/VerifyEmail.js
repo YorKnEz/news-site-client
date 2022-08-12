@@ -16,17 +16,18 @@ function VerifyEmail() {
 	const [error, setError] = useState("")
 
 	useEffect(() => {
+		console.log("a")
 		const verify = async () => {
 			try {
-				const res = await axios({
+				const { data, status } = await axios({
 					method: "get",
 					url: `${ip}/users/verify?token=${token}`,
 				})
 
-				setMessage(res.data)
+				setMessage(data.message)
 
-				if (res.status === 200) {
-					verifyEmail()
+				if (status === 200) {
+					verifyEmail(data.userId)
 				}
 			} catch (error) {
 				setError(error?.response?.data?.message || error.message)
@@ -34,7 +35,8 @@ function VerifyEmail() {
 		}
 
 		verify()
-	}, [token, verifyEmail])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token])
 
 	return (
 		<Page>

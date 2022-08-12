@@ -7,7 +7,7 @@ import axios from "axios"
 import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorProfileCard.scss"
-import { UserContext } from "../context"
+import { UserContext } from "../../context"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -114,14 +114,14 @@ function AuthorProfileCard({ data }) {
 				(profile.following ? (
 					<button
 						onClick={handleUnfollow}
-						className="button button_secondary profile_button"
+						className="button button_secondary card_button"
 					>
 						Unfollow
 					</button>
 				) : (
 					<button
 						onClick={handleFollow}
-						className="button button_primary profile_button"
+						className="button button_primary card_button"
 					>
 						Follow
 					</button>

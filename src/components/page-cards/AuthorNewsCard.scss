@@ -1,0 +1,29 @@
+.authornewscard {
+	display: flex;
+	flex-direction: column;
+
+	&_title {
+		font-size: 16px;
+		font-weight: 700;
+		padding: 12px 16px;
+	}
+
+	&_container {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		text-decoration: none;
+		color: var(--text-color);
+		padding: 8px 16px;
+		border-top: 1px solid var(--border-color);
+		font-size: 14px;
+
+		&_score {
+			margin-left: 4px;
+		}
+
+		&:nth-child(3) {
+			border-bottom: 1px solid var(--border-color);
+		}
+	}
+}

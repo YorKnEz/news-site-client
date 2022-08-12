@@ -46,6 +46,7 @@ export default function App() {
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
 
+	// set the theme according to the os theme
 	useEffect(() => {
 		// if theme has not been set
 		if (theme === "") {
@@ -105,12 +106,15 @@ export default function App() {
 		client.link.options.headers.authorization = ""
 	}
 
-	const verifyEmail = () => {
-		setUser({
-			...user,
-			verified: true,
-		})
-		localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+	const verifyEmail = userId => {
+		// update the user object only if the user is logged in and the id of the verified user is the same as the currently logged in
+		if (Object.keys(user).length > 0 && user.id === userId) {
+			setUser({
+				...user,
+				verified: true,
+			})
+			localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+		}
 	}
 
 	return (
@@ -175,7 +179,7 @@ export default function App() {
 
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
-							<Route exact path="/create" element={<CreateNews />} />
+							<Route exact path="/news/create" element={<CreateNews />} />
 							<Route
 								exact
 								path="/news/:link-:newsId/edit"
