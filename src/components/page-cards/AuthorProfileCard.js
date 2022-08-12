@@ -7,7 +7,7 @@ import axios from "axios"
 import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorProfileCard.scss"
-import { UserContext } from "../context"
+import { UserContext } from "../../context"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
