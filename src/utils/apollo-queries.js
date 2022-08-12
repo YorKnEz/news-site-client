@@ -181,7 +181,6 @@ export const NEWS_FOR_HOME = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -212,7 +211,6 @@ export const NEWS_FOR_HOME_REDDIT = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
@@ -241,7 +239,6 @@ export const NEWS2 = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -288,7 +285,6 @@ export const NEWS_FOR_PROFILE = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
@@ -339,7 +335,6 @@ export const SEARCH = gql`
 					body
 					type
 					createdAt
-					updatedAt
 					voteState
 					likes
 					dislikes
@@ -464,7 +459,6 @@ export const LIKED_ITEMS = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
@@ -528,7 +522,6 @@ export const SAVED_ITEMS = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
