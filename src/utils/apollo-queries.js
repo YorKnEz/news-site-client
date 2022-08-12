@@ -386,6 +386,17 @@ export const FOLLOWED_AUTHORS = gql`
 	}
 `
 
+export const BEST_AUTHORS = gql`
+	query BestAuthors {
+		bestAuthors {
+			id
+			fullName
+			profilePicture
+			following
+		}
+	}
+`
+
 // retrieve the first comments of a news
 export const COMMENTS_FOR_NEWS = gql`
 	query CommentsForNews($oldestId: ID!, $newsId: ID!, $sortBy: String!) {

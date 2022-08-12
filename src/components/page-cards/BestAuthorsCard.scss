@@ -1,0 +1,31 @@
+.author {
+	padding: 12px 20px;
+	border-top: 1px solid var(--border-color);
+
+	&_index {
+		font-weight: 600;
+	}
+
+	&_info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&_avatar {
+		width: 32px;
+		height: 32px;
+	}
+
+	&_button {
+		margin-left: auto;
+		border: 0;
+		border-radius: 100px;
+		padding: 4px 12px;
+		cursor: pointer;
+	}
+
+	&:first-child {
+		border: 0;
+	}
+}

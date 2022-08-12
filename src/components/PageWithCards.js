@@ -12,6 +12,7 @@ import { Error } from "../pages"
 import {
 	AuthorProfileCard,
 	BecomeEditorCard,
+	BestAuthorsCard,
 	JoinCard,
 } from "./page-cards"
 
@@ -40,7 +41,10 @@ function Page({ children }) {
 					<div className="pagewc_col1">{children}</div>
 					<div className="pagewc_col2">
 						{userData && Object.keys(userData).length > 0 ? (
-							<AuthorProfileCard data={userData} />
+							<>
+								<BestAuthorsCard />
+								<AuthorProfileCard data={userData} />
+							</>
 						) : (
 							<>
 								<JoinCard />
