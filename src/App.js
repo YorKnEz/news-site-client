@@ -179,7 +179,7 @@ export default function App() {
 
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
-							<Route exact path="/create" element={<CreateNews />} />
+							<Route exact path="/news/create" element={<CreateNews />} />
 							<Route
 								exact
 								path="/news/:link-:newsId/edit"

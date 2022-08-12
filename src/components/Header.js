@@ -151,7 +151,7 @@ function Header({ userData, profileHeader }) {
 							Profile
 						</Link>
 						{user.type === "author" && (
-							<Link className="dropdown_link" to="/create">
+							<Link className="dropdown_link" to="/news/create">
 								Create News
 							</Link>
 						)}
