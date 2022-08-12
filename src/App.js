@@ -46,6 +46,7 @@ export default function App() {
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
 
+	// set the theme according to the os theme
 	useEffect(() => {
 		// if theme has not been set
 		if (theme === "") {
