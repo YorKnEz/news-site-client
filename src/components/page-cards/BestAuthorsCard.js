@@ -89,7 +89,7 @@ function BestAuthorsCard() {
 		<div className="card">
 			<div
 				className="card_thumbnail"
-				style={{ backgroundImage: "url(/card_thumbnail2_new.jpg)" }}
+				style={{ backgroundImage: "url(/card_thumbnail2.jpg)" }}
 			>
 				<div className="card_thumbnail_overlay"></div>
 				<span className="card_thumbnail_title">Top Authors</span>

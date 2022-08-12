@@ -114,14 +114,14 @@ function AuthorProfileCard({ data }) {
 				(profile.following ? (
 					<button
 						onClick={handleUnfollow}
-						className="button button_secondary profile_button"
+						className="button button_secondary card_button"
 					>
 						Unfollow
 					</button>
 				) : (
 					<button
 						onClick={handleFollow}
-						className="button button_primary profile_button"
+						className="button button_primary card_button"
 					>
 						Follow
 					</button>

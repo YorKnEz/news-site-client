@@ -15,7 +15,7 @@ function JoinCard() {
 			</div>
 			<div className="card_container">
 				<span className="card_text">
-					Create an account or log in and check out the latest news
+					Create an account or log in and check out the latest news.
 				</span>
 				<Link to="/sign-up" className="button button_primary card_button">
 					Sign Up
