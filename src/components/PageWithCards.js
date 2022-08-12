@@ -9,6 +9,7 @@ import { UserContext } from "../context"
 import { USER } from "../utils/apollo-queries"
 import { Error } from "../pages"
 import {
+	AuthorNewsCard,
 	AuthorProfileCard,
 	BecomeEditorCard,
 	BestAuthorsCard,
@@ -25,7 +26,14 @@ function Page({ children }) {
 		skip: !id,
 	})
 
-	const profileHeader = window.location.pathname.includes("profile")
+	const pathname = window.location.pathname
+
+	const profileHeader = pathname.includes("profile")
+
+	const isLastCharADigit = !isNaN(pathname[pathname.length - 1])
+
+	// if the pathanem includes news and the last character of the pathname is a digit that means the link is /news/:link-:id
+	const news = pathname.includes("/news/") && isLastCharADigit
 
 	const userData = profileHeader ? data?.user : user
 
@@ -44,6 +52,7 @@ function Page({ children }) {
 							<>
 								<BestAuthorsCard />
 								<AuthorProfileCard data={userData} />
+								{(profileHeader || news) && <AuthorNewsCard />}
 							</>
 						) : (
 							<>

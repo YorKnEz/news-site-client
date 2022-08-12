@@ -318,6 +318,27 @@ export const NEWS = gql`
 	}
 `
 
+export const NEWS_FOR_PROFILE_CARD = gql`
+	query NewsForProfileCard($id: ID, $newsId: ID) {
+		newsForProfileCard(id: $id, newsId: $newsId) {
+			id
+			title
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			score
+			comments
+			link
+			author {
+				fullName
+			}
+		}
+	}
+`
+
 // returns search results
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!) {
