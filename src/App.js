@@ -105,12 +105,15 @@ export default function App() {
 		client.link.options.headers.authorization = ""
 	}
 
-	const verifyEmail = () => {
-		setUser({
-			...user,
-			verified: true,
-		})
-		localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+	const verifyEmail = userId => {
+		// update the user object only if the user is logged in and the id of the verified user is the same as the currently logged in
+		if (Object.keys(user).length > 0 && user.id === userId) {
+			setUser({
+				...user,
+				verified: true,
+			})
+			localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+		}
 	}
 
 	return (
