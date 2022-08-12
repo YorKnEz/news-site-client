@@ -11,6 +11,7 @@ import { USER } from "../utils/apollo-queries"
 import { Error } from "../pages"
 import {
 	AuthorProfileCard,
+	BecomeEditorCard,
 	JoinCard,
 } from "./page-cards"
 
@@ -45,6 +46,7 @@ function Page({ children }) {
 								<JoinCard />
 							</>
 						)}
+						{user.type !== "author" && <BecomeEditorCard />}
 					</div>
 				</div>
 			) : (
