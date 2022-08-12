@@ -13,6 +13,7 @@ import {
 	BecomeEditorCard,
 	BestAuthorsCard,
 	JoinCard,
+	PostCard,
 } from "./page-cards"
 
 function Page({ children }) {
@@ -49,7 +50,7 @@ function Page({ children }) {
 								<JoinCard />
 							</>
 						)}
-						{user.type !== "author" && <BecomeEditorCard />}
+						{user.type !== "author" ? <BecomeEditorCard /> : <PostCard />}
 					</div>
 				</div>
 			) : (
