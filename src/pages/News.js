@@ -22,7 +22,7 @@ import {
 	QueryResult,
 } from "../components"
 import { UserContext } from "../context"
-import { DELETE_NEWS, NEWS2, SAVE_ITEM } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
@@ -40,7 +40,7 @@ function News() {
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
 	const client = useApolloClient()
-	const { loading, error, data } = useQuery(NEWS2, {
+	const { loading, error, data } = useQuery(NEWS_BY_ID, {
 		variables: {
 			newsId: newsId,
 		},
