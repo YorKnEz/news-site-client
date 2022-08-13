@@ -166,6 +166,16 @@ export const UPDATE_COMMENTS_COUNTER = gql`
 	}
 `
 
+export const FOLLOW_AUTHOR = gql`
+	mutation FollowAuthor($action: String!, $id: ID!) {
+		follow(action: $action, id: $id) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // QUERIES
 
 // retrieve the first comments of a news
