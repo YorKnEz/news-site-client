@@ -62,8 +62,8 @@ function AuthorNewsCard() {
 			<div className="authornewscard">
 				<QueryResult loading={loading} error={error} data={data}>
 					<span className="authornewscard_title">TOP NEWS</span>
-					<NewsItem newsData={news[0]} />
 					<NewsItem newsData={news[1]} />
+					<NewsItem newsData={news[0]} />
 					<span className="authornewscard_title">MOST RECENT NEWS</span>
 					<NewsItem newsData={news[2]} />
 				</QueryResult>
