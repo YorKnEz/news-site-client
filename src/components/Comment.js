@@ -26,15 +26,18 @@ import {
 
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-	const [saved, setSaved] = useState(
-		comment.saveState === "unsave" ? false : true
-	)
+
 	const [replyError, setReplyError] = useState("")
 	const [editError, setEditError] = useState("")
+
+	const [saved, setSaved] = useState(
+		comment.saveState === "save" ? true : false
+	)
 	const [showEdit, setShowEdit] = useState(false)
 	const [showCommentReplies, setShowCommentReplies] = useState(false)
 	const [showReply, setShowReply] = useState(false)
 	const [collapse, setCollapse] = useState(false)
+
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [totalReplies, setTotalReplies] = useState(0)
@@ -83,7 +86,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		const currentDate = fromUnixTime(Date.now() / 1000)
 		const distance = formatDistance(createdAt, currentDate)
 
-		return ` - Posted ${distance} ago`
+		return ` · Posted ${distance} ago`
 	}
 
 	const onEditorCancel = e => {
@@ -228,16 +231,6 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 			}`}
 		>
 			<div className="comment_container1">
-				<div
-					className="comment_avatar"
-					style={{
-						backgroundImage: `url(${
-							comment.author.profilePicture !== "default"
-								? comment.author.profilePicture
-								: "/default_avatar.png"
-						})`,
-					}}
-				></div>
 				{collapse ? (
 					<button
 						onClick={toggleCollapse}
@@ -246,13 +239,37 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						<AiOutlineExpand className="comment_options_item_icon comment_options_collapse_icon" />
 					</button>
 				) : (
-					<div onClick={toggleCollapse} className="comment_line_container">
-						<div className="comment_line" />
-					</div>
+					<>
+						<div
+							className="comment_avatar"
+							style={{
+								backgroundImage: `url(${
+									comment.author.profilePicture !== "default"
+										? comment.author.profilePicture
+										: "/default_avatar.png"
+								})`,
+							}}
+						></div>
+						<div onClick={toggleCollapse} className="comment_line_container">
+							<div className="comment_line" />
+						</div>
+					</>
 				)}
 			</div>
 			<div className="comment_container2">
 				<div className="comment_posted">
+					{collapse && (
+						<div
+							className="comment_avatar"
+							style={{
+								backgroundImage: `url(${
+									comment.author.profilePicture !== "default"
+										? comment.author.profilePicture
+										: "/default_avatar.png"
+								})`,
+							}}
+						></div>
+					)}
 					<span className="comment_posted_author">
 						<Link
 							to={`/profile/${comment.author.id}/overview`}
@@ -263,7 +280,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						{showDate()}
 					</span>
 				</div>
-				{showEdit ? (
+				{showEdit && (
 					<div style={collapse ? { display: "none" } : {}}>
 						<CommentEditor
 							setError={setEditError}
@@ -281,7 +298,8 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 							</p>
 						)}
 					</div>
-				) : (
+				)}
+				{!showEdit && (
 					<div
 						style={collapse ? { display: "none" } : {}}
 						className="comment_body"

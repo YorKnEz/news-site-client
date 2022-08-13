@@ -2,20 +2,20 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 
-import { useApolloClient } from "@apollo/client"
-import axios from "axios"
+import { useApolloClient, useMutation } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorProfileCard.scss"
 import { UserContext } from "../../context"
-
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+import { FOLLOW_AUTHOR } from "../../utils/apollo-queries"
 
 function AuthorProfileCard({ data }) {
 	const { id } = useParams()
-	const client = useApolloClient()
-	const { user, token } = useContext(UserContext)
+	const { user } = useContext(UserContext)
 	const [profile, setProfile] = useState({})
+
+	const client = useApolloClient()
+	const [follow] = useMutation(FOLLOW_AUTHOR)
 
 	// update the state after each apollo request
 	useEffect(() => {
@@ -29,49 +29,32 @@ function AuthorProfileCard({ data }) {
 		}
 	}, [data])
 
-	const handleFollow = async e => {
+	const handleFollow = async (e, action) => {
 		try {
 			e.preventDefault()
 
-			await axios({
-				method: "patch",
-				url: `${ip}/users/follow/${id}`,
-				headers: {
-					authorization: token,
+			follow({
+				variables: {
+					action,
+					id,
 				},
-			})
+				onCompleted: ({ follow }) => {
+					if (!follow.success) {
+						console.log(follow.message)
 
-			setProfile({
-				...profile,
-				followers: profile.followers + 1,
-				following: true,
-			})
+						return
+					}
 
-			client.clearStore()
-		} catch (error) {
-			console.error(error?.response?.data?.message || error.message)
-		}
-	}
+					client.clearStore()
 
-	const handleUnfollow = async e => {
-		try {
-			e.preventDefault()
-
-			await axios({
-				method: "patch",
-				url: `${ip}/users/unfollow/${id}`,
-				headers: {
-					authorization: token,
+					setProfile({
+						...profile,
+						followers: profile.followers + (action === "follow" ? 1 : -1),
+						following: action === "follow" ? true : false,
+					})
 				},
+				onError: error => console.log({ ...error }),
 			})
-
-			setProfile({
-				...profile,
-				followers: profile.followers - 1,
-				following: false,
-			})
-
-			client.clearStore()
 		} catch (error) {
 			console.error(error?.response?.data?.message || error.message)
 		}
@@ -113,14 +96,14 @@ function AuthorProfileCard({ data }) {
 				profile.type === "author" &&
 				(profile.following ? (
 					<button
-						onClick={handleUnfollow}
+						onClick={e => handleFollow(e, "unfollow")}
 						className="button button_secondary card_button"
 					>
 						Unfollow
 					</button>
 				) : (
 					<button
-						onClick={handleFollow}
+						onClick={e => handleFollow(e, "follow")}
 						className="button button_primary card_button"
 					>
 						Follow

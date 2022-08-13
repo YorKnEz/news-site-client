@@ -2,26 +2,26 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
 
-import { useApolloClient, useQuery } from "@apollo/client"
-import axios from "axios"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
 
 import "./index.scss"
 import { Page, QueryResult } from "../../components"
 import { UserContext } from "../../context"
-import { USER } from "../../utils/apollo-queries"
+import { FOLLOW_AUTHOR, USER } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
-
 function Profile() {
-	const client = useApolloClient()
 	const { id } = useParams()
+	const { user } = useContext(UserContext)
 	const [profile, setProfile] = useState({})
-	const { user, token } = useContext(UserContext)
+
+	const client = useApolloClient()
 	const { loading, error, data } = useQuery(USER, {
 		variables: { id },
 	})
+	const [follow] = useMutation(FOLLOW_AUTHOR)
+
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
@@ -38,49 +38,32 @@ function Profile() {
 		}
 	}, [data])
 
-	const handleFollow = async e => {
+	const handleFollow = async (e, action) => {
 		try {
 			e.preventDefault()
 
-			await axios({
-				method: "patch",
-				url: `${ip}/users/follow/${id}`,
-				headers: {
-					authorization: token,
+			follow({
+				variables: {
+					action,
+					id,
 				},
-			})
+				onCompleted: ({ follow }) => {
+					if (!follow.success) {
+						console.log(follow.message)
 
-			setProfile({
-				...profile,
-				followers: profile.followers + 1,
-				following: true,
-			})
+						return
+					}
 
-			client.clearStore()
-		} catch (error) {
-			console.error(error?.response?.data?.message || error.message)
-		}
-	}
+					client.clearStore()
 
-	const handleUnfollow = async e => {
-		try {
-			e.preventDefault()
-
-			await axios({
-				method: "patch",
-				url: `${ip}/users/unfollow/${id}`,
-				headers: {
-					authorization: token,
+					setProfile({
+						...profile,
+						followers: profile.followers + (action === "follow" ? 1 : -1),
+						following: action === "follow" ? true : false,
+					})
 				},
+				onError: error => console.log({ ...error }),
 			})
-
-			setProfile({
-				...profile,
-				followers: profile.followers - 1,
-				following: false,
-			})
-
-			client.clearStore()
 		} catch (error) {
 			console.error(error?.response?.data?.message || error.message)
 		}
@@ -110,14 +93,14 @@ function Profile() {
 								id != user.id &&
 								(profile.following ? (
 									<button
-										onClick={handleUnfollow}
+										onClick={e => handleFollow(e, "unfollow")}
 										className="button button_secondary profile_button"
 									>
 										Unfollow
 									</button>
 								) : (
 									<button
-										onClick={handleFollow}
+										onClick={e => handleFollow(e, "follow")}
 										className="button button_primary profile_button"
 									>
 										Follow

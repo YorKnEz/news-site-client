@@ -6,6 +6,7 @@
 	padding: 8px 2px;
 	font-size: 12px;
 	background-color: var(--compBgDark-color);
+	color: var(--secondText-color);
 
 	&_button {
 		cursor: pointer;
@@ -23,5 +24,14 @@
 
 	&_icon {
 		font-size: 20px;
+		color: var(--secondText-color);
+	}
+
+	&_like {
+		color: var(--primary-color);
+	}
+
+	&_dislike {
+		color: red;
 	}
 }

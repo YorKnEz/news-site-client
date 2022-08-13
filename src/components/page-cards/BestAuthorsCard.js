@@ -1,23 +1,23 @@
+/* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-import { useApolloClient, useQuery } from "@apollo/client"
-import axios from "axios"
+import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 
 import "./index.scss"
 import "./BestAuthorsCard.scss"
+import { BaseCard } from "."
 import { QueryResult } from "../../components"
 import { UserContext } from "../../context"
-import { BEST_AUTHORS } from "../../utils/apollo-queries"
-
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+import { BEST_AUTHORS, FOLLOW_AUTHOR } from "../../utils/apollo-queries"
 
 function BestAuthorsCard() {
-	const { token } = useContext(UserContext)
+	const { user } = useContext(UserContext)
 	const [authors, setAuthors] = useState([])
 
 	const client = useApolloClient()
 	const { loading, error, data } = useQuery(BEST_AUTHORS)
+	const [follow] = useMutation(FOLLOW_AUTHOR)
 
 	useEffect(() => {
 		if (data) {
@@ -25,115 +25,84 @@ function BestAuthorsCard() {
 		}
 	}, [data])
 
-	const handleFollow = async (e, id) => {
+	const handleFollow = async (e, action, id) => {
 		try {
 			e.preventDefault()
 
-			await axios({
-				method: "patch",
-				url: `${ip}/users/follow/${id}`,
-				headers: {
-					authorization: token,
+			follow({
+				variables: {
+					action,
+					id,
 				},
-			})
+				onCompleted: ({ follow }) => {
+					if (!follow.success) {
+						console.log(follow.message)
 
-			setAuthors(arr =>
-				arr.map(author => {
-					if (author.id === id)
-						return {
-							...author,
-							following: true,
-						}
+						return
+					}
 
-					return author
-				})
-			)
+					client.clearStore()
 
-			client.clearStore()
-		} catch (error) {
-			console.error(error?.response?.data?.message || error.message)
-		}
-	}
+					setAuthors(arr =>
+						arr.map(author => {
+							if (author.id === id)
+								return {
+									...author,
+									following: action === "follow" ? true : false,
+								}
 
-	const handleUnfollow = async (e, id) => {
-		try {
-			e.preventDefault()
-
-			await axios({
-				method: "patch",
-				url: `${ip}/users/unfollow/${id}`,
-				headers: {
-					authorization: token,
+							return author
+						})
+					)
 				},
+				onError: error => console.log({ ...error }),
 			})
-
-			setAuthors(arr =>
-				arr.map(author => {
-					if (author.id === id)
-						return {
-							...author,
-							following: false,
-						}
-
-					return author
-				})
-			)
-
-			client.clearStore()
 		} catch (error) {
 			console.error(error?.response?.data?.message || error.message)
 		}
 	}
 
 	return (
-		<div className="card">
-			<div
-				className="card_thumbnail"
-				style={{ backgroundImage: "url(/card_thumbnail2.jpg)" }}
-			>
-				<div className="card_thumbnail_overlay"></div>
-				<span className="card_thumbnail_title">Top Authors</span>
-			</div>
-			<div className="card_conatiner">
-				{authors.map((author, index) => (
-					<Link
-						to={`/profile/${author.id}/overview`}
-						key={author.id}
-						className="author"
-					>
-						<span className="author_index">{index + 1}</span>
-						<div className="author_info">
-							<img
-								className="author_avatar"
-								src={
-									author.profilePicture === "default"
-										? "/default_avatar.png"
-										: author.profilePicture
-								}
-								alt="avatar of user"
-							/>
-							<span>{author.fullName}</span>
-						</div>
-						{author.following ? (
+		<BaseCard thumbnailIndex={2} title="Top Authors" list>
+			{authors.map((author, index) => (
+				<Link
+					to={`/profile/${author.id}/overview`}
+					key={author.id}
+					className="authortop"
+				>
+					<span className="authortop_index">{index + 1}</span>
+					<div className="authortop_info">
+						<img
+							className="authortop_avatar"
+							src={
+								author.profilePicture === "default"
+									? "/default_avatar.png"
+									: author.profilePicture
+							}
+							alt="avatar of user"
+						/>
+						<span>{author.fullName}</span>
+					</div>
+					{author.id != user.id &&
+						(author.following ? (
 							<button
-								onClick={e => handleUnfollow(e, author.id)}
-								className="author_button"
+								onClick={e => handleFollow(e, "unfollow", author.id)}
+								className="authortop_button"
 							>
 								Unfollow
 							</button>
 						) : (
 							<button
-								onClick={e => handleFollow(e, author.id)}
-								className="author_button"
+								onClick={e => handleFollow(e, "follow", author.id)}
+								className="authortop_button"
 							>
 								Follow
 							</button>
-						)}
-					</Link>
-				))}
-				<QueryResult loading={loading} error={error} data={data} />
-			</div>
-		</div>
+						))}
+				</Link>
+			))}
+			<QueryResult loading={loading} error={error} data={data} />
+		</BaseCard>
 	)
 }
 

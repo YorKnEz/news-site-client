@@ -19,7 +19,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import "./CreateNews.scss"
 import { Page, QueryResult } from "../components"
 import { UserContext } from "../context"
-import { NEWS, UPDATE_NEWS } from "../utils/apollo-queries"
+import { NEWS_TO_EDIT, UPDATE_NEWS } from "../utils/apollo-queries"
 import {
 	handleInputBlur,
 	handleInputFocus,
@@ -34,7 +34,7 @@ function CreateNews() {
 	const client = useApolloClient()
 	const { newsId } = useParams()
 	const [updateNews] = useMutation(UPDATE_NEWS)
-	const { loading, error, data } = useQuery(NEWS, {
+	const { loading, error, data } = useQuery(NEWS_TO_EDIT, {
 		variables: {
 			newsId: newsId,
 		},

@@ -36,7 +36,6 @@
 		width: 32px;
 		height: 32px;
 		border-radius: 100px;
-		margin-bottom: 8px;
 		background-size: cover;
 		background-position: center;
 	}
@@ -44,6 +43,7 @@
 	&_line {
 		height: 100%;
 		width: 2px;
+		margin-top: 8px;
 		background-color: var(--border-color);
 
 		&:hover {
@@ -69,6 +69,7 @@
 	}
 
 	&_posted {
+		user-select: text;
 		display: flex;
 		align-items: center;
 		height: 32px;
@@ -89,6 +90,7 @@
 	}
 
 	&_body {
+		user-select: text;
 		word-wrap: break-word;
 
 		a {
@@ -132,7 +134,7 @@
 		}
 
 		&_collapse {
-			margin: 0;
+			margin: auto 0;
 
 			&_icon {
 				margin: 0;
