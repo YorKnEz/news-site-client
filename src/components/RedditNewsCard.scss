@@ -4,12 +4,14 @@
 
 	display: flex;
 	width: 100%;
-	margin: 8px 0;
+	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 
 	user-select: none;
+	text-decoration: none;
+	color: var(--text-color);
 
 	&_matches {
 		position: absolute;
@@ -24,8 +26,8 @@
 	}
 
 	&_container {
+		width: calc(100% - 44px);
 		padding: 10px 0;
-		width: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -36,7 +38,23 @@
 	&_title {
 		padding-left: 8px;
 		font-size: 20px;
-		margin-bottom: 8px;
+		margin: 8px 0;
+	}
+
+	&_body {
+		padding: 0 8px;
+		width: calc(100% - 16px);
+
+		word-wrap: break-word;
+		font-size: 16px;
+		color: var(--secondText-color);
+	}
+
+	&_posted {
+		padding-left: 8px;
+		font-size: 12px;
+		margin: 5px 0;
+		color: var(--secondText-color);
 	}
 
 	&:hover {

@@ -3,9 +3,21 @@ import React, { useEffect } from "react"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./RedditNewsCard.scss"
-import { AuthorInfo, CardVotes } from "../components"
+import { CardVotes } from "../components"
 
 function RedditNewsCard({ data, matches }) {
+	const {
+		author,
+		body,
+		createdAt,
+		id,
+		sources,
+		subreddit,
+		title,
+		score,
+		voteState,
+	} = data
+
 	useEffect(() => {
 		if (matches) {
 			const span = document.getElementById(data.id + "span")
@@ -30,36 +42,33 @@ function RedditNewsCard({ data, matches }) {
 	}, [matches, data.id])
 
 	const showDate = () => {
-		const createdAt = fromUnixTime(data.createdAt / 1000)
+		const createdDate = fromUnixTime(createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
-		const distance = formatDistance(createdAt, currentDate)
+		const distance = formatDistance(createdDate, currentDate)
 
-		return `Posted ${distance} ago`
+		return distance
 	}
 
 	return (
 		<div className="redditnewscard">
 			{matches && (
 				<span
-					id={data.id + "span"}
+					id={id + "span"}
 					className="redditnewscard_matches"
 				>{`Matches ${matches}%`}</span>
 			)}
-			<CardVotes data={data} />
+			<CardVotes data={{ score, voteState }} />
 			<a
-				href={data.sources}
+				href={sources}
 				target="_blank"
 				rel="noreferrer"
 				className="redditnewscard_container"
 			>
-				<span className="newscard_posted">{showDate()}</span>
-				<span className="redditnewscard_title">{data.title}</span>
-
-				<AuthorInfo
-					data={data.author}
-					type={data.type}
-					subreddit={data.subreddit}
-				/>
+				<span className="redditnewscard_posted">{`${subreddit} · Posted by u/${
+					author.fullName
+				} ${showDate()} ago `}</span>
+				<span className="redditnewscard_title">{title}</span>
+				<div className="redditnewscard_body">{body}</div>
 			</a>
 		</div>
 	)
