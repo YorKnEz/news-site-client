@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -13,7 +14,7 @@ import { BEST_AUTHORS } from "../../utils/apollo-queries"
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function BestAuthorsCard() {
-	const { token } = useContext(UserContext)
+	const { token, user } = useContext(UserContext)
 	const [authors, setAuthors] = useState([])
 
 	const client = useApolloClient()
@@ -114,21 +115,22 @@ function BestAuthorsCard() {
 							/>
 							<span>{author.fullName}</span>
 						</div>
-						{author.following ? (
-							<button
-								onClick={e => handleUnfollow(e, author.id)}
-								className="author_button"
-							>
-								Unfollow
-							</button>
-						) : (
-							<button
-								onClick={e => handleFollow(e, author.id)}
-								className="author_button"
-							>
-								Follow
-							</button>
-						)}
+						{author.id != user.id &&
+							(author.following ? (
+								<button
+									onClick={e => handleUnfollow(e, author.id)}
+									className="author_button"
+								>
+									Unfollow
+								</button>
+							) : (
+								<button
+									onClick={e => handleFollow(e, author.id)}
+									className="author_button"
+								>
+									Follow
+								</button>
+							))}
 					</Link>
 				))}
 				<QueryResult loading={loading} error={error} data={data} />
