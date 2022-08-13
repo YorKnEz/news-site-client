@@ -6,6 +6,7 @@ import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 
 import "./index.scss"
 import "./BestAuthorsCard.scss"
+import { BaseCard } from "."
 import { QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import { BEST_AUTHORS, FOLLOW_AUTHOR } from "../../utils/apollo-queries"
@@ -62,55 +63,46 @@ function BestAuthorsCard() {
 	}
 
 	return (
-		<div className="card">
-			<div
-				className="card_thumbnail"
-				style={{ backgroundImage: "url(/card_thumbnail2.jpg)" }}
-			>
-				<div className="card_thumbnail_overlay"></div>
-				<span className="card_thumbnail_title">Top Authors</span>
-			</div>
-			<div className="card_conatiner">
-				{authors.map((author, index) => (
-					<Link
-						to={`/profile/${author.id}/overview`}
-						key={author.id}
-						className="author"
-					>
-						<span className="author_index">{index + 1}</span>
-						<div className="author_info">
-							<img
-								className="author_avatar"
-								src={
-									author.profilePicture === "default"
-										? "/default_avatar.png"
-										: author.profilePicture
-								}
-								alt="avatar of user"
-							/>
-							<span>{author.fullName}</span>
-						</div>
-						{author.id != user.id &&
-							(author.following ? (
-								<button
-									onClick={e => handleFollow(e, "unfollow", author.id)}
-									className="author_button"
-								>
-									Unfollow
-								</button>
-							) : (
-								<button
-									onClick={e => handleFollow(e, "follow", author.id)}
-									className="author_button"
-								>
-									Follow
-								</button>
-							))}
-					</Link>
-				))}
-				<QueryResult loading={loading} error={error} data={data} />
-			</div>
-		</div>
+		<BaseCard thumbnailIndex={2} title="Top Authors" list>
+			{authors.map((author, index) => (
+				<Link
+					to={`/profile/${author.id}/overview`}
+					key={author.id}
+					className="author"
+				>
+					<span className="author_index">{index + 1}</span>
+					<div className="author_info">
+						<img
+							className="author_avatar"
+							src={
+								author.profilePicture === "default"
+									? "/default_avatar.png"
+									: author.profilePicture
+							}
+							alt="avatar of user"
+						/>
+						<span>{author.fullName}</span>
+					</div>
+					{author.id != user.id &&
+						(author.following ? (
+							<button
+								onClick={e => handleFollow(e, "unfollow", author.id)}
+								className="author_button"
+							>
+								Unfollow
+							</button>
+						) : (
+							<button
+								onClick={e => handleFollow(e, "follow", author.id)}
+								className="author_button"
+							>
+								Follow
+							</button>
+						))}
+				</Link>
+			))}
+			<QueryResult loading={loading} error={error} data={data} />
+		</BaseCard>
 	)
 }
 
