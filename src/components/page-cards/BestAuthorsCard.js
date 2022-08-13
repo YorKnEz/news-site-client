@@ -68,12 +68,12 @@ function BestAuthorsCard() {
 				<Link
 					to={`/profile/${author.id}/overview`}
 					key={author.id}
-					className="author"
+					className="authortop"
 				>
-					<span className="author_index">{index + 1}</span>
-					<div className="author_info">
+					<span className="authortop_index">{index + 1}</span>
+					<div className="authortop_info">
 						<img
-							className="author_avatar"
+							className="authortop_avatar"
 							src={
 								author.profilePicture === "default"
 									? "/default_avatar.png"
@@ -87,14 +87,14 @@ function BestAuthorsCard() {
 						(author.following ? (
 							<button
 								onClick={e => handleFollow(e, "unfollow", author.id)}
-								className="author_button"
+								className="authortop_button"
 							>
 								Unfollow
 							</button>
 						) : (
 							<button
 								onClick={e => handleFollow(e, "follow", author.id)}
-								className="author_button"
+								className="authortop_button"
 							>
 								Follow
 							</button>

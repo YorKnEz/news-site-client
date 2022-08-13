@@ -9,6 +9,24 @@ import { QueryResult } from "../../components"
 import { NEWS_FOR_PROFILE_CARD } from "../../utils/apollo-queries"
 import { compressNumber } from "../../utils/utils"
 
+function NewsItem({ newsData }) {
+	if (newsData)
+		return (
+			<Link
+				to={`/news/${newsData.id}`}
+				key={newsData.id}
+				className="authornewscard_container"
+			>
+				<span className="authornewscard_container_title">{newsData.title}</span>
+				<span className="authornewscard_container_score">
+					{compressNumber(newsData.score)}
+				</span>
+			</Link>
+		)
+
+	return ""
+}
+
 function AuthorNewsCard() {
 	const { id, newsId } = useParams()
 	const [news, setNews] = useState([])
@@ -30,26 +48,6 @@ function AuthorNewsCard() {
 			)
 		}
 	}, [data])
-
-	function NewsItem({ newsData }) {
-		if (newsData)
-			return (
-				<Link
-					to={`/news/${newsData.id}`}
-					key={newsData.id}
-					className="authornewscard_container"
-				>
-					<span className="authornewscard_container_title">
-						{newsData.title}
-					</span>
-					<span className="authornewscard_container_score">
-						{compressNumber(newsData.score)}
-					</span>
-				</Link>
-			)
-
-		return ""
-	}
 
 	return (
 		<BaseCard thumbnailIndex={1} title="More from this author" list>

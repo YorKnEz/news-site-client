@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
+
 import { format, fromUnixTime } from "date-fns"
 
 import "./AuthorCard.scss"
@@ -10,6 +11,12 @@ function AuthorCard({ data }) {
 
 		return format(createdAt, "MMMM d',' yyyy")
 	}
+
+	const items = [
+		{ title: "Written News", info: data.writtenNews },
+		{ title: "Followers", info: data.followers },
+		{ title: "Joined", info: getDate() },
+	]
 
 	return (
 		<Link to={`/profile/${data.id}/overview`} className="authorcard">
@@ -25,18 +32,12 @@ function AuthorCard({ data }) {
 				</div>
 			</div>
 			<div className="acinfo">
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Written News:</span>
-					<span className="acinfo_box_data">{data.writtenNews + " "}</span>
-				</div>
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Followers:</span>
-					<span className="acinfo_box_data">{data.followers}</span>
-				</div>
-				<div className="acinfo_box">
-					<span className="acinfo_box_title">Joined:</span>
-					<span className="acinfo_box_data">{getDate()}</span>
-				</div>
+				{items.map(({ title, info }) => (
+					<div className="acinfo_box">
+						<span className="acinfo_box_title">{title}:</span>
+						<span className="acinfo_box_data">{info}</span>
+					</div>
+				))}
 			</div>
 		</Link>
 	)
