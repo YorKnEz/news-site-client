@@ -51,24 +51,12 @@ function CardVotes({ data }) {
 		<div className="cardvotes">
 			<button className="cardvotes_button" onClick={e => handleVote(e, "like")}>
 				{votes.voteState === "like" ? (
-					<AiFillLike
-						className="cardvotes_icon"
-						style={{ color: "var(--primary-color)" }}
-					/>
+					<AiFillLike className="cardvotes_icon cardvotes_like" />
 				) : (
 					<AiOutlineLike className="cardvotes_icon" />
 				)}
 			</button>
-			<span
-				style={{
-					color:
-						votes.voteState === "like"
-							? "var(--primary-color)"
-							: votes.voteState === "dislike"
-							? "red"
-							: "var(--text-color)",
-				}}
-			>
+			<span className={`cardvotes_${votes.voteState}`}>
 				{compressNumber(votes.score)}
 			</span>
 			<button
@@ -76,7 +64,7 @@ function CardVotes({ data }) {
 				onClick={e => handleVote(e, "dislike")}
 			>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardvotes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="cardvotes_icon cardvotes_dislike" />
 				) : (
 					<AiOutlineDislike className="cardvotes_icon" />
 				)}
