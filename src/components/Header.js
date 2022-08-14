@@ -38,9 +38,7 @@ function Header({ userData, profileHeader }) {
 		handleThemeToggle()
 	}, [switchState])
 
-	const handleClick = e => {
-		e.preventDefault()
-
+	const handleClick = () => {
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(!showDropdown)
@@ -52,7 +50,7 @@ function Header({ userData, profileHeader }) {
 			: "-1000px"
 	}
 
-	const handleBlur = e => {
+	const handleBlur = () => {
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(false)
@@ -64,10 +62,8 @@ function Header({ userData, profileHeader }) {
 			: "-1000px"
 	}
 
-	const handleSignOut = async e => {
+	const handleSignOut = async () => {
 		try {
-			e.preventDefault()
-
 			signOut()
 
 			await axios({
@@ -85,9 +81,7 @@ function Header({ userData, profileHeader }) {
 		}
 	}
 
-	const handleSearch = async e => {
-		e.preventDefault()
-
+	const handleSearch = async () => {
 		history(`/search?search=${search}&filter=${filter}`, { replace: false })
 		window.location.reload()
 	}

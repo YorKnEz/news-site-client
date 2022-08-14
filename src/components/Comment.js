@@ -94,12 +94,6 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		return ` · Posted ${distance} ago`
 	}
 
-	const onEditorCancel = e => {
-		e.preventDefault()
-
-		setShowReply(false)
-	}
-
 	const onReplyAdd = reply => {
 		setReplies(replies => [reply, ...replies])
 
@@ -123,21 +117,13 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		setReplies([...tempArr])
 	}
 
-	const handleReply = e => {
-		e.preventDefault()
-
-		setShowReply(value => !value)
-	}
-
 	const handleEdit = comment => {
 		onCommentEdit(comment)
 
 		setShowEdit(false)
 	}
 
-	const handleDelete = e => {
-		e.preventDefault()
-
+	const handleDelete = () => {
 		client.clearStore()
 
 		removeComment({
@@ -159,9 +145,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		})
 	}
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
@@ -183,29 +167,17 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		})
 	}
 
-	const handleFetchComments = e => {
-		e.preventDefault()
-
-		if (!showCommentReplies) {
-			setShowCommentReplies(true)
-
-			return
-		}
+	const handleFetchComments = () => {
+		if (!showCommentReplies) return setShowCommentReplies(true)
 
 		if (replies.length > 0) setOldestId(replies[replies.length - 1].id)
 	}
 
-	const toggleEdit = e => {
-		e.preventDefault()
+	const toggleReply = () => setShowReply(value => !value)
 
-		setShowEdit(value => !value)
-	}
+	const toggleEdit = () => setShowEdit(value => !value)
 
-	const toggleCollapse = e => {
-		e.preventDefault()
-
-		setCollapse(value => !value)
-	}
+	const toggleCollapse = () => setCollapse(value => !value)
 
 	const updateCounterLocal = () => {
 		updateRepliesCounter({
@@ -343,7 +315,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 							parentId={comment.id}
 							parentType="comment"
 							onCommentAdd={onReplyAdd}
-							onEditorCancel={onEditorCancel}
+							onEditorCancel={toggleReply}
 						/>
 					</div>
 				)}

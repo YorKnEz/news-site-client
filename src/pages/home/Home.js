@@ -10,9 +10,7 @@ function Home() {
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("Home | YorkNews")
 
-	const handleClick = (newPage, e) => {
-		e.preventDefault()
-
+	const handleClick = newPage => {
 		// find the old active button
 		const oldActiveButton = document.getElementById(page)
 		// remove the active class
@@ -31,14 +29,14 @@ function Home() {
 			<div className="news_pages">
 				<button
 					id="yorknews"
-					onClick={e => handleClick("yorknews", e)}
+					onClick={() => handleClick("yorknews")}
 					className="news_pages_item news_pages_item_active"
 				>
 					YorkNews
 				</button>
 				<button
 					id="reddit"
-					onClick={e => handleClick("reddit", e)}
+					onClick={() => handleClick("reddit")}
 					className="news_pages_item"
 				>
 					r/Romania

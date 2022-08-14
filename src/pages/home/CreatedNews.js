@@ -45,9 +45,7 @@ function CreatedNews() {
 		}
 	})
 
-	const handleClick = (sortCriteria, e) => {
-		e.preventDefault()
-
+	const handleClick = sortCriteria => {
 		// find the old active button
 		const oldActiveButton = document.getElementById(sortBy)
 		// remove the active class
@@ -68,7 +66,7 @@ function CreatedNews() {
 			<div className="news_pages">
 				<button
 					id="score"
-					onClick={e => handleClick("score", e)}
+					onClick={() => handleClick("score")}
 					className="news_pages_item news_pages_item_active"
 				>
 					<AiOutlineRocket className="news_pages_item_icon" />
@@ -76,7 +74,7 @@ function CreatedNews() {
 				</button>
 				<button
 					id="date"
-					onClick={e => handleClick("date", e)}
+					onClick={() => handleClick("date")}
 					className="news_pages_item"
 				>
 					<MdOutlineNewReleases className="news_pages_item_icon" />

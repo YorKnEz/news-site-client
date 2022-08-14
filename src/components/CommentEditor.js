@@ -376,9 +376,7 @@ function CommentEditor({
 		}
 	}, [commentToEdit])
 
-	const handlePost = e => {
-		e.preventDefault()
-
+	const handlePost = () => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
@@ -413,9 +411,7 @@ function CommentEditor({
 		})
 	}
 
-	const handleEdit = e => {
-		e.preventDefault()
-
+	const handleEdit = () => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 

@@ -76,11 +76,8 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 		setComments([...tempArr])
 	}
 
-	const handleFetchComments = e => {
-		e.preventDefault()
-
+	const handleFetchComments = () =>
 		setOldestId(comments[comments.length - 1].id)
-	}
 
 	const handlePage = ({ id }) => {
 		setComments([])

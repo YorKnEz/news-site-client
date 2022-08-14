@@ -73,10 +73,7 @@ function SignUp() {
 
 		setShowPassword(!showPassword)
 	}
-
-	const arePasswordsTheSame = value => {
-		return password === value
-	}
+	const arePasswordsTheSame = value => password === value
 
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")

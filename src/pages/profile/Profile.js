@@ -38,10 +38,8 @@ function Profile() {
 		}
 	}, [data])
 
-	const handleFollow = async (e, action) => {
+	const handleFollow = async action => {
 		try {
-			e.preventDefault()
-
 			follow({
 				variables: {
 					action,
@@ -93,14 +91,14 @@ function Profile() {
 								id != user.id &&
 								(profile.following ? (
 									<button
-										onClick={e => handleFollow(e, "unfollow")}
+										onClick={() => handleFollow("unfollow")}
 										className="button button_secondary profile_button"
 									>
 										Unfollow
 									</button>
 								) : (
 									<button
-										onClick={e => handleFollow(e, "follow")}
+										onClick={() => handleFollow("follow")}
 										className="button button_primary profile_button"
 									>
 										Follow

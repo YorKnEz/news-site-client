@@ -3,9 +3,7 @@ import React from "react"
 import "./Switch.scss"
 
 function Switch({ theme, toggleTheme, switchState, setSwitchState }) {
-	const handleClick = e => {
-		e.preventDefault()
-
+	const handleClick = () => {
 		toggleTheme()
 		setSwitchState(!switchState)
 	}

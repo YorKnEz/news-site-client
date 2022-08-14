@@ -91,11 +91,9 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleShare = e => {}
+	const handleShare = () => {}
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",

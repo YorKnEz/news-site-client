@@ -20,9 +20,7 @@ function CommentVotes({ data }) {
 		score: data.score,
 	})
 
-	const handleVote = (e, action) => {
-		e.preventDefault()
-
+	const handleVote = action => {
 		vote({
 			variables: {
 				action,
@@ -49,7 +47,7 @@ function CommentVotes({ data }) {
 
 	return (
 		<div className="commvotes">
-			<button className="commvotes_button" onClick={e => handleVote(e, "like")}>
+			<button className="commvotes_button" onClick={() => handleVote("like")}>
 				{votes.voteState === "like" ? (
 					<AiFillLike
 						className="commvotes_icon"
@@ -74,7 +72,7 @@ function CommentVotes({ data }) {
 			</span>
 			<button
 				className="commvotes_button"
-				onClick={e => handleVote(e, "dislike")}
+				onClick={() => handleVote("dislike")}
 			>
 				{votes.voteState === "dislike" ? (
 					<AiFillDislike className="commvotes_icon" style={{ color: "red" }} />

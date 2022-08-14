@@ -86,9 +86,7 @@ function CommentCard({ data, onCommentEdit }) {
 		})
 	}
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
