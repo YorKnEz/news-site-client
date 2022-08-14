@@ -1,22 +1,30 @@
 import React from "react"
 
-/*
-	OLD
-	link: "#44b6eb",
-	linkHover: "#75c9f0",
-*/
-
 export const themes = {
 	dark: {
-		text: "#fff",
+		text: "#eee",
 		secondText: "gray",
+
 		compBg: "#151515", // used for background of different components
 		compBgDark: "#0f0f0f", // used for a darker bg of different components
 		compBgLight: "#242424", // used for a lighter bg of different components
 		pageBg: "#050505", // used for the background of the page
+
 		border: "#303030",
-		primary: "lightseagreen",
+		primary: "#00d5ff",
+
+		// primary button
+		buttonP: "white",
+		buttonHoverP: "#ddd",
+		buttonTextP: "#161616",
+
+		// secondary button
+		buttonS: "#eeeeee00",
+		buttonHoverS: "#eeeeee10",
+		buttonTextS: "#eeeeee",
+
 		shadow: "black",
+
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
 		linkHover: "rgb(97, 188, 234)",
@@ -25,12 +33,27 @@ export const themes = {
 	light: {
 		text: "#161616",
 		secondText: "#434343",
+
 		compBg: "#ffffff", // used for background of different components
-		compBgDark: "#f0f0f0", // used for a darker bg of different components
+		compBgDark: "#eeeeee", // used for a darker bg of different components
+		compBgLight: "#dddddd", // used for a lighter bg of different components
 		pageBg: "#d4d4d4", // used for the background of the page
+
 		border: "#a0a0a0",
-		primary: "lightseagreen",
+		primary: "#00d5ff",
+
+		// primary button
+		buttonP: "#00d5ff",
+		buttonHoverP: "#00c0e6",
+		buttonTextP: "white",
+
+		// secondary button
+		buttonS: "#00000000",
+		buttonHoverS: "#00000010",
+		buttonTextS: "#00d5ff",
+
 		shadow: "#161616",
+
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
 		linkHover: "rgb(97, 188, 234)",
@@ -39,6 +62,6 @@ export const themes = {
 }
 
 export const ThemeContext = React.createContext({
-	theme: themes.dark,
+	theme: themes.light,
 	toggleTheme: () => {},
 })

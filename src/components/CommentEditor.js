@@ -447,20 +447,26 @@ function CommentEditor({
 		return (
 			<div className="comment-editor_buttons">
 				{commentToEdit && (
-					<button onClick={handleEdit} className="comment-editor_buttons_item">
+					<button
+						onClick={handleEdit}
+						className="button button_primary comment-editor_button"
+					>
 						Edit comment
 					</button>
 				)}
 				{onEditorCancel && (
 					<button
 						onClick={onEditorCancel}
-						className="comment-editor_buttons_item"
+						className="button button_secondary comment-editor_button"
 					>
 						Cancel
 					</button>
 				)}
 				{!commentToEdit && (
-					<button onClick={handlePost} className="comment-editor_buttons_item">
+					<button
+						onClick={handlePost}
+						className="button button_primary comment-editor_button"
+					>
 						Post comment
 					</button>
 				)}

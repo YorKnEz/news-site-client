@@ -44,7 +44,7 @@ function VerifyEmail() {
 				{message && <span className="verify_message">{message}</span>}
 				{error && <span className="verify_error">{error}</span>}
 				{(message || error) && (
-					<Link to="/" className="button button_primary">
+					<Link to="/" className="button button_link button_primary">
 						Return home
 					</Link>
 				)}

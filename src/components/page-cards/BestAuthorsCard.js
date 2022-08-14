@@ -87,14 +87,14 @@ function BestAuthorsCard() {
 						(author.following ? (
 							<button
 								onClick={e => handleFollow(e, "unfollow", author.id)}
-								className="authortop_button"
+								className="button button_secondary authortop_button"
 							>
 								Unfollow
 							</button>
 						) : (
 							<button
 								onClick={e => handleFollow(e, "follow", author.id)}
-								className="authortop_button"
+								className="button button_primary authortop_button"
 							>
 								Follow
 							</button>

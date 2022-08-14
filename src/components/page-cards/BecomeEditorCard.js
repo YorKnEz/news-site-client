@@ -11,7 +11,10 @@ function BecomeEditorCard() {
 				If you want to become an editor for YorkNews, it's simple: send us your
 				CV from the link below!
 			</span>
-			<Link to="/become-editor" className="button button_primary card_button">
+			<Link
+				to="/become-editor"
+				className="button button_link button_primary card_button"
+			>
 				Become editor
 			</Link>
 		</BaseCard>
