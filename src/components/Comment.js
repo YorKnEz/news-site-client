@@ -1,7 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillExclamationCircle,
 	AiFillSave,
 	AiOutlineDelete,
 	AiOutlineEdit,
@@ -26,9 +25,6 @@ import {
 
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-
-	const [replyError, setReplyError] = useState("")
-	const [editError, setEditError] = useState("")
 
 	const [saved, setSaved] = useState(
 		comment.saveState === "save" ? true : false
@@ -281,23 +277,14 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					</span>
 				</div>
 				{showEdit && (
-					<div style={collapse ? { display: "none" } : {}}>
-						<CommentEditor
-							setError={setEditError}
-							newsId={newsId}
-							parentId={comment.parentId}
-							parentType={comment.parentType}
-							commentToEdit={comment}
-							onCommentEdit={handleEdit}
-							onEditorCancel={toggleEdit}
-						/>
-						{editError && (
-							<p className="comment_error">
-								<AiFillExclamationCircle className="comment_error_icon" />
-								{editError}
-							</p>
-						)}
-					</div>
+					<CommentEditor
+						newsId={newsId}
+						parentId={comment.parentId}
+						parentType={comment.parentType}
+						commentToEdit={comment}
+						onCommentEdit={handleEdit}
+						onEditorCancel={toggleEdit}
+					/>
 				)}
 				{!showEdit && (
 					<div
@@ -349,22 +336,13 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
-						<div>
-							<CommentEditor
-								setError={setReplyError}
-								newsId={newsId}
-								parentId={comment.id}
-								parentType="comment"
-								onCommentAdd={onReplyAdd}
-								onEditorCancel={onEditorCancel}
-							/>
-							{replyError && (
-								<p className="comment_error">
-									<AiFillExclamationCircle className="comment_error_icon" />
-									{replyError}
-								</p>
-							)}
-						</div>
+						<CommentEditor
+							newsId={newsId}
+							parentId={comment.id}
+							parentType="comment"
+							onCommentAdd={onReplyAdd}
+							onEditorCancel={onEditorCancel}
+						/>
 					</div>
 				)}
 				<div

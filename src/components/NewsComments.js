@@ -15,11 +15,9 @@ import {
 	COMMENTS_FOR_NEWS,
 	UPDATE_COMMENTS_COUNTER,
 } from "../utils/apollo-queries"
-import { AiFillExclamationCircle } from "react-icons/ai"
 
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
-	const [editorError, setEditorError] = useState("")
 	const [comments, setComments] = useState([])
 	const [totalReplies, setTotalReplies] = useState(0)
 	const [oldestId, setOldestId] = useState("")
@@ -120,18 +118,11 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 					</Link>
 				</span>
 				<CommentEditor
-					setError={setEditorError}
 					newsId={newsId}
 					parentId={newsId}
 					parentType="news"
 					onCommentAdd={onCommentAdd}
 				/>
-				{editorError && (
-					<p className="comment_error">
-						<AiFillExclamationCircle className="comment_error_icon" />
-						{editorError}
-					</p>
-				)}
 			</div>
 			<div className="comments_sort">
 				<CustomSelect

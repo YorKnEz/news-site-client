@@ -8,6 +8,7 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import "./CommentEditor.scss"
 import { ADD_COMMENT, EDIT_COMMENT } from "../utils/apollo-queries"
 import htmlToDraft from "html-to-draftjs"
+import { AiFillExclamationCircle } from "react-icons/ai"
 
 const editorOptions = {
 	options: [
@@ -346,7 +347,6 @@ const editorOptions = {
 }
 
 function CommentEditor({
-	setError,
 	newsId,
 	parentId,
 	parentType,
@@ -359,6 +359,7 @@ function CommentEditor({
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+	const [error, setError] = useState("")
 
 	const [addComment] = useMutation(ADD_COMMENT)
 	const [editComment] = useMutation(EDIT_COMMENT)
@@ -472,21 +473,29 @@ function CommentEditor({
 	}
 
 	return (
-		<div
-			className={`comment-editor_container ${
-				commentToEdit && "comment-editor_edit-container"
-			}`}
-		>
-			<Editor
-				toolbar={editorOptions}
-				toolbarCustomButtons={[<Buttons />]}
-				placeholder="Write here..."
-				editorState={editorState}
-				onEditorStateChange={setEditorState}
-				wrapperClassName="comment-editor_wrapper"
-				editorClassName="comment-editor"
-				toolbarClassName="comment-editor_toolbar"
-			/>
+		<div>
+			<div
+				className={`comment-editor_container ${
+					commentToEdit && "comment-editor_edit-container"
+				}`}
+			>
+				<Editor
+					toolbar={editorOptions}
+					toolbarCustomButtons={[<Buttons />]}
+					placeholder="Write here..."
+					editorState={editorState}
+					onEditorStateChange={setEditorState}
+					wrapperClassName="comment-editor_wrapper"
+					editorClassName="comment-editor"
+					toolbarClassName="comment-editor_toolbar"
+				/>
+			</div>
+			{error && (
+				<p className="comment_error">
+					<AiFillExclamationCircle className="comment_error_icon" />
+					{error}
+				</p>
+			)}
 		</div>
 	)
 }
