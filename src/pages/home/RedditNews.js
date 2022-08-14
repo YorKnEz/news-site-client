@@ -17,11 +17,7 @@ function RedditNews() {
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setNews(news => [...news, ...data.newsForHomeReddit.news])
-		}
+		if (data) setNews(news => [...news, ...data.newsForHomeReddit.news])
 	}, [data])
 
 	useEffect(() => {

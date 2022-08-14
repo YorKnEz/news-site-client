@@ -24,11 +24,7 @@ function LikedItems() {
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setLikedItems(news => [...news, ...data.liked])
-		}
+		if (data) setLikedItems(news => [...news, ...data.liked])
 	}, [data])
 
 	useEffect(() => {

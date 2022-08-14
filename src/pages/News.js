@@ -50,8 +50,6 @@ function News() {
 
 	useEffect(() => {
 		if (data && data.news.type !== "[deleted]") {
-			console.log(data)
-
 			// update the title of the page
 			setDocumentTitle(data.news.title + " | YorkNews")
 

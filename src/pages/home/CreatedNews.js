@@ -22,10 +22,7 @@ function CreatedNews() {
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-			setNews(news => [...news, ...data.newsForHome])
-		}
+		if (data) setNews(news => [...news, ...data.newsForHome])
 	}, [data])
 
 	useEffect(() => {

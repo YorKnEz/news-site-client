@@ -24,11 +24,7 @@ function SavedItems() {
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setSavedItems(news => [...news, ...data.saved])
-		}
+		if (data) setSavedItems(news => [...news, ...data.saved])
 	}, [data])
 
 	useEffect(() => {

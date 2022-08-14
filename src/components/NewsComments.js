@@ -35,7 +35,6 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
 			setComments(comms => {
 				let tempArr = [...comms, ...data.commentsForNews]
 

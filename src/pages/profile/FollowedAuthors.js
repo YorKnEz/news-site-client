@@ -15,11 +15,7 @@ function FollowedAuthors() {
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setAuthors(authors => [...authors, ...data.followedAuthors])
-		}
+		if (data) setAuthors(authors => [...authors, ...data.followedAuthors])
 	}, [data])
 
 	useEffect(() => {

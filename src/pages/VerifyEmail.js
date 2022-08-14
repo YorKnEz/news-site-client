@@ -16,7 +16,6 @@ function VerifyEmail() {
 	const [error, setError] = useState("")
 
 	useEffect(() => {
-		console.log("a")
 		const verify = async () => {
 			try {
 				const { data, status } = await axios({
