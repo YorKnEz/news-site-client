@@ -23,6 +23,15 @@ import {
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
+function Button({ onClick, text, children }) {
+	return (
+		<button onClick={onClick} className="comment_options_item">
+			{children}
+			{text}
+		</button>
+	)
+}
+
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
 
@@ -298,33 +307,26 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					className="comment_options"
 				>
 					<CommentVotes data={comment} />
-					<button onClick={handleReply} className="comment_options_item">
+					<Button onClick={toggleReply} text="Reply">
 						<BsReply className="comment_options_item_icon" />
-						Reply
-					</button>
-					<button onClick={handleSave} className="comment_options_item">
-						{saved ? (
-							<>
-								<AiFillSave className="comment_options_item_icon" />
-								Unsave
-							</>
-						) : (
-							<>
-								<AiOutlineSave className="comment_options_item_icon" />
-								Save
-							</>
-						)}
-					</button>
+					</Button>
+					{saved ? (
+						<Button onClick={handleSave} text="Unsave">
+							<AiFillSave className="comment_options_item_icon" />
+						</Button>
+					) : (
+						<Button onClick={handleSave} text="Save">
+							<AiOutlineSave className="comment_options_item_icon" />
+						</Button>
+					)}
 					{user.id == comment.author.id && (
 						<>
-							<button onClick={handleDelete} className="comment_options_item">
+							<Button onClick={handleDelete} text="Delete">
 								<AiOutlineDelete className="comment_options_item_icon" />
-								Delete
-							</button>
-							<button onClick={toggleEdit} className="comment_options_item">
+							</Button>
+							<Button onClick={toggleEdit} text="Edit">
 								<AiOutlineEdit className="comment_options_item_icon" />
-								Edit
-							</button>
+							</Button>
 						</>
 					)}
 				</div>
