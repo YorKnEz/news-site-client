@@ -15,22 +15,22 @@ function Error({ code }) {
 		"401": {
 			message: "You must be signed in to access this page.",
 			to: "/sign-in",
-			buttonText: "Sign in",
+			buttonTextP: "Sign in",
 		},
 		"403_1": {
 			message: "You must be an author to access this page.",
 			to: "/become-editor",
-			buttonText: "Become an editor",
+			buttonTextP: "Become an editor",
 		},
 		"403_2": {
 			message: "You must verify your email to access this page.",
 			to: "/",
-			buttonText: "Return home",
+			buttonTextP: "Return home",
 		},
 		"404": {
 			message: "Page not found.",
 			to: "/",
-			buttonText: "Return home",
+			buttonTextP: "Return home",
 		},
 	}
 
@@ -40,8 +40,11 @@ function Error({ code }) {
 				<div className="error404_message">
 					<span>{`${errors[code].message}`}</span>
 				</div>
-				<Link to={errors[code].to} className="button button_primary">
-					{errors[code].buttonText}
+				<Link
+					to={errors[code].to}
+					className="button button_primary error404_button"
+				>
+					{errors[code].buttonTextP}
 				</Link>
 			</div>
 		</Page>

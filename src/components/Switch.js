@@ -3,9 +3,7 @@ import React from "react"
 import "./Switch.scss"
 
 function Switch({ theme, toggleTheme, switchState, setSwitchState }) {
-	const handleClick = e => {
-		e.preventDefault()
-
+	const handleClick = () => {
 		toggleTheme()
 		setSwitchState(!switchState)
 	}
@@ -16,7 +14,7 @@ function Switch({ theme, toggleTheme, switchState, setSwitchState }) {
 				id="switchElement"
 				className="switch_circle"
 				style={theme === "dark" ? { left: "calc(36px - 16px)" } : { left: "0" }}
-			></div>
+			/>
 		</div>
 	)
 }

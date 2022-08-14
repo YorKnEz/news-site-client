@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
 
@@ -11,21 +12,19 @@ import {
 import { LIKED_ITEMS } from "../../utils/apollo-queries"
 
 function LikedItems() {
+	const { id } = useParams()
+
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [likedItems, setLikedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(LIKED_ITEMS, {
-		variables: { oldestId, oldestType },
+		variables: { oldestId, oldestType, userId: id },
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setLikedItems(news => [...news, ...data.liked])
-		}
+		if (data) setLikedItems(news => [...news, ...data.liked])
 	}, [data])
 
 	useEffect(() => {
@@ -54,6 +53,21 @@ function LikedItems() {
 		}
 	})
 
+	const onCommentEdit = comment => {
+		setLikedItems(arr =>
+			arr.map(item => {
+				if (
+					item.__typename === "CommentCard" &&
+					comment.id === item.comment.id
+				) {
+					return { ...item, comment: { ...item.comment, body: comment.body } }
+				}
+
+				return item
+			})
+		)
+	}
+
 	return (
 		<PageWithCards>
 			<div className="profile_news">
@@ -61,7 +75,13 @@ function LikedItems() {
 					if (item.title)
 						return <NewsCard key={`news-${item.id}`} data={item} />
 					else
-						return <CommentCard key={`comm-${item.comment.id}`} data={item} />
+						return (
+							<CommentCard
+								key={`comm-${item.comment.id}`}
+								data={item}
+								onCommentEdit={onCommentEdit}
+							/>
+						)
 				})}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>

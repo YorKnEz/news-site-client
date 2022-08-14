@@ -22,11 +22,7 @@ function News() {
 
 	// update the state after each apollo request
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setNews(news => [...news, ...data.newsForProfile])
-		}
+		if (data) setNews(news => [...news, ...data.newsForProfile])
 	}, [data])
 
 	// check if user has reached bottom of the page

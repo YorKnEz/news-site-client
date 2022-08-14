@@ -38,9 +38,7 @@ function Header({ userData, profileHeader }) {
 		handleThemeToggle()
 	}, [switchState])
 
-	const handleClick = e => {
-		e.preventDefault()
-
+	const handleClick = () => {
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(!showDropdown)
@@ -52,7 +50,7 @@ function Header({ userData, profileHeader }) {
 			: "-1000px"
 	}
 
-	const handleBlur = e => {
+	const handleBlur = () => {
 		const dropdown = document.querySelector(".dropdown")
 
 		setShowDropdown(false)
@@ -64,10 +62,8 @@ function Header({ userData, profileHeader }) {
 			: "-1000px"
 	}
 
-	const handleSignOut = async e => {
+	const handleSignOut = async () => {
 		try {
-			e.preventDefault()
-
 			signOut()
 
 			await axios({
@@ -85,9 +81,7 @@ function Header({ userData, profileHeader }) {
 		}
 	}
 
-	const handleSearch = async e => {
-		e.preventDefault()
-
+	const handleSearch = async () => {
 		history(`/search?search=${search}&filter=${filter}`, { replace: false })
 		window.location.reload()
 	}
@@ -145,50 +139,58 @@ function Header({ userData, profileHeader }) {
 			</div>
 			{profileHeader && userData && <ProfileHeader user={userData} />}
 			<div className="dropdown" onMouseLeave={handleBlur}>
-				{token ? (
-					<>
-						<Link className="dropdown_link" to={`/profile/${user.id}/overview`}>
-							Profile
-						</Link>
-						{user.type === "author" && (
-							<Link className="dropdown_link" to="/news/create">
-								Create News
+				<div className="dropdown_section">
+					{token ? (
+						<>
+							<Link
+								className="dropdown_button"
+								to={`/profile/${user.id}/overview`}
+							>
+								Profile
 							</Link>
-						)}
-						<Switch
-							theme={theme}
-							toggleTheme={toggleTheme}
-							switchState={switchState}
-							setSwitchState={setSwitchState}
-						/>
-						<div className="dropdown_separator" />
+							{user.type === "author" && (
+								<Link className="dropdown_button" to="/news/create">
+									Create News
+								</Link>
+							)}
+							<Switch
+								theme={theme}
+								toggleTheme={toggleTheme}
+								switchState={switchState}
+								setSwitchState={setSwitchState}
+							/>
+						</>
+					) : (
+						<>
+							<Link className="dropdown_button" to="/become-editor">
+								Become an editor?
+							</Link>
+							<Switch
+								theme={theme}
+								toggleTheme={toggleTheme}
+								switchState={switchState}
+								setSwitchState={setSwitchState}
+							/>
+						</>
+					)}
+				</div>
+				<div className="dropdown_section">
+					{token ? (
 						<button
-							className="button button_primary dropdown_button"
+							className="dropdown_button dropdown_button_centered"
 							onClick={handleSignOut}
 						>
 							Sign Out
 						</button>
-					</>
-				) : (
-					<>
-						<Link className="dropdown_link" to="/become-editor">
-							Become an editor?
-						</Link>
-						<Switch
-							theme={theme}
-							toggleTheme={toggleTheme}
-							switchState={switchState}
-							setSwitchState={setSwitchState}
-						/>
-						<div className="dropdown_separator" />
+					) : (
 						<Link
-							className="button button_primary dropdown_button"
+							className="dropdown_button dropdown_button_centered"
 							to="/sign-up"
 						>
 							Sign Up
 						</Link>
-					</>
-				)}
+					)}
+				</div>
 			</div>
 		</>
 	)

@@ -20,6 +20,7 @@
 	&_comment {
 		background-color: var(--compBgDark-color);
 		padding: 8px;
+		padding-bottom: 4px;
 	}
 
 	&_container {
@@ -52,18 +53,10 @@
 		margin: 0;
 	}
 
-	// &_link {
-	// 	display: flex;
-	// 	flex-direction: column;
-	// 	width: 100%;
-
-	// 	text-decoration: none;
-	// 	color: var(--text-color);
-	// }
-
 	&_body {
 		width: calc(100% - 16px);
 
+		text-decoration: none;
 		word-wrap: break-word;
 		font-size: 16px;
 		color: var(--text-color);
@@ -84,7 +77,6 @@
 
 	&_options {
 		display: flex;
-		padding-left: 8px;
 
 		&_item {
 			margin-left: 4px;

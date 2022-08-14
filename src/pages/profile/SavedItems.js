@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
@@ -9,27 +9,22 @@ import {
 	PageWithCards,
 	QueryResult,
 } from "../../components"
-import { UserContext } from "../../context"
 import { SAVED_ITEMS } from "../../utils/apollo-queries"
 
 function SavedItems() {
 	const { id } = useParams()
-	const { user } = useContext(UserContext)
+
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [savedItems, setSavedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(SAVED_ITEMS, {
-		variables: { oldestId, oldestType },
+		variables: { oldestId, oldestType, userId: id },
 	})
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setSavedItems(news => [...news, ...data.saved])
-		}
+		if (data) setSavedItems(news => [...news, ...data.saved])
 	}, [data])
 
 	useEffect(() => {
@@ -58,14 +53,35 @@ function SavedItems() {
 		}
 	})
 
+	const onCommentEdit = comment => {
+		setSavedItems(arr =>
+			arr.map(item => {
+				if (
+					item.__typename === "CommentCard" &&
+					comment.id === item.comment.id
+				) {
+					return { ...item, comment: { ...item.comment, body: comment.body } }
+				}
+
+				return item
+			})
+		)
+	}
+
 	return (
-		<PageWithCards userId={id ? id : user.id} userType={id ? "author" : "news"}>
+		<PageWithCards>
 			<div className="profile_news">
 				{savedItems.map(item => {
 					if (item.title)
 						return <NewsCard key={`news-${item.id}`} data={item} />
 					else
-						return <CommentCard key={`comm-${item.comment.id}`} data={item} />
+						return (
+							<CommentCard
+								key={`comm-${item.comment.id}`}
+								data={item}
+								onCommentEdit={onCommentEdit}
+							/>
+						)
 				})}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>

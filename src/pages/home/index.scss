@@ -27,12 +27,12 @@
 			}
 
 			&_active {
-				background-color: var(--secondText-color) !important;
+				background-color: var(--compBgLight-color) !important;
 				border-radius: 100px;
 			}
 
 			&:hover {
-				background-color: var(--border-color);
+				background-color: var(--compBgDark-color);
 				border-radius: 100px;
 			}
 		}

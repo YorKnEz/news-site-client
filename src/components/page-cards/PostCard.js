@@ -8,7 +8,10 @@ function PostCard() {
 	return (
 		<BaseCard thumbnailIndex={4} title="Create a news">
 			<span className="card_text">Start writing your news and post it.</span>
-			<Link to="/news/create" className="button button_primary card_button">
+			<Link
+				to="/news/create"
+				className="button button_link button_primary card_button"
+			>
 				Create a news
 			</Link>
 		</BaseCard>

@@ -1,7 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillExclamationCircle,
 	AiFillSave,
 	AiOutlineDelete,
 	AiOutlineEdit,
@@ -24,11 +23,17 @@ import {
 	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
+function Button({ onClick, text, children }) {
+	return (
+		<button onClick={onClick} className="comment_options_item">
+			{children}
+			{text}
+		</button>
+	)
+}
+
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
-
-	const [replyError, setReplyError] = useState("")
-	const [editError, setEditError] = useState("")
 
 	const [saved, setSaved] = useState(
 		comment.saveState === "save" ? true : false
@@ -48,13 +53,15 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
-		variables: {
-			oldestId,
-			commentId: comment.id,
-			sortBy,
-		},
+		variables: { oldestId, commentId: comment.id, sortBy },
 		skip: !showCommentReplies,
 	})
+
+	const backgroundImage = `url(${
+		comment.author.profilePicture !== "default"
+			? comment.author.profilePicture
+			: "/default_avatar.png"
+	})`
 
 	useEffect(() => {
 		if (data) {
@@ -89,12 +96,6 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		return ` · Posted ${distance} ago`
 	}
 
-	const onEditorCancel = e => {
-		e.preventDefault()
-
-		setShowReply(false)
-	}
-
 	const onReplyAdd = reply => {
 		setReplies(replies => [reply, ...replies])
 
@@ -118,21 +119,13 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		setReplies([...tempArr])
 	}
 
-	const handleReply = e => {
-		e.preventDefault()
-
-		setShowReply(value => !value)
-	}
-
 	const handleEdit = comment => {
 		onCommentEdit(comment)
 
 		setShowEdit(false)
 	}
 
-	const handleDelete = e => {
-		e.preventDefault()
-
+	const handleDelete = () => {
 		client.clearStore()
 
 		removeComment({
@@ -154,9 +147,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		})
 	}
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
@@ -178,29 +169,17 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		})
 	}
 
-	const handleFetchComments = e => {
-		e.preventDefault()
-
-		if (!showCommentReplies) {
-			setShowCommentReplies(true)
-
-			return
-		}
+	const handleFetchComments = () => {
+		if (!showCommentReplies) return setShowCommentReplies(true)
 
 		if (replies.length > 0) setOldestId(replies[replies.length - 1].id)
 	}
 
-	const toggleEdit = e => {
-		e.preventDefault()
+	const toggleReply = () => setShowReply(value => !value)
 
-		setShowEdit(value => !value)
-	}
+	const toggleEdit = () => setShowEdit(value => !value)
 
-	const toggleCollapse = e => {
-		e.preventDefault()
-
-		setCollapse(value => !value)
-	}
+	const toggleCollapse = () => setCollapse(value => !value)
 
 	const updateCounterLocal = () => {
 		updateRepliesCounter({
@@ -240,16 +219,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					</button>
 				) : (
 					<>
-						<div
-							className="comment_avatar"
-							style={{
-								backgroundImage: `url(${
-									comment.author.profilePicture !== "default"
-										? comment.author.profilePicture
-										: "/default_avatar.png"
-								})`,
-							}}
-						></div>
+						<div className="comment_avatar" style={{ backgroundImage }} />
 						<div onClick={toggleCollapse} className="comment_line_container">
 							<div className="comment_line" />
 						</div>
@@ -261,14 +231,8 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					{collapse && (
 						<div
 							className="comment_avatar"
-							style={{
-								backgroundImage: `url(${
-									comment.author.profilePicture !== "default"
-										? comment.author.profilePicture
-										: "/default_avatar.png"
-								})`,
-							}}
-						></div>
+							style={{ marginRight: "8px", backgroundImage }}
+						/>
 					)}
 					<span className="comment_posted_author">
 						<Link
@@ -281,23 +245,14 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					</span>
 				</div>
 				{showEdit && (
-					<div style={collapse ? { display: "none" } : {}}>
-						<CommentEditor
-							setError={setEditError}
-							newsId={newsId}
-							parentId={comment.parentId}
-							parentType={comment.parentType}
-							commentToEdit={comment}
-							onCommentEdit={handleEdit}
-							onEditorCancel={toggleEdit}
-						/>
-						{editError && (
-							<p className="comment_error">
-								<AiFillExclamationCircle className="comment_error_icon" />
-								{editError}
-							</p>
-						)}
-					</div>
+					<CommentEditor
+						newsId={newsId}
+						parentId={comment.parentId}
+						parentType={comment.parentType}
+						commentToEdit={comment}
+						onCommentEdit={handleEdit}
+						onEditorCancel={toggleEdit}
+					/>
 				)}
 				{!showEdit && (
 					<div
@@ -311,33 +266,26 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					className="comment_options"
 				>
 					<CommentVotes data={comment} />
-					<button onClick={handleReply} className="comment_options_item">
+					<Button onClick={toggleReply} text="Reply">
 						<BsReply className="comment_options_item_icon" />
-						Reply
-					</button>
-					<button onClick={handleSave} className="comment_options_item">
-						{saved ? (
-							<>
-								<AiFillSave className="comment_options_item_icon" />
-								Unsave
-							</>
-						) : (
-							<>
-								<AiOutlineSave className="comment_options_item_icon" />
-								Save
-							</>
-						)}
-					</button>
+					</Button>
+					{saved ? (
+						<Button onClick={handleSave} text="Unsave">
+							<AiFillSave className="comment_options_item_icon" />
+						</Button>
+					) : (
+						<Button onClick={handleSave} text="Save">
+							<AiOutlineSave className="comment_options_item_icon" />
+						</Button>
+					)}
 					{user.id == comment.author.id && (
 						<>
-							<button onClick={handleDelete} className="comment_options_item">
+							<Button onClick={handleDelete} text="Delete">
 								<AiOutlineDelete className="comment_options_item_icon" />
-								Delete
-							</button>
-							<button onClick={toggleEdit} className="comment_options_item">
+							</Button>
+							<Button onClick={toggleEdit} text="Edit">
 								<AiOutlineEdit className="comment_options_item_icon" />
-								Edit
-							</button>
+							</Button>
 						</>
 					)}
 				</div>
@@ -349,22 +297,13 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						<div className="comment_container1">
 							<div className="comment_line" style={{ height: "100%" }} />
 						</div>
-						<div>
-							<CommentEditor
-								setError={setReplyError}
-								newsId={newsId}
-								parentId={comment.id}
-								parentType="comment"
-								onCommentAdd={onReplyAdd}
-								onEditorCancel={onEditorCancel}
-							/>
-							{replyError && (
-								<p className="comment_error">
-									<AiFillExclamationCircle className="comment_error_icon" />
-									{replyError}
-								</p>
-							)}
-						</div>
+						<CommentEditor
+							newsId={newsId}
+							parentId={comment.id}
+							parentType="comment"
+							onCommentAdd={onReplyAdd}
+							onEditorCancel={toggleReply}
+						/>
 					</div>
 				)}
 				<div

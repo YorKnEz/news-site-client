@@ -2,6 +2,7 @@
 	display: inline-flex;
 	align-items: center;
 	font-size: 12px;
+	color: var(--secondText-color);
 
 	&_button {
 		padding: 0;
@@ -24,5 +25,13 @@
 
 	&_number {
 		padding: 0 8px;
+	}
+
+	&_like {
+		color: var(--primary-color);
+	}
+
+	&_dislike {
+		color: red;
 	}
 }

@@ -15,11 +15,9 @@ import {
 	COMMENTS_FOR_NEWS,
 	UPDATE_COMMENTS_COUNTER,
 } from "../utils/apollo-queries"
-import { AiFillExclamationCircle } from "react-icons/ai"
 
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
-	const [editorError, setEditorError] = useState("")
 	const [comments, setComments] = useState([])
 	const [totalReplies, setTotalReplies] = useState(0)
 	const [oldestId, setOldestId] = useState("")
@@ -27,27 +25,16 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
-		variables: {
-			oldestId,
-			newsId,
-			sortBy,
-		},
+		variables: { oldestId, newsId, sortBy },
 	})
 
 	const options = [
-		{
-			id: "score",
-			text: "Best",
-		},
-		{
-			id: "date",
-			text: "New",
-		},
+		{ id: "score", text: "Best" },
+		{ id: "date", text: "New" },
 	]
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
 			setComments(comms => {
 				let tempArr = [...comms, ...data.commentsForNews]
 
@@ -78,11 +65,8 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 		setComments([...tempArr])
 	}
 
-	const handleFetchComments = e => {
-		e.preventDefault()
-
+	const handleFetchComments = () =>
 		setOldestId(comments[comments.length - 1].id)
-	}
 
 	const handlePage = ({ id }) => {
 		setComments([])
@@ -120,18 +104,11 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 					</Link>
 				</span>
 				<CommentEditor
-					setError={setEditorError}
 					newsId={newsId}
 					parentId={newsId}
 					parentType="news"
 					onCommentAdd={onCommentAdd}
 				/>
-				{editorError && (
-					<p className="comment_error">
-						<AiFillExclamationCircle className="comment_error_icon" />
-						{editorError}
-					</p>
-				)}
 			</div>
 			<div className="comments_sort">
 				<CustomSelect

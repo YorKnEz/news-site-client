@@ -9,6 +9,7 @@ import {
 	handleInputFocus,
 	useDocumentTitle,
 } from "../utils/utils"
+import { FormInput } from "../components/form"
 
 function BecomeEditor() {
 	const {
@@ -16,6 +17,7 @@ function BecomeEditor() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
+
 	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = useState("")
 
@@ -48,58 +50,28 @@ function BecomeEditor() {
 					<p>Send us an email with your CV!</p>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<div className="form_row">
-							<div className="formItem">
-								<label className="formItem_label" htmlFor="firstName">
-									First Name
-								</label>
-								<input
-									className="formItem_input"
-									id="firstName"
-									name="firstName"
-									type="text"
-									onFocus={handleInputFocus}
-									{...register("firstName", {
-										required: true,
-										onBlur: handleInputBlur,
-									})}
-								/>
-								{errorCheck("firstName")}
-							</div>
-							<div className="formItem">
-								<label className="formItem_label" htmlFor="lastName">
-									Last Name
-								</label>
-								<input
-									className="formItem_input"
-									id="lastName"
-									name="lastName"
-									type="text"
-									onFocus={handleInputFocus}
-									{...register("lastName", {
-										required: true,
-										onBlur: handleInputBlur,
-									})}
-								/>
-								{errorCheck("lastName")}
-							</div>
-						</div>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="email">
-								Email
-							</label>
-							<input
-								className="formItem_input"
-								id="email"
-								name="email"
-								type="email"
-								onFocus={handleInputFocus}
-								{...register("email", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
+							<FormInput
+								register={register}
+								errorCheck={errorCheck}
+								title="First name"
+								id="firstName"
+								type="text"
 							/>
-							{errorCheck("email")}
+							<FormInput
+								register={register}
+								errorCheck={errorCheck}
+								title="Last name"
+								id="lastName"
+								type="text"
+							/>
 						</div>
+						<FormInput
+							register={register}
+							errorCheck={errorCheck}
+							title="Email"
+							id="email"
+							type="email"
+						/>
 						<div className="formItem">
 							<label className="formItem_file_label" htmlFor="cv">
 								<AiOutlineFileText className="formItem_file_icon" />

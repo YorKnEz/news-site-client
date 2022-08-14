@@ -28,23 +28,21 @@ function QueryResult({ loading, error, data, children }) {
 
 	if (loading) {
 		return (
-			<>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						margin: "40px 0",
-					}}
-				>
-					<SpinnerCircular
-						size={50}
-						thickness={50}
-						color="#161616"
-						secondaryColor="#eee"
-					/>
-				</div>
-			</>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					margin: "40px 0",
+				}}
+			>
+				<SpinnerCircular
+					size={50}
+					thickness={50}
+					color="#161616"
+					secondaryColor="#eee"
+				/>
+			</div>
 		)
 	}
 

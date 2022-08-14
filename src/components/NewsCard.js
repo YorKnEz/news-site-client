@@ -91,11 +91,9 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleShare = e => {}
+	const handleShare = () => {}
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
@@ -142,7 +140,7 @@ function NewsCard({ data, matches }) {
 						<div
 							className="newscard_thumbnail"
 							style={{ backgroundImage: `url("${data.thumbnail}")` }}
-						></div>
+						/>
 					) : (
 						<div className="newscard_body" id={`news-body-${data.id}`}></div>
 					)}
@@ -160,19 +158,17 @@ function NewsCard({ data, matches }) {
 						<AiOutlineShareAlt className="newscard_options_item_icon" />
 						Share
 					</button>
-					<button onClick={handleSave} className="newscard_options_item">
-						{saved ? (
-							<>
-								<AiFillSave className="newscard_options_item_icon" />
-								Unsave
-							</>
-						) : (
-							<>
-								<AiOutlineSave className="newscard_options_item_icon" />
-								Save
-							</>
-						)}
-					</button>
+					{saved ? (
+						<button onClick={handleSave} className="newscard_options_item">
+							<AiFillSave className="newscard_options_item_icon" />
+							Unsave
+						</button>
+					) : (
+						<button onClick={handleSave} className="newscard_options_item">
+							<AiOutlineSave className="newscard_options_item_icon" />
+							Save
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

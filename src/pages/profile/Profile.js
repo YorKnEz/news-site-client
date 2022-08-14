@@ -26,6 +26,12 @@ function Profile() {
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
 
+	const items = [
+		{ title: "Written News", info: profile.writtenNews },
+		{ title: "Followers", info: profile.followers },
+		{ title: "Joined", info: profile.createdAt },
+	]
+
 	// update the state after each apollo request
 	useEffect(() => {
 		if (data) {
@@ -38,10 +44,8 @@ function Profile() {
 		}
 	}, [data])
 
-	const handleFollow = async (e, action) => {
+	const handleFollow = async action => {
 		try {
-			e.preventDefault()
-
 			follow({
 				variables: {
 					action,
@@ -89,18 +93,18 @@ function Profile() {
 									<p>{profile.email}</p>
 								</div>
 							</div>
-							{id &&
-								id != user.id &&
+							{profile.type === "author" &&
+								profile.id !== user.id &&
 								(profile.following ? (
 									<button
-										onClick={e => handleFollow(e, "unfollow")}
+										onClick={() => handleFollow("unfollow")}
 										className="button button_secondary profile_button"
 									>
 										Unfollow
 									</button>
 								) : (
 									<button
-										onClick={e => handleFollow(e, "follow")}
+										onClick={() => handleFollow("follow")}
 										className="button button_primary profile_button"
 									>
 										Follow
@@ -110,18 +114,12 @@ function Profile() {
 						<QueryResult loading={loading} error={error} data={data} />
 						{profile.type === "author" && (
 							<div className="info">
-								<div className="info_box">
-									<span className="info_box_title">Written News</span>
-									<span className="info_box_data">{profile.writtenNews}</span>
-								</div>
-								<div className="info_box">
-									<span className="info_box_title">Followers</span>
-									<span className="info_box_data">{profile.followers}</span>
-								</div>
-								<div className="info_box">
-									<span className="info_box_title">Joined</span>
-									<span className="info_box_data">{profile.createdAt}</span>
-								</div>
+								{items.map((title, info) => (
+									<div className="info_box">
+										<span className="info_box_title">{title}</span>
+										<span className="info_box_data">{info}</span>
+									</div>
+								))}
 							</div>
 						)}
 					</div>

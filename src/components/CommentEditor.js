@@ -8,6 +8,7 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import "./CommentEditor.scss"
 import { ADD_COMMENT, EDIT_COMMENT } from "../utils/apollo-queries"
 import htmlToDraft from "html-to-draftjs"
+import { AiFillExclamationCircle } from "react-icons/ai"
 
 const editorOptions = {
 	options: [
@@ -346,7 +347,6 @@ const editorOptions = {
 }
 
 function CommentEditor({
-	setError,
 	newsId,
 	parentId,
 	parentType,
@@ -359,6 +359,7 @@ function CommentEditor({
 	const [editorState, setEditorState] = useState(() =>
 		EditorState.createEmpty()
 	)
+	const [error, setError] = useState("")
 
 	const [addComment] = useMutation(ADD_COMMENT)
 	const [editComment] = useMutation(EDIT_COMMENT)
@@ -375,9 +376,7 @@ function CommentEditor({
 		}
 	}, [commentToEdit])
 
-	const handlePost = e => {
-		e.preventDefault()
-
+	const handlePost = () => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
@@ -412,9 +411,7 @@ function CommentEditor({
 		})
 	}
 
-	const handleEdit = e => {
-		e.preventDefault()
-
+	const handleEdit = () => {
 		// body of the news in html format
 		const html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 
@@ -450,20 +447,26 @@ function CommentEditor({
 		return (
 			<div className="comment-editor_buttons">
 				{commentToEdit && (
-					<button onClick={handleEdit} className="comment-editor_buttons_item">
+					<button
+						onClick={handleEdit}
+						className="button button_primary comment-editor_button"
+					>
 						Edit comment
 					</button>
 				)}
 				{onEditorCancel && (
 					<button
 						onClick={onEditorCancel}
-						className="comment-editor_buttons_item"
+						className="button button_secondary comment-editor_button"
 					>
 						Cancel
 					</button>
 				)}
 				{!commentToEdit && (
-					<button onClick={handlePost} className="comment-editor_buttons_item">
+					<button
+						onClick={handlePost}
+						className="button button_primary comment-editor_button"
+					>
 						Post comment
 					</button>
 				)}
@@ -472,21 +475,29 @@ function CommentEditor({
 	}
 
 	return (
-		<div
-			className={`comment-editor_container ${
-				commentToEdit && "comment-editor_edit-container"
-			}`}
-		>
-			<Editor
-				toolbar={editorOptions}
-				toolbarCustomButtons={[<Buttons />]}
-				placeholder="Write here..."
-				editorState={editorState}
-				onEditorStateChange={setEditorState}
-				wrapperClassName="comment-editor_wrapper"
-				editorClassName="comment-editor"
-				toolbarClassName="comment-editor_toolbar"
-			/>
+		<div>
+			<div
+				className={`comment-editor_container ${
+					commentToEdit && "comment-editor_edit-container"
+				}`}
+			>
+				<Editor
+					toolbar={editorOptions}
+					toolbarCustomButtons={[<Buttons />]}
+					placeholder="Write here..."
+					editorState={editorState}
+					onEditorStateChange={setEditorState}
+					wrapperClassName="comment-editor_wrapper"
+					editorClassName="comment-editor"
+					toolbarClassName="comment-editor_toolbar"
+				/>
+			</div>
+			{error && (
+				<p className="comment_error">
+					<AiFillExclamationCircle className="comment_error_icon" />
+					{error}
+				</p>
+			)}
 		</div>
 	)
 }

@@ -232,8 +232,8 @@ export const COMMENT_REPLIES = gql`
 
 // returns the news and comments a certain user liked
 export const LIKED_ITEMS = gql`
-	query Liked($oldestId: ID!, $oldestType: String!) {
-		liked(oldestId: $oldestId, oldestType: $oldestType) {
+	query Liked($oldestId: ID!, $oldestType: String!, $userId: ID!) {
+		liked(oldestId: $oldestId, oldestType: $oldestType, userId: $userId) {
 			__typename
 			... on News {
 				id
@@ -295,8 +295,8 @@ export const LIKED_ITEMS = gql`
 
 // returns the news and comments a certain user liked
 export const SAVED_ITEMS = gql`
-	query Saved($oldestId: ID!, $oldestType: String!) {
-		saved(oldestId: $oldestId, oldestType: $oldestType) {
+	query Saved($oldestId: ID!, $oldestType: String!, $userId: ID!) {
+		saved(oldestId: $oldestId, oldestType: $oldestType, userId: $userId) {
 			__typename
 			... on News {
 				id

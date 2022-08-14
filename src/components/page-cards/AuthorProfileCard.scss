@@ -7,8 +7,6 @@
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
-	// position: relative;
-	// overflow: hidden;
 	display: flex;
 	flex-direction: column;
 
@@ -36,10 +34,6 @@
 		}
 	}
 
-	&:hover {
-		border: 1px solid var(--secondText-color);
-	}
-
 	&_stats {
 		display: flex;
 		flex-direction: column;
@@ -49,5 +43,9 @@
 			margin: 2px 0;
 			font-size: 14px;
 		}
+	}
+
+	&:hover {
+		border: 1px solid var(--secondText-color);
 	}
 }

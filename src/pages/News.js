@@ -50,8 +50,6 @@ function News() {
 
 	useEffect(() => {
 		if (data && data.news.type !== "[deleted]") {
-			console.log(data)
-
 			// update the title of the page
 			setDocumentTitle(data.news.title + " | YorkNews")
 
@@ -113,25 +111,14 @@ function News() {
 		setShowShareModal(false)
 	}
 
-	const handleDelete = e => {
-		e.preventDefault()
+	const handleDelete = () => setShowDeleteModal(true)
 
-		setShowDeleteModal(true)
-	}
-
-	const handleEdit = e => {
-		e.preventDefault()
-
+	const handleEdit = () =>
 		history(`/news/${data.news.link}-${data.news.id}/edit`)
-	}
 
-	const handleShare = e => {
-		setShowShareModal(true)
-	}
+	const handleShare = () => setShowShareModal(true)
 
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",

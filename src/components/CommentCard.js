@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react"
 import {
 	AiFillSave,
 	AiOutlineDelete,
+	AiOutlineEdit,
 	AiOutlineSave,
-	AiOutlineShareAlt,
 } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
@@ -12,25 +12,30 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { CommentVotes } from "../components"
-import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
+import { CommentEditor, CommentVotes } from "../components"
 import { UserContext } from "../context"
+import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
 
-function CommentCard({ data }) {
+function Button({ onClick, text, children }) {
+	return (
+		<button onClick={onClick} className="comment_options_item">
+			{children}
+			{text}
+		</button>
+	)
+}
+
+function CommentCard({ data, onCommentEdit }) {
 	const { news, comment } = data
 	const { user } = useContext(UserContext)
-	const [saved, setSaved] = useState(false)
+	const [saved, setSaved] = useState(
+		comment.saveState === "save" ? true : false
+	)
+	const [showEdit, setShowEdit] = useState(false)
 
 	const client = useApolloClient()
 	const [save] = useMutation(SAVE_ITEM)
 	const [removeComment] = useMutation(REMOVE_COMMENT)
-
-	// set the save state
-	useEffect(() => {
-		if (comment.saveState === "save") {
-			setSaved(true)
-		}
-	}, [comment])
 
 	useEffect(() => {
 		if (comment) {
@@ -50,9 +55,13 @@ function CommentCard({ data }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleDelete = e => {
-		e.preventDefault()
+	const handleEdit = comment => {
+		onCommentEdit(comment)
 
+		setShowEdit(false)
+	}
+
+	const handleDelete = () => {
 		client.clearStore()
 
 		removeComment({
@@ -72,11 +81,7 @@ function CommentCard({ data }) {
 		})
 	}
 
-	const handleShare = e => {}
-
-	const handleSave = e => {
-		e.preventDefault()
-
+	const handleSave = () => {
 		save({
 			variables: {
 				action: saved ? "unsave" : "save",
@@ -97,6 +102,8 @@ function CommentCard({ data }) {
 			onError: error => console.log({ ...error }),
 		})
 	}
+
+	const toggleEdit = () => setShowEdit(value => !value)
 
 	return (
 		<div className="commentcard">
@@ -136,40 +143,42 @@ function CommentCard({ data }) {
 							{comment.author.fullName}
 						</Link>
 					</span>
-					{/* <Link to={`/news/${comment.id}`} className="commentcard_link"> */}
-					<div
-						className="commentcard_body"
-						id={`comm-body-${comment.id}`}
-					></div>
-					{/* </Link> */}
+					{showEdit && (
+						<CommentEditor
+							newsId={news.id}
+							parentId={comment.parentId}
+							parentType={comment.parentType}
+							commentToEdit={comment}
+							onCommentEdit={handleEdit}
+							onEditorCancel={toggleEdit}
+						/>
+					)}
+					{!showEdit && (
+						<Link
+							to={`/news/${news.link}-${news.id}/comment/${comment.id}`}
+							className="commentcard_body"
+							id={`comm-body-${comment.id}`}
+						></Link>
+					)}
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
-						<button onClick={handleShare} className="commentcard_options_item">
-							<AiOutlineShareAlt className="commentcard_options_item_icon" />
-							Share
-						</button>
-						<button onClick={handleSave} className="commentcard_options_item">
-							{saved ? (
-								<>
-									<AiFillSave className="commentcard_options_item_icon" />
-									Unsave
-								</>
-							) : (
-								<>
-									<AiOutlineSave className="commentcard_options_item_icon" />
-									Save
-								</>
-							)}
-						</button>
+						{saved ? (
+							<Button onClick={handleSave} text="Unsave">
+								<AiFillSave className="commentcard_options_item_icon" />
+							</Button>
+						) : (
+							<Button onClick={handleSave} text="Save">
+								<AiOutlineSave className="commentcard_options_item_icon" />
+							</Button>
+						)}
 						{user.id == comment.author.id && (
 							<>
-								<button
-									onClick={handleDelete}
-									className="commentcard_options_item"
-								>
+								<Button onClick={handleDelete} text="Delete">
 									<AiOutlineDelete className="commentcard_options_item_icon" />
-									Delete
-								</button>
+								</Button>
+								<Button onClick={toggleEdit} text="Edit">
+									<AiOutlineEdit className="commentcard_options_item_icon" />
+								</Button>
 							</>
 						)}
 					</div>
