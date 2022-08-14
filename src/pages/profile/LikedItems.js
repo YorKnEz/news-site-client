@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
 
@@ -11,13 +12,15 @@ import {
 import { LIKED_ITEMS } from "../../utils/apollo-queries"
 
 function LikedItems() {
+	const { id } = useParams()
+
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [likedItems, setLikedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(LIKED_ITEMS, {
-		variables: { oldestId, oldestType },
+		variables: { oldestId, oldestType, userId: id },
 	})
 
 	useEffect(() => {

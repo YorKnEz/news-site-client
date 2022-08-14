@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
@@ -9,19 +9,18 @@ import {
 	PageWithCards,
 	QueryResult,
 } from "../../components"
-import { UserContext } from "../../context"
 import { SAVED_ITEMS } from "../../utils/apollo-queries"
 
 function SavedItems() {
 	const { id } = useParams()
-	const { user } = useContext(UserContext)
+
 	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [savedItems, setSavedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(SAVED_ITEMS, {
-		variables: { oldestId, oldestType },
+		variables: { oldestId, oldestType, userId: id },
 	})
 
 	useEffect(() => {
@@ -74,7 +73,7 @@ function SavedItems() {
 	}
 
 	return (
-		<PageWithCards userId={id ? id : user.id} userType={id ? "author" : "news"}>
+		<PageWithCards>
 			<div className="profile_news">
 				{savedItems.map(item => {
 					if (item.title)
