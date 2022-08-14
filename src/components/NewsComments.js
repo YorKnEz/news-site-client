@@ -25,22 +25,12 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
-		variables: {
-			oldestId,
-			newsId,
-			sortBy,
-		},
+		variables: { oldestId, newsId, sortBy },
 	})
 
 	const options = [
-		{
-			id: "score",
-			text: "Best",
-		},
-		{
-			id: "date",
-			text: "New",
-		},
+		{ id: "score", text: "Best" },
+		{ id: "date", text: "New" },
 	]
 
 	useEffect(() => {

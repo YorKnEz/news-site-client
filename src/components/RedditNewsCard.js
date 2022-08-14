@@ -6,17 +6,7 @@ import "./RedditNewsCard.scss"
 import { CardVotes } from "../components"
 
 function RedditNewsCard({ data, matches }) {
-	const {
-		author,
-		body,
-		createdAt,
-		id,
-		sources,
-		subreddit,
-		title,
-		score,
-		voteState,
-	} = data
+	const { author, body, createdAt, id, sources, subreddit, title } = data
 
 	useEffect(() => {
 		if (matches) {
@@ -57,7 +47,7 @@ function RedditNewsCard({ data, matches }) {
 					className="redditnewscard_matches"
 				>{`Matches ${matches}%`}</span>
 			)}
-			<CardVotes data={{ score, voteState }} />
+			<CardVotes data={data} />
 			<a
 				href={sources}
 				target="_blank"

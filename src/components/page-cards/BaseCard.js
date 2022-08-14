@@ -7,7 +7,7 @@ function BaseCard({ thumbnailIndex, title, list, children }) {
 				className="card_thumbnail"
 				style={{ backgroundImage: `url(/card_thumbnail${thumbnailIndex}.jpg)` }}
 			>
-				<div className="card_thumbnail_overlay"></div>
+				<div className="card_thumbnail_overlay" />
 				<span className="card_thumbnail_title">{title}</span>
 			</div>
 			<div className="card_container" style={{ padding: list ? "0" : "20px" }}>

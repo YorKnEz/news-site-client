@@ -28,19 +28,14 @@ function Button({ onClick, text, children }) {
 function CommentCard({ data, onCommentEdit }) {
 	const { news, comment } = data
 	const { user } = useContext(UserContext)
-	const [saved, setSaved] = useState(false)
+	const [saved, setSaved] = useState(
+		comment.saveState === "save" ? true : false
+	)
 	const [showEdit, setShowEdit] = useState(false)
 
 	const client = useApolloClient()
 	const [save] = useMutation(SAVE_ITEM)
 	const [removeComment] = useMutation(REMOVE_COMMENT)
-
-	// set the save state
-	useEffect(() => {
-		if (comment.saveState === "save") {
-			setSaved(true)
-		}
-	}, [comment])
 
 	useEffect(() => {
 		if (comment) {

@@ -26,6 +26,12 @@ function Profile() {
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Profile | YorkNews")
 
+	const items = [
+		{ title: "Written News", info: profile.writtenNews },
+		{ title: "Followers", info: profile.followers },
+		{ title: "Joined", info: profile.createdAt },
+	]
+
 	// update the state after each apollo request
 	useEffect(() => {
 		if (data) {
@@ -87,8 +93,8 @@ function Profile() {
 									<p>{profile.email}</p>
 								</div>
 							</div>
-							{id &&
-								id != user.id &&
+							{profile.type === "author" &&
+								profile.id !== user.id &&
 								(profile.following ? (
 									<button
 										onClick={() => handleFollow("unfollow")}
@@ -108,18 +114,12 @@ function Profile() {
 						<QueryResult loading={loading} error={error} data={data} />
 						{profile.type === "author" && (
 							<div className="info">
-								<div className="info_box">
-									<span className="info_box_title">Written News</span>
-									<span className="info_box_data">{profile.writtenNews}</span>
-								</div>
-								<div className="info_box">
-									<span className="info_box_title">Followers</span>
-									<span className="info_box_data">{profile.followers}</span>
-								</div>
-								<div className="info_box">
-									<span className="info_box_title">Joined</span>
-									<span className="info_box_data">{profile.createdAt}</span>
-								</div>
+								{items.map((title, info) => (
+									<div className="info_box">
+										<span className="info_box_title">{title}</span>
+										<span className="info_box_data">{info}</span>
+									</div>
+								))}
 							</div>
 						)}
 					</div>

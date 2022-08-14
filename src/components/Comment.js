@@ -53,13 +53,15 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
-		variables: {
-			oldestId,
-			commentId: comment.id,
-			sortBy,
-		},
+		variables: { oldestId, commentId: comment.id, sortBy },
 		skip: !showCommentReplies,
 	})
+
+	const backgroundImage = `url(${
+		comment.author.profilePicture !== "default"
+			? comment.author.profilePicture
+			: "/default_avatar.png"
+	})`
 
 	useEffect(() => {
 		if (data) {
@@ -217,16 +219,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					</button>
 				) : (
 					<>
-						<div
-							className="comment_avatar"
-							style={{
-								backgroundImage: `url(${
-									comment.author.profilePicture !== "default"
-										? comment.author.profilePicture
-										: "/default_avatar.png"
-								})`,
-							}}
-						></div>
+						<div className="comment_avatar" style={{ backgroundImage }} />
 						<div onClick={toggleCollapse} className="comment_line_container">
 							<div className="comment_line" />
 						</div>
@@ -238,14 +231,8 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					{collapse && (
 						<div
 							className="comment_avatar"
-							style={{
-								backgroundImage: `url(${
-									comment.author.profilePicture !== "default"
-										? comment.author.profilePicture
-										: "/default_avatar.png"
-								})`,
-							}}
-						></div>
+							style={{ marginRight: "8px", backgroundImage }}
+						/>
 					)}
 					<span className="comment_posted_author">
 						<Link
