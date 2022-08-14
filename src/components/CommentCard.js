@@ -1,11 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineSave,
-	AiOutlineShareAlt,
-} from "react-icons/ai"
+import { AiFillSave, AiOutlineDelete, AiOutlineSave } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"
@@ -71,8 +66,6 @@ function CommentCard({ data }) {
 			onError: error => console.log({ ...error }),
 		})
 	}
-
-	const handleShare = e => {}
 
 	const handleSave = e => {
 		e.preventDefault()
@@ -144,10 +137,6 @@ function CommentCard({ data }) {
 					{/* </Link> */}
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
-						<button onClick={handleShare} className="commentcard_options_item">
-							<AiOutlineShareAlt className="commentcard_options_item_icon" />
-							Share
-						</button>
 						<button onClick={handleSave} className="commentcard_options_item">
 							{saved ? (
 								<>
