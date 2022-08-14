@@ -1,15 +1,20 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { AiFillSave, AiOutlineDelete, AiOutlineSave } from "react-icons/ai"
+import {
+	AiFillSave,
+	AiOutlineDelete,
+	AiOutlineEdit,
+	AiOutlineSave,
+} from "react-icons/ai"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { CommentVotes } from "../components"
-import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
+import { CommentEditor, CommentVotes } from "../components"
 import { UserContext } from "../context"
+import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
 
 function Button({ onClick, text, children }) {
 	return (
@@ -24,6 +29,7 @@ function CommentCard({ data, onCommentEdit }) {
 	const { news, comment } = data
 	const { user } = useContext(UserContext)
 	const [saved, setSaved] = useState(false)
+	const [showEdit, setShowEdit] = useState(false)
 
 	const client = useApolloClient()
 	const [save] = useMutation(SAVE_ITEM)
@@ -54,9 +60,13 @@ function CommentCard({ data, onCommentEdit }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleDelete = e => {
-		e.preventDefault()
+	const handleEdit = comment => {
+		onCommentEdit(comment)
 
+		setShowEdit(false)
+	}
+
+	const handleDelete = () => {
 		client.clearStore()
 
 		removeComment({
@@ -100,6 +110,8 @@ function CommentCard({ data, onCommentEdit }) {
 		})
 	}
 
+	const toggleEdit = () => setShowEdit(value => !value)
+
 	return (
 		<div className="commentcard">
 			<div className="commentcard_container">
@@ -138,12 +150,23 @@ function CommentCard({ data, onCommentEdit }) {
 							{comment.author.fullName}
 						</Link>
 					</span>
-					{/* <Link to={`/news/${comment.id}`} className="commentcard_link"> */}
-					<div
-						className="commentcard_body"
-						id={`comm-body-${comment.id}`}
-					></div>
-					{/* </Link> */}
+					{showEdit && (
+						<CommentEditor
+							newsId={news.id}
+							parentId={comment.parentId}
+							parentType={comment.parentType}
+							commentToEdit={comment}
+							onCommentEdit={handleEdit}
+							onEditorCancel={toggleEdit}
+						/>
+					)}
+					{!showEdit && (
+						<Link
+							to={`/news/${news.link}-${news.id}/comment/${comment.id}`}
+							className="commentcard_body"
+							id={`comm-body-${comment.id}`}
+						></Link>
+					)}
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
 						{saved ? (
@@ -159,6 +182,10 @@ function CommentCard({ data, onCommentEdit }) {
 							<>
 								<Button onClick={handleDelete} text="Delete">
 									<AiOutlineDelete className="commentcard_options_item_icon" />
+								</Button>
+								<Button onClick={toggleEdit} text="Edit">
+									<AiOutlineEdit className="commentcard_options_item_icon" />
+								</Button>
 							</>
 						)}
 					</div>

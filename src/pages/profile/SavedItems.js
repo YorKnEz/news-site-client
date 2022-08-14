@@ -58,6 +58,21 @@ function SavedItems() {
 		}
 	})
 
+	const onCommentEdit = comment => {
+		setSavedItems(arr =>
+			arr.map(item => {
+				if (
+					item.__typename === "CommentCard" &&
+					comment.id === item.comment.id
+				) {
+					return { ...item, comment: { ...item.comment, body: comment.body } }
+				}
+
+				return item
+			})
+		)
+	}
+
 	return (
 		<PageWithCards userId={id ? id : user.id} userType={id ? "author" : "news"}>
 			<div className="profile_news">
@@ -65,7 +80,13 @@ function SavedItems() {
 					if (item.title)
 						return <NewsCard key={`news-${item.id}`} data={item} />
 					else
-						return <CommentCard key={`comm-${item.comment.id}`} data={item} />
+						return (
+							<CommentCard
+								key={`comm-${item.comment.id}`}
+								data={item}
+								onCommentEdit={onCommentEdit}
+							/>
+						)
 				})}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>
