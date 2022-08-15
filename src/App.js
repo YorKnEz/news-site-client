@@ -7,17 +7,18 @@ import { useApolloClient } from "@apollo/client"
 import { PrivateRoutes } from "./components"
 import { ThemeContext, themes, UserContext } from "./context"
 import {
-	Home,
-	News,
-	SignUp,
-	SignIn,
 	BecomeEditor,
 	CreateNews,
 	EditNews,
 	Error,
-	SearchResult,
+	Feed,
 	ForgotPassword,
+	News,
+	Reddit,
 	ResetPassword,
+	SignUp,
+	SignIn,
+	SearchResult,
 	VerifyEmail,
 } from "./pages"
 import {
@@ -147,7 +148,11 @@ export default function App() {
 							path="/verify-email/:token"
 							element={<VerifyEmail />}
 						/>
-						<Route exact path="/" element={<Home />} />
+						<Route exact path="/" element={<Feed sortBy="score" />} />
+						<Route exact path="/best" element={<Feed sortBy="score" />} />
+						<Route exact path="/new" element={<Feed sortBy="date" />} />
+						<Route exact path="/r/romania" element={<Reddit />} />
+
 						<Route exact path="/news/:link-:newsId" element={<News />} />
 
 						{/* private routes, accessible by all users */}

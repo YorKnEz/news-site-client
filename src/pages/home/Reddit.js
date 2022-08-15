@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react"
 import { useQuery } from "@apollo/client"
 
 import "./index.scss"
-import { QueryResult, RedditNewsCard } from "../../components"
+import {
+	HomeSort,
+	PageWithCards,
+	QueryResult,
+	RedditNewsCard,
+} from "../../components"
 import { NEWS_FOR_HOME_REDDIT } from "../../utils/apollo-queries"
 
 function RedditNews() {
@@ -38,12 +43,13 @@ function RedditNews() {
 	})
 
 	return (
-		<div className="news_list">
+		<PageWithCards>
+			<HomeSort sortBy="reddit" />
 			{news.map(item => (
 				<RedditNewsCard data={item} key={item.id} />
 			))}
 			<QueryResult loading={loading} error={error} data={data} />
-		</div>
+		</PageWithCards>
 	)
 }
 
