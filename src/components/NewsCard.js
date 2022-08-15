@@ -152,7 +152,7 @@ function NewsCard({ data, matches }) {
 						className="newscard_options_item"
 					>
 						<BsChatSquare className="newscard_options_item_icon" />
-						{data.comments}
+						{data.replies}
 					</Link>
 					<button onClick={handleShare} className="newscard_options_item">
 						<AiOutlineShareAlt className="newscard_options_item_icon" />

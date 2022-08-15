@@ -13,7 +13,7 @@ import {
 import { UserContext } from "../context"
 import {
 	COMMENTS_FOR_NEWS,
-	UPDATE_COMMENTS_COUNTER,
+	UPDATE_REPLIES_COUNTER,
 } from "../utils/apollo-queries"
 
 function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
@@ -23,7 +23,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	const [oldestId, setOldestId] = useState("")
 	const [sortBy, setSortBy] = useState("score")
 
-	const [updateCommentsCounter] = useMutation(UPDATE_COMMENTS_COUNTER)
+	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: { oldestId, newsId, sortBy },
 	})
@@ -75,14 +75,14 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	}
 
 	const updateCounterLocal = () => {
-		updateCommentsCounter({
+		updateRepliesCounter({
 			variables: {
 				action: "up",
 				id: newsId,
 			},
-			onCompleted: ({ updateCommentsCounter }) => {
-				if (!updateCommentsCounter.success) {
-					console.log(updateCommentsCounter.message)
+			onCompleted: ({ updateRepliesCounter }) => {
+				if (!updateRepliesCounter.success) {
+					console.log(updateRepliesCounter.message)
 
 					return
 				}

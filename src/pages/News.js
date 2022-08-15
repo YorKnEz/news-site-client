@@ -66,7 +66,7 @@ function News() {
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 
 			// set the comments counter
-			setCommentsCounter(data.news.comments)
+			setCommentsCounter(data.news.replies)
 
 			// set the save state
 			if (data.news.saveState === "save") setSaved(true)
