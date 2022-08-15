@@ -1,15 +1,10 @@
 import React from "react"
 import { AiOutlinePicture } from "react-icons/ai"
 
-function FormThumbnailInput({ register, thumbnail, errorCheck }) {
-	// const isSizeOk = value => {
-	// 	// check if an image has been added and check if the size is less than 10MB
-	// 	if (value.length > 0) return value[0].size < 10485760
+const MAX_IMAGE_SIZE = 10485760
 
-	// 	// return true otherwise to avoid errors
-	// 	return true
-	// }
-	const isSizeOk = value => (value[0] ? value[0].size < 10485760 : true)
+function FormThumbnailInput({ register, thumbnail, errorCheck }) {
+	const isSizeOk = value => (value[0] ? value[0].size < MAX_IMAGE_SIZE : true)
 
 	return (
 		<div className="thumbnail_wrapper">
