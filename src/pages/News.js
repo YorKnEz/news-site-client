@@ -25,6 +25,15 @@ import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
+function Button({ onClick, text, children }) {
+	return (
+		<button onClick={onClick} className="news_options_item">
+			{children}
+			{text}
+		</button>
+	)
+}
+
 function News() {
 	const { newsId } = useParams()
 	const history = useNavigate()
@@ -228,45 +237,26 @@ function News() {
 												<BsChatSquare className="news_options_item_icon" />
 												{commentsCounter}
 											</Link>
-											<button
-												onClick={handleShare}
-												className="news_options_item"
-											>
+											<Button onClick={handleShare} text="Share">
 												<AiOutlineShareAlt className="news_options_item_icon" />
-												Share
-											</button>
-											<button
-												onClick={handleSave}
-												className="news_options_item"
-											>
-												{saved ? (
-													<>
-														<AiFillSave className="news_options_item_icon" />
-														Unsave
-													</>
-												) : (
-													<>
-														<AiOutlineSave className="news_options_item_icon" />
-														Save
-													</>
-												)}
-											</button>
+											</Button>
+											{saved ? (
+												<Button onClick={handleSave} text="Unsave">
+													<AiFillSave className="news_options_item_icon" />
+												</Button>
+											) : (
+												<Button onClick={handleSave} text="Save">
+													<AiOutlineSave className="news_options_item_icon" />
+												</Button>
+											)}
 											{user.id == data.news.author.id && (
 												<>
-													<button
-														onClick={handleDelete}
-														className="news_options_item"
-													>
+													<Button onClick={handleDelete} text="Delete">
 														<AiOutlineDelete className="news_options_item_icon" />
-														Delete
-													</button>
-													<button
-														onClick={handleEdit}
-														className="news_options_item"
-													>
+													</Button>
+													<Button onClick={handleEdit} text="Edit">
 														<AiOutlineEdit className="news_options_item_icon" />
-														Edit
-													</button>
+													</Button>
 												</>
 											)}
 										</div>
