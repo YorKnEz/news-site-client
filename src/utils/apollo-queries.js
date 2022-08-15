@@ -478,21 +478,49 @@ export const NEWS_TO_EDIT = gql`
 `
 
 export const NEWS_FOR_PROFILE_CARD = gql`
-	query NewsForProfileCard($id: ID, $newsId: ID) {
-		newsForProfileCard(id: $id, newsId: $newsId) {
-			id
-			title
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			score
-			replies
-			link
-			author {
-				fullName
+	query NewsForProfileCard(
+		$id: ID
+		$newsId: ID
+		$howManyBest: Int!
+		$howManyRecent: Int!
+	) {
+		newsForProfileCard(
+			id: $id
+			newsId: $newsId
+			howManyBest: $howManyBest
+			howManyRecent: $howManyRecent
+		) {
+			best {
+				id
+				title
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				score
+				replies
+				link
+				author {
+					fullName
+				}
+			}
+			recent {
+				id
+				title
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				score
+				replies
+				link
+				author {
+					fullName
+				}
 			}
 		}
 	}
