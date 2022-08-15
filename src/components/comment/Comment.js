@@ -1,13 +1,13 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineEdit,
+	AiFillSave as Unsave,
+	AiOutlineSave as Save,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
 	AiOutlineExpand,
-	AiOutlineSave,
 } from "react-icons/ai"
-import { BsReply } from "react-icons/bs"
+import { BsReply as Reply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client"
@@ -266,20 +266,16 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 				)}
 				<div style={{ display }} className="comment_options">
 					<CommentVotes data={comment} />
-					<Button onClick={toggleReply} text="Reply" Icon={BsReply} />
+					<Button onClick={toggleReply} text="Reply" Icon={Reply} />
 					{saved ? (
-						<Button onClick={handleSave} text="Unsave" Icon={AiFillSave} />
+						<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
 					) : (
-						<Button onClick={handleSave} text="Save" Icon={AiOutlineSave} />
+						<Button onClick={handleSave} text="Save" Icon={Save} />
 					)}
 					{user.id == comment.author.id && (
 						<>
-							<Button
-								onClick={handleDelete}
-								text="Delete"
-								Icon={AiOutlineDelete}
-							/>
-							<Button onClick={toggleEdit} text="Edit" Icon={AiOutlineEdit} />
+							<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+							<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
 						</>
 					)}
 				</div>

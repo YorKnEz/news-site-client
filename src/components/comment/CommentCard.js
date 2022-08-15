@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineEdit,
-	AiOutlineSave,
+	AiFillSave as Unsave,
+	AiOutlineSave as Save,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
 } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
@@ -163,18 +163,14 @@ function CommentCard({ data, onCommentEdit }) {
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
 						{saved ? (
-							<Button onClick={handleSave} text="Unsave" Icon={AiFillSave} />
+							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
 						) : (
-							<Button onClick={handleSave} text="Save" Icon={AiOutlineSave} />
+							<Button onClick={handleSave} text="Save" Icon={Save} />
 						)}
 						{user.id == comment.author.id && (
 							<>
-								<Button
-									onClick={handleDelete}
-									text="Delete"
-									Icon={AiOutlineDelete}
-								/>
-								<Button onClick={toggleEdit} text="Edit" Icon={AiOutlineEdit} />
+								<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+								<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
 							</>
 						)}
 					</div>
