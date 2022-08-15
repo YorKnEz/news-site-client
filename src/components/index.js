@@ -1,4 +1,14 @@
 export { Comment, CommentCard, CommentEditor, CommentVotes } from "./comment"
+
+export {
+	FormConfirmPassword,
+	FormControlledInput,
+	FormInput,
+	FormPassword,
+	FormThumbnailInput,
+	FormTooltips,
+} from "./form"
+
 export { default as AuthorCard } from "./AuthorCard"
 export { default as CardVotes } from "./CardVotes"
 export { default as CustomSelect } from "./CustomSelect"

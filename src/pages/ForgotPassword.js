@@ -5,9 +5,8 @@ import { AiFillExclamationCircle } from "react-icons/ai"
 import axios from "axios"
 
 import "./SignUp.scss"
-import { Modal, Page } from "../components"
+import { FormInput, Modal, Page } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
-import { FormInput } from "../components/form"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 

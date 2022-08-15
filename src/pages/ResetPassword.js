@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 import "./SignUp.scss"
-import { Page } from "../components"
+import { FormConfirmPassword, FormPassword, Page } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
-import { FormConfirmPassword, FormPassword } from "../components/form"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
