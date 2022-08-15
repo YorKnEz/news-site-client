@@ -114,8 +114,8 @@ function Profile() {
 						<QueryResult loading={loading} error={error} data={data} />
 						{profile.type === "author" && (
 							<div className="info">
-								{items.map((title, info) => (
-									<div className="info_box">
+								{items.map(({ title, info }) => (
+									<div key={title} className="info_box">
 										<span className="info_box_title">{title}</span>
 										<span className="info_box_data">{info}</span>
 									</div>

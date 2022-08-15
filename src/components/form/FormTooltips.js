@@ -5,7 +5,7 @@ function FormTooltips({ tooltips }) {
 	return (
 		<div>
 			{tooltips.map(tooltip => (
-				<div className="tooltip">
+				<div key={tooltip} className="tooltip">
 					<AiOutlineQuestionCircle className="tooltip_icon" />
 					<p className="tooltip_text">{tooltip}</p>
 				</div>

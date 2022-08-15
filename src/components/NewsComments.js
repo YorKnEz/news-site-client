@@ -79,6 +79,7 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 			variables: {
 				action: "up",
 				id: newsId,
+				type: "news",
 			},
 			onCompleted: ({ updateRepliesCounter }) => {
 				if (!updateRepliesCounter.success) {

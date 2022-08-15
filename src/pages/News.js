@@ -112,13 +112,9 @@ function News() {
 		})
 	}
 
-	const onDeleteModalDecline = () => {
-		setShowDeleteModal(false)
-	}
+	const onDeleteModalDecline = () => setShowDeleteModal(false)
 
-	const onShareModalSubmit = async () => {
-		setShowShareModal(false)
-	}
+	const onShareModalSubmit = async () => setShowShareModal(false)
 
 	const handleDelete = () => setShowDeleteModal(true)
 
@@ -168,7 +164,8 @@ function News() {
 					<input
 						className="formItem_input"
 						type="text"
-						defaultValue={window.location}
+						value={`${window.location}`}
+						readOnly
 					/>
 				</Modal>
 			)}
