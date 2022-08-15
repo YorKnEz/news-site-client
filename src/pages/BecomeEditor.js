@@ -3,13 +3,12 @@ import { useForm } from "react-hook-form"
 import { AiFillExclamationCircle, AiOutlineFileText } from "react-icons/ai"
 
 import "./BecomeEditor.scss"
-import { Page } from "../components"
+import { FormInput, Page } from "../components"
 import {
 	handleInputBlur,
 	handleInputFocus,
 	useDocumentTitle,
 } from "../utils/utils"
-import { FormInput } from "../components/form"
 
 function BecomeEditor() {
 	const {

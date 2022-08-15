@@ -9,8 +9,8 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CommentVotes.scss"
-import { VOTE_ITEM } from "../utils/apollo-queries"
-import { compressNumber } from "../utils/utils"
+import { VOTE_ITEM } from "../../utils/apollo-queries"
+import { compressNumber } from "../../utils/utils"
 
 function CommentVotes({ data }) {
 	const client = useApolloClient()

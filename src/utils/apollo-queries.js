@@ -86,18 +86,6 @@ export const REMOVE_COMMENT = gql`
 	}
 `
 
-// udpate the replies counter of a comment
-export const UPDATE_REPLIES_COUNTER = gql`
-	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
-		updateRepliesCounter(action: $action, id: $id) {
-			code
-			success
-			message
-			replies
-		}
-	}
-`
-
 // like a comment
 export const VOTE_ITEM = gql`
 	mutation Vote($action: String!, $parentId: ID!, $parentType: String!) {
@@ -116,6 +104,18 @@ export const SAVE_ITEM = gql`
 			code
 			success
 			message
+		}
+	}
+`
+
+// udpate the replies counter of a comment
+export const UPDATE_REPLIES_COUNTER = gql`
+	mutation UpdateRepliesCounter($action: String!, $id: ID!, $type: String!) {
+		updateRepliesCounter(action: $action, id: $id, type: $type) {
+			code
+			success
+			message
+			replies
 		}
 	}
 `
@@ -150,18 +150,6 @@ export const DELETE_NEWS = gql`
 			code
 			success
 			message
-		}
-	}
-`
-
-// udpate the comments counter of a news
-export const UPDATE_COMMENTS_COUNTER = gql`
-	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
-		updateCommentsCounter(action: $action, id: $id) {
-			code
-			success
-			message
-			comments
 		}
 	}
 `
@@ -249,7 +237,7 @@ export const LIKED_ITEMS = gql`
 				likes
 				dislikes
 				score
-				comments
+				replies
 				saveState
 				link
 				author {
@@ -312,7 +300,7 @@ export const SAVED_ITEMS = gql`
 				likes
 				dislikes
 				score
-				comments
+				replies
 				saveState
 				link
 				author {
@@ -373,7 +361,7 @@ export const NEWS_FOR_HOME = gql`
 			likes
 			dislikes
 			score
-			comments
+			replies
 			saveState
 			link
 			author {
@@ -431,7 +419,7 @@ export const NEWS_FOR_PROFILE = gql`
 			likes
 			dislikes
 			score
-			comments
+			replies
 			saveState
 			link
 			author {
@@ -460,7 +448,7 @@ export const NEWS_BY_ID = gql`
 			likes
 			dislikes
 			score
-			comments
+			replies
 			saveState
 			link
 			author {
@@ -490,21 +478,49 @@ export const NEWS_TO_EDIT = gql`
 `
 
 export const NEWS_FOR_PROFILE_CARD = gql`
-	query NewsForProfileCard($id: ID, $newsId: ID) {
-		newsForProfileCard(id: $id, newsId: $newsId) {
-			id
-			title
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			score
-			comments
-			link
-			author {
-				fullName
+	query NewsForProfileCard(
+		$id: ID
+		$newsId: ID
+		$howManyBest: Int!
+		$howManyRecent: Int!
+	) {
+		newsForProfileCard(
+			id: $id
+			newsId: $newsId
+			howManyBest: $howManyBest
+			howManyRecent: $howManyRecent
+		) {
+			best {
+				id
+				title
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				score
+				replies
+				link
+				author {
+					fullName
+				}
+			}
+			recent {
+				id
+				title
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				score
+				replies
+				link
+				author {
+					fullName
+				}
 			}
 		}
 	}
@@ -531,7 +547,7 @@ export const SEARCH = gql`
 					likes
 					dislikes
 					score
-					comments
+					replies
 					saveState
 					link
 					author {

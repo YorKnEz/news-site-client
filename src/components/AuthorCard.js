@@ -33,7 +33,7 @@ function AuthorCard({ data }) {
 			</div>
 			<div className="acinfo">
 				{items.map(({ title, info }) => (
-					<div className="acinfo_box">
+					<div key={title} className="acinfo_box">
 						<span className="acinfo_box_title">{title}:</span>
 						<span className="acinfo_box_data">{info}</span>
 					</div>

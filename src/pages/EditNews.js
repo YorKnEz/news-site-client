@@ -13,13 +13,14 @@ import axios from "axios"
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import "./CreateNews.scss"
-import { Page, QueryResult } from "../components"
 import {
 	FormControlledInput,
 	FormInput,
 	FormThumbnailInput,
 	FormTooltips,
-} from "../components/form"
+	Page,
+	QueryResult,
+} from "../components"
 import { UserContext } from "../context"
 import { NEWS_TO_EDIT, UPDATE_NEWS } from "../utils/apollo-queries"
 import {

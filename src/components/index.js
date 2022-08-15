@@ -1,12 +1,20 @@
+export { Comment, CommentCard, CommentEditor, CommentVotes } from "./comment"
+
+export {
+	FormConfirmPassword,
+	FormControlledInput,
+	FormInput,
+	FormPassword,
+	FormThumbnailInput,
+	FormTooltips,
+} from "./form"
+
 export { default as AuthorCard } from "./AuthorCard"
 export { default as CardVotes } from "./CardVotes"
-export { default as Comment } from "./Comment"
-export { default as CommentCard } from "./CommentCard"
-export { default as CommentEditor } from "./CommentEditor"
-export { default as CommentVotes } from "./CommentVotes"
 export { default as CustomSelect } from "./CustomSelect"
 export { default as Footer } from "./Footer"
 export { default as Header } from "./Header"
+export { default as HomeSort } from "./HomeSort"
 export { default as Modal } from "./Modal"
 export { default as NewsCard } from "./NewsCard"
 export { default as NewsComments } from "./NewsComments"

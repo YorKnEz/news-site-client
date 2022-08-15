@@ -7,11 +7,12 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import { CardVotes } from "../components"
+import { CardVotes, Modal } from "../components"
 import { SAVE_ITEM } from "../utils/apollo-queries"
 
 function NewsCard({ data, matches }) {
 	const [saved, setSaved] = useState(false)
+	const [showShareModal, setShowShareModal] = useState(false)
 
 	const client = useApolloClient()
 	const [save] = useMutation(SAVE_ITEM)
@@ -91,7 +92,9 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleShare = () => {}
+	const onShareModalSubmit = async () => setShowShareModal(false)
+
+	const handleShare = () => setShowShareModal(true)
 
 	const handleSave = () => {
 		save({
@@ -117,6 +120,18 @@ function NewsCard({ data, matches }) {
 
 	return (
 		<div className="newscard">
+			{showShareModal && (
+				<Modal onSubmit={onShareModalSubmit}>
+					<h3 style={{ margin: 0 }}>Share this with your friends</h3>
+					<hr />
+					<input
+						className="formItem_input"
+						type="text"
+						value={`${window.location.origin}/news/${data.link}-${data.id}`}
+						readOnly
+					/>
+				</Modal>
+			)}
 			<CardVotes data={data} />
 			<div className="newscard_container">
 				{matches && (
@@ -152,7 +167,7 @@ function NewsCard({ data, matches }) {
 						className="newscard_options_item"
 					>
 						<BsChatSquare className="newscard_options_item_icon" />
-						{data.comments}
+						{data.replies}
 					</Link>
 					<button onClick={handleShare} className="newscard_options_item">
 						<AiOutlineShareAlt className="newscard_options_item_icon" />

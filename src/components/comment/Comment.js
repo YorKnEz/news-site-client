@@ -1,32 +1,32 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineEdit,
+	AiFillSave as Unsave,
+	AiOutlineSave as Save,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
 	AiOutlineExpand,
-	AiOutlineSave,
 } from "react-icons/ai"
-import { BsReply } from "react-icons/bs"
+import { BsReply as Reply } from "react-icons/bs"
 import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./Comment.scss"
-import { CommentEditor, CommentVotes, QueryResult } from "../components"
-import { UserContext } from "../context"
+import { CommentEditor, CommentVotes, QueryResult } from "../../components"
+import { UserContext } from "../../context"
 import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
 	SAVE_ITEM,
 	UPDATE_REPLIES_COUNTER,
-} from "../utils/apollo-queries"
+} from "../../utils/apollo-queries"
 
-function Button({ onClick, text, children }) {
+function Button({ onClick, text, Icon }) {
 	return (
 		<button onClick={onClick} className="comment_options_item">
-			{children}
+			<Icon className="comment_options_item_icon" />
 			{text}
 		</button>
 	)
@@ -62,6 +62,8 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 			? comment.author.profilePicture
 			: "/default_avatar.png"
 	})`
+
+	const display = collapse ? "none" : ""
 
 	useEffect(() => {
 		if (data) {
@@ -186,6 +188,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 			variables: {
 				action: "up",
 				id: comment.id,
+				type: "comment",
 			},
 			onCompleted: ({ updateRepliesCounter }) => {
 				if (!updateRepliesCounter.success) {
@@ -256,46 +259,33 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 				)}
 				{!showEdit && (
 					<div
-						style={collapse ? { display: "none" } : {}}
+						style={{ display }}
 						className="comment_body"
 						id={`body${comment.id}`}
 					></div>
 				)}
-				<div
-					style={collapse ? { display: "none" } : {}}
-					className="comment_options"
-				>
+				<div style={{ display }} className="comment_options">
 					<CommentVotes data={comment} />
-					<Button onClick={toggleReply} text="Reply">
-						<BsReply className="comment_options_item_icon" />
-					</Button>
+					<Button onClick={toggleReply} text="Reply" Icon={Reply} />
 					{saved ? (
-						<Button onClick={handleSave} text="Unsave">
-							<AiFillSave className="comment_options_item_icon" />
-						</Button>
+						<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
 					) : (
-						<Button onClick={handleSave} text="Save">
-							<AiOutlineSave className="comment_options_item_icon" />
-						</Button>
+						<Button onClick={handleSave} text="Save" Icon={Save} />
 					)}
 					{user.id == comment.author.id && (
 						<>
-							<Button onClick={handleDelete} text="Delete">
-								<AiOutlineDelete className="comment_options_item_icon" />
-							</Button>
-							<Button onClick={toggleEdit} text="Edit">
-								<AiOutlineEdit className="comment_options_item_icon" />
-							</Button>
+							<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+							<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
 						</>
 					)}
 				</div>
 				{showReply && (
 					<div
-						style={collapse ? { display: "none" } : {}}
+						style={{ display }}
 						className="comment comment_replies comment_reply"
 					>
 						<div className="comment_container1">
-							<div className="comment_line" style={{ height: "100%" }} />
+							<div className="comment_line" />
 						</div>
 						<CommentEditor
 							newsId={newsId}
@@ -306,10 +296,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						/>
 					</div>
 				)}
-				<div
-					style={collapse ? { display: "none" } : {}}
-					className="comments_list"
-				>
+				<div style={{ display }} className="comments_list">
 					{replies.map(comment => (
 						<Comment
 							sortBy={sortBy}

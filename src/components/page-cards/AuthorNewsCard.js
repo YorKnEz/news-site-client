@@ -9,6 +9,9 @@ import { QueryResult } from "../../components"
 import { NEWS_FOR_PROFILE_CARD } from "../../utils/apollo-queries"
 import { compressNumber } from "../../utils/utils"
 
+const HOW_MANY_BEST = 2
+const HOW_MANY_RECENT = 1
+
 function NewsItem({ newsData }) {
 	if (newsData)
 		return (
@@ -29,23 +32,22 @@ function NewsItem({ newsData }) {
 
 function AuthorNewsCard() {
 	const { id, newsId } = useParams()
-	const [news, setNews] = useState([])
+	const [best, setBest] = useState([])
+	const [mostRecent, setMostRecent] = useState([])
 
 	const { loading, error, data } = useQuery(NEWS_FOR_PROFILE_CARD, {
 		variables: {
 			id,
 			newsId,
+			howManyBest: HOW_MANY_BEST,
+			howManyRecent: HOW_MANY_RECENT,
 		},
 	})
 
 	useEffect(() => {
 		if (data) {
-			setNews(
-				data.newsForProfileCard.map((n, index) => ({
-					...n,
-					id: `${index < 2 ? "best" : "recent"}-${n.id}`,
-				}))
-			)
+			setBest(data.newsForProfileCard.best)
+			setMostRecent(data.newsForProfileCard.recent)
 		}
 	}, [data])
 
@@ -53,10 +55,13 @@ function AuthorNewsCard() {
 		<BaseCard thumbnailIndex={1} title="More from this author" list>
 			<QueryResult loading={loading} error={error} data={data}>
 				<span className="authornewscard_title">TOP NEWS</span>
-				<NewsItem newsData={news[1]} />
-				<NewsItem newsData={news[0]} />
+				{best.map(news => (
+					<NewsItem key={news.id} newsData={news} />
+				))}
 				<span className="authornewscard_title">MOST RECENT NEWS</span>
-				<NewsItem newsData={news[2]} />
+				{mostRecent.map(news => (
+					<NewsItem key={news.id} newsData={news} />
+				))}
 			</QueryResult>
 		</BaseCard>
 	)

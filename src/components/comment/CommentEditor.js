@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
+import { AiFillExclamationCircle } from "react-icons/ai"
 import { Editor } from "react-draft-wysiwyg"
 import { ContentState, convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
+import htmlToDraft from "html-to-draftjs"
 
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CommentEditor.scss"
-import { ADD_COMMENT, EDIT_COMMENT } from "../utils/apollo-queries"
-import htmlToDraft from "html-to-draftjs"
-import { AiFillExclamationCircle } from "react-icons/ai"
+import { ADD_COMMENT, EDIT_COMMENT } from "../../utils/apollo-queries"
 
 const editorOptions = {
 	options: [
@@ -442,34 +442,24 @@ function CommentEditor({
 		})
 	}
 
+	function Button({ onClick, text }) {
+		return (
+			<button
+				onClick={onClick}
+				className="button button_primary comment-editor_button"
+			>
+				{text}
+			</button>
+		)
+	}
+
 	// required to avoid a warning
 	function Buttons({ modalHandle, editorState, ...rest }) {
 		return (
 			<div className="comment-editor_buttons">
-				{commentToEdit && (
-					<button
-						onClick={handleEdit}
-						className="button button_primary comment-editor_button"
-					>
-						Edit comment
-					</button>
-				)}
-				{onEditorCancel && (
-					<button
-						onClick={onEditorCancel}
-						className="button button_secondary comment-editor_button"
-					>
-						Cancel
-					</button>
-				)}
-				{!commentToEdit && (
-					<button
-						onClick={handlePost}
-						className="button button_primary comment-editor_button"
-					>
-						Post comment
-					</button>
-				)}
+				{commentToEdit && <Button onClick={handleEdit} text="Edit comment" />}
+				{onEditorCancel && <Button onClick={onEditorCancel} text="Cancel" />}
+				{!commentToEdit && <Button onClick={handlePost} text="Post comment" />}
 			</div>
 		)
 	}

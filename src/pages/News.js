@@ -1,11 +1,11 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineEdit,
-	AiOutlineSave,
-	AiOutlineShareAlt,
+	AiFillSave as Unsave,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
+	AiOutlineSave as Save,
+	AiOutlineShareAlt as Share,
 } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -24,6 +24,15 @@ import {
 import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
+
+function Button({ onClick, text, Icon }) {
+	return (
+		<button onClick={onClick} className="news_options_item">
+			<Icon className="news_options_item_icon" />
+			{text}
+		</button>
+	)
+}
 
 function News() {
 	const { newsId } = useParams()
@@ -66,7 +75,7 @@ function News() {
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 
 			// set the comments counter
-			setCommentsCounter(data.news.comments)
+			setCommentsCounter(data.news.replies)
 
 			// set the save state
 			if (data.news.saveState === "save") setSaved(true)
@@ -103,13 +112,9 @@ function News() {
 		})
 	}
 
-	const onDeleteModalDecline = () => {
-		setShowDeleteModal(false)
-	}
+	const onDeleteModalDecline = () => setShowDeleteModal(false)
 
-	const onShareModalSubmit = async () => {
-		setShowShareModal(false)
-	}
+	const onShareModalSubmit = async () => setShowShareModal(false)
 
 	const handleDelete = () => setShowDeleteModal(true)
 
@@ -159,7 +164,8 @@ function News() {
 					<input
 						className="formItem_input"
 						type="text"
-						defaultValue={window.location}
+						value={`${window.location}`}
+						readOnly
 					/>
 				</Modal>
 			)}
@@ -228,45 +234,28 @@ function News() {
 												<BsChatSquare className="news_options_item_icon" />
 												{commentsCounter}
 											</Link>
-											<button
-												onClick={handleShare}
-												className="news_options_item"
-											>
-												<AiOutlineShareAlt className="news_options_item_icon" />
-												Share
-											</button>
-											<button
-												onClick={handleSave}
-												className="news_options_item"
-											>
-												{saved ? (
-													<>
-														<AiFillSave className="news_options_item_icon" />
-														Unsave
-													</>
-												) : (
-													<>
-														<AiOutlineSave className="news_options_item_icon" />
-														Save
-													</>
-												)}
-											</button>
+											<Button onClick={handleShare} text="Share" Icon={Share} />
+											{saved ? (
+												<Button
+													onClick={handleSave}
+													text="Unsave"
+													Icon={Unsave}
+												/>
+											) : (
+												<Button onClick={handleSave} text="Save" Icon={Save} />
+											)}
 											{user.id == data.news.author.id && (
 												<>
-													<button
+													<Button
 														onClick={handleDelete}
-														className="news_options_item"
-													>
-														<AiOutlineDelete className="news_options_item_icon" />
-														Delete
-													</button>
-													<button
+														text="Delete"
+														Icon={Delete}
+													/>
+													<Button
 														onClick={handleEdit}
-														className="news_options_item"
-													>
-														<AiOutlineEdit className="news_options_item_icon" />
-														Edit
-													</button>
+														text="Edit"
+														Icon={Edit}
+													/>
 												</>
 											)}
 										</div>

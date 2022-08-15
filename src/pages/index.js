@@ -1,9 +1,10 @@
+export { Feed, Reddit } from "./home"
+
 export { default as BecomeEditor } from "./BecomeEditor"
 export { default as CreateNews } from "./CreateNews"
 export { default as EditNews } from "./EditNews"
 export { default as Error } from "./Error"
 export { default as ForgotPassword } from "./ForgotPassword"
-export { Home } from "./home"
 export { default as News } from "./News"
 export { default as ResetPassword } from "./ResetPassword"
 export { default as SearchResult } from "./SearchResult"
