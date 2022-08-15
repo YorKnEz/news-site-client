@@ -442,34 +442,24 @@ function CommentEditor({
 		})
 	}
 
+	function Button({ onClick, text }) {
+		return (
+			<button
+				onClick={onClick}
+				className="button button_primary comment-editor_button"
+			>
+				{text}
+			</button>
+		)
+	}
+
 	// required to avoid a warning
 	function Buttons({ modalHandle, editorState, ...rest }) {
 		return (
 			<div className="comment-editor_buttons">
-				{commentToEdit && (
-					<button
-						onClick={handleEdit}
-						className="button button_primary comment-editor_button"
-					>
-						Edit comment
-					</button>
-				)}
-				{onEditorCancel && (
-					<button
-						onClick={onEditorCancel}
-						className="button button_secondary comment-editor_button"
-					>
-						Cancel
-					</button>
-				)}
-				{!commentToEdit && (
-					<button
-						onClick={handlePost}
-						className="button button_primary comment-editor_button"
-					>
-						Post comment
-					</button>
-				)}
+				{commentToEdit && <Button onClick={handleEdit} text="Edit comment" />}
+				{onEditorCancel && <Button onClick={onEditorCancel} text="Cancel" />}
+				{!commentToEdit && <Button onClick={handlePost} text="Post comment" />}
 			</div>
 		)
 	}

@@ -1,11 +1,11 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiFillSave,
-	AiOutlineDelete,
-	AiOutlineEdit,
-	AiOutlineSave,
-	AiOutlineShareAlt,
+	AiFillSave as Unsave,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
+	AiOutlineSave as Save,
+	AiOutlineShareAlt as Share,
 } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -25,10 +25,10 @@ import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
-function Button({ onClick, text, children }) {
+function Button({ onClick, text, Icon }) {
 	return (
 		<button onClick={onClick} className="news_options_item">
-			{children}
+			<Icon className="news_options_item_icon" />
 			{text}
 		</button>
 	)
@@ -234,26 +234,28 @@ function News() {
 												<BsChatSquare className="news_options_item_icon" />
 												{commentsCounter}
 											</Link>
-											<Button onClick={handleShare} text="Share">
-												<AiOutlineShareAlt className="news_options_item_icon" />
-											</Button>
+											<Button onClick={handleShare} text="Share" Icon={Share} />
 											{saved ? (
-												<Button onClick={handleSave} text="Unsave">
-													<AiFillSave className="news_options_item_icon" />
-												</Button>
+												<Button
+													onClick={handleSave}
+													text="Unsave"
+													Icon={Unsave}
+												/>
 											) : (
-												<Button onClick={handleSave} text="Save">
-													<AiOutlineSave className="news_options_item_icon" />
-												</Button>
+												<Button onClick={handleSave} text="Save" Icon={Save} />
 											)}
 											{user.id == data.news.author.id && (
 												<>
-													<Button onClick={handleDelete} text="Delete">
-														<AiOutlineDelete className="news_options_item_icon" />
-													</Button>
-													<Button onClick={handleEdit} text="Edit">
-														<AiOutlineEdit className="news_options_item_icon" />
-													</Button>
+													<Button
+														onClick={handleDelete}
+														text="Delete"
+														Icon={Delete}
+													/>
+													<Button
+														onClick={handleEdit}
+														text="Edit"
+														Icon={Edit}
+													/>
 												</>
 											)}
 										</div>

@@ -16,10 +16,10 @@ import { CommentEditor, CommentVotes } from "../../components"
 import { UserContext } from "../../context"
 import { REMOVE_COMMENT, SAVE_ITEM } from "../../utils/apollo-queries"
 
-function Button({ onClick, text, children }) {
+function Button({ onClick, text, Icon }) {
 	return (
 		<button onClick={onClick} className="comment_options_item">
-			{children}
+			<Icon className="commentcard_options_item_icon" />
 			{text}
 		</button>
 	)
@@ -163,22 +163,18 @@ function CommentCard({ data, onCommentEdit }) {
 					<div className="commentcard_options">
 						<CommentVotes data={comment} />
 						{saved ? (
-							<Button onClick={handleSave} text="Unsave">
-								<AiFillSave className="commentcard_options_item_icon" />
-							</Button>
+							<Button onClick={handleSave} text="Unsave" Icon={AiFillSave} />
 						) : (
-							<Button onClick={handleSave} text="Save">
-								<AiOutlineSave className="commentcard_options_item_icon" />
-							</Button>
+							<Button onClick={handleSave} text="Save" Icon={AiOutlineSave} />
 						)}
 						{user.id == comment.author.id && (
 							<>
-								<Button onClick={handleDelete} text="Delete">
-									<AiOutlineDelete className="commentcard_options_item_icon" />
-								</Button>
-								<Button onClick={toggleEdit} text="Edit">
-									<AiOutlineEdit className="commentcard_options_item_icon" />
-								</Button>
+								<Button
+									onClick={handleDelete}
+									text="Delete"
+									Icon={AiOutlineDelete}
+								/>
+								<Button onClick={toggleEdit} text="Edit" Icon={AiOutlineEdit} />
 							</>
 						)}
 					</div>
