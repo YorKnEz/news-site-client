@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
+import { AiFillExclamationCircle } from "react-icons/ai"
 import { Editor } from "react-draft-wysiwyg"
 import { ContentState, convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
+import htmlToDraft from "html-to-draftjs"
 
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CommentEditor.scss"
-import { ADD_COMMENT, EDIT_COMMENT } from "../utils/apollo-queries"
-import htmlToDraft from "html-to-draftjs"
-import { AiFillExclamationCircle } from "react-icons/ai"
+import { ADD_COMMENT, EDIT_COMMENT } from "../../utils/apollo-queries"
 
 const editorOptions = {
 	options: [

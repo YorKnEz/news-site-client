@@ -12,9 +12,9 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { CommentEditor, CommentVotes } from "../components"
-import { UserContext } from "../context"
-import { REMOVE_COMMENT, SAVE_ITEM } from "../utils/apollo-queries"
+import { CommentEditor, CommentVotes } from "../../components"
+import { UserContext } from "../../context"
+import { REMOVE_COMMENT, SAVE_ITEM } from "../../utils/apollo-queries"
 
 function Button({ onClick, text, children }) {
 	return (
