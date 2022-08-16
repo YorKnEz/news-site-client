@@ -9,14 +9,15 @@
 	border-bottom: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 	display: grid;
-	grid-template-columns: [col1] 20% [col2] 60% [col3] 20% [col4];
+	grid-template-columns: [col1] 25% [col2] 50% [col3] 25% [col4];
 	align-items: center;
 
 	&_branding {
 		font-family: "Chomsky";
 		text-decoration: none;
-		font-size: 32px;
+		font-size: 40px;
 		position: relative;
+		bottom: 4px;
 		color: var(--text-color);
 		user-select: none;
 	}
@@ -25,13 +26,12 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		font-size: 20px;
+		font-size: 24px;
 		color: var(--text-color);
 	}
 
 	&_section1 {
 		justify-self: flex-start;
-		align-items: center;
 
 		grid-column-start: col1;
 		grid-column-end: col2;
@@ -49,18 +49,12 @@
 
 	&_section3 {
 		justify-self: flex-end;
-		align-items: center;
 
 		grid-column-start: col3;
 		grid-column-end: col4;
 	}
 }
 
-@media (max-width: 768px) {
-	.header {
-		&_section2 {
-			display: none;
 		}
-		// grid-template-columns: [col1] 50% [col2] 0% [col3] 50%;
 	}
 }

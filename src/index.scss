@@ -149,6 +149,45 @@ select:-webkit-autofill:focus {
 	}
 }
 
+// .button {
+// 	cursor: pointer;
+// 	text-decoration: none;
+// 	display: table;
+
+// 	background-color: transparent;
+
+// 	border-radius: 5px;
+// 	margin: auto 0;
+// 	padding: 10px;
+// 	font-size: 16px;
+
+// 	transition: all 0.2s ease;
+
+// 	&_primary {
+// 		border: 1px solid var(--primary-color);
+
+// 		color: var(--primary-color);
+
+// 		&:hover {
+// 			background-color: var(--primary-color);
+// 		}
+// 	}
+
+// 	&_secondary {
+// 		border: 1px solid var(--secondText-color);
+
+// 		color: var(--secondText-color);
+
+// 		&:hover {
+// 			background-color: var(--secondText-color);
+// 		}
+// 	}
+
+// 	&:hover {
+// 		color: #eee;
+// 	}
+// }
+
 .form {
 	display: flex;
 	flex-direction: column;
