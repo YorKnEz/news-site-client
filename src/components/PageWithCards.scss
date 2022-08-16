@@ -25,3 +25,13 @@
 		margin-left: 8px;
 	}
 }
+
+@media (max-width: 768px) {
+	.pagewc {
+		grid-template-columns: 100%;
+
+		&_col2 {
+			display: none;
+		}
+	}
+}

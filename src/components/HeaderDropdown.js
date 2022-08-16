@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { useNavigate } from "react-router"
 
 import axios from "axios"
 
 import "./HeaderDropdown.scss"
 import { HeaderSearch, Switch } from "../components"
-import { ThemeContext, UserContext } from "../context"
+import { UserContext } from "../context"
 import { Link } from "react-router-dom"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
@@ -19,24 +19,6 @@ function HeaderDropdown({
 	const history = useNavigate()
 
 	const { user, token, signOut } = useContext(UserContext)
-	const { theme, toggleTheme } = useContext(ThemeContext)
-	const [switchState, setSwitchState] = useState(
-		theme === "dark" ? true : false
-	)
-
-	useEffect(() => {
-		const handleThemeToggle = () => {
-			const switchElement = document.querySelector("#switchElement")
-
-			if (!switchElement) return
-
-			switchState
-				? (switchElement.style.left = "calc(36px - 16px)")
-				: (switchElement.style.left = "0")
-		}
-
-		handleThemeToggle()
-	}, [switchState])
 
 	const handleSignOut = async () => {
 		try {
@@ -82,12 +64,7 @@ function HeaderDropdown({
 						</Link>
 					</>
 				)}
-				<Switch
-					theme={theme}
-					toggleTheme={toggleTheme}
-					switchState={switchState}
-					setSwitchState={setSwitchState}
-				/>
+				<Switch />
 			</div>
 			<div className="dropdown_section">
 				{token ? (
