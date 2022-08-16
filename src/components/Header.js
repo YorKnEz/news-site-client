@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
-import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai"
-import { Link, useNavigate } from "react-router-dom"
 
 import axios from "axios"
+import { AiOutlineMenu } from "react-icons/ai"
+import { Link } from "react-router-dom"
 
 import "./Header.scss"
 import { ProfileHeader, Switch } from "../components"
@@ -20,9 +20,6 @@ function Header({ userData, profileHeader }) {
 	const [switchState, setSwitchState] = useState(
 		theme === "dark" ? true : false
 	)
-	const [search, setSearch] = useState(params.search ? params.search : "")
-	const [filter, setFilter] = useState(params.filter ? params.filter : "title")
-	const history = useNavigate()
 
 	useEffect(() => {
 		const handleThemeToggle = () => {
@@ -81,17 +78,6 @@ function Header({ userData, profileHeader }) {
 		}
 	}
 
-	const handleSearch = async () => {
-		history(`/search?search=${search}&filter=${filter}`, { replace: false })
-		window.location.reload()
-	}
-
-	const handleSubmit = async e => {
-		if (e.code === "Enter") {
-			handleSearch(e)
-		}
-	}
-
 	return (
 		<>
 			<div className="header">
@@ -103,31 +89,7 @@ function Header({ userData, profileHeader }) {
 
 				{token && (
 					<div className="header_section2">
-						<div className="header_search">
-							<input
-								id="search-input"
-								className="header_search_input"
-								placeholder="Search..."
-								type="text"
-								onChange={e => setSearch(e.target.value)}
-								onKeyDown={handleSubmit}
-								value={search}
-								title="Separate tags by ', ' and the rest by ' '"
-							/>
-							<select
-								className="header_search_category"
-								onChange={e => setFilter(e.target.value)}
-								value={filter}
-							>
-								<option value="title">Title</option>
-								<option value="body">Body</option>
-								<option value="tags">Tags</option>
-								<option value="author">Author</option>
-							</select>
-						</div>
-						<button onClick={handleSearch} className="header_search_button">
-							<AiOutlineSearch className="header_search_button_icon" />
-						</button>
+						<HeaderSearch />
 					</div>
 				)}
 
