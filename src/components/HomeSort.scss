@@ -37,3 +37,19 @@
 		}
 	}
 }
+
+@media (max-width: 375px) {
+	.homesort_item {
+		&:last-child {
+			display: none;
+		}
+	}
+}
+
+@media (max-width: 235px) {
+	.homesort_item {
+		&:nth-last-child(2) {
+			display: none;
+		}
+	}
+}

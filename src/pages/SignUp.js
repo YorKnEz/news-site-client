@@ -98,8 +98,8 @@ function SignUp() {
 					</p>
 				</Modal>
 			)}
-			<div className="signUp_container">
-				<div className="signUp">
+			<div className="signUp">
+				<div className="signUp_container">
 					<span className="signUp_title">Sign Up</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<div className="form_row">

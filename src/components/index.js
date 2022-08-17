@@ -9,11 +9,14 @@ export {
 	FormTooltips,
 } from "./form"
 
+export { default as AccordionMenu } from "./AccordionMenu"
 export { default as AuthorCard } from "./AuthorCard"
 export { default as CardVotes } from "./CardVotes"
 export { default as CustomSelect } from "./CustomSelect"
 export { default as Footer } from "./Footer"
 export { default as Header } from "./Header"
+export { default as HeaderMenu } from "./HeaderMenu"
+export { default as HeaderSearch } from "./HeaderSearch"
 export { default as HomeSort } from "./HomeSort"
 export { default as Modal } from "./Modal"
 export { default as NewsCard } from "./NewsCard"

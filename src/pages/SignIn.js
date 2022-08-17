@@ -65,8 +65,8 @@ function SignIn() {
 
 	return (
 		<Page>
-			<div className="signUp_container">
-				<div className="signUp">
+			<div className="signUp">
+				<div className="signUp_container">
 					<span className="signUp_title">Sign In</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<FormInput

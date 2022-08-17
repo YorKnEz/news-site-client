@@ -75,8 +75,8 @@ function SignIn() {
 
 	return (
 		<Page>
-			<div className="signUp_container">
-				<div className="signUp">
+			<div className="signUp">
+				<div className="signUp_container">
 					<span className="signUp_title">Reset your password</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<FormPassword
