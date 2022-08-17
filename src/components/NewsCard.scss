@@ -33,7 +33,7 @@
 	}
 
 	&_posted {
-		padding-left: 8px;
+		padding: 0 8px;
 		font-size: 12px;
 		margin: 5px 0;
 		color: var(--secondText-color);
@@ -58,7 +58,7 @@
 	}
 
 	&_title {
-		padding-left: 8px;
+		padding: 0 8px;
 		font-size: 20px;
 		margin: 8px 0;
 	}
@@ -82,12 +82,12 @@
 
 	&_tags {
 		margin: 0;
-		padding-left: 8px;
+		padding: 0 8px;
 	}
 
 	&_options {
 		margin-top: 10px;
-		padding-left: 8px;
+		padding: 0 8px;
 		display: flex;
 
 		&_item {

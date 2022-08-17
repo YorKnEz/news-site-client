@@ -43,9 +43,11 @@ function BecomeEditor() {
 
 	return (
 		<Page>
-			<div className="becomeEditor_container">
-				<div className="becomeEditor">
-					<h1>So, you want to become an editor?</h1>
+			<div className="becomeEditor">
+				<div className="becomeEditor_container">
+					<span className="becomeEditor_title">
+						So, you want to become an editor?
+					</span>
 					<p>Send us an email with your CV!</p>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<div className="form_row">
