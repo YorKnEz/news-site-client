@@ -24,7 +24,7 @@
 	}
 
 	&_input {
-		width: 100%;
+		width: calc(100% - 28px);
 		background-color: var(--compBg-color);
 		border: none;
 		border-radius: 5px;
@@ -66,5 +66,11 @@
 		&:hover {
 			color: var(--primary-color);
 		}
+	}
+}
+
+@media (max-width: 768px) {
+	.search {
+		margin: 5px 0;
 	}
 }

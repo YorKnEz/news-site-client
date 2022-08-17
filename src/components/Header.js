@@ -3,23 +3,20 @@ import { AiOutlineMenu } from "react-icons/ai"
 import { Link } from "react-router-dom"
 
 import "./Header.scss"
-import { HeaderDropdown, HeaderSearch, ProfileHeader } from "../components"
+import { HeaderMenu, HeaderSearch, ProfileHeader } from "../components"
 import { UserContext } from "../context"
 
 function Header({ userData, profileHeader }) {
 	const { token } = useContext(UserContext)
 	const [showDropdown, setShowDropdown] = useState(false)
 
-	const toggleMenu = async e => {
-		const dropdown = document.querySelector(".dropdown")
+	const toggleMenu = () => {
+		const menu = document.querySelector(".dropdown")
+
+		menu.style.left = !showDropdown ? "0" : "-500px"
+		menu.previousSibling.style.display = !showDropdown ? "unset" : "none"
 
 		setShowDropdown(value => !value)
-
-		dropdown.style.top = !showDropdown
-			? profileHeader && userData
-				? "calc(54px + 40px)"
-				: "54px"
-			: "-1000px"
 	}
 
 	return (
@@ -44,12 +41,7 @@ function Header({ userData, profileHeader }) {
 				</div>
 			</div>
 			{profileHeader && userData && <ProfileHeader user={userData} />}
-			<HeaderDropdown
-				showDropdown={showDropdown}
-				setShowDropdown={setShowDropdown}
-				userData={userData}
-				profileHeader={profileHeader}
-			/>
+			<HeaderMenu toggleMenu={toggleMenu} />
 		</>
 	)
 }

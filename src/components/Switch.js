@@ -8,7 +8,6 @@ function Switch() {
 	const [switchState, setSwitchState] = useState(
 		theme === themes.dark ? true : false
 	)
-	console.log(themes.dark === theme)
 
 	const handleClick = () => {
 		toggleTheme()
