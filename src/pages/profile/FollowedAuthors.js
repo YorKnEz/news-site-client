@@ -4,36 +4,27 @@ import { useQuery } from "@apollo/client"
 
 import { AuthorCard, PageWithCards, QueryResult } from "../../components"
 import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
+import { useReachedBottom } from "../../utils/utils"
 
 function FollowedAuthors() {
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offset, setOffset] = useState(0)
 	const [authors, setAuthors] = useState([])
 
 	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
 		variables: { offset },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
 		if (data) setAuthors(authors => [...authors, ...data.followedAuthors])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 			setOffset(authors.length)
 		}
-	}, [reachedBottomOfPage, authors.length])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, authors.length])
 
 	return (
 		<PageWithCards>

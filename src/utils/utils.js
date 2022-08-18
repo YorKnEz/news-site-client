@@ -9,6 +9,22 @@ export const useDocumentTitle = title => {
 	return [documentTitle, setDocumentTitle]
 }
 
+export const useReachedBottom = (loading, error) => {
+	const [reachedBottom, setReachedBottom] = useState({})
+
+	// check if the user scrolled to the bottom of the page so we can request more news only then
+	window.addEventListener("scroll", event => {
+		const { clientHeight, scrollHeight, scrollTop } =
+			event.target.scrollingElement
+
+		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
+			setReachedBottom(true)
+		}
+	})
+
+	return [reachedBottom, setReachedBottom]
+}
+
 // updates inputs from Sign In and Sign Up page
 export const updateInputLabels = () => {
 	const form = document.querySelector("#form")

@@ -10,45 +10,33 @@ import {
 	QueryResult,
 } from "../../components"
 import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
+import { useReachedBottom } from "../../utils/utils"
 
 function Feed({ sortBy }) {
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [news, setNews] = useState([])
 	const [oldestId, setOldestId] = useState("")
 
 	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
-		variables: {
-			oldestId,
-			sortBy,
-		},
+		variables: { oldestId, sortBy },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
-		setReachedBottomOfPage(0)
+		setReachedBottom(false)
 		setNews([])
 		setOldestId("")
-	}, [sortBy])
+	}, [sortBy, setReachedBottom])
 
 	useEffect(() => {
 		if (data) setNews(news => [...news, ...data.newsForHome])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 			if (news.length > 0) setOldestId(news[news.length - 1].id)
 		}
-	}, [reachedBottomOfPage, news])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, news])
 
 	return (
 		<PageWithCards>

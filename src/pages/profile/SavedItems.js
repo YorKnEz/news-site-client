@@ -10,11 +10,11 @@ import {
 	QueryResult,
 } from "../../components"
 import { SAVED_ITEMS } from "../../utils/apollo-queries"
+import { useReachedBottom } from "../../utils/utils"
 
 function SavedItems() {
 	const { id } = useParams()
 
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [savedItems, setSavedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
@@ -22,14 +22,15 @@ function SavedItems() {
 	const { loading, error, data } = useQuery(SAVED_ITEMS, {
 		variables: { oldestId, oldestType, userId: id },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
 		if (data) setSavedItems(news => [...news, ...data.saved])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 
 			if (savedItems.length > 0) {
 				const oldestItem = savedItems[savedItems.length - 1]
@@ -41,17 +42,7 @@ function SavedItems() {
 				else setOldestType("comment")
 			}
 		}
-	}, [reachedBottomOfPage, savedItems])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, savedItems])
 
 	const onCommentEdit = comment => {
 		setSavedItems(arr =>
