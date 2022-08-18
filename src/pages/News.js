@@ -173,7 +173,7 @@ function News() {
 				{data && (
 					<>
 						<div className="news">
-							<CardVotes data={data.news} />
+							<CardVotes data={data.news} type="news" />
 							<div className="news_container">
 								<span className="news_posted news_padding">
 									{showDate()} by{" "}

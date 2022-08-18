@@ -47,7 +47,7 @@ function RedditNewsCard({ data, matches }) {
 					className="redditnewscard_matches"
 				>{`Matches ${matches}%`}</span>
 			)}
-			<CardVotes data={data} />
+			<CardVotes data={data} type="news" />
 			<a
 				href={sources}
 				target="_blank"

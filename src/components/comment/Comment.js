@@ -265,7 +265,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					></div>
 				)}
 				<div style={{ display }} className="comment_options">
-					<CommentVotes data={comment} />
+					<CardVotes data={comment} type="comment" />
 					<Button onClick={toggleReply} text="Reply" Icon={Reply} />
 					{saved ? (
 						<Button onClick={handleSave} text="Unsave" Icon={Unsave} />

@@ -1,4 +1,4 @@
-export { Comment, CommentCard, CommentEditor, CommentVotes } from "./comment"
+export { Comment, CommentCard, CommentEditor } from "./comment"
 
 export {
 	FormConfirmPassword,

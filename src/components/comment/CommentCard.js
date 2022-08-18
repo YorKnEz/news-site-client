@@ -161,7 +161,7 @@ function CommentCard({ data, onCommentEdit }) {
 						></Link>
 					)}
 					<div className="commentcard_options">
-						<CommentVotes data={comment} />
+						<CardVotes data={comment} type="comment" />
 						{saved ? (
 							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
 						) : (

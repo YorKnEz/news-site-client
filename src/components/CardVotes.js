@@ -12,7 +12,7 @@ import "./CardVotes.scss"
 import { VOTE_ITEM } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
-function CardVotes({ data }) {
+function CardVotes({ data, type }) {
 	const client = useApolloClient()
 	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
@@ -20,12 +20,16 @@ function CardVotes({ data }) {
 		score: data.score,
 	})
 
+	let parentType
+	if (type.includes("news")) parentType = "news"
+	if (type.includes("comment")) parentType = "comment"
+
 	const handleVote = action => {
 		vote({
 			variables: {
 				action,
 				parentId: data.id,
-				parentType: "news",
+				parentType,
 			},
 			onCompleted: ({ vote }) => {
 				if (!vote.success) {
@@ -46,25 +50,24 @@ function CardVotes({ data }) {
 	}
 
 	return (
-		<div className="cardvotes">
-			<button className="cardvotes_button" onClick={() => handleVote("like")}>
+		<div className={`votes ${type}-votes`}>
+			<button className="votes_button" onClick={() => handleVote("like")}>
 				{votes.voteState === "like" ? (
-					<AiFillLike className="cardvotes_icon cardvotes_like" />
+					<AiFillLike className="votes_icon votes_like" />
 				) : (
-					<AiOutlineLike className="cardvotes_icon" />
+					<AiOutlineLike className="votes_icon" />
 				)}
 			</button>
-			<span className={`cardvotes_${votes.voteState}`}>
+			<span
+				className={`votes_score votes_${votes.voteState} ${type}-votes_score`}
+			>
 				{compressNumber(votes.score)}
 			</span>
-			<button
-				className="cardvotes_button"
-				onClick={() => handleVote("dislike")}
-			>
+			<button className="votes_button" onClick={() => handleVote("dislike")}>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardvotes_icon cardvotes_dislike" />
+					<AiFillDislike className="votes_icon votes_dislike" />
 				) : (
-					<AiOutlineDislike className="cardvotes_icon" />
+					<AiOutlineDislike className="votes_icon" />
 				)}
 			</button>
 		</div>

@@ -132,7 +132,7 @@ function NewsCard({ data, matches }) {
 					/>
 				</Modal>
 			)}
-			<CardVotes data={data} />
+			<CardVotes data={data} type="news" />
 			<div className="newscard_container">
 				{matches && (
 					<span
@@ -184,6 +184,7 @@ function NewsCard({ data, matches }) {
 							Save
 						</button>
 					)}
+					<CardVotes data={data} type="news2" />
 				</div>
 			</div>
 		</div>
