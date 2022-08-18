@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react"
 import { AiFillSave, AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import { CardVotes, Modal } from "../components"
+import { Button, CardVotes, DropdownList, Modal } from "../components"
 import { SAVE_ITEM } from "../utils/apollo-queries"
 
 function NewsCard({ data, matches }) {
+	const history = useNavigate()
+
 	const [saved, setSaved] = useState(false)
 	const [showShareModal, setShowShareModal] = useState(false)
 
@@ -92,6 +94,10 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
+	const goToNews = () => {
+		history(`/news/${data.link}-${data.id}`)
+	}
+
 	const onShareModalSubmit = async () => setShowShareModal(false)
 
 	const handleShare = () => setShowShareModal(true)
@@ -162,29 +168,24 @@ function NewsCard({ data, matches }) {
 				</Link>
 				<div className="tags newscard_tags">{showTags()}</div>
 				<div className="newscard_options">
-					<Link
-						to={`/news/${data.link}-${data.id}`}
-						className="newscard_options_item"
-					>
-						<BsChatSquare className="newscard_options_item_icon" />
-						{data.replies}
-					</Link>
-					<button onClick={handleShare} className="newscard_options_item">
-						<AiOutlineShareAlt className="newscard_options_item_icon" />
-						Share
-					</button>
-					{saved ? (
-						<button onClick={handleSave} className="newscard_options_item">
-							<AiFillSave className="newscard_options_item_icon" />
-							Unsave
-						</button>
-					) : (
-						<button onClick={handleSave} className="newscard_options_item">
-							<AiOutlineSave className="newscard_options_item_icon" />
-							Save
-						</button>
-					)}
 					<CardVotes data={data} type="news2" />
+					<Button
+						onClick={goToNews}
+						text={`${data.replies}`}
+						Icon={BsChatSquare}
+					/>
+					<DropdownList buttonClass="newscard_options_item">
+						<Button
+							onClick={handleShare}
+							text="Share"
+							Icon={AiOutlineShareAlt}
+						/>
+						{saved ? (
+							<Button onClick={handleSave} text="Unsave" Icon={AiFillSave} />
+						) : (
+							<Button onClick={handleSave} text="Save" Icon={AiOutlineSave} />
+						)}
+					</DropdownList>
 				</div>
 			</div>
 		</div>

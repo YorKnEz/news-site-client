@@ -15,6 +15,7 @@ import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./News.scss"
 import {
+	Button,
 	CardVotes,
 	Modal,
 	NewsComments,
@@ -24,15 +25,6 @@ import {
 import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
-
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="news_options_item">
-			<Icon className="news_options_item_icon" />
-			{text}
-		</button>
-	)
-}
 
 function News() {
 	const { newsId } = useParams()
@@ -88,6 +80,10 @@ function News() {
 		const distance = formatDistance(createdAt, currentDate)
 
 		return `Posted ${distance} ago`
+	}
+
+	const goToNews = () => {
+		history(`/news/${data.news.link}-${data.news.id}`)
 	}
 
 	const onDeleteModalSubmit = async () => {
@@ -227,13 +223,11 @@ function News() {
 												))}
 										</div>
 										<div className="news_options news_padding">
-											<Link
-												to={`/news/${data.news.link}-${data.news.id}`}
-												className="news_options_item"
-											>
-												<BsChatSquare className="news_options_item_icon" />
-												{commentsCounter}
-											</Link>
+											<Button
+												onClick={goToNews}
+												text={`${data.news.replies}`}
+												Icon={BsChatSquare}
+											/>
 											<Button onClick={handleShare} text="Share" Icon={Share} />
 											{saved ? (
 												<Button

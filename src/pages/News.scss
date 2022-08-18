@@ -71,30 +71,7 @@
 	}
 
 	&_options {
-		padding-left: 8px;
 		display: flex;
-
-		&_item {
-			text-decoration: none;
-			display: flex;
-			align-items: center;
-			border: none;
-			background-color: transparent;
-			color: var(--secondText-color);
-			font-size: 14px;
-			cursor: pointer;
-
-			padding: 4px 8px;
-
-			&_icon {
-				margin-right: 4px;
-				font-size: 20px;
-			}
-
-			&:hover {
-				background-color: var(--border-color);
-				border-radius: 5px;
-			}
-		}
+		padding-left: 8px;
 	}
 }

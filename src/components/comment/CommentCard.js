@@ -12,18 +12,9 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { CommentEditor, CommentVotes } from "../../components"
+import { Button, CommentEditor, CardVotes } from "../../components"
 import { UserContext } from "../../context"
 import { REMOVE_COMMENT, SAVE_ITEM } from "../../utils/apollo-queries"
-
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="comment_options_item">
-			<Icon className="commentcard_options_item_icon" />
-			{text}
-		</button>
-	)
-}
 
 function CommentCard({ data, onCommentEdit }) {
 	const { news, comment } = data

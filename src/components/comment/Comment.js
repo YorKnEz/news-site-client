@@ -14,7 +14,7 @@ import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./Comment.scss"
-import { CommentEditor, CommentVotes, QueryResult } from "../../components"
+import { Button, CardVotes, CommentEditor, QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import {
 	COMMENT_REPLIES,
@@ -22,15 +22,6 @@ import {
 	SAVE_ITEM,
 	UPDATE_REPLIES_COUNTER,
 } from "../../utils/apollo-queries"
-
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="comment_options_item">
-			<Icon className="comment_options_item_icon" />
-			{text}
-		</button>
-	)
-}
 
 function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
@@ -214,12 +205,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 		>
 			<div className="comment_container1">
 				{collapse ? (
-					<button
-						onClick={toggleCollapse}
-						className="comment_options_item comment_options_collapse"
-					>
-						<AiOutlineExpand className="comment_options_item_icon comment_options_collapse_icon" />
-					</button>
+					<Button onClick={toggleCollapse} Icon={AiOutlineExpand} />
 				) : (
 					<>
 						<div className="comment_avatar" style={{ backgroundImage }} />

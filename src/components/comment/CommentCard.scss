@@ -77,37 +77,6 @@
 
 	&_options {
 		display: flex;
-
-		&_item {
-			margin-left: 4px;
-			padding-right: 8px;
-			cursor: pointer;
-			text-decoration: none;
-			display: inline-flex;
-			align-items: center;
-
-			color: var(--secondText-color);
-			background-color: transparent;
-
-			border: none;
-			font-size: 12px;
-
-			transition: all 0.2s ease;
-
-			&_icon {
-				font-size: 20px;
-				margin-right: 4px;
-			}
-
-			&:hover {
-				background-color: var(--border-color);
-				border-radius: 5px;
-			}
-
-			&:nth-child(2) {
-				margin-left: 8px;
-			}
-		}
 	}
 
 	&:hover {
