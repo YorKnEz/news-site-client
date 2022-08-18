@@ -3,7 +3,7 @@
 	overflow: hidden;
 
 	display: flex;
-	width: 100%;
+	width: calc(100% - 2px);
 	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
@@ -12,6 +12,7 @@
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
+	font-size: 1rem;
 
 	&_matches {
 		position: absolute;
@@ -19,7 +20,7 @@
 		right: 16px;
 
 		font-family: monospace;
-		font-size: 12px;
+		font-size: 0.8em;
 
 		padding: 8px 10px;
 		border-radius: 5px;
@@ -34,7 +35,7 @@
 
 	&_posted {
 		padding: 0 8px;
-		font-size: 12px;
+		font-size: 0.8em;
 		margin: 5px 0;
 		color: var(--secondText-color);
 	}
@@ -59,7 +60,7 @@
 
 	&_title {
 		padding: 0 8px;
-		font-size: 20px;
+		font-size: 1.2em;
 		margin: 8px 0;
 	}
 
@@ -76,7 +77,7 @@
 		width: calc(100% - 16px);
 
 		word-wrap: break-word;
-		font-size: 16px;
+		font-size: 1em;
 		color: var(--secondText-color);
 	}
 
@@ -89,9 +90,23 @@
 		display: flex;
 		margin-top: 10px;
 		padding: 0 8px;
+		font-size: 0.8em;
 	}
 
 	&:hover {
 		border: 1px solid var(--secondText-color);
+	}
+}
+
+@media (max-width: 768px) {
+	.newscard {
+		font-size: 0.8rem;
+		border-radius: 0;
+		overflow: visible;
+
+		&_container {
+			width: 100%;
+			padding: 10px 8px;
+		}
 	}
 }

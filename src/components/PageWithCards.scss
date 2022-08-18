@@ -29,6 +29,11 @@
 @media (max-width: 768px) {
 	.pagewc {
 		grid-template-columns: 100%;
+		padding: 0;
+
+		&_col1 {
+			margin: 0;
+		}
 
 		&_col2 {
 			display: none;

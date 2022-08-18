@@ -35,6 +35,7 @@
 
 .comment-votes {
 	display: inline-flex;
+	margin-right: 8px;
 
 	&_score {
 		padding: 0 8px;
@@ -62,12 +63,17 @@
 		font-size: 0.6rem;
 	}
 
+	.comment-votes {
+		margin-right: 4px;
+	}
+
 	.news-votes {
 		display: none;
 	}
 
 	.news2-votes {
 		display: inline-flex;
+		margin-right: 4px;
 
 		&_score {
 			padding: 0 4px;

@@ -5,7 +5,7 @@
 	padding: 8px 16px;
 	margin: 4px 0;
 	display: flex;
-	width: calc(100% - 32px);
+	width: calc(100% - 32px - 2px);
 
 	&_item {
 		display: flex;
