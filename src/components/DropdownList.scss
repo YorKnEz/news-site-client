@@ -1,0 +1,35 @@
+.dropdownlist {
+	&_button {
+		display: none;
+
+		&_icon {
+			margin: 0;
+		}
+	}
+
+	&_items {
+		display: flex;
+	}
+}
+
+@media (max-width: 400px) {
+	.dropdownlist {
+		position: relative;
+
+		&_button {
+			display: table;
+		}
+
+		&_items {
+			position: absolute;
+			z-index: 1;
+
+			flex-direction: column;
+
+			border: 1px solid var(--border-color);
+			border-radius: 5px;
+			background-color: var(--compBg-color);
+			padding: 4px;
+		}
+	}
+}

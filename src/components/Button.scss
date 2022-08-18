@@ -8,12 +8,12 @@
 	align-items: center;
 
 	color: var(--secondText-color);
-	font-size: 14px;
+	font-size: 0.8rem;
 	margin: auto 0;
 	padding: 4px 8px;
 
 	&_icon {
-		font-size: 20px;
+		font-size: 1.5em;
 	}
 
 	&_text {
@@ -23,5 +23,12 @@
 	&:hover {
 		background-color: var(--border-color);
 		border-radius: 5px;
+	}
+}
+
+@media (max-width: 768px) {
+	.btn {
+		font-size: 0.6rem;
+		padding: 4px;
 	}
 }

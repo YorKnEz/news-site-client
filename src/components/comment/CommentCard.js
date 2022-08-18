@@ -12,7 +12,12 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { Button, CommentEditor, CardVotes } from "../../components"
+import {
+	Button,
+	CommentEditor,
+	CardVotes,
+	DropdownList,
+} from "../../components"
 import { UserContext } from "../../context"
 import { REMOVE_COMMENT, SAVE_ITEM } from "../../utils/apollo-queries"
 
@@ -153,17 +158,19 @@ function CommentCard({ data, onCommentEdit }) {
 					)}
 					<div className="commentcard_options">
 						<CardVotes data={comment} type="comment" />
-						{saved ? (
-							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
-						) : (
-							<Button onClick={handleSave} text="Save" Icon={Save} />
-						)}
-						{user.id == comment.author.id && (
-							<>
-								<Button onClick={handleDelete} text="Delete" Icon={Delete} />
-								<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
-							</>
-						)}
+						<DropdownList>
+							{saved ? (
+								<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
+							) : (
+								<Button onClick={handleSave} text="Save" Icon={Save} />
+							)}
+							{user.id == comment.author.id && (
+								<>
+									<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+									<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
+								</>
+							)}
+						</DropdownList>
 					</div>
 				</div>
 			</div>

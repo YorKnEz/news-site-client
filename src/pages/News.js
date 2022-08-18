@@ -17,6 +17,7 @@ import "./News.scss"
 import {
 	Button,
 	CardVotes,
+	DropdownList,
 	Modal,
 	NewsComments,
 	PageWithCards,
@@ -228,30 +229,40 @@ function News() {
 												text={`${data.news.replies}`}
 												Icon={BsChatSquare}
 											/>
-											<Button onClick={handleShare} text="Share" Icon={Share} />
-											{saved ? (
+											<DropdownList>
 												<Button
-													onClick={handleSave}
-													text="Unsave"
-													Icon={Unsave}
+													onClick={handleShare}
+													text="Share"
+													Icon={Share}
 												/>
-											) : (
-												<Button onClick={handleSave} text="Save" Icon={Save} />
-											)}
-											{user.id == data.news.author.id && (
-												<>
+												{saved ? (
 													<Button
-														onClick={handleDelete}
-														text="Delete"
-														Icon={Delete}
+														onClick={handleSave}
+														text="Unsave"
+														Icon={Unsave}
 													/>
+												) : (
 													<Button
-														onClick={handleEdit}
-														text="Edit"
-														Icon={Edit}
+														onClick={handleSave}
+														text="Save"
+														Icon={Save}
 													/>
-												</>
-											)}
+												)}
+												{user.id == data.news.author.id && (
+													<>
+														<Button
+															onClick={handleDelete}
+															text="Delete"
+															Icon={Delete}
+														/>
+														<Button
+															onClick={handleEdit}
+															text="Edit"
+															Icon={Edit}
+														/>
+													</>
+												)}
+											</DropdownList>
 										</div>
 									</>
 								)}
