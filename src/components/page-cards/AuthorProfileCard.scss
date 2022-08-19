@@ -9,11 +9,13 @@
 	background-color: var(--compBg-color);
 	display: flex;
 	flex-direction: column;
+	font-size: 1rem;
 
 	&_info {
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
+		font-size: 0.8em;
 
 		&_text {
 			display: flex;
@@ -23,10 +25,10 @@
 		}
 
 		img {
-			width: 64px;
-			height: 64px;
+			width: 40px;
+			height: 40px;
 			border-radius: 100px;
-			margin-right: 16px;
+			margin-right: 8px;
 		}
 
 		h3,
@@ -39,29 +41,14 @@
 		display: flex;
 		flex-direction: column;
 		margin: 16px 0;
+		font-size: 0.8em;
 
 		&_item {
 			margin: 2px 0;
-			font-size: 14px;
 		}
 	}
 
 	&:hover {
 		border: 1px solid var(--secondText-color);
-	}
-}
-
-@media (max-width: 960px) {
-	.authorprofilecard {
-		&_info {
-			&_text {
-				font-size: 14px;
-			}
-
-			img {
-				width: 40px;
-				height: 40px;
-			}
-		}
 	}
 }
