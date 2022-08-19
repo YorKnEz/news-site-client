@@ -44,6 +44,7 @@ select:-webkit-autofill:focus {
 
 	h4 {
 		margin: 0;
+		color: var(--bold-color);
 	}
 
 	&_item {
@@ -77,6 +78,7 @@ select:-webkit-autofill:focus {
 
 	h4 {
 		margin: 14px 10px 0 0;
+		color: var(--bold-color);
 	}
 
 	&_item {
@@ -183,7 +185,7 @@ select:-webkit-autofill:focus {
 		position: absolute;
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		padding: 0 5px 0 5px;
 		font-size: 16px;
 		background-color: var(--compBg-color);

@@ -2,34 +2,36 @@ import React from "react"
 
 export const themes = {
 	dark: {
-		text: "#eee",
-		disabled: "#616161",
+		bold: "#f2f2f2",
+		text: "#dedede",
+		disabled: "#999999",
 
-		compBg: "#151515", // used for background of different components
-		compBgDark: "#0f0f0f", // used for a darker bg of different components
-		compBgLight: "#242424", // used for a lighter bg of different components
-		pageBg: "#050505", // used for the background of the page
+		compBg: "#1c1c1c", // used for background of different components
+		compBgDark: "#171717", // used for a darker bg of different components
+		compBgLight: "#212121", // used for a lighter bg of different components
+		pageBg: "#121212", // used for the background of the page
 
 		border: "#303030",
-		primary: "#00d5ff",
+		primary: "#00c3ff",
 		complementary: "#ff3b00", // primary complementary
 
 		// primary button
-		buttonP: "white",
-		buttonHoverP: "#ddd",
+		buttonP: "#dedede",
+		buttonHoverP: "#dadada",
 		buttonTextP: "#161616",
 
 		// secondary button
-		buttonS: "#eeeeee00",
-		buttonHoverS: "#eeeeee10",
-		buttonTextS: "#eeeeee",
+		buttonS: "#dedede00",
+		buttonHoverS: "#dedede10",
+		buttonTextS: "#dedede",
 
-		link: "rgb(27, 145, 204)",
-		linkBg: "rgba(27, 145, 204, 0.3)",
-		linkHover: "rgb(97, 188, 234)",
-		linkHoverBg: "rgb(97, 188, 234, 0.3)",
+		link: "#00c3ffaa",
+		linkBg: "#00c3ff20",
+		linkHover: "#6fd4ffaa",
+		linkHoverBg: "#6fd4ff20",
 	},
 	light: {
+		bold: "#161616",
 		text: "#161616",
 		disabled: "#434343",
 
