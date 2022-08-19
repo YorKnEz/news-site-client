@@ -28,13 +28,12 @@
 
 	&_container {
 		width: calc(100% - 44px);
-		padding: 10px 0;
+		padding: 10px 8px;
 		display: flex;
 		flex-direction: column;
 	}
 
 	&_posted {
-		padding: 0 8px;
 		font-size: 0.8em;
 		margin: 5px 0;
 		color: var(--disabled-color);
@@ -59,7 +58,6 @@
 	}
 
 	&_title {
-		padding: 0 8px;
 		font-size: 1.2em;
 		margin: 8px 0;
 	}
@@ -73,7 +71,6 @@
 	}
 
 	&_body {
-		padding: 0 8px;
 		width: calc(100% - 16px);
 
 		word-wrap: break-word;
@@ -83,13 +80,11 @@
 
 	&_tags {
 		margin: 0;
-		padding: 0 8px;
 	}
 
 	&_options {
 		display: flex;
 		margin-top: 10px;
-		padding: 0 8px;
 		font-size: 0.8em;
 	}
 
@@ -106,7 +101,6 @@
 
 		&_container {
 			width: 100%;
-			padding: 10px 8px;
 		}
 	}
 }

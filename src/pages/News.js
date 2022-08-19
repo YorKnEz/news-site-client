@@ -172,7 +172,7 @@ function News() {
 						<div className="news">
 							<CardVotes data={data.news} type="news" />
 							<div className="news_container">
-								<span className="news_posted news_padding">
+								<span className="news_posted">
 									{showDate()} by{" "}
 									<Link
 										to={`/profile/${
@@ -183,7 +183,7 @@ function News() {
 										{data.news.author.fullName}
 									</Link>
 								</span>
-								<div className="news_link news_padding">
+								<div className="news_link">
 									<span className="news_title">{data.news.title}</span>
 									{data.news.thumbnail && (
 										<img
@@ -195,9 +195,9 @@ function News() {
 								</div>
 								{data.news.type !== "[deleted]" && (
 									<>
-										<div className="news_body news_padding" id="body"></div>
-										<div className="sources news_padding">
-											<h4>Sources</h4>
+										<div className="news_body" id="body"></div>
+										<div className="sources">
+											<span className="sources_title">Sources</span>
 											{sources.map(s => (
 												<a
 													className="sources_item"
@@ -210,8 +210,8 @@ function News() {
 												</a>
 											))}
 										</div>
-										<div className="tags news_padding">
-											<h4>Tags</h4>
+										<div className="tags">
+											<span className="tags_title">Tags</span>
 											{tags.length > 0 &&
 												tags.map(s => (
 													<Link
@@ -223,7 +223,7 @@ function News() {
 													</Link>
 												))}
 										</div>
-										<div className="news_options news_padding">
+										<div className="news_options">
 											<Button
 												onClick={goToNews}
 												text={`${data.news.replies}`}
