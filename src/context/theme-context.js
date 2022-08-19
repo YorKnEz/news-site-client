@@ -23,7 +23,7 @@ export const themes = {
 		buttonHoverS: "#eeeeee10",
 		buttonTextS: "#eeeeee",
 
-		shadow: "black",
+		error: "#CF6679",
 
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
@@ -52,7 +52,7 @@ export const themes = {
 		buttonHoverS: "#00000010",
 		buttonTextS: "#00d5ff",
 
-		shadow: "#161616",
+		error: "red",
 
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
