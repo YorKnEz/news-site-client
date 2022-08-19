@@ -4,13 +4,8 @@ import { AiOutlineFrown } from "react-icons/ai"
 import { useQuery } from "@apollo/client"
 
 import "./SearchResult.scss"
-import {
-	AuthorCard,
-	NewsCard,
-	Page,
-	QueryResult,
-	RedditNewsCard,
-} from "../components"
+import { NewsCard, Page, QueryResult, RedditNewsCard } from "../components"
+import { AuthorProfileCard } from "../components/page-cards"
 import { SEARCH } from "../utils/apollo-queries"
 
 function SearchResult() {
@@ -47,9 +42,13 @@ function SearchResult() {
 			}
 
 			if (params.filter === "author") {
-				return data.search.map(({ result }) => (
-					<AuthorCard data={result} key={result.id} />
-				))
+				return (
+					<div className="searchResult_authors">
+						{data.search.map(({ result }) => (
+							<AuthorProfileCard data={result} key={result.id} />
+						))}
+					</div>
+				)
 			}
 
 			return data.search.map(({ matches, result }) =>

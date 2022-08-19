@@ -560,6 +560,7 @@ export const SEARCH = gql`
 			... on AuthorSearch {
 				result {
 					id
+					type
 					fullName
 					email
 					profilePicture
@@ -595,6 +596,7 @@ export const FOLLOWED_AUTHORS = gql`
 	query FollowedAuthors($offset: Int) {
 		followedAuthors(offset: $offset) {
 			id
+			type
 			fullName
 			email
 			profilePicture

@@ -60,38 +60,6 @@
 		}
 	}
 
-	&_pages {
-		margin-top: 8px;
-		display: grid;
-		grid-template-columns: 50% 50%;
-		align-items: center;
-
-		&_title {
-			font-size: 20px;
-			margin: 0;
-		}
-
-		&_item {
-			border: none;
-			border-radius: 0;
-			border-bottom: 1px solid var(--border-color);
-			color: var(--text-color);
-
-			transition: border 0;
-
-			&:hover {
-				color: var(--primary-color);
-				margin: 0;
-				border-bottom: 3px solid var(--primary-color);
-			}
-
-			&_active {
-				color: var(--primary-color);
-				border-bottom: 3px solid var(--primary-color);
-			}
-		}
-	}
-
 	&_news {
 		display: flex;
 		flex-direction: column;
@@ -122,5 +90,11 @@
 		&_data {
 			font-size: 20px;
 		}
+	}
+}
+
+@media (max-width: 500px) {
+	.profile_followedAuthors {
+		grid-template-columns: 100%;
 	}
 }

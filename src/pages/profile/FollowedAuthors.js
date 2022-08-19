@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
-import { AuthorCard, PageWithCards, QueryResult } from "../../components"
+import { PageWithCards, QueryResult } from "../../components"
+import { AuthorProfileCard } from "../../components/page-cards"
 import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
 import { useReachedBottom } from "../../utils/utils"
 
@@ -28,9 +29,9 @@ function FollowedAuthors() {
 
 	return (
 		<PageWithCards>
-			<div className="profile_news">
+			<div className="profile_followedAuthors">
 				{authors.map(author => (
-					<AuthorCard key={author.id} data={author} />
+					<AuthorProfileCard key={author.id} data={author} />
 				))}
 				<QueryResult loading={loading} error={error} data={data} />
 			</div>

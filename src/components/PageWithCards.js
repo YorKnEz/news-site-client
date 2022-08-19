@@ -51,7 +51,7 @@ function Page({ children }) {
 						{userData && Object.keys(userData).length > 0 ? (
 							<>
 								<BestAuthorsCard />
-								<AuthorProfileCard data={userData} />
+								<AuthorProfileCard pageCard data={userData} />
 								{(profileHeader || news) && <AuthorNewsCard />}
 							</>
 						) : (
