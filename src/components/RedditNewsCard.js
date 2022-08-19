@@ -31,6 +31,19 @@ function RedditNewsCard({ data, matches }) {
 		}
 	}, [matches, data.id])
 
+	useEffect(() => {
+		const div = document.getElementById(`reddit-${id}`)
+
+		// replace all html tags from Draft-js to get raw text body
+		let shortBody = body.replaceAll(/<\/?[\s\S]*?>/g, "")
+
+		// get first 400 chars of that
+		shortBody = shortBody.slice(0, 396) + "..."
+
+		// render it
+		if (shortBody.length > 3) div.innerHTML = shortBody
+	})
+
 	const showDate = () => {
 		const createdDate = fromUnixTime(createdAt / 1000)
 		const currentDate = fromUnixTime(Date.now() / 1000)
@@ -58,7 +71,9 @@ function RedditNewsCard({ data, matches }) {
 					author.fullName
 				} ${showDate()} ago `}</span>
 				<span className="redditnewscard_title">{title}</span>
-				<div className="redditnewscard_body">{body}</div>
+				<div id={`reddit-${id}`} className="redditnewscard_body">
+					{body}
+				</div>
 			</a>
 		</div>
 	)
