@@ -12,6 +12,7 @@
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
+	font-size: 0.8rem;
 
 	&_matches {
 		position: absolute;
@@ -19,7 +20,7 @@
 		right: 16px;
 
 		font-family: monospace;
-		font-size: 12px;
+		font-size: 0.8em;
 
 		padding: 8px 10px;
 		border-radius: 5px;
@@ -35,9 +36,16 @@
 		color: var(--text-color);
 	}
 
+	&_posted {
+		padding-left: 8px;
+		font-size: 0.8em;
+		margin: 5px 0;
+		color: var(--disabled-color);
+	}
+
 	&_title {
 		padding-left: 8px;
-		font-size: 20px;
+		font-size: 1.2em;
 		margin: 8px 0;
 		color: var(--bold-color);
 	}
@@ -47,18 +55,22 @@
 		width: calc(100% - 16px);
 
 		word-wrap: break-word;
-		font-size: 16px;
-		color: var(--disabled-color);
-	}
-
-	&_posted {
-		padding-left: 8px;
-		font-size: 12px;
-		margin: 5px 0;
+		font-size: 1em;
 		color: var(--disabled-color);
 	}
 
 	&:hover {
 		border: 1px solid var(--disabled-color);
+	}
+}
+
+@media (max-width: 768px) {
+	.redditnewscard {
+		border-radius: 0;
+
+		&_container {
+			width: 100%;
+			padding: 10px 8px;
+		}
 	}
 }

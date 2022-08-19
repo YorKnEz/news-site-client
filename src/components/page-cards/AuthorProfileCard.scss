@@ -1,8 +1,9 @@
-.authorprofilecard {
+// apc - author proifle card
+.apc {
 	text-decoration: none;
-	width: calc(100% - 40px);
+	width: calc(100% - 40px - 8px - 2px);
 	padding: 20px;
-	margin: 4px 0;
+	margin: 4px;
 	color: var(--text-color);
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
@@ -17,11 +18,21 @@
 		justify-content: flex-start;
 		font-size: 0.8em;
 
-		&_text {
+		&_container {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			overflow: hidden;
+		}
+
+		&_title {
+			color: var(--bold-color);
+			font-weight: 700;
+			font-size: 1.1em;
+		}
+
+		&_text {
+			font-size: 1.1em;
 		}
 
 		img {
@@ -29,11 +40,6 @@
 			height: 40px;
 			border-radius: 100px;
 			margin-right: 8px;
-		}
-
-		h3,
-		p {
-			margin: 0;
 		}
 	}
 
@@ -45,10 +51,20 @@
 
 		&_item {
 			margin: 2px 0;
+
+			&_title {
+				font-weight: 700;
+				color: var(--bold-color);
+			}
 		}
 	}
 
 	&:hover {
 		border: 1px solid var(--disabled-color);
 	}
+}
+
+.page-card {
+	margin: 4px 0;
+	width: calc(100% - 40px);
 }

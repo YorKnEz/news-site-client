@@ -2,30 +2,25 @@
 	overflow: hidden;
 
 	display: flex;
-	width: 100%;
+	width: calc(100% - 2px);
 	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 
-	// user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
-
-	&_padding {
-		padding-left: 8px;
-	}
+	font-size: 1rem;
 
 	&_container {
 		width: calc(100% - 44px - 8px);
 		padding: 10px 8px;
 		display: flex;
 		flex-direction: column;
-		padding-right: 8px;
 	}
 
 	&_posted {
-		font-size: 12px;
+		font-size: 0.7em;
 		margin: 5px 0;
 		color: var(--disabled-color);
 	}
@@ -48,8 +43,8 @@
 	}
 
 	&_title {
-		font-size: 20px;
 		margin: 8px 0;
+		font-size: 1.1em;
 		color: var(--bold-color);
 	}
 
@@ -60,6 +55,8 @@
 
 	&_body {
 		word-wrap: break-word;
+		text-align: justify;
+		font-size: 0.9em;
 
 		a {
 			text-decoration: none;
@@ -73,6 +70,17 @@
 
 	&_options {
 		display: flex;
-		padding-left: 8px;
+	}
+}
+
+@media (max-width: 768px) {
+	.news {
+		overflow: visible;
+		border-radius: 0;
+
+		&_container {
+			width: calc(100% - 8px);
+			padding: 10px 16px;
+		}
 	}
 }

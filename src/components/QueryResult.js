@@ -14,7 +14,7 @@ function QueryResult({ loading, error, data, children }) {
 					alignItems: "center",
 					justifyContent: "center",
 					margin: "24px 0",
-					fontSize: "20px",
+					fontSize: "1rem",
 					height: "50px",
 				}}
 			>
@@ -66,7 +66,7 @@ function QueryResult({ loading, error, data, children }) {
 							alignItems: "center",
 							justifyContent: "center",
 							margin: "24px 0",
-							fontSize: "20px",
+							fontSize: "1rem",
 							height: "50px",
 						}}
 					>

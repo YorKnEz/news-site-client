@@ -1,22 +1,26 @@
 .comments {
 	display: flex;
 	flex-direction: column;
-	width: calc(100% - 44px);
+	width: calc(100% - 44px - 2px);
 	margin: 4px 0;
+	padding-bottom: 8px;
+	padding-right: 44px;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
-	padding-right: 44px;
-	padding-bottom: 8px;
 
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
 
+	&_container {
+		padding: 44px 0 0 52px;
+	}
+
 	&_input {
 		display: flex;
 		flex-direction: column;
-		margin: 44px 0 20px 44px;
+		margin-bottom: 20px;
 
 		&_title {
 			font-size: 12px;
@@ -25,9 +29,6 @@
 	}
 
 	&_sort {
-		margin-left: 44px;
-		padding-left: 8px;
-
 		hr {
 			color: var(--border-color);
 		}
@@ -42,11 +43,23 @@
 		padding: 8px 0 8px 21px;
 
 		&_replies {
-			padding: 8px 0 8px 0;
+			padding: 8px 0;
 		}
 
 		&:hover {
 			color: var(--linkHover-color);
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.comments {
+		border-radius: 0;
+		width: calc(100% - 16px - 2px);
+		padding-right: 16px;
+
+		&_container {
+			padding: 24px 0 0 16px;
 		}
 	}
 }

@@ -41,18 +41,21 @@ select:-webkit-autofill:focus {
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 8px;
+	font-size: 1rem;
 
-	h4 {
+	&_title {
 		margin: 0;
+		font-size: 1em;
 		color: var(--bold-color);
 	}
 
 	&_item {
 		cursor: pointer;
 		user-select: none;
-		margin-left: 10px;
+		// margin-left: 10px;
 		text-decoration: none;
 		color: var(--link-color);
+		font-size: 0.9em;
 		word-break: break-word;
 
 		margin-top: 12px;
@@ -75,9 +78,11 @@ select:-webkit-autofill:focus {
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: 8px;
+	font-size: 1rem;
 
-	h4 {
+	&_title {
 		margin: 14px 10px 0 0;
+		font-size: 1em;
 		color: var(--bold-color);
 	}
 
@@ -89,6 +94,7 @@ select:-webkit-autofill:focus {
 		text-decoration: none;
 		color: var(--link-color);
 		background-color: var(--linkBg-color);
+		font-size: 0.9em;
 		word-break: break-word;
 
 		padding: 5px;
@@ -180,6 +186,7 @@ select:-webkit-autofill:focus {
 
 	display: inline-block;
 	position: relative;
+	font-size: 0.9rem;
 
 	&_label {
 		position: absolute;
@@ -187,7 +194,7 @@ select:-webkit-autofill:focus {
 		left: var(--labelInLeft);
 		color: var(--disabled-color);
 		padding: 0 5px 0 5px;
-		font-size: 16px;
+		font-size: 1em;
 		background-color: var(--compBg-color);
 		display: inline-block;
 		user-select: none;
@@ -199,7 +206,7 @@ select:-webkit-autofill:focus {
 		border-radius: 5px;
 		padding: 16px 20px;
 		margin: 10px 0;
-		font-size: 14px;
+		font-size: 0.9em;
 		width: calc(100% - 40px);
 		caret-color: var(--text-color);
 		color: var(--text-color);
@@ -223,7 +230,7 @@ select:-webkit-autofill:focus {
 			color: var(--text-color) !important;
 			display: flex;
 			align-items: center;
-			font-size: 16px;
+			font-size: 1em;
 			margin: 16px 16px;
 		}
 
@@ -244,7 +251,7 @@ select:-webkit-autofill:focus {
 		&_label {
 			cursor: pointer;
 			color: var(--text-color) !important;
-			font-size: 16px;
+			font-size: 1em;
 			margin-bottom: 16px;
 
 			display: flex;
@@ -286,7 +293,7 @@ select:-webkit-autofill:focus {
 		display: flex;
 
 		&_icon {
-			font-size: 20px;
+			font-size: 1.5em;
 			margin-right: 5px;
 		}
 	}

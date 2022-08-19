@@ -4,6 +4,7 @@
 	grid-template-columns: 44px calc(100% - 44px);
 	position: relative;
 	margin-top: 24px;
+	font-size: 1rem;
 
 	&_error {
 		color: var(--complementary-color);
@@ -11,7 +12,7 @@
 		display: flex;
 
 		&_icon {
-			font-size: 20px;
+			font-size: 1.2em;
 			margin-right: 5px;
 		}
 	}
@@ -75,7 +76,7 @@
 		height: 32px;
 
 		&_author {
-			font-size: 12px;
+			font-size: 0.7em;
 			color: var(--disabled-color);
 
 			&_link {
@@ -92,6 +93,7 @@
 	&_body {
 		user-select: text;
 		word-wrap: break-word;
+		font-size: 0.8em;
 
 		a {
 			text-decoration: none;
@@ -109,6 +111,17 @@
 
 	&_options {
 		display: flex;
+		width: fit-content;
 		margin-bottom: 8px;
+	}
+}
+
+@media (max-width: 768px) {
+	.comment {
+		margin-top: 16px;
+
+		&_container1 {
+			padding-left: 16px;
+		}
 	}
 }

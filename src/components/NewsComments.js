@@ -97,27 +97,32 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 
 	return (
 		<div className="comments">
-			<div className="comments_input">
-				<span className="comments_input_title news_padding">
-					Comment as{" "}
-					<Link to={`/profile/${user.id}/overview`} className="news_authorlink">
-						{user.fullName}
-					</Link>
-				</span>
-				<CommentEditor
-					newsId={newsId}
-					parentId={newsId}
-					parentType="news"
-					onCommentAdd={onCommentAdd}
-				/>
-			</div>
-			<div className="comments_sort">
-				<CustomSelect
-					defaultItem={options[0]}
-					list={options}
-					setSelectedItem={handlePage}
-				/>
-				<hr />
+			<div className="comments_container">
+				<div className="comments_input">
+					<span className="comments_input_title">
+						Comment as{" "}
+						<Link
+							to={`/profile/${user.id}/overview`}
+							className="news_authorlink"
+						>
+							{user.fullName}
+						</Link>
+					</span>
+					<CommentEditor
+						newsId={newsId}
+						parentId={newsId}
+						parentType="news"
+						onCommentAdd={onCommentAdd}
+					/>
+				</div>
+				<div className="comments_sort">
+					<CustomSelect
+						defaultItem={options[0]}
+						list={options}
+						setSelectedItem={handlePage}
+					/>
+					<hr style={{ marginBottom: 0 }} />
+				</div>
 			</div>
 			<div className="comments_list">
 				{comments.map(comment => (

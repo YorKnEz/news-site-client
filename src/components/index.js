@@ -10,7 +10,6 @@ export {
 } from "./form"
 
 export { default as AccordionMenu } from "./AccordionMenu"
-export { default as AuthorCard } from "./AuthorCard"
 export { default as Button } from "./Button"
 export { default as CardVotes } from "./CardVotes"
 export { default as CustomSelect } from "./CustomSelect"

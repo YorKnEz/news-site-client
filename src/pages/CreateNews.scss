@@ -38,14 +38,17 @@
 }
 
 .tooltip {
-	display: flex;
+	display: grid;
+	grid-template-columns: 20px calc(100% - 20px);
 	align-items: center;
 	margin: 10px 0;
 	user-select: none;
 	color: var(--disabled-color);
+	font-size: 1rem;
 
 	&_icon {
 		margin-right: 10px;
+		font-size: 0.8rem;
 	}
 
 	&_text {

@@ -352,7 +352,7 @@ function EditNews() {
 							</p>
 						)}
 						<div className="sources">
-							<h4>Sources</h4>
+							<span className="sources_title">Sources</span>
 							{sources.map(s => (
 								<div
 									className="sources_item"
@@ -372,7 +372,7 @@ function EditNews() {
 							error={error2.sources.message}
 						/>
 						<div className="tags">
-							<h4>Tags</h4>
+							<span className="tags_title">Tags</span>
 							{tags.map(s => (
 								<div className="tags_item" key={s} onClick={handleDeleteTag}>
 									{s}
