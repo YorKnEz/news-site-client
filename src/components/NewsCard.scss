@@ -37,11 +37,11 @@
 		padding: 0 8px;
 		font-size: 0.8em;
 		margin: 5px 0;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_authorlink {
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		text-decoration: none;
 
 		&:hover {
@@ -78,7 +78,7 @@
 
 		word-wrap: break-word;
 		font-size: 1em;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_tags {
@@ -94,7 +94,7 @@
 	}
 
 	&:hover {
-		border: 1px solid var(--secondText-color);
+		border: 1px solid var(--disabled-color);
 	}
 }
 

@@ -47,7 +47,7 @@
 		background-color: var(--border-color);
 
 		&:hover {
-			background-color: var(--secondText-color);
+			background-color: var(--disabled-color);
 		}
 
 		&_container {
@@ -58,7 +58,7 @@
 
 			&:hover {
 				.comment_line {
-					background-color: var(--secondText-color);
+					background-color: var(--disabled-color);
 				}
 			}
 		}
@@ -76,10 +76,10 @@
 
 		&_author {
 			font-size: 12px;
-			color: var(--secondText-color);
+			color: var(--disabled-color);
 
 			&_link {
-				color: var(--secondText-color);
+				color: var(--disabled-color);
 				text-decoration: none;
 
 				&:hover {

@@ -3,7 +3,7 @@ import React from "react"
 export const themes = {
 	dark: {
 		text: "#eee",
-		secondText: "gray",
+		disabled: "#616161",
 
 		compBg: "#151515", // used for background of different components
 		compBgDark: "#0f0f0f", // used for a darker bg of different components
@@ -32,7 +32,7 @@ export const themes = {
 	},
 	light: {
 		text: "#161616",
-		secondText: "#434343",
+		disabled: "#434343",
 
 		compBg: "#ffffff", // used for background of different components
 		compBgDark: "#eeeeee", // used for a darker bg of different components

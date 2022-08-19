@@ -47,17 +47,17 @@
 
 		word-wrap: break-word;
 		font-size: 16px;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_posted {
 		padding-left: 8px;
 		font-size: 12px;
 		margin: 5px 0;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&:hover {
-		border: 1px solid var(--secondText-color);
+		border: 1px solid var(--disabled-color);
 	}
 }

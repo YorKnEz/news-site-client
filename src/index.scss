@@ -203,7 +203,7 @@ select:-webkit-autofill:focus {
 		color: var(--text-color);
 
 		&:hover {
-			border: 1px solid var(--secondText-color);
+			border: 1px solid var(--disabled-color);
 		}
 
 		&:focus {
@@ -335,7 +335,7 @@ select:-webkit-autofill:focus {
 	from {
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 	to {
 		top: var(--labelOutTop);
@@ -353,7 +353,7 @@ select:-webkit-autofill:focus {
 	to {
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 }
 

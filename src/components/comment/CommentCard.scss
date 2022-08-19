@@ -32,11 +32,11 @@
 	&_posted {
 		font-size: 12px;
 		margin: 5px 0;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_link {
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		text-decoration: none;
 
 		&_light {
@@ -80,6 +80,6 @@
 	}
 
 	&:hover {
-		border: 1px solid var(--secondText-color);
+		border: 1px solid var(--disabled-color);
 	}
 }

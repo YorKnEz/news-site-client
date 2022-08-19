@@ -70,7 +70,7 @@ export const handleInputBlur = e => {
 
 			label.style.top = "var(--labelInTop)"
 			label.style.left = "var(--labelInLeft)"
-			label.style.color = "var(--secondText-color)"
+			label.style.color = "var(--disabled-color)"
 		}
 	}
 }
