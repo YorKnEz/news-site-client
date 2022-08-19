@@ -12,6 +12,7 @@ export const themes = {
 
 		border: "#303030",
 		primary: "#00d5ff",
+		complementary: "#ff3b00", // primary complementary
 
 		// primary button
 		buttonP: "white",
@@ -22,8 +23,6 @@ export const themes = {
 		buttonS: "#eeeeee00",
 		buttonHoverS: "#eeeeee10",
 		buttonTextS: "#eeeeee",
-
-		error: "#CF6679",
 
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
@@ -41,6 +40,7 @@ export const themes = {
 
 		border: "#a0a0a0",
 		primary: "#00d5ff",
+		complementary: "#B00020",
 
 		// primary button
 		buttonP: "#00d5ff",
@@ -51,8 +51,6 @@ export const themes = {
 		buttonS: "#00000000",
 		buttonHoverS: "#00000010",
 		buttonTextS: "#00d5ff",
-
-		error: "red",
 
 		link: "rgb(27, 145, 204)",
 		linkBg: "rgba(27, 145, 204, 0.3)",
