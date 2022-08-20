@@ -64,12 +64,14 @@ function ThreadComments({ setCommentsCounter }) {
 					<Link
 						className="comments_more comments_more_replies"
 						to={`/news/${link}-${newsId}${backLink}`}
+						reloadDocument
 					>
 						Go back
 					</Link>
 					<Link
 						className="comments_more comments_more_replies"
 						to={`/news/${link}-${newsId}`}
+						reloadDocument
 					>
 						See all comments
 					</Link>

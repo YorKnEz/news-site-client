@@ -29,7 +29,7 @@ import {
 } from "../../utils/apollo-queries"
 
 function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
-	const { link, newsId, commentId } = useParams()
+	const { link, newsId } = useParams()
 
 	const { user } = useContext(UserContext)
 
@@ -61,16 +61,6 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 	})`
 
 	const display = collapse ? "none" : ""
-
-	useEffect(() => {
-		setShowEdit(false)
-		setShowCommentReplies(false)
-		setShowReply(false)
-		setCollapse(false)
-		setReplies([])
-		setRepliesCounter(comment.replies)
-		setTotalReplies(0)
-	}, [commentId])
 
 	useEffect(() => {
 		if (data) {
@@ -306,6 +296,7 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 					<Link
 						className="comments_more comments_more_replies"
 						to={`/news/${link}-${newsId}/comment/${comment.id}`}
+						reloadDocument
 					>
 						Continue thread
 					</Link>
