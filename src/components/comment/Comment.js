@@ -29,7 +29,9 @@ import {
 	UPDATE_REPLIES_COUNTER,
 } from "../../utils/apollo-queries"
 
-function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
+function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
+	const { link, newsId, commentId } = useParams()
+
 	const { user } = useContext(UserContext)
 
 	const [saved, setSaved] = useState(
@@ -61,6 +63,16 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	})`
 
 	const display = collapse ? "none" : ""
+
+	useEffect(() => {
+		setShowEdit(false)
+		setShowCommentReplies(false)
+		setShowReply(false)
+		setCollapse(false)
+		setReplies([])
+		setRepliesCounter(comment.replies)
+		setTotalReplies(0)
+	}, [commentId])
 
 	useEffect(() => {
 		if (data) {
@@ -204,11 +216,7 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	}
 
 	return (
-		<div
-			className={`comment ${
-				comment.parentType === "comment" && "comment_replies"
-			}`}
-		>
+		<div className={`comment${depth === 0 ? "" : " comment_replies"}`}>
 			<div className="comment_container1">
 				{collapse ? (
 					<Button onClick={toggleCollapse} Icon={AiOutlineExpand} />
@@ -290,27 +298,36 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						/>
 					</div>
 				)}
-				<div style={{ display }} className="comments_list">
-					{replies.map(comment => (
-						<Comment
-							sortBy={sortBy}
-							key={comment.id}
-							newsId={newsId}
-							comment={comment}
-							onCommentEdit={onReplyEdit}
-							updateCounter={updateCounterLocal}
-						/>
-					))}
-					{repliesCounter - totalReplies > 0 && (
-						<button
-							onClick={handleFetchComments}
-							className="comments_more comments_more_replies"
-						>
-							Show {repliesCounter - totalReplies} more comments
-						</button>
-					)}
-					<QueryResult loading={loading} error={error} data={data} />
-				</div>
+				{depth < 5 ? (
+					<div style={{ display }} className="comments_list">
+						{replies.map(comment => (
+							<Comment
+								depth={depth + 1}
+								sortBy={sortBy}
+								key={comment.id}
+								comment={comment}
+								onCommentEdit={onReplyEdit}
+								updateCounter={updateCounterLocal}
+							/>
+						))}
+						{repliesCounter - totalReplies > 0 && (
+							<button
+								onClick={handleFetchComments}
+								className="comments_more comments_more_replies"
+							>
+								Show {repliesCounter - totalReplies} more comments
+							</button>
+						)}
+						<QueryResult loading={loading} error={error} data={data} />
+					</div>
+				) : (
+					<Link
+						className="comments_more comments_more_replies"
+						to={`/news/${link}-${newsId}/comment/${comment.id}`}
+					>
+						Continue thread
+					</Link>
+				)}
 			</div>
 		</div>
 	)

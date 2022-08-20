@@ -22,13 +22,14 @@ import {
 	NewsComments,
 	PageWithCards,
 	QueryResult,
+	ThreadComments,
 } from "../components"
 import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
-	const { newsId } = useParams()
+	const { newsId, commentId } = useParams()
 	const history = useNavigate()
 
 	const { user } = useContext(UserContext)
@@ -268,11 +269,17 @@ function News() {
 								)}
 							</div>
 						</div>
-						<NewsComments
-							newsId={newsId}
-							commentsCounter={commentsCounter}
-							setCommentsCounter={setCommentsCounter}
-						/>
+						{!commentId ? (
+							<NewsComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						) : (
+							<ThreadComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						)}
 					</>
 				)}
 			</QueryResult>

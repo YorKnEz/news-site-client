@@ -218,6 +218,30 @@ export const COMMENT_REPLIES = gql`
 	}
 `
 
+export const COMMENT_FOR_THREAD = gql`
+	query CommendById($depth: Int!, $commentId: ID!) {
+		commentById(commentId: $commentId) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			createdAt
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+		commentNthParentId(depth: $depth, commentId: $commentId)
+	}
+`
+
 // returns the news and comments a certain user liked
 export const LIKED_ITEMS = gql`
 	query Liked($oldestId: ID!, $oldestType: String!, $userId: ID!) {

@@ -1,4 +1,10 @@
-export { Comment, CommentCard, CommentEditor } from "./comment"
+export {
+	Comment,
+	CommentCard,
+	CommentEditor,
+	NewsComments,
+	ThreadComments,
+} from "./comment"
 
 export {
 	FormConfirmPassword,
@@ -21,7 +27,6 @@ export { default as HeaderSearch } from "./HeaderSearch"
 export { default as HomeSort } from "./HomeSort"
 export { default as Modal } from "./Modal"
 export { default as NewsCard } from "./NewsCard"
-export { default as NewsComments } from "./NewsComments"
 export { default as Page } from "./Page"
 export { default as PageWithCards } from "./PageWithCards"
 export { default as PrivateRoutes } from "./PrivateRoutes"

@@ -154,6 +154,11 @@ export default function App() {
 						<Route exact path="/r/romania" element={<Reddit />} />
 
 						<Route exact path="/news/:link-:newsId" element={<News />} />
+						<Route
+							exact
+							path="/news/:link-:newsId/comment/:commentId"
+							element={<News />}
+						/>
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>

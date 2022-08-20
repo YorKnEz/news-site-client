@@ -35,6 +35,7 @@
 	}
 
 	&_more {
+		text-decoration: none;
 		background-color: transparent;
 		color: var(--link-color);
 		border: none;
@@ -50,6 +51,11 @@
 			color: var(--linkHover-color);
 		}
 	}
+}
+
+.thread_links {
+	display: flex;
+	justify-content: space-between;
 }
 
 @media (max-width: 768px) {
