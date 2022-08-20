@@ -3,41 +3,25 @@ import { AiOutlineExclamationCircle, AiOutlineFrown } from "react-icons/ai"
 
 import { SpinnerCircular } from "spinners-react"
 
+import "./QueryResult.scss"
+
 function QueryResult({ loading, error, data, children }) {
 	if (error) {
 		console.log(error.message ? error.message : error)
 
 		return (
-			<div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					margin: "24px 0",
-					fontSize: "1rem",
-					height: "50px",
-				}}
-			>
-				<AiOutlineExclamationCircle />
-				<p style={{ marginLeft: "16px" }}>
-					{error.message ? error.message : error}
-				</p>
+			<div className="query_error" style={{}}>
+				<AiOutlineExclamationCircle className="query_error_icon" />
+				<p>{error.message ? error.message : error}</p>
 			</div>
 		)
 	}
 
 	if (loading) {
 		return (
-			<div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					margin: "40px 0",
-				}}
-			>
+			<div className="query_spinner">
 				<SpinnerCircular
-					size={50}
+					className="query_spinner_icon"
 					thickness={50}
 					color="#161616"
 					secondaryColor="#eee"
@@ -60,18 +44,9 @@ function QueryResult({ loading, error, data, children }) {
 		for (const index in queryNames) {
 			if (data[queryNames[index]] && data[queryNames[index]].length === 0)
 				return (
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							margin: "24px 0",
-							fontSize: "1rem",
-							height: "50px",
-						}}
-					>
-						<AiOutlineFrown />
-						<p style={{ marginLeft: "16px" }}>
+					<div className="query_error">
+						<AiOutlineFrown className="query_error_icon" />
+						<p className="querry_error_p">
 							You reached the bottom of the page.
 						</p>
 					</div>
