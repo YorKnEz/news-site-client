@@ -108,18 +108,6 @@ export const SAVE_ITEM = gql`
 	}
 `
 
-// udpate the replies counter of a comment
-export const UPDATE_REPLIES_COUNTER = gql`
-	mutation UpdateRepliesCounter($action: String!, $id: ID!, $type: String!) {
-		updateRepliesCounter(action: $action, id: $id, type: $type) {
-			code
-			success
-			message
-			replies
-		}
-	}
-`
-
 // creates a news
 export const CREATE_NEWS = gql`
 	mutation CreateNews($newsData: NewsInput!) {

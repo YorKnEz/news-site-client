@@ -26,7 +26,6 @@ import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
 	SAVE_ITEM,
-	UPDATE_REPLIES_COUNTER,
 } from "../../utils/apollo-queries"
 
 function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
@@ -49,7 +48,6 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
-	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: { oldestId, commentId: comment.id, sortBy },
@@ -193,24 +191,8 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 	const toggleCollapse = () => setCollapse(value => !value)
 
 	const updateCounterLocal = () => {
-		updateRepliesCounter({
-			variables: {
-				action: "up",
-				id: comment.id,
-				type: "comment",
-			},
-			onCompleted: ({ updateRepliesCounter }) => {
-				if (!updateRepliesCounter.success) {
-					console.log(updateRepliesCounter.message)
-
-					return
-				}
-
-				setRepliesCounter(counter => counter + 1)
-				setTotalReplies(counter => counter + 1)
-			},
-			onError: error => console.log({ ...error }),
-		})
+		setRepliesCounter(counter => counter + 1)
+		setTotalReplies(counter => counter + 1)
 
 		updateCounter()
 	}
