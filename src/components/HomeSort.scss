@@ -39,6 +39,14 @@
 	}
 }
 
+@media (max-width: 768px) {
+	.homesort {
+		border-radius: 0;
+		padding: 8px;
+		width: calc(100% - 16px - 2px);
+	}
+}
+
 @media (max-width: 375px) {
 	.homesort_item {
 		&:last-child {

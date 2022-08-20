@@ -227,7 +227,7 @@ function News() {
 										<div className="news_options">
 											<Button
 												onClick={goToNews}
-												text={`${data.news.replies}`}
+												text={`${commentsCounter}`}
 												Icon={BsChatSquare}
 											/>
 											<DropdownList>

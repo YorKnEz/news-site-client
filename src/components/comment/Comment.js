@@ -8,7 +8,7 @@ import {
 	AiOutlineExpand,
 } from "react-icons/ai"
 import { BsReply as Reply } from "react-icons/bs"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"

@@ -1,35 +1,20 @@
 .dropdownlist {
-	&_button {
-		display: none;
-
-		&_icon {
-			margin: 0;
-		}
-	}
+	position: relative;
 
 	&_items {
 		display: flex;
 	}
-}
 
-@media (max-width: 400px) {
-	.dropdownlist {
-		position: relative;
+	&_items2 {
+		position: absolute;
+		z-index: 1;
+		overflow-y: scroll;
 
-		&_button {
-			display: table;
-		}
+		flex-direction: column;
 
-		&_items {
-			position: absolute;
-			z-index: 1;
-
-			flex-direction: column;
-
-			border: 1px solid var(--border-color);
-			border-radius: 5px;
-			background-color: var(--compBg-color);
-			padding: 4px;
-		}
+		border: 1px solid var(--border-color);
+		border-radius: 5px;
+		background-color: var(--compBg-color);
+		padding: 4px;
 	}
 }

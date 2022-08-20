@@ -93,6 +93,7 @@
 	&_body {
 		user-select: text;
 		word-wrap: break-word;
+		text-align: justify;
 		font-size: 0.8em;
 
 		a {
@@ -111,7 +112,6 @@
 
 	&_options {
 		display: flex;
-		width: fit-content;
 		margin-bottom: 8px;
 	}
 }
