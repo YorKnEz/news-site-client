@@ -238,7 +238,7 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 				)}
 				<div style={{ display }} className="comment_options">
 					<CardVotes data={comment} type="comment" />
-					<DropdownList>
+					<DropdownList depth={depth}>
 						<Button onClick={toggleReply} text="Reply" Icon={Reply} />
 						{saved ? (
 							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
