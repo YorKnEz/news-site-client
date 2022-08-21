@@ -14,10 +14,10 @@ export const useReachedBottom = (loading, error) => {
 
 	// check if the user scrolled to the bottom of the page so we can request more news only then
 	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
+		const { scrollHeight, scrollTop } = event.target.scrollingElement
+		const innerHeight = window.innerHeight
 
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
+		if (!loading && !error && scrollHeight - innerHeight - scrollTop <= 1) {
 			setReachedBottom(true)
 		}
 	})
