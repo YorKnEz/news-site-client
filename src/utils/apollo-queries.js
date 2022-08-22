@@ -540,8 +540,8 @@ export const NEWS_FOR_PROFILE_CARD = gql`
 
 // returns search results
 export const SEARCH = gql`
-	query Query($search: String!, $filter: String!) {
-		search(search: $search, filter: $filter) {
+	query Query($search: String!, $filter: String!, $fetchedResults: Int!) {
+		search(search: $search, filter: $filter, fetchedResults: $fetchedResults) {
 			__typename
 			... on NewsSearch {
 				matches
