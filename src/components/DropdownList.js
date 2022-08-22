@@ -10,10 +10,14 @@ function DropdownList({ children, depth }) {
 	const shouldShowMore = () => {
 		const width = window.innerWidth
 
-		if (depth >= 3) {
-			return (width > 768 && width <= 900) || width <= 500
-		} else if (depth >= 0) {
-			return width <= 420
+		if (depth) {
+			if (depth >= 3) {
+				return (width > 768 && width <= 900) || width <= 500
+			} else if (depth >= 0) {
+				return width <= 420
+			}
+		} else {
+			return window.innerWidth <= 400
 		}
 	}
 
