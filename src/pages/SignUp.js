@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import {
-	AiFillExclamationCircle,
-	AiOutlineEye,
-	AiOutlineEyeInvisible,
-} from "react-icons/ai"
+import { AiFillExclamationCircle } from "react-icons/ai"
 import { Link, useNavigate } from "react-router-dom"
 
 import axios from "axios"
 
 import "./SignUp.scss"
-import { Modal, Page } from "../components"
 import {
-	handleInputBlur,
-	handleInputFocus,
-	updateInputLabels,
-	useDocumentTitle,
-} from "../utils/utils"
+	FormConfirmPassword,
+	FormInput,
+	FormPassword,
+	Modal,
+	Page,
+} from "../components"
+import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function SignUp() {
+	const history = useNavigate()
+
 	const {
 		register,
 		watch,
@@ -28,10 +27,11 @@ function SignUp() {
 		formState: { errors },
 	} = useForm()
 	const password = watch("password", "")
+
 	const [showPassword, setShowPassword] = useState(false)
 	const [showModal, setShowModal] = useState(false)
 	const [error, setError] = useState("")
-	const history = useNavigate()
+
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] =
 		useDocumentTitle("Sign Up | YorkNews")
@@ -68,16 +68,6 @@ function SignUp() {
 		history("/sign-in")
 	}
 
-	const handleShowPassword = e => {
-		e.preventDefault()
-
-		setShowPassword(!showPassword)
-	}
-
-	const arePasswordsTheSame = value => {
-		return password === value
-	}
-
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
@@ -108,106 +98,46 @@ function SignUp() {
 					</p>
 				</Modal>
 			)}
-			<div className="signUp_container">
-				<div className="signUp">
+			<div className="signUp">
+				<div className="signUp_container">
 					<span className="signUp_title">Sign Up</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
 						<div className="form_row">
-							<div className="formItem">
-								<label className="formItem_label" htmlFor="firstName">
-									First Name
-								</label>
-								<input
-									className="formItem_input"
-									id="firstName"
-									name="firstName"
-									type="text"
-									onFocus={handleInputFocus}
-									{...register("firstName", {
-										required: true,
-										onBlur: handleInputBlur,
-									})}
-								/>
-								{errorCheck("firstName")}
-							</div>
-							<div className="formItem">
-								<label className="formItem_label" htmlFor="lastName">
-									Last Name
-								</label>
-								<input
-									className="formItem_input"
-									id="lastName"
-									name="lastName"
-									type="text"
-									onFocus={handleInputFocus}
-									{...register("lastName", {
-										required: true,
-										onBlur: handleInputBlur,
-									})}
-								/>
-								{errorCheck("lastName")}
-							</div>
-						</div>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="email">
-								Email
-							</label>
-							<input
-								autoComplete="off"
-								className="formItem_input"
-								id="email"
-								name="email"
-								type="email"
-								onFocus={handleInputFocus}
-								{...register("email", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
+							<FormInput
+								register={register}
+								errorCheck={errorCheck}
+								title="First name"
+								id="firstName"
+								type="text"
 							/>
-							{errorCheck("email")}
-						</div>
-						<div className="formItem password">
-							<label className="formItem_label" htmlFor="password">
-								Password
-							</label>
-							<input
-								className="formItem_input"
-								id="password"
-								name="password"
-								type={showPassword ? "text" : "password"}
-								onFocus={handleInputFocus}
-								{...register("password", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
+							<FormInput
+								register={register}
+								errorCheck={errorCheck}
+								title="Last name"
+								id="lastName"
+								type="text"
 							/>
-							<button className="password_button" onClick={handleShowPassword}>
-								{showPassword ? (
-									<AiOutlineEyeInvisible className="password_icon" />
-								) : (
-									<AiOutlineEye className="password_icon" />
-								)}
-							</button>
 						</div>
+						<FormInput
+							register={register}
+							errorCheck={errorCheck}
+							title="Email"
+							id="email"
+							type="email"
+						/>
+						<FormPassword
+							register={register}
+							errorCheck={errorCheck}
+							showPassword={showPassword}
+							setShowPassword={setShowPassword}
+						/>
 						{errorCheck("password")}
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="confirmPassword">
-								Confirm Password
-							</label>
-							<input
-								className="formItem_input"
-								id="confirmPassword"
-								name="confirmPassword"
-								type={showPassword ? "text" : "password"}
-								onFocus={handleInputFocus}
-								{...register("confirmPassword", {
-									required: true,
-									onBlur: handleInputBlur,
-									validate: arePasswordsTheSame,
-								})}
-							/>
-							{errorCheck("confirmPassword")}
-						</div>
+						<FormConfirmPassword
+							register={register}
+							validate={value => password === value}
+							showPassword={showPassword}
+						/>
+						{errorCheck("confirmPassword")}
 						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />

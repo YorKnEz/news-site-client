@@ -5,11 +5,7 @@ import { ContentState, convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
 import htmlToDraft from "html-to-draftjs"
 import { useForm } from "react-hook-form"
-import {
-	AiFillExclamationCircle,
-	AiOutlinePicture,
-	AiOutlineQuestionCircle,
-} from "react-icons/ai"
+import { AiFillExclamationCircle } from "react-icons/ai"
 import { Navigate, useNavigate, useParams } from "react-router"
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client"
@@ -17,12 +13,17 @@ import axios from "axios"
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import "./CreateNews.scss"
-import { Page, QueryResult } from "../components"
-import { UserContext } from "../context"
-import { NEWS, UPDATE_NEWS } from "../utils/apollo-queries"
 import {
-	handleInputBlur,
-	handleInputFocus,
+	FormControlledInput,
+	FormInput,
+	FormThumbnailInput,
+	FormTooltips,
+	Page,
+	QueryResult,
+} from "../components"
+import { UserContext } from "../context"
+import { NEWS_TO_EDIT, UPDATE_NEWS } from "../utils/apollo-queries"
+import {
 	isValidHttpUrl,
 	updateInputLabels,
 	useDocumentTitle,
@@ -30,19 +31,24 @@ import {
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
-function CreateNews() {
-	const client = useApolloClient()
+const editorOptions = {
+	inline: {
+		options: [
+			"bold",
+			"italic",
+			"underline",
+			"strikethrough",
+			// "monospace",
+			"superscript",
+			"subscript",
+		],
+	},
+}
+
+function EditNews() {
 	const { newsId } = useParams()
-	const [updateNews] = useMutation(UPDATE_NEWS)
-	const { loading, error, data } = useQuery(NEWS, {
-		variables: {
-			newsId: newsId,
-		},
-	})
-	const { user, token } = useContext(UserContext)
-	const [editorState, setEditorState] = useState(() =>
-		EditorState.createEmpty()
-	)
+	const history = useNavigate()
+
 	const {
 		register,
 		watch,
@@ -51,7 +57,11 @@ function CreateNews() {
 		formState: { errors },
 	} = useForm()
 	const watchThumbnail = watch("thumbnail", []) ? watch("thumbnail", []) : []
-	const history = useNavigate()
+
+	const { user, token } = useContext(UserContext)
+	const [editorState, setEditorState] = useState(() =>
+		EditorState.createEmpty()
+	)
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
@@ -62,10 +72,24 @@ function CreateNews() {
 		editor: {},
 		other: {},
 	})
+
+	const client = useApolloClient()
+	const { loading, error, data } = useQuery(NEWS_TO_EDIT, {
+		variables: {
+			newsId: newsId,
+		},
+	})
+	const [updateNews] = useMutation(UPDATE_NEWS)
+
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
 	)
+
+	const tooltips = [
+		"Thumbnail size should be under 10MB.",
+		"In order to add sources and tags, write it down then type ',' to add it to the list.",
+	]
 
 	// set the news data to each input
 	useEffect(() => {
@@ -164,22 +188,21 @@ function CreateNews() {
 					id: data.news.id,
 					newsData: requestBody,
 				},
-				onCompleted: res => {
-					console.log(res)
-
-					client.clearStore()
-
-					if (!res.editNews.success) {
+				onCompleted: ({ updateNews }) => {
+					if (!updateNews.success) {
 						setError2({
 							...error2,
-							other: { message: res.editNews.message },
+							other: { message: updateNews.message },
 						})
 
 						return
 					}
 
-					history(`/news/${data.news.id}`)
+					client.clearStore()
+
+					history(`/news/${data.news.link}-${data.news.id}`)
 				},
+				onError: error => console.log({ ...error }),
 			})
 		} catch (error) {
 			setError2({
@@ -287,14 +310,6 @@ function CreateNews() {
 		setTags(newTags)
 	}
 
-	const isSizeOk = value => {
-		// check if an image has been added and check if the size is less than 10MB
-		if (value.length > 0) return value[0].size < 10485760
-
-		// return true otherwise to avoid errors
-		return true
-	}
-
 	const errorCheck = name => {
 		if (errors[name] && errors[name].type === "required")
 			return (
@@ -322,51 +337,21 @@ function CreateNews() {
 					<h3>Write your news story</h3>
 
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="title">
-								Title
-							</label>
-							<input
-								className="formItem_input"
-								id="title"
-								name="title"
-								autoComplete="off"
-								type="text"
-								onFocus={handleInputFocus}
-								{...register("title", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
-							/>
-							{errorCheck("title")}
-						</div>
-						<div className="thumbnail_wrapper">
-							<div className="formItem">
-								<label className="formItem_image_label" htmlFor="thumbnail">
-									<span className="formItem_image_title">
-										<AiOutlinePicture className="formItem_image_icon" />
-										{watchThumbnail.length > 0
-											? watchThumbnail[0].name
-											: "Your thumbnail"}
-									</span>
-									<div className="formItem_image_thumbnail" />
-								</label>
-								<input
-									className="formItem_image_input"
-									id="thumbnail"
-									name="thumbnail"
-									type="file"
-									accept="image/*"
-									{...register("thumbnail", {
-										required: false,
-										validate: isSizeOk,
-									})}
-								/>
-								{errorCheck("thumbnail")}
-							</div>
-						</div>
+						<FormInput
+							register={register}
+							errorCheck={errorCheck}
+							title="Title"
+							id="title"
+							type="text"
+						/>
+						<FormThumbnailInput
+							register={register}
+							errorCheck={errorCheck}
+							thumbnail={watchThumbnail}
+						/>
 						<div className="editor_container">
 							<Editor
+								toolbar={editorOptions}
 								placeholder="Write here..."
 								editorState={editorState}
 								onEditorStateChange={setEditorState}
@@ -382,7 +367,7 @@ function CreateNews() {
 							</p>
 						)}
 						<div className="sources">
-							<h4>Sources</h4>
+							<span className="sources_title">Sources</span>
 							{sources.map(s => (
 								<div
 									className="sources_item"
@@ -393,77 +378,37 @@ function CreateNews() {
 								</div>
 							))}
 						</div>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="source">
-								Add Source
-							</label>
-							<input
-								className="formItem_input"
-								id="source"
-								name="source"
-								type="text"
-								value={source}
-								onChange={handleSource}
-								onFocus={handleInputFocus}
-								onBlur={handleInputBlur}
-							/>
-							{error2.sources.message && (
-								<p className="formItem_error">
-									<AiFillExclamationCircle className="formItem_error_icon" />
-									{error2.sources.message}
-								</p>
-							)}
-						</div>
+						<FormControlledInput
+							title="Add Source"
+							id="source"
+							type="text"
+							value={source}
+							setValue={handleSource}
+							error={error2.sources.message}
+						/>
 						<div className="tags">
-							<h4>Tags</h4>
+							<span className="tags_title">Tags</span>
 							{tags.map(s => (
 								<div className="tags_item" key={s} onClick={handleDeleteTag}>
 									{s}
 								</div>
 							))}
 						</div>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="tag">
-								Add Tag
-							</label>
-							<input
-								className="formItem_input"
-								id="tag"
-								name="tag"
-								type="text"
-								value={tag}
-								onChange={handleTag}
-								onFocus={handleInputFocus}
-								onBlur={handleInputBlur}
-							/>
-							{error2.tags.message && (
-								<p className="formItem_error">
-									<AiFillExclamationCircle className="formItem_error_icon" />
-									{error2.tags.message}
-								</p>
-							)}
-						</div>
+						<FormControlledInput
+							title="Add Tag"
+							id="tag"
+							type="text"
+							value={tag}
+							setValue={handleTag}
+							error={error2.tags.message}
+						/>
 						{error2.other.message && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />
 								{error2.other.message}
 							</p>
 						)}
-						<div>
-							<div className="tooltip">
-								<AiOutlineQuestionCircle className="tooltip_icon" />
-								<p className="tooltip_text">
-									Thumbnail size should be under 10MB.
-								</p>
-							</div>
-							<div className="tooltip">
-								<AiOutlineQuestionCircle className="tooltip_icon" />
-								<p className="tooltip_text">
-									In order to add sources and tags, write it down then type ','
-									to add it to the list.
-								</p>
-							</div>
-						</div>
+						<FormTooltips tooltips={tooltips} />
 						<button className="button button_primary form_submit">
 							Edit your story
 						</button>
@@ -474,4 +419,4 @@ function CreateNews() {
 	)
 }
 
-export default CreateNews
+export default EditNews

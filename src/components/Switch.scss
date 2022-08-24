@@ -1,14 +1,22 @@
 .switch {
-	cursor: pointer;
-	width: 36px;
-	background-color: var(--text-color);
+	display: inline-flex;
+	align-items: center;
 	margin: 5px 0;
-	padding: 5px;
-	border-radius: 100px;
+
+	&_container {
+		cursor: pointer;
+		width: 28px;
+		background-color: var(--text-color);
+		padding: 5px;
+		margin-left: 5px;
+		border-radius: 100px;
+		height: calc(20px - 10px);
+	}
 
 	&_circle {
-		width: 16px;
-		height: 16px;
+		top: -2px;
+		width: 14px;
+		height: 14px;
 		border-radius: 100px;
 		background-color: var(--compBg-color);
 		position: relative;

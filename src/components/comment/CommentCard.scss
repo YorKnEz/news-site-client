@@ -1,0 +1,93 @@
+.commentcard {
+	display: flex;
+	width: calc(100% - 2px);
+	margin: 4px 0;
+	border-radius: 5px;
+	border: 1px solid var(--border-color);
+	background-color: var(--compBg-color);
+
+	overflow: hidden;
+	user-select: none;
+	text-decoration: none;
+	color: var(--text-color);
+	font-size: 0.8rem;
+
+	&_news {
+		padding: 8px 0;
+		background-color: var(--compBg-color);
+		padding-left: 8px;
+	}
+
+	&_comment {
+		background-color: var(--compBgDark-color);
+		padding: 8px;
+		padding-bottom: 4px;
+	}
+
+	&_container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&_posted {
+		font-size: 0.8em;
+		margin: 5px 0;
+		color: var(--disabled-color);
+	}
+
+	&_link {
+		color: var(--disabled-color);
+		text-decoration: none;
+
+		&_light {
+			color: var(--text-color);
+		}
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&_separator {
+		color: var(--border-color);
+		margin: 0;
+	}
+
+	&_body {
+		width: calc(100% - 16px);
+
+		text-decoration: none;
+		word-wrap: break-word;
+		font-size: 1em;
+		color: var(--text-color);
+
+		a {
+			text-decoration: none;
+			color: var(--link-color);
+
+			&:hover {
+				color: var(--linkHover-color);
+			}
+		}
+
+		p {
+			margin: 8px 0;
+		}
+	}
+
+	&_options {
+		display: flex;
+	}
+
+	&:hover {
+		border: 1px solid var(--disabled-color);
+	}
+}
+
+@media (max-width: 768px) {
+	.commentcard {
+		overflow: visible;
+		border-radius: 0;
+	}
+}

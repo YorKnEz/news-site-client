@@ -3,11 +3,7 @@ import { Editor } from "react-draft-wysiwyg"
 import { convertToRaw, EditorState } from "draft-js"
 import draftToHtml from "draftjs-to-html"
 import { useForm } from "react-hook-form"
-import {
-	AiFillExclamationCircle,
-	AiOutlinePicture,
-	AiOutlineQuestionCircle,
-} from "react-icons/ai"
+import { AiFillExclamationCircle } from "react-icons/ai"
 import { useNavigate } from "react-router"
 
 import { useApolloClient, useMutation } from "@apollo/client"
@@ -15,12 +11,16 @@ import axios from "axios"
 
 import "./CreateNews.scss"
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
-import { Page } from "../components"
+import {
+	FormControlledInput,
+	FormInput,
+	FormThumbnailInput,
+	FormTooltips,
+	Page,
+} from "../components"
 import { UserContext } from "../context"
 import { CREATE_NEWS } from "../utils/apollo-queries"
 import {
-	handleInputBlur,
-	handleInputFocus,
 	isValidHttpUrl,
 	updateInputLabels,
 	useDocumentTitle,
@@ -28,12 +28,23 @@ import {
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
+const editorOptions = {
+	inline: {
+		options: [
+			"bold",
+			"italic",
+			"underline",
+			"strikethrough",
+			// "monospace",
+			"superscript",
+			"subscript",
+		],
+	},
+}
+
 function CreateNews() {
-	const [editorState, setEditorState] = useState(() =>
-		EditorState.createEmpty()
-	)
-	const client = useApolloClient()
-	const { token } = useContext(UserContext)
+	const history = useNavigate()
+
 	const {
 		register,
 		watch,
@@ -41,8 +52,11 @@ function CreateNews() {
 		formState: { errors },
 	} = useForm()
 	const watchThumbnail = watch("thumbnail", [])
-	const [createNews] = useMutation(CREATE_NEWS)
-	const history = useNavigate()
+
+	const { token } = useContext(UserContext)
+	const [editorState, setEditorState] = useState(() =>
+		EditorState.createEmpty()
+	)
 	const [source, setSource] = useState("")
 	const [sources, setSources] = useState([])
 	const [tag, setTag] = useState("")
@@ -53,10 +67,19 @@ function CreateNews() {
 		editor: {},
 		other: {},
 	})
+
+	const client = useApolloClient()
+	const [createNews] = useMutation(CREATE_NEWS)
+
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Write your news story | YorkNews"
 	)
+
+	const tooltips = [
+		"Thumbnail size should be under 10MB.",
+		"In order to add sources and tags, write it down then type ',' to add it to the list.",
+	]
 
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
@@ -128,20 +151,21 @@ function CreateNews() {
 				variables: {
 					newsData: requestBody,
 				},
-				onCompleted: data => {
-					client.clearStore()
-
-					if (!data.createNews.success) {
+				onCompleted: ({ createNews }) => {
+					if (!createNews.success) {
 						setError2({
 							...error2,
-							other: { message: data.createNews.message },
+							other: { message: createNews.message },
 						})
 
 						return
 					}
 
-					history(`/news/${data.createNews.id}`)
+					client.clearStore()
+
+					history(`/news/${createNews.link}-${createNews.id}`)
 				},
+				onError: error => console.log({ ...error }),
 			})
 		} catch (error) {
 			setError2({
@@ -267,67 +291,27 @@ function CreateNews() {
 			)
 	}
 
-	const isSizeOk = value => (value[0] ? value[0].size < 10485760 : true)
-
 	return (
 		<Page>
 			<div className="createnews">
 				<h3>Write your news story</h3>
 
 				<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="title">
-							Title
-						</label>
-						<input
-							className="formItem_input"
-							id="title"
-							name="title"
-							autoComplete="off"
-							type="text"
-							onFocus={handleInputFocus}
-							{...register("title", {
-								required: true,
-								onBlur: handleInputBlur,
-							})}
-						/>
-						{errorCheck("title")}
-					</div>
-					<div className="thumbnail_wrapper">
-						<div className="formItem">
-							<label className="formItem_image_label" htmlFor="thumbnail">
-								<span className="formItem_image_title">
-									<AiOutlinePicture className="formItem_image_icon" />
-									{watchThumbnail.length > 0
-										? watchThumbnail[0].name
-										: "Your thumbnail"}
-								</span>
-								<div
-									className="formItem_image_thumbnail"
-									style={{
-										backgroundImage:
-											watchThumbnail.length > 0
-												? `url(${URL.createObjectURL(watchThumbnail[0])})`
-												: "url(/default_thumbnail.png)",
-									}}
-								/>
-							</label>
-							<input
-								className="formItem_image_input"
-								id="thumbnail"
-								name="thumbnail"
-								type="file"
-								accept="image/*"
-								{...register("thumbnail", {
-									required: false,
-									validate: isSizeOk,
-								})}
-							/>
-							{errorCheck("thumbnail")}
-						</div>
-					</div>
+					<FormInput
+						register={register}
+						errorCheck={errorCheck}
+						title="Title"
+						id="title"
+						type="text"
+					/>
+					<FormThumbnailInput
+						register={register}
+						errorCheck={errorCheck}
+						thumbnail={watchThumbnail}
+					/>
 					<div className="editor_container">
 						<Editor
+							toolbar={editorOptions}
 							placeholder="Write here..."
 							editorState={editorState}
 							onEditorStateChange={setEditorState}
@@ -343,7 +327,7 @@ function CreateNews() {
 						</p>
 					)}
 					<div className="sources">
-						<h4>Sources</h4>
+						<span className="sources_title">Sources</span>
 						{sources.map(s => (
 							<div
 								className="sources_item"
@@ -354,77 +338,37 @@ function CreateNews() {
 							</div>
 						))}
 					</div>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="source">
-							Add Source
-						</label>
-						<input
-							className="formItem_input"
-							id="source"
-							name="source"
-							type="text"
-							value={source}
-							onChange={handleSource}
-							onFocus={handleInputFocus}
-							onBlur={handleInputBlur}
-						/>
-						{error2.sources.message && (
-							<p className="formItem_error">
-								<AiFillExclamationCircle className="formItem_error_icon" />
-								{error2.sources.message}
-							</p>
-						)}
-					</div>
+					<FormControlledInput
+						title="Add Source"
+						id="source"
+						type="text"
+						value={source}
+						setValue={handleSource}
+						error={error2.sources.message}
+					/>
 					<div className="tags">
-						<h4>Tags</h4>
+						<span className="tags_title">Tags</span>
 						{tags.map(s => (
 							<div className="tags_item" key={s} onClick={handleDeleteTag}>
 								{s}
 							</div>
 						))}
 					</div>
-					<div className="formItem">
-						<label className="formItem_label" htmlFor="tag">
-							Add Tag
-						</label>
-						<input
-							className="formItem_input"
-							id="tag"
-							name="tag"
-							type="text"
-							value={tag}
-							onChange={handleTag}
-							onFocus={handleInputFocus}
-							onBlur={handleInputBlur}
-						/>
-						{error2.tags.message && (
-							<p className="formItem_error">
-								<AiFillExclamationCircle className="formItem_error_icon" />
-								{error2.tags.message}
-							</p>
-						)}
-					</div>
+					<FormControlledInput
+						title="Add Tag"
+						id="tag"
+						type="text"
+						value={tag}
+						setValue={handleTag}
+						error={error2.tags.message}
+					/>
 					{error2.other.message && (
 						<p className="formItem_error">
 							<AiFillExclamationCircle className="formItem_error_icon" />
 							{error2.other.message}
 						</p>
 					)}
-					<div>
-						<div className="tooltip">
-							<AiOutlineQuestionCircle className="tooltip_icon" />
-							<p className="tooltip_text">
-								Thumbnail size should be under 10MB.
-							</p>
-						</div>
-						<div className="tooltip">
-							<AiOutlineQuestionCircle className="tooltip_icon" />
-							<p className="tooltip_text">
-								In order to add sources and tags, write it down then type ',' to
-								add it to the list.
-							</p>
-						</div>
-					</div>
+					<FormTooltips tooltips={tooltips} />
 					<button className="button button_primary form_submit">
 						Post your story
 					</button>

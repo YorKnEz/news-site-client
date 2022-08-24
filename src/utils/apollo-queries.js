@@ -2,6 +2,112 @@ import { gql } from "@apollo/client"
 
 // MUTATIONS
 
+// add a comment to a news or post
+export const ADD_COMMENT = gql`
+	mutation AddComment($commentData: CommentInput!) {
+		addComment(commentData: $commentData) {
+			code
+			success
+			message
+			comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				score
+				replies
+				createdAt
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`
+
+// edit a comment
+export const EDIT_COMMENT = gql`
+	mutation EditComment($commentData: CommentInput!, $id: ID!) {
+		editComment(commentData: $commentData, id: $id) {
+			code
+			success
+			message
+			comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				score
+				replies
+				createdAt
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`
+
+// remove a comment
+export const REMOVE_COMMENT = gql`
+	mutation RemoveComment($id: ID!) {
+		removeComment(id: $id) {
+			code
+			success
+			message
+			comment {
+				id
+				parentId
+				parentType
+				body
+				voteState
+				likes
+				dislikes
+				score
+				replies
+				createdAt
+				author {
+					id
+					fullName
+					profilePicture
+				}
+			}
+		}
+	}
+`
+
+// like a comment
+export const VOTE_ITEM = gql`
+	mutation Vote($action: String!, $parentId: ID!, $parentType: String!) {
+		vote(action: $action, parentId: $parentId, parentType: $parentType) {
+			code
+			success
+			message
+			score
+		}
+	}
+`
+
+export const SAVE_ITEM = gql`
+	mutation Save($action: String!, $parentId: ID!, $parentType: String!) {
+		save(action: $action, parentId: $parentId, parentType: $parentType) {
+			code
+			success
+			message
+		}
+	}
+`
+
 // creates a news
 export const CREATE_NEWS = gql`
 	mutation CreateNews($newsData: NewsInput!) {
@@ -36,143 +142,224 @@ export const DELETE_NEWS = gql`
 	}
 `
 
-// like a news
-export const VOTE_NEWS = gql`
-	mutation VoteNews($action: String!, $id: ID!) {
-		voteNews(action: $action, id: $id) {
+export const FOLLOW_AUTHOR = gql`
+	mutation FollowAuthor($action: String!, $id: ID!) {
+		follow(action: $action, id: $id) {
 			code
 			success
 			message
-			likes
-			dislikes
-		}
-	}
-`
-
-// add a comment to a news or post
-export const ADD_COMMENT = gql`
-	mutation AddComment($commentData: CommentInput!) {
-		addComment(commentData: $commentData) {
-			code
-			success
-			message
-			comment {
-				id
-				parentId
-				parentType
-				body
-				voteState
-				likes
-				dislikes
-				replies
-				createdAt
-				author {
-					id
-					fullName
-					profilePicture
-				}
-			}
-		}
-	}
-`
-
-// edit a comment
-export const EDIT_COMMENT = gql`
-	mutation EditComment($commentData: CommentInput!, $id: ID!) {
-		editComment(commentData: $commentData, id: $id) {
-			code
-			success
-			message
-			comment {
-				id
-				parentId
-				parentType
-				body
-				voteState
-				likes
-				dislikes
-				replies
-				createdAt
-				author {
-					id
-					fullName
-					profilePicture
-				}
-			}
-		}
-	}
-`
-
-// remove a comment
-export const REMOVE_COMMENT = gql`
-	mutation RemoveComment($id: ID!) {
-		removeComment(id: $id) {
-			code
-			success
-			message
-			comment {
-				id
-				parentId
-				parentType
-				body
-				voteState
-				likes
-				dislikes
-				replies
-				createdAt
-				author {
-					id
-					fullName
-					profilePicture
-				}
-			}
-		}
-	}
-`
-
-// like a comment
-export const VOTE_COMMENT = gql`
-	mutation VoteComment($action: String!, $id: ID!) {
-		voteComment(action: $action, id: $id) {
-			code
-			success
-			message
-			likes
-			dislikes
-		}
-	}
-`
-
-// udpate the comments counter of a news
-export const UPDATE_COMMENTS_COUNTER = gql`
-	mutation UpdateCommentsCounter($action: String!, $id: ID!) {
-		updateCommentsCounter(action: $action, id: $id) {
-			code
-			success
-			message
-			comments
-		}
-	}
-`
-
-// udpate the replies counter of a comment
-export const UPDATE_REPLIES_COUNTER = gql`
-	mutation UpdateRepliesCounter($action: String!, $id: ID!) {
-		updateRepliesCounter(action: $action, id: $id) {
-			code
-			success
-			message
-			replies
 		}
 	}
 `
 
 // QUERIES
 
+// retrieve the first comments of a news
+export const COMMENTS_FOR_NEWS = gql`
+	query CommentsForNews($oldestId: ID!, $newsId: ID!, $sortBy: String!) {
+		commentsForNews(oldestId: $oldestId, newsId: $newsId, sortBy: $sortBy) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			createdAt
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+	}
+`
+
+// retrieve the replies of a comment
+export const COMMENT_REPLIES = gql`
+	query CommentReplies($oldestId: ID!, $commentId: ID!, $sortBy: String!) {
+		commentReplies(
+			oldestId: $oldestId
+			commentId: $commentId
+			sortBy: $sortBy
+		) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			createdAt
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+	}
+`
+
+export const COMMENT_FOR_THREAD = gql`
+	query CommendById($depth: Int!, $commentId: ID!) {
+		commentById(commentId: $commentId) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			createdAt
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+		commentNthParentId(depth: $depth, commentId: $commentId)
+	}
+`
+
+// returns the news and comments a certain user liked
+export const LIKED_ITEMS = gql`
+	query Liked($oldestId: ID!, $oldestType: String!, $userId: ID!) {
+		liked(oldestId: $oldestId, oldestType: $oldestType, userId: $userId) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				voteState
+				likes
+				dislikes
+				score
+				replies
+				saveState
+				link
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on CommentCard {
+				comment {
+					id
+					parentId
+					parentType
+					body
+					voteState
+					likes
+					dislikes
+					score
+					replies
+					createdAt
+					saveState
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+				news {
+					id
+					title
+					type
+					link
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+			}
+		}
+	}
+`
+
+// returns the news and comments a certain user liked
+export const SAVED_ITEMS = gql`
+	query Saved($oldestId: ID!, $oldestType: String!, $userId: ID!) {
+		saved(oldestId: $oldestId, oldestType: $oldestType, userId: $userId) {
+			__typename
+			... on News {
+				id
+				title
+				subreddit
+				thumbnail
+				sources
+				tags
+				body
+				type
+				createdAt
+				voteState
+				likes
+				dislikes
+				score
+				replies
+				saveState
+				link
+				author {
+					profilePicture
+					fullName
+					id
+				}
+			}
+			... on CommentCard {
+				comment {
+					id
+					parentId
+					parentType
+					body
+					voteState
+					likes
+					dislikes
+					score
+					replies
+					createdAt
+					saveState
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+				news {
+					id
+					title
+					type
+					link
+					author {
+						id
+						fullName
+						profilePicture
+					}
+				}
+			}
+		}
+	}
+`
+
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($oldestId: ID!) {
-		newsForHome(oldestId: $oldestId) {
+	query NewsForHome($oldestId: ID!, $sortBy: String!, $followed: Boolean) {
+		newsForHome(oldestId: $oldestId, sortBy: $sortBy, followed: $followed) {
 			id
 			title
 			subreddit
@@ -182,11 +369,13 @@ export const NEWS_FOR_HOME = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
-			comments
+			score
+			replies
+			saveState
+			link
 			author {
 				profilePicture
 				fullName
@@ -210,10 +399,10 @@ export const NEWS_FOR_HOME_REDDIT = gql`
 				body
 				type
 				createdAt
-				updatedAt
 				voteState
 				likes
 				dislikes
+				score
 				author {
 					profilePicture
 					fullName
@@ -221,50 +410,6 @@ export const NEWS_FOR_HOME_REDDIT = gql`
 				}
 			}
 			after
-		}
-	}
-`
-
-// returns news by id
-export const NEWS2 = gql`
-	query News($newsId: ID!) {
-		news(id: $newsId) {
-			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-			comments
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
-// returns the profile of a certain author
-export const AUTHOR = gql`
-	query Author($id: ID!) {
-		author(id: $id) {
-			id
-			fullName
-			email
-			profilePicture
-			type
-			writtenNews
-			followers
-			createdAt
-			following
 		}
 	}
 `
@@ -282,11 +427,42 @@ export const NEWS_FOR_PROFILE = gql`
 			body
 			type
 			createdAt
-			updatedAt
 			voteState
 			likes
 			dislikes
-			comments
+			score
+			replies
+			saveState
+			link
+			author {
+				profilePicture
+				fullName
+				id
+			}
+		}
+	}
+`
+
+// returns news by id
+export const NEWS_BY_ID = gql`
+	query News($newsId: ID!) {
+		news(id: $newsId) {
+			id
+			title
+			subreddit
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			saveState
+			link
 			author {
 				profilePicture
 				fullName
@@ -297,7 +473,7 @@ export const NEWS_FOR_PROFILE = gql`
 `
 
 // returns news for EditNews.js
-export const NEWS = gql`
+export const NEWS_TO_EDIT = gql`
 	query News($newsId: ID!) {
 		news(id: $newsId) {
 			id
@@ -313,42 +489,116 @@ export const NEWS = gql`
 	}
 `
 
-// returns search results
-export const SEARCH = gql`
-	query Query($search: String!, $filter: String!) {
-		search(search: $search, filter: $filter) {
-			matches
-			news {
+export const NEWS_FOR_PROFILE_CARD = gql`
+	query NewsForProfileCard(
+		$id: ID
+		$newsId: ID
+		$howManyBest: Int!
+		$howManyRecent: Int!
+	) {
+		newsForProfileCard(
+			id: $id
+			newsId: $newsId
+			howManyBest: $howManyBest
+			howManyRecent: $howManyRecent
+		) {
+			best {
 				id
 				title
-				subreddit
 				thumbnail
 				sources
 				tags
 				body
 				type
 				createdAt
-				updatedAt
-				voteState
-				likes
-				dislikes
-				comments
+				score
+				replies
+				link
 				author {
-					id
 					fullName
-					profilePicture
 				}
 			}
-			author {
+			recent {
 				id
-				fullName
-				email
-				profilePicture
-				writtenNews
-				followers
+				title
+				thumbnail
+				sources
+				tags
+				body
+				type
 				createdAt
-				following
+				score
+				replies
+				link
+				author {
+					fullName
+				}
 			}
+		}
+	}
+`
+
+// returns search results
+export const SEARCH = gql`
+	query Query($search: String!, $filter: String!, $fetchedResults: Int!) {
+		search(search: $search, filter: $filter, fetchedResults: $fetchedResults) {
+			__typename
+			... on NewsSearch {
+				matches
+				result {
+					id
+					title
+					subreddit
+					thumbnail
+					sources
+					tags
+					body
+					type
+					createdAt
+					voteState
+					likes
+					dislikes
+					score
+					replies
+					saveState
+					link
+					author {
+						profilePicture
+						fullName
+						id
+					}
+				}
+			}
+			... on AuthorSearch {
+				result {
+					id
+					type
+					fullName
+					email
+					profilePicture
+					writtenNews
+					followers
+					createdAt
+					following
+				}
+			}
+		}
+	}
+`
+
+// returns the profile of a certain user
+export const USER = gql`
+	query User($id: ID!) {
+		user(id: $id) {
+			id
+			fullName
+			email
+			profilePicture
+			type
+			writtenNews
+			followers
+			createdAt
+			following
 		}
 	}
 `
@@ -358,6 +608,7 @@ export const FOLLOWED_AUTHORS = gql`
 	query FollowedAuthors($offset: Int) {
 		followedAuthors(offset: $offset) {
 			id
+			type
 			fullName
 			email
 			profilePicture
@@ -369,75 +620,13 @@ export const FOLLOWED_AUTHORS = gql`
 	}
 `
 
-// returns the news a certain user liked
-export const LIKED_NEWS = gql`
-	query LikedNews($offset: Int) {
-		likedNews(offset: $offset) {
+export const BEST_AUTHORS = gql`
+	query BestAuthors {
+		bestAuthors {
 			id
-			title
-			subreddit
-			thumbnail
-			sources
-			tags
-			body
-			type
-			createdAt
-			updatedAt
-			voteState
-			likes
-			dislikes
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
-// retrieve the first comments of a news
-export const COMMENTS_FOR_NEWS = gql`
-	query CommentsForNews($oldestCommentDate: String!, $newsId: ID!) {
-		commentsForNews(oldestCommentDate: $oldestCommentDate, newsId: $newsId) {
-			id
-			parentId
-			parentType
-			body
-			voteState
-			likes
-			dislikes
-			replies
-			createdAt
-			author {
-				id
-				fullName
-				profilePicture
-			}
-		}
-	}
-`
-
-// retrieve the replies of a comment
-export const COMMENT_REPLIES = gql`
-	query CommentReplies($oldestCommentDate: String!, $commentId: ID!) {
-		commentReplies(
-			oldestCommentDate: $oldestCommentDate
-			commentId: $commentId
-		) {
-			id
-			parentId
-			parentType
-			body
-			voteState
-			likes
-			dislikes
-			replies
-			createdAt
-			author {
-				id
-				fullName
-				profilePicture
-			}
+			fullName
+			profilePicture
+			following
 		}
 	}
 `

@@ -1,0 +1,26 @@
+.query {
+	font-size: 1rem;
+
+	&_error {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1em;
+
+		&_icon {
+			font-size: 1.2em;
+			margin-right: 16px;
+		}
+	}
+
+	&_spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 40px 0;
+
+		&_icon {
+			font-size: 1.2em;
+		}
+	}
+}

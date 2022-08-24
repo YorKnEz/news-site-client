@@ -13,6 +13,7 @@
 		border: 1px solid var(--border-color);
 		border-radius: 5px;
 		min-height: 400px;
+		margin-bottom: 24px;
 	}
 
 	&_toolbar {
@@ -37,21 +38,35 @@
 }
 
 .tooltip {
-	display: flex;
+	display: grid;
+	grid-template-columns: 20px calc(100% - 20px);
 	align-items: center;
 	margin: 10px 0;
 	user-select: none;
-	color: var(--secondText-color);
+	color: var(--disabled-color);
+	font-size: 1rem;
 
 	&_icon {
 		margin-right: 10px;
+		font-size: 0.8rem;
+	}
+
+	&_text {
+		margin: 0;
 	}
 }
 
 .rdw {
+	&-editor-main pre {
+		background-color: var(--compBgDark-color) !important;
+		border: 1px solid var(--border-color) !important;
+		border-radius: 5px;
+	}
+
 	&-option-wrapper {
 		border-radius: 5px !important;
-		background-color: var(--text-color) !important;
+		border: 1px solid var(--border-color) !important;
+		background-color: white !important;
 
 		&:hover {
 			box-shadow: none !important;
@@ -60,7 +75,8 @@
 
 	&-dropdown-wrapper {
 		border-radius: 5px !important;
-		background-color: var(--text-color) !important;
+		border: 1px solid var(--border-color) !important;
+		background-color: white !important;
 
 		&:hover {
 			box-shadow: none !important;
@@ -82,5 +98,11 @@
 				color: var(--linkHover-color);
 			}
 		}
+	}
+}
+
+@media (max-width: 768px) {
+	.thumbnail_wrapper {
+		width: 100%;
 	}
 }

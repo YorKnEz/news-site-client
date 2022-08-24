@@ -1,10 +1,11 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
 import {
-	AiOutlineDelete,
-	AiOutlineEdit,
-	AiOutlineSave,
-	AiOutlineShareAlt,
+	AiFillSave as Unsave,
+	AiOutlineDelete as Delete,
+	AiOutlineEdit as Edit,
+	AiOutlineSave as Save,
+	AiOutlineShareAlt as Share,
 } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -14,41 +15,44 @@ import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./News.scss"
 import {
+	Button,
 	CardVotes,
+	DropdownList,
 	Modal,
 	NewsComments,
-	Page,
+	PageWithCards,
 	QueryResult,
+	ThreadComments,
 } from "../components"
 import { UserContext } from "../context"
-import { DELETE_NEWS, NEWS2 } from "../utils/apollo-queries"
+import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
 function News() {
-	const { newsId } = useParams()
+	const { newsId, commentId } = useParams()
 	const history = useNavigate()
 
 	const { user } = useContext(UserContext)
 	const [sources, setSources] = useState([])
 	const [tags, setTags] = useState([])
 	const [commentsCounter, setCommentsCounter] = useState(0)
+	const [saved, setSaved] = useState(false)
 	const [showDeleteModal, setShowDeleteModal] = useState(false)
 	const [showShareModal, setShowShareModal] = useState(false)
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle("News | YorkNews")
 
 	const client = useApolloClient()
-	const { loading, error, data } = useQuery(NEWS2, {
+	const { loading, error, data } = useQuery(NEWS_BY_ID, {
 		variables: {
 			newsId: newsId,
 		},
 	})
 	const [deleteNews] = useMutation(DELETE_NEWS)
+	const [save] = useMutation(SAVE_ITEM)
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
+		if (data && data.news.type !== "[deleted]") {
 			// update the title of the page
 			setDocumentTitle(data.news.title + " | YorkNews")
 
@@ -65,7 +69,10 @@ function News() {
 			if (data.news.tags.length > 0) setTags(data.news.tags.split(","))
 
 			// set the comments counter
-			setCommentsCounter(data.news.comments)
+			setCommentsCounter(data.news.replies)
+
+			// set the save state
+			if (data.news.saveState === "save") setSaved(true)
 		}
 	}, [data, setDocumentTitle])
 
@@ -77,6 +84,10 @@ function News() {
 		return `Posted ${distance} ago`
 	}
 
+	const goToNews = () => {
+		history(`/news/${data.news.link}-${data.news.id}`)
+	}
+
 	const onDeleteModalSubmit = async () => {
 		setShowDeleteModal(false)
 
@@ -84,11 +95,9 @@ function News() {
 			variables: {
 				id: data.news.id,
 			},
-			onCompleted: data => {
-				console.log(data)
-
-				if (!data.deleteNews.success) {
-					console.log(data.deleteNews.message)
+			onCompleted: ({ deleteNews }) => {
+				if (!deleteNews.success) {
+					console.log(deleteNews.message)
 
 					return
 				}
@@ -97,37 +106,45 @@ function News() {
 
 				history(-1)
 			},
+			onError: error => console.log({ ...error }),
 		})
 	}
 
-	const onDeleteModalDecline = () => {
-		setShowDeleteModal(false)
+	const onDeleteModalDecline = () => setShowDeleteModal(false)
+
+	const onShareModalSubmit = async () => setShowShareModal(false)
+
+	const handleDelete = () => setShowDeleteModal(true)
+
+	const handleEdit = () =>
+		history(`/news/${data.news.link}-${data.news.id}/edit`)
+
+	const handleShare = () => setShowShareModal(true)
+
+	const handleSave = () => {
+		save({
+			variables: {
+				action: saved ? "unsave" : "save",
+				parentId: newsId,
+				parentType: "news",
+			},
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
+
+					return
+				}
+
+				client.clearStore()
+
+				setSaved(value => !value)
+			},
+			onError: error => console.log({ ...error }),
+		})
 	}
-
-	const onShareModalSubmit = async () => {
-		setShowShareModal(false)
-	}
-
-	const handleDelete = e => {
-		e.preventDefault()
-
-		setShowDeleteModal(true)
-	}
-
-	const handleEdit = e => {
-		e.preventDefault()
-
-		history(`/news/${data.news.id}/edit`)
-	}
-
-	const handleShare = e => {
-		setShowShareModal(true)
-	}
-
-	const handleSave = e => {}
 
 	return (
-		<Page>
+		<PageWithCards>
 			{showDeleteModal && (
 				<Modal onSubmit={onDeleteModalSubmit} onDecline={onDeleteModalDecline}>
 					<h3 style={{ margin: 0 }}>Delete news</h3>
@@ -145,7 +162,8 @@ function News() {
 					<input
 						className="formItem_input"
 						type="text"
-						defaultValue={window.location}
+						value={`${window.location}`}
+						readOnly
 					/>
 				</Modal>
 			)}
@@ -153,21 +171,20 @@ function News() {
 				{data && (
 					<>
 						<div className="news">
-							<CardVotes data={data.news} />
+							<CardVotes data={data.news} type="news" />
 							<div className="news_container">
-								<span className="news_posted news_padding">
+								<span className="news_posted">
 									{showDate()} by{" "}
 									<Link
-										to={`/profile/${data.news.author.id}`}
+										to={`/profile/${
+											data.news.type === "[deleted]" ? "" : data.news.author.id
+										}/overview`}
 										className="news_authorlink"
 									>
 										{data.news.author.fullName}
 									</Link>
 								</span>
-								<Link
-									to={`/news/${data.news.id}`}
-									className="news_link news_padding"
-								>
+								<div className="news_link">
 									<span className="news_title">{data.news.title}</span>
 									{data.news.thumbnail && (
 										<img
@@ -176,81 +193,97 @@ function News() {
 											alt={data.news.title}
 										/>
 									)}
-								</Link>
-								<div className="news_body news_padding" id="body"></div>
-								<div className="news_sources news_padding">
-									<h4>Sources</h4>
-									{sources.map(s => (
-										<a
-											className="news_sources_item"
-											key={s}
-											href={s}
-											target="_blank"
-											rel="noreferrer"
-										>
-											{s}
-										</a>
-									))}
 								</div>
-								<div className="tags news_padding">
-									<h4>Tags</h4>
-									{tags.length > 0 &&
-										tags.map(s => (
-											<Link
-												className="tags_item"
-												key={s}
-												to={`/search?search=${s}&filter=tags`}
-											>
-												{s}
-											</Link>
-										))}
-								</div>
-								<div className="news_options news_padding">
-									<Link
-										to={`/news/${data.news.id}`}
-										className="news_options_item"
-									>
-										<BsChatSquare className="news_options_item_icon" />
-										{commentsCounter}
-									</Link>
-									<button onClick={handleShare} className="news_options_item">
-										<AiOutlineShareAlt className="news_options_item_icon" />
-										Share
-									</button>
-									<button onClick={handleSave} className="news_options_item">
-										<AiOutlineSave className="news_options_item_icon" />
-										Save
-									</button>
-									{user.id == data.news.author.id && (
-										<>
-											<button
-												onClick={handleDelete}
-												className="news_options_item"
-											>
-												<AiOutlineDelete className="news_options_item_icon" />
-												Delete
-											</button>
-											<button
-												onClick={handleEdit}
-												className="news_options_item"
-											>
-												<AiOutlineEdit className="news_options_item_icon" />
-												Edit
-											</button>
-										</>
-									)}
-								</div>
+								{data.news.type !== "[deleted]" && (
+									<>
+										<div className="news_body" id="body"></div>
+										<div className="sources">
+											<span className="sources_title">Sources</span>
+											{sources.map(s => (
+												<a
+													className="sources_item"
+													key={s}
+													href={s}
+													target="_blank"
+													rel="noreferrer"
+												>
+													{s}
+												</a>
+											))}
+										</div>
+										<div className="tags">
+											<span className="tags_title">Tags</span>
+											{tags.length > 0 &&
+												tags.map(s => (
+													<Link
+														className="tags_item"
+														key={s}
+														to={`/search?search=${s}&filter=tags`}
+													>
+														{s}
+													</Link>
+												))}
+										</div>
+										<div className="news_options">
+											<Button
+												onClick={goToNews}
+												text={`${commentsCounter}`}
+												Icon={BsChatSquare}
+											/>
+											<DropdownList>
+												<Button
+													onClick={handleShare}
+													text="Share"
+													Icon={Share}
+												/>
+												{saved ? (
+													<Button
+														onClick={handleSave}
+														text="Unsave"
+														Icon={Unsave}
+													/>
+												) : (
+													<Button
+														onClick={handleSave}
+														text="Save"
+														Icon={Save}
+													/>
+												)}
+												{user.id == data.news.author.id && (
+													<>
+														<Button
+															onClick={handleDelete}
+															text="Delete"
+															Icon={Delete}
+														/>
+														<Button
+															onClick={handleEdit}
+															text="Edit"
+															Icon={Edit}
+														/>
+													</>
+												)}
+											</DropdownList>
+										</div>
+									</>
+								)}
 							</div>
 						</div>
-						<NewsComments
-							newsId={newsId}
-							commentsCounter={commentsCounter}
-							setCommentsCounter={setCommentsCounter}
-						/>
+						{!commentId ? (
+							<NewsComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						) : (
+							<ThreadComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						)}
 					</>
 				)}
 			</QueryResult>
-		</Page>
+		</PageWithCards>
 	)
 }
 

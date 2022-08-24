@@ -1,66 +1,56 @@
 import React from "react"
-import { AiOutlineFrown } from "react-icons/ai"
+import { AiOutlineExclamationCircle, AiOutlineFrown } from "react-icons/ai"
 
 import { SpinnerCircular } from "spinners-react"
+
+import "./QueryResult.scss"
 
 function QueryResult({ loading, error, data, children }) {
 	if (error) {
 		console.log(error.message ? error.message : error)
 
-		return error.message ? error.message : error
+		return (
+			<div className="query_error" style={{}}>
+				<AiOutlineExclamationCircle className="query_error_icon" />
+				<p>{error.message ? error.message : error}</p>
+			</div>
+		)
 	}
 
 	if (loading) {
 		return (
-			<>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						margin: "40px 0",
-					}}
-				>
-					<SpinnerCircular
-						size={50}
-						thickness={50}
-						color="#161616"
-						secondaryColor="#eee"
-					/>
-				</div>
-			</>
+			<div className="query_spinner">
+				<SpinnerCircular
+					className="query_spinner_icon"
+					thickness={50}
+					color="#161616"
+					secondaryColor="#eee"
+				/>
+			</div>
 		)
 	}
 
 	if (data) {
-		// object to return if the array of news is empty
-		const notFound = (
-			<div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					margin: "40px 0",
-					fontSize: "20px",
-					height: "50px",
-				}}
-			>
-				<AiOutlineFrown />
-				<p style={{ marginLeft: "16px" }}>
-					You reached the bottom of the page.
-				</p>
-			</div>
-		)
+		const queryNames = [
+			"newsForHome",
+			"newsForHomeReddit",
+			"newsForProfile",
+			"followedAuthors",
+			"liked",
+			"saved",
+		]
 
 		// check for each array if it is empty and return notFound if so
-		if (data.newsForHome && data.newsForHome.length === 0) {
-			return notFound
-		}
-		if (data.newsForHomeReddit && data.newsForHomeReddit.length === 0) {
-			return notFound
-		}
-		if (data.newsForProfile && data.newsForProfile.length === 0) {
-			return notFound
+		for (const index in queryNames) {
+			if (data[queryNames[index]] && data[queryNames[index]].length === 0)
+				return (
+					<div className="query_error">
+						<AiOutlineFrown className="query_error_icon" />
+						<p className="querry_error_p">
+							You reached the bottom of the page.
+						</p>
+					</div>
+				)
 		}
 
 		// otherwise return the children

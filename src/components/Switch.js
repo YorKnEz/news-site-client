@@ -1,22 +1,29 @@
-import React from "react"
+import React, { useContext, useState } from "react"
+import { ThemeContext, themes } from "../context"
 
 import "./Switch.scss"
 
-function Switch({ theme, toggleTheme, switchState, setSwitchState }) {
-	const handleClick = e => {
-		e.preventDefault()
+function Switch() {
+	const { theme, toggleTheme } = useContext(ThemeContext)
+	const [switchState, setSwitchState] = useState(
+		theme === themes.dark ? true : false
+	)
 
+	const handleClick = () => {
 		toggleTheme()
-		setSwitchState(!switchState)
+		setSwitchState(value => !value)
 	}
 
 	return (
-		<div className="switch" onClick={handleClick}>
-			<div
-				id="switchElement"
-				className="switch_circle"
-				style={theme === "dark" ? { left: "calc(36px - 16px)" } : { left: "0" }}
-			></div>
+		<div className="switch">
+			Dark mode
+			<div className="switch_container" onClick={handleClick}>
+				<div
+					id="switchElement"
+					className="switch_circle"
+					style={{ left: switchState ? "calc(28px - 14px)" : "0" }}
+				/>
+			</div>
 		</div>
 	)
 }

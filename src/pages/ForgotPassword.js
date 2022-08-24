@@ -5,13 +5,8 @@ import { AiFillExclamationCircle } from "react-icons/ai"
 import axios from "axios"
 
 import "./SignUp.scss"
-import { Modal, Page } from "../components"
-import {
-	handleInputBlur,
-	handleInputFocus,
-	updateInputLabels,
-	useDocumentTitle,
-} from "../utils/utils"
+import { FormInput, Modal, Page } from "../components"
+import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
@@ -21,8 +16,10 @@ function ForgotPassword() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
+
 	const [showModal, setShowModal] = useState(false)
 	const [error, setError] = useState("")
+
 	// eslint-disable-next-line no-unused-vars
 	const [documentTitle, setDocumentTitle] = useDocumentTitle(
 		"Reset your password | YorkNews"
@@ -65,27 +62,17 @@ function ForgotPassword() {
 					<p>You can close this page now and go check your email.</p>
 				</Modal>
 			)}
-			<div className="signUp_container">
-				<div className="signUp">
+			<div className="signUp">
+				<div className="signUp_container">
 					<span className="signUp_title">Reset your password</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
-						<div className="formItem">
-							<label className="formItem_label" htmlFor="email">
-								Email
-							</label>
-							<input
-								className="formItem_input"
-								id="email"
-								name="email"
-								type="email"
-								onFocus={handleInputFocus}
-								{...register("email", {
-									required: true,
-									onBlur: handleInputBlur,
-								})}
-							/>
-							{errorCheck("email")}
-						</div>
+						<FormInput
+							register={register}
+							errorCheck={errorCheck}
+							title="Email"
+							id="email"
+							type="email"
+						/>
 						{error && (
 							<p className="formItem_error">
 								<AiFillExclamationCircle className="formItem_error_icon" />

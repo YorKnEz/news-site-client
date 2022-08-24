@@ -1,5 +1,6 @@
 body {
 	margin: 0;
+	font-size: 1rem;
 	color: var(--text-color);
 	background-color: var(--pageBg-color);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -29,6 +30,7 @@ select:-webkit-autofill:focus {
 .link {
 	text-decoration: none;
 	color: var(--link-color);
+	width: fit-content;
 
 	&:hover {
 		color: var(--linkHover-color);
@@ -36,24 +38,27 @@ select:-webkit-autofill:focus {
 }
 
 .sources {
-	margin-top: 26px;
-	margin-bottom: 16px;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 8px;
+	font-size: 1rem;
 
-	h4 {
-		margin-top: 0;
+	&_title {
+		margin: 0;
+		font-size: 1em;
+		color: var(--bold-color);
 	}
 
 	&_item {
 		cursor: pointer;
 		user-select: none;
-		margin-left: 10px;
+		// margin-left: 10px;
 		text-decoration: none;
 		color: var(--link-color);
+		font-size: 0.9em;
 		word-break: break-word;
 
-		padding: 5px;
+		margin-top: 12px;
 		border-radius: 5px;
 		align-self: flex-start;
 
@@ -63,22 +68,22 @@ select:-webkit-autofill:focus {
 			color: var(--linkHover-color);
 		}
 
-		&:first-child {
-			margin-left: 0;
+		&:last-child {
+			margin-bottom: 0;
 		}
 	}
 }
 
 .tags {
-	margin-top: 26px;
-	margin-bottom: 16px;
 	display: flex;
 	flex-wrap: wrap;
+	margin-bottom: 8px;
+	font-size: 1rem;
 
-	h4 {
-		margin-bottom: 0;
-		margin-top: 14px;
+	&_title {
 		margin: 14px 10px 0 0;
+		font-size: 1em;
+		color: var(--bold-color);
 	}
 
 	&_item {
@@ -89,6 +94,7 @@ select:-webkit-autofill:focus {
 		text-decoration: none;
 		color: var(--link-color);
 		background-color: var(--linkBg-color);
+		font-size: 0.9em;
 		word-break: break-word;
 
 		padding: 5px;
@@ -111,45 +117,52 @@ select:-webkit-autofill:focus {
 .button {
 	cursor: pointer;
 	text-decoration: none;
-	display: table;
+	border: none;
+	width: 100%;
 
-	background-color: transparent;
-
-	border-radius: 5px;
+	border-radius: 100px;
 	margin: auto 0;
-	padding: 10px;
-	font-size: 20px;
+	padding: 4px 16px;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
 
 	transition: all 0.2s ease;
 
-	&_primary {
-		border: 1px solid var(--primary-color);
+	&_link {
+		display: flex;
+		justify-content: center;
+		font-size: 14px;
+		font-weight: 700;
+		width: calc(100% - 32px - 2px);
+	}
 
-		color: var(--primary-color);
+	&_primary {
+		border: 1px solid var(--buttonP-color);
+		background-color: var(--buttonP-color);
+		color: var(--buttonTextP-color);
 
 		&:hover {
-			background-color: var(--primary-color);
+			border: 1px solid var(--buttonHoverP-color);
+			background-color: var(--buttonHoverP-color);
 		}
 	}
 
 	&_secondary {
-		border: 1px solid var(--secondText-color);
-
-		color: var(--secondText-color);
+		border: 1px solid var(--buttonTextS-color);
+		background-color: var(--buttonS-color);
+		color: var(--buttonTextS-color);
 
 		&:hover {
-			background-color: var(--secondText-color);
+			background-color: var(--buttonHoverS-color);
 		}
-	}
-
-	&:hover {
-		color: #eee;
 	}
 }
 
 .form {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 
 	&_row {
 		display: grid;
@@ -173,14 +186,15 @@ select:-webkit-autofill:focus {
 
 	display: inline-block;
 	position: relative;
+	font-size: 0.9rem;
 
 	&_label {
 		position: absolute;
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		padding: 0 5px 0 5px;
-		font-size: 16px;
+		font-size: 1em;
 		background-color: var(--compBg-color);
 		display: inline-block;
 		user-select: none;
@@ -192,20 +206,20 @@ select:-webkit-autofill:focus {
 		border-radius: 5px;
 		padding: 16px 20px;
 		margin: 10px 0;
-		font-size: 16px;
+		font-size: 0.9em;
 		width: calc(100% - 40px);
 		caret-color: var(--text-color);
 		color: var(--text-color);
 
 		&:hover {
-			border: 1px solid var(--secondText-color);
+			border: 1px solid var(--disabled-color);
 		}
 
 		&:focus {
-			border: 1px solid var(--secondText-color);
+			border: 1px solid var(--primary-color);
 			outline-style: solid;
-			outline-color: lightseagreen;
-			outline-width: 2px;
+			outline-color: var(--primary-color);
+			outline-width: 1px;
 			transition: outline-width 0.1s ease;
 		}
 	}
@@ -216,7 +230,7 @@ select:-webkit-autofill:focus {
 			color: var(--text-color) !important;
 			display: flex;
 			align-items: center;
-			font-size: 16px;
+			font-size: 1em;
 			margin: 16px 16px;
 		}
 
@@ -237,7 +251,7 @@ select:-webkit-autofill:focus {
 		&_label {
 			cursor: pointer;
 			color: var(--text-color) !important;
-			font-size: 16px;
+			font-size: 1em;
 			margin-bottom: 16px;
 
 			display: flex;
@@ -274,12 +288,12 @@ select:-webkit-autofill:focus {
 	}
 
 	&_error {
-		color: red;
+		color: var(--complementary-color);
 		margin: 10px 0;
 		display: flex;
 
 		&_icon {
-			font-size: 20px;
+			font-size: 1.5em;
 			margin-right: 5px;
 		}
 	}
@@ -318,11 +332,19 @@ select:-webkit-autofill:focus {
 	}
 }
 
+@media (max-width: 400px) {
+	.form {
+		&_row {
+			grid-template-columns: 100%;
+		}
+	}
+}
+
 @keyframes labelOut {
 	from {
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 	to {
 		top: var(--labelOutTop);
@@ -340,7 +362,7 @@ select:-webkit-autofill:focus {
 	to {
 		top: var(--labelInTop);
 		left: var(--labelInLeft);
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 }
 

@@ -7,10 +7,10 @@
 	background-color: var(--compBg-color);
 	border: 1px solid var(--border-color);
 	border-radius: 5px;
-	width: 100%;
+	width: calc(100% - 20px);
 
 	&_message {
-		color: red;
+		color: var(--complementary-color);
 		font-size: 24px;
 		margin-bottom: 16px;
 
@@ -18,5 +18,11 @@
 			display: flex;
 			justify-content: center;
 		}
+	}
+
+	&_button {
+		font-size: 16px;
+		padding: 4px 32px;
+		width: fit-content;
 	}
 }

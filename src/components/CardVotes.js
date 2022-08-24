@@ -9,81 +9,65 @@ import {
 import { useApolloClient, useMutation } from "@apollo/client"
 
 import "./CardVotes.scss"
-import { Modal } from "../components"
-import { VOTE_NEWS } from "../utils/apollo-queries"
+import { VOTE_ITEM } from "../utils/apollo-queries"
 import { compressNumber } from "../utils/utils"
 
-function CardVotes({ data }) {
+function CardVotes({ data, type }) {
 	const client = useApolloClient()
-	const [voteNews] = useMutation(VOTE_NEWS)
+	const [vote] = useMutation(VOTE_ITEM)
 	const [votes, setVotes] = useState({
 		voteState: data.voteState,
-		likes: data.likes,
-		dislikes: data.dislikes,
+		score: data.score,
 	})
-	const [error, setError] = useState("")
 
-	const handleVote = (e, action) => {
-		e.preventDefault()
+	let parentType
+	if (type.includes("news")) parentType = "news"
+	if (type.includes("comment")) parentType = "comment"
 
-		voteNews({
+	const handleVote = action => {
+		vote({
 			variables: {
 				action,
-				id: data.id,
+				parentId: data.id,
+				parentType,
 			},
-			onCompleted: ({ voteNews }) => {
-				console.log(voteNews)
+			onCompleted: ({ vote }) => {
+				if (!vote.success) {
+					console.log(vote.message)
+
+					return
+				}
+
+				client.clearStore()
 
 				setVotes({
 					voteState: action === votes.voteState ? "none" : action,
-					likes: voteNews.likes,
-					dislikes: voteNews.dislikes,
+					score: vote.score,
 				})
-
-				client.clearStore()
 			},
-			onError: error =>
-				setError(error?.response?.data.message || error.message),
+			onError: error => console.log({ ...error }),
 		})
 	}
 
 	return (
-		<div className="cardlikes">
-			{error && (
-				<Modal onSubmit={() => setError("")}>
-					<p>{error}</p>
-				</Modal>
-			)}
-			<button className="cardlikes_button" onClick={e => handleVote(e, "like")}>
+		<div className={`votes ${type}-votes`}>
+			<button className="votes_button" onClick={() => handleVote("like")}>
 				{votes.voteState === "like" ? (
-					<AiFillLike
-						className="cardlikes_icon"
-						style={{ color: "var(--primary-color)" }}
-					/>
+					<AiFillLike className="votes_icon votes_like" />
 				) : (
-					<AiOutlineLike className="cardlikes_icon" />
+					<AiOutlineLike className="votes_icon" />
 				)}
 			</button>
 			<span
-				style={{
-					color:
-						votes.voteState === "like"
-							? "var(--primary-color)"
-							: votes.voteState === "dislike"
-							? "red"
-							: "var(--text-color)",
-				}}
+				className={`votes_score votes_${votes.voteState} ${type}-votes_score`}
 			>
-				{compressNumber(votes.likes - votes.dislikes)}
+				{compressNumber(votes.score)}
 			</span>
-			<button
-				className="cardlikes_button"
-				onClick={e => handleVote(e, "dislike")}
-			>
+			<button className="votes_button" onClick={() => handleVote("dislike")}>
 				{votes.voteState === "dislike" ? (
-					<AiFillDislike className="cardlikes_icon" style={{ color: "red" }} />
+					<AiFillDislike className="votes_icon votes_dislike" />
 				) : (
-					<AiOutlineDislike className="cardlikes_icon" />
+					<AiOutlineDislike className="votes_icon" />
 				)}
 			</button>
 		</div>

@@ -9,6 +9,22 @@ export const useDocumentTitle = title => {
 	return [documentTitle, setDocumentTitle]
 }
 
+export const useReachedBottom = (loading, error) => {
+	const [reachedBottom, setReachedBottom] = useState({})
+
+	// check if the user scrolled to the bottom of the page so we can request more news only then
+	window.addEventListener("scroll", event => {
+		const { scrollHeight, scrollTop } = event.target.scrollingElement
+		const innerHeight = window.innerHeight
+
+		if (!loading && !error && scrollHeight - innerHeight - scrollTop <= 1) {
+			setReachedBottom(true)
+		}
+	})
+
+	return [reachedBottom, setReachedBottom]
+}
+
 // updates inputs from Sign In and Sign Up page
 export const updateInputLabels = () => {
 	const form = document.querySelector("#form")
@@ -54,7 +70,7 @@ export const handleInputBlur = e => {
 
 			label.style.top = "var(--labelInTop)"
 			label.style.left = "var(--labelInLeft)"
-			label.style.color = "var(--secondText-color)"
+			label.style.color = "var(--disabled-color)"
 		}
 	}
 }
@@ -75,14 +91,22 @@ export const compressNumber = n => {
 	// the result
 	let result = ""
 
-	// if n is under 1000, return n
-	if (n < 1000) result = `${n}`
-	// if n is under 1000000, compress the last 3 zeroes
-	else if (n < 1000000) result = `${n / 1000}K`
-	// if n is under 1000000000, compress the last 6 zeroes
-	else if (n < 1000000000) result = `${n / 1000000}M`
-	// if n is under 1000000000000, compress the last 9 zeroes
-	else if (n < 1000000000000) result = `${n / 1000000000}B`
+	if (n === 0) return "0"
+
+	const size = ["", "K", "M", "B"]
+
+	let powerOf10 = n > 0 ? 1000 : -1000
+	let sign = n > 0 ? "" : "-"
+
+	for (let i in size) {
+		if ((n < powerOf10 && n > 0) || (n > powerOf10 && n < 0)) {
+			result = `${sign}${n / (powerOf10 / 1000)}${size[i]}`
+
+			break
+		}
+
+		powerOf10 *= 1000
+	}
 
 	// check if the result has been modified
 	if (result !== "") {

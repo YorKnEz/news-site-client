@@ -2,49 +2,40 @@ import React, { useEffect, useState } from "react"
 
 import { useQuery } from "@apollo/client"
 
+import { PageWithCards, QueryResult } from "../../components"
+import { AuthorProfileCard } from "../../components/page-cards"
 import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
-import { AuthorCard } from "../../components"
+import { useReachedBottom } from "../../utils/utils"
 
 function FollowedAuthors() {
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [offset, setOffset] = useState(0)
 	const [authors, setAuthors] = useState([])
 
 	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
 		variables: { offset },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
-		if (data) {
-			console.log(data)
-
-			setAuthors(authors => [...authors, ...data.followedAuthors])
-		}
+		if (data) setAuthors(authors => [...authors, ...data.followedAuthors])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 			setOffset(authors.length)
 		}
-	}, [reachedBottomOfPage, authors.length])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, authors.length])
 
 	return (
-		<div className="profile_followedAuthors">
-			{authors.map(author => (
-				<AuthorCard key={author.id} data={author} infoBelow />
-			))}
-		</div>
+		<PageWithCards>
+			<div className="profile_followedAuthors">
+				{authors.map(author => (
+					<AuthorProfileCard key={author.id} data={author} />
+				))}
+				<QueryResult loading={loading} error={error} data={data} />
+			</div>
+		</PageWithCards>
 	)
 }
 

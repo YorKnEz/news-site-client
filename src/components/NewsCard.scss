@@ -3,7 +3,7 @@
 	overflow: hidden;
 
 	display: flex;
-	width: 100%;
+	width: calc(100% - 2px);
 	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
@@ -12,6 +12,7 @@
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
+	font-size: 0.8rem;
 
 	&_matches {
 		position: absolute;
@@ -19,7 +20,7 @@
 		right: 16px;
 
 		font-family: monospace;
-		font-size: 12px;
+		font-size: 0.8em;
 
 		padding: 8px 10px;
 		border-radius: 5px;
@@ -27,20 +28,19 @@
 
 	&_container {
 		width: calc(100% - 44px);
-		padding: 10px 0;
+		padding: 10px 8px;
 		display: flex;
 		flex-direction: column;
 	}
 
 	&_posted {
-		padding-left: 8px;
-		font-size: 12px;
+		font-size: 0.8em;
 		margin: 5px 0;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_authorlink {
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		text-decoration: none;
 
 		&:hover {
@@ -58,9 +58,9 @@
 	}
 
 	&_title {
-		padding-left: 8px;
-		font-size: 20px;
+		font-size: 1.2em;
 		margin: 8px 0;
+		color: var(--bold-color);
 	}
 
 	&_thumbnail {
@@ -68,54 +68,41 @@
 		background-size: cover;
 		background-position: center;
 		width: 100%;
+		align-self: center;
 		padding-top: 56.25%;
 	}
 
 	&_body {
-		padding: 0 8px;
 		width: calc(100% - 16px);
 
 		word-wrap: break-word;
-		font-size: 16px;
-		color: var(--secondText-color);
+		text-align: justify;
+		font-size: 1em;
+		color: var(--disabled-color);
 	}
 
 	&_tags {
-		padding-left: 8px;
-		display: flex;
-		flex-wrap: wrap;
+		margin: 0;
 	}
 
 	&_options {
-		margin-top: 10px;
-		padding-left: 8px;
 		display: flex;
-
-		&_item {
-			text-decoration: none;
-			display: flex;
-			align-items: center;
-			border: none;
-			background-color: transparent;
-			color: var(--secondText-color);
-			font-size: 16px;
-			cursor: pointer;
-
-			padding: 8px 16px;
-
-			&_icon {
-				margin-right: 8px;
-				font-size: 20px;
-			}
-
-			&:hover {
-				background-color: var(--border-color);
-				border-radius: 5px;
-			}
-		}
+		margin-top: 10px;
+		font-size: 0.8em;
 	}
 
 	&:hover {
-		border: 1px solid var(--secondText-color);
+		border: 1px solid var(--disabled-color);
+	}
+}
+
+@media (max-width: 768px) {
+	.newscard {
+		border-radius: 0;
+		overflow: visible;
+
+		&_container {
+			width: 100%;
+		}
 	}
 }

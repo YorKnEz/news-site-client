@@ -3,21 +3,21 @@
 	top: 0;
 	left: 0;
 	z-index: 999;
+	height: calc(56px - 1px - 10px);
 	width: calc(100% - 20px);
-	padding: 5px 10px 5px 10px;
+	padding: 5px 10px;
 	border-bottom: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
 	display: grid;
-	grid-template-columns: [col1] 25% [col2] 50% [col3] 25% [col4];
+	grid-template-columns: [col1] 20% [col2] 60% [col3] 20% [col4];
 	align-items: center;
 
 	&_branding {
 		font-family: "Chomsky";
 		text-decoration: none;
-		font-size: 40px;
+		font-size: 32px;
 		position: relative;
-		bottom: 4px;
-		color: var(--text-color);
+		color: var(--bold-color);
 		user-select: none;
 	}
 
@@ -25,12 +25,13 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		font-size: 24px;
+		font-size: 20px;
 		color: var(--text-color);
 	}
 
 	&_section1 {
 		justify-self: flex-start;
+		align-items: center;
 
 		grid-column-start: col1;
 		grid-column-end: col2;
@@ -48,108 +49,18 @@
 
 	&_section3 {
 		justify-self: flex-end;
+		align-items: center;
 
 		grid-column-start: col3;
 		grid-column-end: col4;
 	}
-
-	&_search {
-		background-color: var(--compBg-color);
-		border: 1px solid var(--border-color);
-		border-radius: 5px;
-		font-size: 16px;
-		color: var(--text-color);
-
-		&_input {
-			background-color: var(--compBg-color);
-			border: none;
-			border-radius: 5px;
-			font-size: 16px;
-			padding: 10px 14px;
-			color: var(--text-color);
-			caret-color: var(--text-color);
-
-			&:focus {
-				outline: none;
-			}
-		}
-
-		&_category {
-			cursor: pointer;
-			background-color: grey;
-			border: none;
-			border-radius: 5px;
-			padding: 4px 8px;
-			margin-right: 5px;
-			font-size: 16px;
-			color: lightgray;
-			justify-content: center;
-			// caret-color: ;
-		}
-
-		&_button {
-			cursor: pointer;
-			border: none;
-			background-color: transparent;
-			color: var(--text-color);
-
-			transition: color 0.2s ease-out;
-
-			&_icon {
-				font-size: 32px;
-				margin-left: 10px;
-			}
-
-			&:hover {
-				color: var(--primary-color);
-			}
-		}
-
-		&:hover {
-			border: 1px solid var(--secondText-color);
-		}
-
-		&:focus {
-			outline-style: solid;
-			outline-color: var(--button-color);
-			outline-width: 2px;
-			transition: outline-width 0.1s ease;
-		}
-	}
 }
 
-.dropdown {
-	position: fixed;
-	z-index: 1000;
-	top: -1000px;
-	right: 10px;
-	padding: 20px 20px;
-	background-color: var(--compBg-color);
-	border: 1px solid var(--border-color);
-	border-radius: 0 0 5px 5px;
-	display: flex;
-	flex-direction: column;
-	transition: top 0.5s ease;
-	font-size: 20px;
-
-	&_link {
-		text-decoration: none;
-		margin: 5px 0;
-		color: var(--text-color);
-	}
-
-	&_button {
-		text-decoration: none;
-		display: flex;
-		justify-content: center;
-		padding: 10px;
-		font-size: 20px;
-	}
-
-	&_separator {
-		width: 100%;
-		height: 2px;
-		margin: 20px 0 16px 0;
-		background-color: var(--text-color);
+@media (max-width: 768px) {
+	.header {
+		&_section2 {
+			display: none;
+		}
+		// grid-template-columns: [col1] 50% [col2] 0% [col3] 50%;
 	}
 }

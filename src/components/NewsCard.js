@@ -1,17 +1,35 @@
-import React, { useEffect } from "react"
-import { AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
+import React, { useEffect, useState } from "react"
+import { AiFillSave, AiOutlineSave, AiOutlineShareAlt } from "react-icons/ai"
 import { BsChatSquare } from "react-icons/bs"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
+import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./NewsCard.scss"
-import { CardVotes } from "../components"
+import { Button, CardVotes, DropdownList, Modal } from "../components"
+import { SAVE_ITEM } from "../utils/apollo-queries"
 
 function NewsCard({ data, matches }) {
+	const history = useNavigate()
+
+	const [saved, setSaved] = useState(false)
+	const [showShareModal, setShowShareModal] = useState(false)
+
+	const client = useApolloClient()
+	const [save] = useMutation(SAVE_ITEM)
+
+	// set the save state
+	useEffect(() => {
+		if (data.saveState === "save") {
+			setSaved(true)
+		}
+	}, [data])
+
+	// set the body if there is no thumbnail
 	useEffect(() => {
 		if (!data.thumbnail) {
-			const div = document.querySelector("#body")
+			const div = document.getElementById(`news-body-${data.id}`)
 
 			let body = data.body
 
@@ -26,9 +44,10 @@ function NewsCard({ data, matches }) {
 		}
 	})
 
+	// set the matches (for searches only)
 	useEffect(() => {
 		if (matches) {
-			const span = document.getElementById(data.id + "span")
+			const span = document.getElementById(`${data.id}span`)
 
 			if (matches > 70) {
 				span.style.backgroundColor = "#73ff7e"
@@ -75,55 +94,98 @@ function NewsCard({ data, matches }) {
 		return `Posted ${distance} ago`
 	}
 
-	const handleShare = e => {}
+	const goToNews = () => {
+		history(`/news/${data.link}-${data.id}`)
+	}
 
-	const handleSave = e => {}
+	const onShareModalSubmit = async () => setShowShareModal(false)
+
+	const handleShare = () => setShowShareModal(true)
+
+	const handleSave = () => {
+		save({
+			variables: {
+				action: saved ? "unsave" : "save",
+				parentId: data.id,
+				parentType: "news",
+			},
+			onCompleted: ({ save }) => {
+				if (!save.success) {
+					console.log(save.message)
+
+					return
+				}
+
+				client.clearStore()
+
+				setSaved(value => !value)
+			},
+			onError: error => console.log({ ...error }),
+		})
+	}
 
 	return (
 		<div className="newscard">
-			<CardVotes data={data} />
+			{showShareModal && (
+				<Modal onSubmit={onShareModalSubmit}>
+					<h3 style={{ margin: 0 }}>Share this with your friends</h3>
+					<hr />
+					<input
+						className="formItem_input"
+						type="text"
+						value={`${window.location.origin}/news/${data.link}-${data.id}`}
+						readOnly
+					/>
+				</Modal>
+			)}
+			<CardVotes data={data} type="news" />
 			<div className="newscard_container">
+				{matches && (
+					<span
+						id={`${data.id}span`}
+						className="newscard_matches"
+					>{`Matches ${matches}%`}</span>
+				)}
 				<span className="newscard_posted">
 					{showDate()} by{" "}
 					<Link
-						to={`/profile/${data.author.id}`}
+						to={`/profile/${data.author.id}/overview`}
 						className="newscard_authorlink"
 					>
 						{data.author.fullName}
 					</Link>
 				</span>
-				<Link to={`/news/${data.id}`} className="newscard_link">
+				<Link to={`/news/${data.link}-${data.id}`} className="newscard_link">
 					<span className="newscard_title">{data.title}</span>
 					{data.thumbnail ? (
 						<div
 							className="newscard_thumbnail"
 							style={{ backgroundImage: `url("${data.thumbnail}")` }}
-						>
-							{matches && (
-								<span
-									id={data.id + "span"}
-									className="newscard_matches"
-								>{`Matches ${matches}%`}</span>
-							)}
-						</div>
+						/>
 					) : (
-						<div className="newscard_body" id="body"></div>
+						<div className="newscard_body" id={`news-body-${data.id}`}></div>
 					)}
 				</Link>
-				<div className="newscard_tags">{showTags()}</div>
+				<div className="tags newscard_tags">{showTags()}</div>
 				<div className="newscard_options">
-					<Link to={`/news/${data.id}`} className="newscard_options_item">
-						<BsChatSquare className="newscard_options_item_icon" />
-						{data.comments}
-					</Link>
-					<button onClick={handleShare} className="newscard_options_item">
-						<AiOutlineShareAlt className="newscard_options_item_icon" />
-						Share
-					</button>
-					<button onClick={handleSave} className="newscard_options_item">
-						<AiOutlineSave className="newscard_options_item_icon" />
-						Save
-					</button>
+					<CardVotes data={data} type="news2" />
+					<Button
+						onClick={goToNews}
+						text={`${data.replies}`}
+						Icon={BsChatSquare}
+					/>
+					<DropdownList buttonClass="newscard_options_item">
+						<Button
+							onClick={handleShare}
+							text="Share"
+							Icon={AiOutlineShareAlt}
+						/>
+						{saved ? (
+							<Button onClick={handleSave} text="Unsave" Icon={AiFillSave} />
+						) : (
+							<Button onClick={handleSave} text="Save" Icon={AiOutlineSave} />
+						)}
+					</DropdownList>
 				</div>
 			</div>
 		</div>

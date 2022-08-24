@@ -7,24 +7,32 @@ import { useApolloClient } from "@apollo/client"
 import { PrivateRoutes } from "./components"
 import { ThemeContext, themes, UserContext } from "./context"
 import {
-	Home,
-	News,
-	SignUp,
-	SignIn,
-	Profile,
 	BecomeEditor,
 	CreateNews,
 	EditNews,
 	Error,
-	SearchResult,
+	Feed,
 	ForgotPassword,
+	News,
+	Reddit,
 	ResetPassword,
+	SignUp,
+	SignIn,
+	SearchResult,
+	VerifyEmail,
 } from "./pages"
+import {
+	FollowedAuthors,
+	LikedItems,
+	News as Posts,
+	Profile,
+	SavedItems,
+} from "./pages/profile"
 
 export default function App() {
 	const client = useApolloClient()
 	const [theme, setTheme] = useState(
-		themes[localStorage.getItem("theme") || ""]
+		themes[localStorage.getItem("theme")] || ""
 	)
 	const [token, setToken] = useState(localStorage.getItem("token") || "")
 	const [user, setUser] = useState(
@@ -39,6 +47,7 @@ export default function App() {
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
 
+	// set the theme according to the os theme
 	useEffect(() => {
 		// if theme has not been set
 		if (theme === "") {
@@ -98,6 +107,17 @@ export default function App() {
 		client.link.options.headers.authorization = ""
 	}
 
+	const verifyEmail = userId => {
+		// update the user object only if the user is logged in and the id of the verified user is the same as the currently logged in
+		if (Object.keys(user).length > 0 && user.id === userId) {
+			setUser({
+				...user,
+				verified: true,
+			})
+			localStorage.setItem("user", JSON.stringify({ ...user, verified: true }))
+		}
+	}
+
 	return (
 		<ThemeContext.Provider
 			value={{
@@ -111,31 +131,73 @@ export default function App() {
 					user,
 					signIn,
 					signOut,
+					verifyEmail,
 				}}
 			>
 				<Router>
 					<Routes>
 						{/* public routes */}
-						<Route path="*" element={<Error />} />
+						<Route path="*" element={<Error code="404" />} />
 						<Route exact path="/become-editor" element={<BecomeEditor />} />
 						<Route exact path="/sign-up" element={<SignUp />} />
 						<Route exact path="/sign-in" element={<SignIn />} />
 						<Route exact path="/forgot-password" element={<ForgotPassword />} />
 						<Route exact path="/reset-password" element={<ResetPassword />} />
-						<Route exact path="/" element={<Home />} />
-						<Route exact path="/news/:newsId" element={<News />} />
+						<Route
+							exact
+							path="/verify-email/:token"
+							element={<VerifyEmail />}
+						/>
+						<Route exact path="/" element={<Feed />} />
+						<Route exact path="/best" element={<Feed />} />
+						<Route exact path="/new" element={<Feed />} />
+						<Route exact path="/r/romania" element={<Reddit />} />
+
+						<Route exact path="/news/:link-:newsId" element={<News />} />
+						<Route
+							exact
+							path="/news/:link-:newsId/comment/:commentId"
+							element={<News />}
+						/>
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
-							<Route exact path="/profile" element={<Profile />} />
-							<Route exact path="/profile/:authorId" element={<Profile />} />
+							<Route exact path="/followed/" element={<Feed />} />
+							<Route exact path="/followed/best" element={<Feed />} />
+							<Route exact path="/followed/new" element={<Feed />} />
+							<Route
+								exact
+								path="/profile/:id/overview/"
+								element={<Profile />}
+							/>
+							<Route exact path="/profile/:id/news/" element={<Posts />} />
+							<Route
+								exact
+								path="/profile/:id/followed/"
+								element={<FollowedAuthors />}
+							/>
+							<Route
+								exact
+								path="/profile/:id/liked/"
+								element={<LikedItems />}
+							/>
+							<Route
+								exact
+								path="/profile/:id/saved/"
+								element={<SavedItems />}
+							/>
+
 							<Route exact path="/search" element={<SearchResult />} />
 						</Route>
 
 						{/* private routes, accessible only by authors */}
 						<Route element={<PrivateRoutes authorOnly />}>
-							<Route exact path="/create" element={<CreateNews />} />
-							<Route exact path="/news/:newsId/edit" element={<EditNews />} />
+							<Route exact path="/news/create" element={<CreateNews />} />
+							<Route
+								exact
+								path="/news/:link-:newsId/edit"
+								element={<EditNews />}
+							/>
 						</Route>
 					</Routes>
 				</Router>
