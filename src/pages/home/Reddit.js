@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client"
 
 import "./index.scss"
 import {
-	HomeSort,
+	HomeNavigation,
 	PageWithCards,
 	QueryResult,
 	RedditNewsCard,
@@ -13,6 +13,15 @@ import { NEWS_FOR_HOME_REDDIT } from "../../utils/apollo-queries"
 import { useReachedBottom } from "../../utils/utils"
 
 function RedditNews() {
+	const path = window.location.pathname
+	const [page, setPage] = useState(
+		path.includes("followed")
+			? "/followed/"
+			: path.includes("r/romania")
+			? "/r/romania/"
+			: "/"
+	)
+
 	const [after, setAfter] = useState("")
 	const [news, setNews] = useState([])
 
@@ -34,7 +43,7 @@ function RedditNews() {
 
 	return (
 		<PageWithCards>
-			<HomeSort sortBy="reddit" />
+			<HomeNavigation page={page} setPage={setPage} />
 			{news.map(item => (
 				<RedditNewsCard data={item} key={item.id} />
 			))}

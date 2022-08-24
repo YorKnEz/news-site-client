@@ -32,6 +32,11 @@
 			border-radius: 100px;
 		}
 
+		&_active2 {
+			background-color: var(--compBgLight-color) !important;
+			border-radius: 100px;
+		}
+
 		&:hover {
 			background-color: var(--compBgDark-color);
 			border-radius: 100px;

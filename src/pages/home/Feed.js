@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client"
 
 import "./index.scss"
 import {
+	HomeNavigation,
 	HomeSort,
 	NewsCard,
 	PageWithCards,
@@ -12,12 +13,17 @@ import {
 import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
 import { useReachedBottom } from "../../utils/utils"
 
-function Feed({ sortBy }) {
+function Feed() {
+	const path = window.location.pathname
+	const [page, setPage] = useState(
+		path.includes("followed") ? "/followed/" : "/"
+	)
+	const [sortBy, setSortBy] = useState(path.includes("new") ? "date" : "score")
 	const [news, setNews] = useState([])
 	const [oldestId, setOldestId] = useState("")
 
 	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
-		variables: { oldestId, sortBy },
+		variables: { oldestId, sortBy, followed: page.includes("followed") },
 	})
 	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
@@ -40,7 +46,8 @@ function Feed({ sortBy }) {
 
 	return (
 		<PageWithCards>
-			<HomeSort sortBy={sortBy} />
+			<HomeNavigation page={page} setPage={setPage} />
+			<HomeSort page={page} sortBy={sortBy} setSortBy={setSortBy} />
 			{news.map(item => (
 				<NewsCard data={item} key={item.id} />
 			))}
