@@ -358,8 +358,8 @@ export const SAVED_ITEMS = gql`
 
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($oldestId: ID!, $sortBy: String!) {
-		newsForHome(oldestId: $oldestId, sortBy: $sortBy) {
+	query NewsForHome($oldestId: ID!, $sortBy: String!, $followed: Boolean) {
+		newsForHome(oldestId: $oldestId, sortBy: $sortBy, followed: $followed) {
 			id
 			title
 			subreddit
