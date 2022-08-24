@@ -28,6 +28,20 @@ import {
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
+const editorOptions = {
+	inline: {
+		options: [
+			"bold",
+			"italic",
+			"underline",
+			"strikethrough",
+			// "monospace",
+			"superscript",
+			"subscript",
+		],
+	},
+}
+
 function CreateNews() {
 	const history = useNavigate()
 
@@ -297,6 +311,7 @@ function CreateNews() {
 					/>
 					<div className="editor_container">
 						<Editor
+							toolbar={editorOptions}
 							placeholder="Write here..."
 							editorState={editorState}
 							onEditorStateChange={setEditorState}

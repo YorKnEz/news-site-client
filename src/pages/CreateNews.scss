@@ -57,6 +57,12 @@
 }
 
 .rdw {
+	&-editor-main pre {
+		background-color: var(--compBgDark-color) !important;
+		border: 1px solid var(--border-color) !important;
+		border-radius: 5px;
+	}
+
 	&-option-wrapper {
 		border-radius: 5px !important;
 		border: 1px solid var(--border-color) !important;
