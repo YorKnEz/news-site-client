@@ -18,6 +18,7 @@
 		z-index: 1005;
 		width: 100vw;
 		height: 100vh;
+		height: calc(var(--vh, 1vh) * 100);
 		background-color: black;
 		opacity: 0.3;
 		display: flex;
@@ -32,6 +33,7 @@
 		z-index: 1006;
 		width: 100vw;
 		height: 100vh;
+		height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -43,7 +45,7 @@
 	}
 
 	&_decline {
-		background-color: var(--secondText-color);
+		background-color: var(--disabled-color);
 	}
 
 	&_submit {

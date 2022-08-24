@@ -3,6 +3,7 @@
 	margin: calc(8px + 56px) auto 8px auto;
 	padding: 0 10px;
 	min-height: calc(100vh - 64px - 8px - 59px);
+	min-height: calc(calc(var(--vh, 1vh) * 100) - 64px - 8px - 59px);
 	background-color: var(--pageBg-color);
 
 	display: grid;
@@ -11,6 +12,7 @@
 	&_margin-top {
 		margin: calc(8px + 56px + 40px) auto 8px auto;
 		min-height: calc(100vh - 16px - 56px - 40px - 59px);
+		min-height: calc(calc(var(--vh, 1vh) * 100) - 16px - 56px - 40px - 59px);
 	}
 
 	&_col1 {
@@ -29,6 +31,11 @@
 @media (max-width: 768px) {
 	.pagewc {
 		grid-template-columns: 100%;
+		padding: 0;
+
+		&_col1 {
+			margin: 0;
+		}
 
 		&_col2 {
 			display: none;

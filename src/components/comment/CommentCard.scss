@@ -1,6 +1,6 @@
 .commentcard {
 	display: flex;
-	width: 100%;
+	width: calc(100% - 2px);
 	margin: 4px 0;
 	border-radius: 5px;
 	border: 1px solid var(--border-color);
@@ -10,6 +10,7 @@
 	user-select: none;
 	text-decoration: none;
 	color: var(--text-color);
+	font-size: 0.8rem;
 
 	&_news {
 		padding: 8px 0;
@@ -30,13 +31,13 @@
 	}
 
 	&_posted {
-		font-size: 12px;
+		font-size: 0.8em;
 		margin: 5px 0;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 	}
 
 	&_link {
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		text-decoration: none;
 
 		&_light {
@@ -58,7 +59,7 @@
 
 		text-decoration: none;
 		word-wrap: break-word;
-		font-size: 16px;
+		font-size: 1em;
 		color: var(--text-color);
 
 		a {
@@ -77,40 +78,16 @@
 
 	&_options {
 		display: flex;
-
-		&_item {
-			margin-left: 4px;
-			padding-right: 8px;
-			cursor: pointer;
-			text-decoration: none;
-			display: inline-flex;
-			align-items: center;
-
-			color: var(--secondText-color);
-			background-color: transparent;
-
-			border: none;
-			font-size: 12px;
-
-			transition: all 0.2s ease;
-
-			&_icon {
-				font-size: 20px;
-				margin-right: 4px;
-			}
-
-			&:hover {
-				background-color: var(--border-color);
-				border-radius: 5px;
-			}
-
-			&:nth-child(2) {
-				margin-left: 8px;
-			}
-		}
 	}
 
 	&:hover {
-		border: 1px solid var(--secondText-color);
+		border: 1px solid var(--disabled-color);
+	}
+}
+
+@media (max-width: 768px) {
+	.commentcard {
+		overflow: visible;
+		border-radius: 0;
 	}
 }

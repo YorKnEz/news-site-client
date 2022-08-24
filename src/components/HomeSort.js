@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
-import { AiOutlineReddit, AiOutlineRocket } from "react-icons/ai"
+import { AiOutlineRocket } from "react-icons/ai"
 import { MdOutlineNewReleases } from "react-icons/md"
 import { Link } from "react-router-dom"
 
 import "./HomeSort.scss"
 
-function HomeSort({ sortBy }) {
+function HomeSort({ page, sortBy, setSortBy }) {
 	const options = [
 		{
 			id: "score",
@@ -17,27 +17,24 @@ function HomeSort({ sortBy }) {
 			text: "New",
 			Icon: MdOutlineNewReleases,
 		},
-		{
-			id: "reddit",
-			text: "r/Romania",
-			Icon: AiOutlineReddit,
-		},
 	]
 
 	useEffect(() => {
 		const buttonToTurnOff = document.querySelector(".homesort_item_active")
-		if (buttonToTurnOff)
+		if (buttonToTurnOff) {
 			buttonToTurnOff.classList.remove("homesort_item_active")
+		}
 
 		const button = document.getElementById(sortBy)
-		button.classList.add("homesort_item_active")
+		if (button) button.classList.add("homesort_item_active")
 	})
 
 	return (
 		<div className="homesort">
 			{options.map(({ id, text, Icon }) => (
 				<Link
-					to={`/${text.toLowerCase()}`}
+					onClick={() => setSortBy(id)}
+					to={`${page}${text.toLowerCase()}`}
 					replace
 					key={id}
 					id={id}

@@ -24,11 +24,12 @@
 		z-index: 1000;
 		width: 100vw;
 		height: 100vh;
+		height: calc(var(--vh, 1vh) * 100);
 		background-color: rgba(0, 0, 0, 0.3);
 	}
 
 	&_section {
-		width: calc(100% - 40px);
+		width: calc(100% - 32px);
 		display: flex;
 		flex-direction: column;
 

@@ -6,9 +6,9 @@
 	align-items: center;
 	border-top: 1px solid var(--border-color);
 	background-color: var(--compBg-color);
+	font-size: 0.8rem;
 
 	&_text {
 		color: var(--text-color);
-		font-size: 20px;
 	}
 }

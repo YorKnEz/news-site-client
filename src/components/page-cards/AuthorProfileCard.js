@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { useApolloClient, useMutation } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
@@ -9,8 +9,7 @@ import "./AuthorProfileCard.scss"
 import { UserContext } from "../../context"
 import { FOLLOW_AUTHOR } from "../../utils/apollo-queries"
 
-function AuthorProfileCard({ data }) {
-	const { id } = useParams()
+function AuthorProfileCard({ pageCard, data }) {
 	const { user } = useContext(UserContext)
 	const [profile, setProfile] = useState({})
 
@@ -36,7 +35,7 @@ function AuthorProfileCard({ data }) {
 			follow({
 				variables: {
 					action,
-					id,
+					id: data.id,
 				},
 				onCompleted: ({ follow }) => {
 					if (!follow.success) {
@@ -61,8 +60,11 @@ function AuthorProfileCard({ data }) {
 	}
 
 	return (
-		<Link to={`/profile/${profile.id}/overview`} className="authorprofilecard">
-			<div className="authorprofilecard_info">
+		<Link
+			to={`/profile/${profile.id}/overview`}
+			className={`apc${pageCard ? " page-card" : ""}`}
+		>
+			<div className="apc_info">
 				<img
 					src={
 						profile.profilePicture === "default"
@@ -71,28 +73,30 @@ function AuthorProfileCard({ data }) {
 					}
 					alt="avatar of user"
 				/>
-				<div className="authorprofilecard_info_text">
-					<h3>{profile.fullName}</h3>
-					<p>{profile.email}</p>
+				<div className="apc_info_container">
+					<span className="apc_info_title">{profile.fullName}</span>
+					<span className="apc_info_text">{profile.email}</span>
 				</div>
 			</div>
-			<div className="authorprofilecard_stats">
+			<div className="apc_stats">
 				{profile.type === "author" && (
 					<>
-						<div className="authorprofilecard_stats_item">
-							<b>Written News:</b> {profile.writtenNews}
+						<div className="apc_stats_item">
+							<span className="apc_stats_item_title">Written News:</span>{" "}
+							{profile.writtenNews}
 						</div>
-						<div className="authorprofilecard_stats_item">
-							<b>Followers:</b> {profile.followers}
+						<div className="apc_stats_item">
+							<span className="apc_stats_item_title">Followers:</span>{" "}
+							{profile.followers}
 						</div>
 					</>
 				)}
-				<div className="authorprofilecard_stats_item">
-					<b>Joined:</b> {profile.createdAt}
+				<div className="apc_stats_item">
+					<span className="apc_stats_item_title">Joined:</span>{" "}
+					{profile.createdAt}
 				</div>
 			</div>
-			{id &&
-				id != user.id &&
+			{profile.id != user.id &&
 				profile.type === "author" &&
 				(profile.following ? (
 					<button

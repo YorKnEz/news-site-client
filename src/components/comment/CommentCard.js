@@ -12,18 +12,14 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./CommentCard.scss"
-import { CommentEditor, CommentVotes } from "../../components"
+import {
+	Button,
+	CommentEditor,
+	CardVotes,
+	DropdownList,
+} from "../../components"
 import { UserContext } from "../../context"
 import { REMOVE_COMMENT, SAVE_ITEM } from "../../utils/apollo-queries"
-
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="comment_options_item">
-			<Icon className="commentcard_options_item_icon" />
-			{text}
-		</button>
-	)
-}
 
 function CommentCard({ data, onCommentEdit }) {
 	const { news, comment } = data
@@ -161,18 +157,20 @@ function CommentCard({ data, onCommentEdit }) {
 						></Link>
 					)}
 					<div className="commentcard_options">
-						<CommentVotes data={comment} />
-						{saved ? (
-							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
-						) : (
-							<Button onClick={handleSave} text="Save" Icon={Save} />
-						)}
-						{user.id == comment.author.id && (
-							<>
-								<Button onClick={handleDelete} text="Delete" Icon={Delete} />
-								<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
-							</>
-						)}
+						<CardVotes data={comment} type="comment" />
+						<DropdownList>
+							{saved ? (
+								<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
+							) : (
+								<Button onClick={handleSave} text="Save" Icon={Save} />
+							)}
+							{user.id == comment.author.id && (
+								<>
+									<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+									<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
+								</>
+							)}
+						</DropdownList>
 					</div>
 				</div>
 			</div>

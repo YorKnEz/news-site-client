@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-import { useMutation, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 
 import "./NewsComments.scss"
 import {
@@ -9,21 +9,19 @@ import {
 	CustomSelect,
 	QueryResult,
 	CommentEditor,
-} from "../components"
-import { UserContext } from "../context"
-import {
-	COMMENTS_FOR_NEWS,
-	UPDATE_REPLIES_COUNTER,
-} from "../utils/apollo-queries"
+} from "../../components"
+import { UserContext } from "../../context"
+import { COMMENTS_FOR_NEWS } from "../../utils/apollo-queries"
 
-function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
+function NewsComments({ commentsCounter, setCommentsCounter }) {
+	const { newsId } = useParams()
+
 	const { user } = useContext(UserContext)
 	const [comments, setComments] = useState([])
 	const [totalReplies, setTotalReplies] = useState(0)
 	const [oldestId, setOldestId] = useState("")
 	const [sortBy, setSortBy] = useState("score")
 
-	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
 		variables: { oldestId, newsId, sortBy },
 	})
@@ -75,56 +73,45 @@ function NewsComments({ newsId, commentsCounter, setCommentsCounter }) {
 	}
 
 	const updateCounterLocal = () => {
-		updateRepliesCounter({
-			variables: {
-				action: "up",
-				id: newsId,
-				type: "news",
-			},
-			onCompleted: ({ updateRepliesCounter }) => {
-				if (!updateRepliesCounter.success) {
-					console.log(updateRepliesCounter.message)
-
-					return
-				}
-
-				setCommentsCounter(counter => counter + 1)
-				setTotalReplies(counter => counter + 1)
-			},
-			onError: error => console.log({ ...error }),
-		})
+		setCommentsCounter(counter => counter + 1)
+		setTotalReplies(counter => counter + 1)
 	}
 
 	return (
 		<div className="comments">
-			<div className="comments_input">
-				<span className="comments_input_title news_padding">
-					Comment as{" "}
-					<Link to={`/profile/${user.id}/overview`} className="news_authorlink">
-						{user.fullName}
-					</Link>
-				</span>
-				<CommentEditor
-					newsId={newsId}
-					parentId={newsId}
-					parentType="news"
-					onCommentAdd={onCommentAdd}
-				/>
-			</div>
-			<div className="comments_sort">
-				<CustomSelect
-					defaultItem={options[0]}
-					list={options}
-					setSelectedItem={handlePage}
-				/>
-				<hr />
+			<div className="comments_container">
+				<div className="comments_input">
+					<span className="comments_input_title">
+						Comment as{" "}
+						<Link
+							to={`/profile/${user.id}/overview`}
+							className="news_authorlink"
+						>
+							{user.fullName}
+						</Link>
+					</span>
+					<CommentEditor
+						newsId={newsId}
+						parentId={newsId}
+						parentType="news"
+						onCommentAdd={onCommentAdd}
+					/>
+				</div>
+				<div className="comments_sort">
+					<CustomSelect
+						defaultItem={options[0]}
+						list={options}
+						setSelectedItem={handlePage}
+					/>
+					<hr style={{ marginBottom: 0 }} />
+				</div>
 			</div>
 			<div className="comments_list">
 				{comments.map(comment => (
 					<Comment
+						depth={0}
 						sortBy={sortBy}
 						key={comment.id}
-						newsId={newsId}
 						comment={comment}
 						onCommentEdit={onCommentEdit}
 						updateCounter={updateCounterLocal}

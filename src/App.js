@@ -148,15 +148,23 @@ export default function App() {
 							path="/verify-email/:token"
 							element={<VerifyEmail />}
 						/>
-						<Route exact path="/" element={<Feed sortBy="score" />} />
-						<Route exact path="/best" element={<Feed sortBy="score" />} />
-						<Route exact path="/new" element={<Feed sortBy="date" />} />
+						<Route exact path="/" element={<Feed />} />
+						<Route exact path="/best" element={<Feed />} />
+						<Route exact path="/new" element={<Feed />} />
 						<Route exact path="/r/romania" element={<Reddit />} />
 
 						<Route exact path="/news/:link-:newsId" element={<News />} />
+						<Route
+							exact
+							path="/news/:link-:newsId/comment/:commentId"
+							element={<News />}
+						/>
 
 						{/* private routes, accessible by all users */}
 						<Route element={<PrivateRoutes />}>
+							<Route exact path="/followed/" element={<Feed />} />
+							<Route exact path="/followed/best" element={<Feed />} />
+							<Route exact path="/followed/new" element={<Feed />} />
 							<Route
 								exact
 								path="/profile/:id/overview/"

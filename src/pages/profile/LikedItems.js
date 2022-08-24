@@ -10,11 +10,11 @@ import {
 	QueryResult,
 } from "../../components"
 import { LIKED_ITEMS } from "../../utils/apollo-queries"
+import { useReachedBottom } from "../../utils/utils"
 
 function LikedItems() {
 	const { id } = useParams()
 
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
 	const [likedItems, setLikedItems] = useState([])
 	const [oldestId, setOldestId] = useState("")
 	const [oldestType, setOldestType] = useState("")
@@ -22,14 +22,15 @@ function LikedItems() {
 	const { loading, error, data } = useQuery(LIKED_ITEMS, {
 		variables: { oldestId, oldestType, userId: id },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
 		if (data) setLikedItems(news => [...news, ...data.liked])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 
 			if (likedItems.length > 0) {
 				const oldestItem = likedItems[likedItems.length - 1]
@@ -41,17 +42,7 @@ function LikedItems() {
 				else setOldestType("comment")
 			}
 		}
-	}, [reachedBottomOfPage, likedItems])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, likedItems])
 
 	const onCommentEdit = comment => {
 		setLikedItems(arr =>

@@ -108,18 +108,6 @@ export const SAVE_ITEM = gql`
 	}
 `
 
-// udpate the replies counter of a comment
-export const UPDATE_REPLIES_COUNTER = gql`
-	mutation UpdateRepliesCounter($action: String!, $id: ID!, $type: String!) {
-		updateRepliesCounter(action: $action, id: $id, type: $type) {
-			code
-			success
-			message
-			replies
-		}
-	}
-`
-
 // creates a news
 export const CREATE_NEWS = gql`
 	mutation CreateNews($newsData: NewsInput!) {
@@ -215,6 +203,30 @@ export const COMMENT_REPLIES = gql`
 				profilePicture
 			}
 		}
+	}
+`
+
+export const COMMENT_FOR_THREAD = gql`
+	query CommendById($depth: Int!, $commentId: ID!) {
+		commentById(commentId: $commentId) {
+			id
+			parentId
+			parentType
+			body
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			createdAt
+			saveState
+			author {
+				id
+				fullName
+				profilePicture
+			}
+		}
+		commentNthParentId(depth: $depth, commentId: $commentId)
 	}
 `
 
@@ -346,8 +358,8 @@ export const SAVED_ITEMS = gql`
 
 // returns news from yorknews
 export const NEWS_FOR_HOME = gql`
-	query NewsForHome($oldestId: ID!, $sortBy: String!) {
-		newsForHome(oldestId: $oldestId, sortBy: $sortBy) {
+	query NewsForHome($oldestId: ID!, $sortBy: String!, $followed: Boolean) {
+		newsForHome(oldestId: $oldestId, sortBy: $sortBy, followed: $followed) {
 			id
 			title
 			subreddit
@@ -528,8 +540,8 @@ export const NEWS_FOR_PROFILE_CARD = gql`
 
 // returns search results
 export const SEARCH = gql`
-	query Query($search: String!, $filter: String!) {
-		search(search: $search, filter: $filter) {
+	query Query($search: String!, $filter: String!, $fetchedResults: Int!) {
+		search(search: $search, filter: $filter, fetchedResults: $fetchedResults) {
 			__typename
 			... on NewsSearch {
 				matches
@@ -560,6 +572,7 @@ export const SEARCH = gql`
 			... on AuthorSearch {
 				result {
 					id
+					type
 					fullName
 					email
 					profilePicture
@@ -595,6 +608,7 @@ export const FOLLOWED_AUTHORS = gql`
 	query FollowedAuthors($offset: Int) {
 		followedAuthors(offset: $offset) {
 			id
+			type
 			fullName
 			email
 			profilePicture

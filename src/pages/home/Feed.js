@@ -4,55 +4,50 @@ import { useQuery } from "@apollo/client"
 
 import "./index.scss"
 import {
+	HomeNavigation,
 	HomeSort,
 	NewsCard,
 	PageWithCards,
 	QueryResult,
 } from "../../components"
 import { NEWS_FOR_HOME } from "../../utils/apollo-queries"
+import { useReachedBottom } from "../../utils/utils"
 
-function Feed({ sortBy }) {
-	const [reachedBottomOfPage, setReachedBottomOfPage] = useState(0)
+function Feed() {
+	const path = window.location.pathname
+	const [page, setPage] = useState(
+		path.includes("followed") ? "/followed/" : "/"
+	)
+	const [sortBy, setSortBy] = useState(path.includes("new") ? "date" : "score")
 	const [news, setNews] = useState([])
 	const [oldestId, setOldestId] = useState("")
 
 	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
-		variables: {
-			oldestId,
-			sortBy,
-		},
+		variables: { oldestId, sortBy, followed: page.includes("followed") },
 	})
+	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 
 	useEffect(() => {
-		setReachedBottomOfPage(0)
+		setReachedBottom(false)
 		setNews([])
 		setOldestId("")
-	}, [sortBy])
+	}, [sortBy, setReachedBottom])
 
 	useEffect(() => {
 		if (data) setNews(news => [...news, ...data.newsForHome])
 	}, [data])
 
 	useEffect(() => {
-		if (reachedBottomOfPage) {
-			setReachedBottomOfPage(false)
+		if (reachedBottom) {
+			setReachedBottom(false)
 			if (news.length > 0) setOldestId(news[news.length - 1].id)
 		}
-	}, [reachedBottomOfPage, news])
-
-	// check if the user scrolled to the bottom of the page so we can request more news only then
-	window.addEventListener("scroll", event => {
-		const { clientHeight, scrollHeight, scrollTop } =
-			event.target.scrollingElement
-
-		if (!loading && !error && scrollHeight - clientHeight === scrollTop) {
-			setReachedBottomOfPage(true)
-		}
-	})
+	}, [reachedBottom, setReachedBottom, news])
 
 	return (
 		<PageWithCards>
-			<HomeSort sortBy={sortBy} />
+			<HomeNavigation page={page} setPage={setPage} />
+			<HomeSort page={page} sortBy={sortBy} setSortBy={setSortBy} />
 			{news.map(item => (
 				<NewsCard data={item} key={item.id} />
 			))}

@@ -1,0 +1,20 @@
+.dropdownlist {
+	position: relative;
+
+	&_items {
+		display: flex;
+	}
+
+	&_items2 {
+		position: absolute;
+		z-index: 1;
+		overflow-y: scroll;
+
+		flex-direction: column;
+
+		border: 1px solid var(--border-color);
+		border-radius: 5px;
+		background-color: var(--compBg-color);
+		padding: 4px;
+	}
+}

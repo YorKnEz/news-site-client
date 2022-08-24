@@ -31,6 +31,20 @@ import {
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
 
+const editorOptions = {
+	inline: {
+		options: [
+			"bold",
+			"italic",
+			"underline",
+			"strikethrough",
+			// "monospace",
+			"superscript",
+			"subscript",
+		],
+	},
+}
+
 function EditNews() {
 	const { newsId } = useParams()
 	const history = useNavigate()
@@ -337,6 +351,7 @@ function EditNews() {
 						/>
 						<div className="editor_container">
 							<Editor
+								toolbar={editorOptions}
 								placeholder="Write here..."
 								editorState={editorState}
 								onEditorStateChange={setEditorState}
@@ -352,7 +367,7 @@ function EditNews() {
 							</p>
 						)}
 						<div className="sources">
-							<h4>Sources</h4>
+							<span className="sources_title">Sources</span>
 							{sources.map(s => (
 								<div
 									className="sources_item"
@@ -372,7 +387,7 @@ function EditNews() {
 							error={error2.sources.message}
 						/>
 						<div className="tags">
-							<h4>Tags</h4>
+							<span className="tags_title">Tags</span>
 							{tags.map(s => (
 								<div className="tags_item" key={s} onClick={handleDeleteTag}>
 									{s}

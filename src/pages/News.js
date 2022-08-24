@@ -15,27 +15,21 @@ import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./News.scss"
 import {
+	Button,
 	CardVotes,
+	DropdownList,
 	Modal,
 	NewsComments,
 	PageWithCards,
 	QueryResult,
+	ThreadComments,
 } from "../components"
 import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="news_options_item">
-			<Icon className="news_options_item_icon" />
-			{text}
-		</button>
-	)
-}
-
 function News() {
-	const { newsId } = useParams()
+	const { newsId, commentId } = useParams()
 	const history = useNavigate()
 
 	const { user } = useContext(UserContext)
@@ -88,6 +82,10 @@ function News() {
 		const distance = formatDistance(createdAt, currentDate)
 
 		return `Posted ${distance} ago`
+	}
+
+	const goToNews = () => {
+		history(`/news/${data.news.link}-${data.news.id}`)
 	}
 
 	const onDeleteModalSubmit = async () => {
@@ -173,9 +171,9 @@ function News() {
 				{data && (
 					<>
 						<div className="news">
-							<CardVotes data={data.news} />
+							<CardVotes data={data.news} type="news" />
 							<div className="news_container">
-								<span className="news_posted news_padding">
+								<span className="news_posted">
 									{showDate()} by{" "}
 									<Link
 										to={`/profile/${
@@ -186,7 +184,7 @@ function News() {
 										{data.news.author.fullName}
 									</Link>
 								</span>
-								<div className="news_link news_padding">
+								<div className="news_link">
 									<span className="news_title">{data.news.title}</span>
 									{data.news.thumbnail && (
 										<img
@@ -198,9 +196,9 @@ function News() {
 								</div>
 								{data.news.type !== "[deleted]" && (
 									<>
-										<div className="news_body news_padding" id="body"></div>
-										<div className="sources news_padding">
-											<h4>Sources</h4>
+										<div className="news_body" id="body"></div>
+										<div className="sources">
+											<span className="sources_title">Sources</span>
 											{sources.map(s => (
 												<a
 													className="sources_item"
@@ -213,8 +211,8 @@ function News() {
 												</a>
 											))}
 										</div>
-										<div className="tags news_padding">
-											<h4>Tags</h4>
+										<div className="tags">
+											<span className="tags_title">Tags</span>
 											{tags.length > 0 &&
 												tags.map(s => (
 													<Link
@@ -226,48 +224,62 @@ function News() {
 													</Link>
 												))}
 										</div>
-										<div className="news_options news_padding">
-											<Link
-												to={`/news/${data.news.link}-${data.news.id}`}
-												className="news_options_item"
-											>
-												<BsChatSquare className="news_options_item_icon" />
-												{commentsCounter}
-											</Link>
-											<Button onClick={handleShare} text="Share" Icon={Share} />
-											{saved ? (
+										<div className="news_options">
+											<Button
+												onClick={goToNews}
+												text={`${commentsCounter}`}
+												Icon={BsChatSquare}
+											/>
+											<DropdownList>
 												<Button
-													onClick={handleSave}
-													text="Unsave"
-													Icon={Unsave}
+													onClick={handleShare}
+													text="Share"
+													Icon={Share}
 												/>
-											) : (
-												<Button onClick={handleSave} text="Save" Icon={Save} />
-											)}
-											{user.id == data.news.author.id && (
-												<>
+												{saved ? (
 													<Button
-														onClick={handleDelete}
-														text="Delete"
-														Icon={Delete}
+														onClick={handleSave}
+														text="Unsave"
+														Icon={Unsave}
 													/>
+												) : (
 													<Button
-														onClick={handleEdit}
-														text="Edit"
-														Icon={Edit}
+														onClick={handleSave}
+														text="Save"
+														Icon={Save}
 													/>
-												</>
-											)}
+												)}
+												{user.id == data.news.author.id && (
+													<>
+														<Button
+															onClick={handleDelete}
+															text="Delete"
+															Icon={Delete}
+														/>
+														<Button
+															onClick={handleEdit}
+															text="Edit"
+															Icon={Edit}
+														/>
+													</>
+												)}
+											</DropdownList>
 										</div>
 									</>
 								)}
 							</div>
 						</div>
-						<NewsComments
-							newsId={newsId}
-							commentsCounter={commentsCounter}
-							setCommentsCounter={setCommentsCounter}
-						/>
+						{!commentId ? (
+							<NewsComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						) : (
+							<ThreadComments
+								commentsCounter={commentsCounter}
+								setCommentsCounter={setCommentsCounter}
+							/>
+						)}
 					</>
 				)}
 			</QueryResult>

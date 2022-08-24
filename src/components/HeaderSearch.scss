@@ -15,11 +15,11 @@
 		color: var(--text-color);
 
 		&:hover {
-			border: 1px solid var(--secondText-color);
+			border: 1px solid var(--disabled-color);
 		}
 
 		&:focus-within {
-			border: 1px solid var(--secondText-color);
+			border: 1px solid var(--disabled-color);
 		}
 	}
 
@@ -47,7 +47,7 @@
 		padding: 4px 8px;
 		margin-right: 5px;
 		font-size: 16px;
-		color: var(--secondText-color);
+		color: var(--disabled-color);
 		justify-content: center;
 	}
 

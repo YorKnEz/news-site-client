@@ -8,31 +8,29 @@ import {
 	AiOutlineExpand,
 } from "react-icons/ai"
 import { BsReply as Reply } from "react-icons/bs"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { formatDistance, fromUnixTime } from "date-fns"
 
 import "./Comment.scss"
-import { CommentEditor, CommentVotes, QueryResult } from "../../components"
+import {
+	Button,
+	CardVotes,
+	CommentEditor,
+	DropdownList,
+	QueryResult,
+} from "../../components"
 import { UserContext } from "../../context"
 import {
 	COMMENT_REPLIES,
 	REMOVE_COMMENT,
 	SAVE_ITEM,
-	UPDATE_REPLIES_COUNTER,
 } from "../../utils/apollo-queries"
 
-function Button({ onClick, text, Icon }) {
-	return (
-		<button onClick={onClick} className="comment_options_item">
-			<Icon className="comment_options_item_icon" />
-			{text}
-		</button>
-	)
-}
+function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
+	const { link, newsId } = useParams()
 
-function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const { user } = useContext(UserContext)
 
 	const [saved, setSaved] = useState(
@@ -50,7 +48,6 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)
-	const [updateRepliesCounter] = useMutation(UPDATE_REPLIES_COUNTER)
 	const [save] = useMutation(SAVE_ITEM)
 	const { loading, error, data } = useQuery(COMMENT_REPLIES, {
 		variables: { oldestId, commentId: comment.id, sortBy },
@@ -184,42 +181,17 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 	const toggleCollapse = () => setCollapse(value => !value)
 
 	const updateCounterLocal = () => {
-		updateRepliesCounter({
-			variables: {
-				action: "up",
-				id: comment.id,
-				type: "comment",
-			},
-			onCompleted: ({ updateRepliesCounter }) => {
-				if (!updateRepliesCounter.success) {
-					console.log(updateRepliesCounter.message)
-
-					return
-				}
-
-				setRepliesCounter(counter => counter + 1)
-				setTotalReplies(counter => counter + 1)
-			},
-			onError: error => console.log({ ...error }),
-		})
+		setRepliesCounter(counter => counter + 1)
+		setTotalReplies(counter => counter + 1)
 
 		updateCounter()
 	}
 
 	return (
-		<div
-			className={`comment ${
-				comment.parentType === "comment" && "comment_replies"
-			}`}
-		>
+		<div className={`comment${depth === 0 ? "" : " comment_replies"}`}>
 			<div className="comment_container1">
 				{collapse ? (
-					<button
-						onClick={toggleCollapse}
-						className="comment_options_item comment_options_collapse"
-					>
-						<AiOutlineExpand className="comment_options_item_icon comment_options_collapse_icon" />
-					</button>
+					<Button onClick={toggleCollapse} Icon={AiOutlineExpand} />
 				) : (
 					<>
 						<div className="comment_avatar" style={{ backgroundImage }} />
@@ -265,19 +237,21 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 					></div>
 				)}
 				<div style={{ display }} className="comment_options">
-					<CommentVotes data={comment} />
-					<Button onClick={toggleReply} text="Reply" Icon={Reply} />
-					{saved ? (
-						<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
-					) : (
-						<Button onClick={handleSave} text="Save" Icon={Save} />
-					)}
-					{user.id == comment.author.id && (
-						<>
-							<Button onClick={handleDelete} text="Delete" Icon={Delete} />
-							<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
-						</>
-					)}
+					<CardVotes data={comment} type="comment" />
+					<DropdownList depth={depth}>
+						<Button onClick={toggleReply} text="Reply" Icon={Reply} />
+						{saved ? (
+							<Button onClick={handleSave} text="Unsave" Icon={Unsave} />
+						) : (
+							<Button onClick={handleSave} text="Save" Icon={Save} />
+						)}
+						{user.id == comment.author.id && (
+							<>
+								<Button onClick={handleDelete} text="Delete" Icon={Delete} />
+								<Button onClick={toggleEdit} text="Edit" Icon={Edit} />
+							</>
+						)}
+					</DropdownList>
 				</div>
 				{showReply && (
 					<div
@@ -296,27 +270,37 @@ function Comment({ sortBy, newsId, comment, onCommentEdit, updateCounter }) {
 						/>
 					</div>
 				)}
-				<div style={{ display }} className="comments_list">
-					{replies.map(comment => (
-						<Comment
-							sortBy={sortBy}
-							key={comment.id}
-							newsId={newsId}
-							comment={comment}
-							onCommentEdit={onReplyEdit}
-							updateCounter={updateCounterLocal}
-						/>
-					))}
-					{repliesCounter - totalReplies > 0 && (
-						<button
-							onClick={handleFetchComments}
-							className="comments_more comments_more_replies"
-						>
-							Show {repliesCounter - totalReplies} more comments
-						</button>
-					)}
-					<QueryResult loading={loading} error={error} data={data} />
-				</div>
+				{depth < 5 ? (
+					<div style={{ display }} className="comments_list">
+						{replies.map(comment => (
+							<Comment
+								depth={depth + 1}
+								sortBy={sortBy}
+								key={comment.id}
+								comment={comment}
+								onCommentEdit={onReplyEdit}
+								updateCounter={updateCounterLocal}
+							/>
+						))}
+						{repliesCounter - totalReplies > 0 && (
+							<button
+								onClick={handleFetchComments}
+								className="comments_more comments_more_replies"
+							>
+								Show {repliesCounter - totalReplies} more comments
+							</button>
+						)}
+						<QueryResult loading={loading} error={error} data={data} />
+					</div>
+				) : (
+					<Link
+						className="comments_more comments_more_replies"
+						to={`/news/${link}-${newsId}/comment/${comment.id}`}
+						reloadDocument
+					>
+						Continue thread
+					</Link>
+				)}
 			</div>
 		</div>
 	)

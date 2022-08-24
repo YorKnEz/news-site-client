@@ -38,14 +38,17 @@
 }
 
 .tooltip {
-	display: flex;
+	display: grid;
+	grid-template-columns: 20px calc(100% - 20px);
 	align-items: center;
 	margin: 10px 0;
 	user-select: none;
-	color: var(--secondText-color);
+	color: var(--disabled-color);
+	font-size: 1rem;
 
 	&_icon {
 		margin-right: 10px;
+		font-size: 0.8rem;
 	}
 
 	&_text {
@@ -54,6 +57,12 @@
 }
 
 .rdw {
+	&-editor-main pre {
+		background-color: var(--compBgDark-color) !important;
+		border: 1px solid var(--border-color) !important;
+		border-radius: 5px;
+	}
+
 	&-option-wrapper {
 		border-radius: 5px !important;
 		border: 1px solid var(--border-color) !important;
@@ -89,5 +98,11 @@
 				color: var(--linkHover-color);
 			}
 		}
+	}
+}
+
+@media (max-width: 768px) {
+	.thumbnail_wrapper {
+		width: 100%;
 	}
 }

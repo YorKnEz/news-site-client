@@ -9,6 +9,22 @@ export const useDocumentTitle = title => {
 	return [documentTitle, setDocumentTitle]
 }
 
+export const useReachedBottom = (loading, error) => {
+	const [reachedBottom, setReachedBottom] = useState({})
+
+	// check if the user scrolled to the bottom of the page so we can request more news only then
+	window.addEventListener("scroll", event => {
+		const { scrollHeight, scrollTop } = event.target.scrollingElement
+		const innerHeight = window.innerHeight
+
+		if (!loading && !error && scrollHeight - innerHeight - scrollTop <= 1) {
+			setReachedBottom(true)
+		}
+	})
+
+	return [reachedBottom, setReachedBottom]
+}
+
 // updates inputs from Sign In and Sign Up page
 export const updateInputLabels = () => {
 	const form = document.querySelector("#form")
@@ -54,7 +70,7 @@ export const handleInputBlur = e => {
 
 			label.style.top = "var(--labelInTop)"
 			label.style.left = "var(--labelInLeft)"
-			label.style.color = "var(--secondText-color)"
+			label.style.color = "var(--disabled-color)"
 		}
 	}
 }
