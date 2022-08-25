@@ -28,16 +28,18 @@ import {
 	Profile,
 	SavedItems,
 } from "./pages/profile"
+import axios from "axios"
+
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 export default function App() {
 	const client = useApolloClient()
 	const [theme, setTheme] = useState(
 		themes[localStorage.getItem("theme")] || ""
 	)
-	const [token, setToken] = useState(localStorage.getItem("token") || "")
-	const [user, setUser] = useState(
-		JSON.parse(localStorage.getItem("user")) || {}
-	)
+	const [token, setToken] = useState("")
+	const [user, setUser] = useState({})
+	const userIsEmpty = Object.keys(user) === 0
 
 	// https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	let vh = window.innerHeight * 0.01
@@ -46,6 +48,46 @@ export default function App() {
 		let vh = window.innerHeight * 0.01
 		document.documentElement.style.setProperty("--vh", `${vh}px`)
 	})
+
+	// check if the data from the local storage is good
+	useEffect(() => {
+		const checkUserData = async () => {
+			try {
+				const tokenData = localStorage.getItem("token")
+				const userData = localStorage.getItem("user")
+
+				// if data is missing from storage, remove it
+				if (!tokenData || !userData) {
+					localStorage.removeItem("user")
+					localStorage.removeItem("token")
+
+					return
+				}
+
+				// if all data is present, check the integrity of the data
+				const res = await axios({
+					method: "get",
+					url: `${ip}/users/login?token=${token}`,
+				})
+
+				// finally, if there has been no error, update the storage data
+				console.log(res.data.user)
+				setUser(res.data.user)
+				setToken(tokenData)
+				localStorage.setItem("user", res.data.user)
+			} catch (error) {
+				if (error?.response?.status === 401) {
+					setUser({})
+					setToken("")
+					localStorage.removeItem("user")
+					localStorage.removeItem("token")
+				}
+				return
+			}
+		}
+
+		checkUserData()
+	}, [])
 
 	// set the theme according to the os theme
 	useEffect(() => {
@@ -109,7 +151,7 @@ export default function App() {
 
 	const verifyEmail = userId => {
 		// update the user object only if the user is logged in and the id of the verified user is the same as the currently logged in
-		if (Object.keys(user).length > 0 && user.id === userId) {
+		if (!userIsEmpty && user.id === userId) {
 			setUser({
 				...user,
 				verified: true,
