@@ -58,6 +58,8 @@ export default function App() {
 
 				// if data is missing from storage, remove it
 				if (!tokenData || !userData) {
+					setUser({})
+					setToken("")
 					localStorage.removeItem("user")
 					localStorage.removeItem("token")
 
@@ -67,14 +69,14 @@ export default function App() {
 				// if all data is present, check the integrity of the data
 				const res = await axios({
 					method: "get",
-					url: `${ip}/users/login?token=${token}`,
+					url: `${ip}/users/login?token=${tokenData}`,
 				})
 
 				// finally, if there has been no error, update the storage data
 				console.log(res.data.user)
 				setUser(res.data.user)
 				setToken(tokenData)
-				localStorage.setItem("user", res.data.user)
+				localStorage.setItem("user", JSON.stringify(res.data.user))
 			} catch (error) {
 				if (error?.response?.status === 401) {
 					setUser({})
