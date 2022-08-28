@@ -7,10 +7,7 @@ import "./HeaderMenu.scss"
 import { AccordionMenu, HeaderSearch, Switch } from "."
 import { UserContext } from "../context"
 import { Link } from "react-router-dom"
-import {
-	AiOutlineReddit as Reddit,
-	AiOutlineRocket as Best,
-} from "react-icons/ai"
+import { AiOutlineRocket as Best } from "react-icons/ai"
 import { MdOutlineNewReleases as New } from "react-icons/md"
 
 const ip = process.env.REACT_APP_EXPRESS_API_IP
@@ -20,10 +17,9 @@ function HeaderMenu({ toggleMenu }) {
 
 	const { user, token, signOut } = useContext(UserContext)
 
-	const feeds = [
-		{ id: "score", text: "Best", Icon: Best },
-		{ id: "date", text: "New", Icon: New },
-		{ id: "reddit", text: "r/Romania", Icon: Reddit },
+	const feedSort = [
+		{ id: "best", text: "Best", Icon: Best },
+		{ id: "new", text: "New", Icon: New },
 	]
 
 	const profile = [
@@ -64,7 +60,15 @@ function HeaderMenu({ toggleMenu }) {
 					{token ? (
 						<>
 							<HeaderSearch />
-							<AccordionMenu title="Feed" items={feeds} />
+							<AccordionMenu title="Home Feed" baseUrl="" items={feedSort} />
+							<AccordionMenu
+								title="Followed Feed"
+								baseUrl="/followed"
+								items={feedSort}
+							/>
+							<Link className="dropdown_button" to="/r/romania">
+								r/Romania
+							</Link>
 							<AccordionMenu
 								title="Profile"
 								baseUrl={`/profile/${user.id}`}
