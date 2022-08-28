@@ -27,6 +27,7 @@ function AccordionMenu({ title, baseUrl, items }) {
 						<Link
 							key={id}
 							to={`${baseUrl}/${id}`}
+							target="_top"
 							className="accordion_menu_item"
 						>
 							{Icon && <Icon className="accordion_menu_item_icon" />}
