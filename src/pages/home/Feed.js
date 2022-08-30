@@ -20,7 +20,7 @@ function Feed() {
 	)
 	const [sortBy, setSortBy] = useState(path.includes("new") ? "date" : "score")
 	const [news, setNews] = useState([])
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 
 	const { loading, error, data } = useQuery(NEWS_FOR_HOME, {
 		variables: { oldestId, sortBy, followed: page.includes("followed") },
@@ -30,7 +30,7 @@ function Feed() {
 	useEffect(() => {
 		setReachedBottom(false)
 		setNews([])
-		setOldestId("")
+		setOldestId(-1)
 	}, [sortBy, setReachedBottom])
 
 	useEffect(() => {

@@ -19,7 +19,7 @@ function NewsComments({ commentsCounter, setCommentsCounter }) {
 	const { user } = useContext(UserContext)
 	const [comments, setComments] = useState([])
 	const [totalReplies, setTotalReplies] = useState(0)
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 	const [sortBy, setSortBy] = useState("score")
 
 	const { loading, error, data } = useQuery(COMMENTS_FOR_NEWS, {
@@ -68,7 +68,7 @@ function NewsComments({ commentsCounter, setCommentsCounter }) {
 
 	const handlePage = ({ id }) => {
 		setComments([])
-		setOldestId("")
+		setOldestId(-1)
 		setSortBy(id)
 	}
 

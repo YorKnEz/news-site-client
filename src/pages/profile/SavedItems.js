@@ -16,7 +16,7 @@ function SavedItems() {
 	const { id } = useParams()
 
 	const [savedItems, setSavedItems] = useState([])
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(SAVED_ITEMS, {
