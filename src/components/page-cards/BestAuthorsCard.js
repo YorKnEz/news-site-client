@@ -101,6 +101,9 @@ function BestAuthorsCard() {
 						))}
 				</Link>
 			))}
+			{authors.length === 0 && (
+				<span className="authortop">There are no authors yet.</span>
+			)}
 			<QueryResult loading={loading} error={error} data={data} />
 		</BaseCard>
 	)
