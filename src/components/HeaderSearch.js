@@ -11,7 +11,7 @@ function HeaderSearch() {
 	})
 
 	const [search, setSearch] = useState(params.search ? params.search : "")
-	const [filter, setFilter] = useState(params.filter ? params.filter : "title")
+	const [filter, setFilter] = useState(params.filter ? params.filter : "all")
 
 	const handleSearch = async () => {
 		history(`/search?search=${search}&filter=${filter}`, { replace: false })
@@ -42,10 +42,10 @@ function HeaderSearch() {
 					onChange={e => setFilter(e.target.value)}
 					value={filter}
 				>
+					<option value="all">All</option>
 					<option value="title">Title</option>
 					<option value="body">Body</option>
 					<option value="tags">Tags</option>
-					<option value="author">Author</option>
 				</select>
 			</div>
 			<button onClick={handleSearch} className="search_button">

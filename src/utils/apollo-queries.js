@@ -542,45 +542,26 @@ export const NEWS_FOR_PROFILE_CARD = gql`
 export const SEARCH = gql`
 	query Query($search: String!, $filter: String!, $fetchedResults: Int!) {
 		search(search: $search, filter: $filter, fetchedResults: $fetchedResults) {
-			__typename
-			... on NewsSearch {
-				matches
-				result {
-					id
-					title
-					subreddit
-					thumbnail
-					sources
-					tags
-					body
-					type
-					createdAt
-					voteState
-					likes
-					dislikes
-					score
-					replies
-					saveState
-					link
-					author {
-						profilePicture
-						fullName
-						id
-					}
-				}
-			}
-			... on AuthorSearch {
-				result {
-					id
-					type
-					fullName
-					email
-					profilePicture
-					writtenNews
-					followers
-					createdAt
-					following
-				}
+			id
+			title
+			subreddit
+			thumbnail
+			sources
+			tags
+			body
+			type
+			createdAt
+			voteState
+			likes
+			dislikes
+			score
+			replies
+			saveState
+			link
+			author {
+				profilePicture
+				fullName
+				id
 			}
 		}
 	}
