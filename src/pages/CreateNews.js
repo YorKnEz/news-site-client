@@ -138,12 +138,12 @@ function CreateNews() {
 				requestBody.thumbnail = `${ip}/public/${fileName}`
 
 				await axios({
-					method: "post",
-					url: `${ip}/news/upload-thumbnail`,
-					data: form,
 					headers: {
 						authorization: token,
 					},
+					method: "post",
+					url: `${ip}/news/upload-thumbnail`,
+					data: form,
 				})
 			}
 
