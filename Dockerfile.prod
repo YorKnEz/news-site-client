@@ -1,7 +1,5 @@
 # specify the node version
-FROM node:14-alpine
-
-RUN npm install -g serve
+FROM node:14-alpine as build
 
 # switches user from root (default)
 # to node (the node image has a node user)
@@ -18,6 +16,20 @@ COPY ./package.json ./package-lock.json ./
 RUN npm install
 
 # copy the project to the docker container
-COPY . .
+COPY --chown=node:node . .
+
+RUN chmod +x ./env.sh
 
 RUN npm run build
+
+RUN mv env.sh ./build/env.sh
+
+FROM node:14-alpine
+
+RUN npm install -g serve
+
+USER node
+RUN mkdir /home/node/app
+WORKDIR /home/node/app
+
+COPY --from=build /home/node/app/build /home/node/app
