@@ -11,6 +11,7 @@ export {
 	FormControlledInput,
 	FormInput,
 	FormPassword,
+	FormProfilePictureInput,
 	FormThumbnailInput,
 	FormTooltips,
 } from "./form"
