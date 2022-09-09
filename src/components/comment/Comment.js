@@ -57,8 +57,6 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 		skip: !showCommentReplies,
 	})
 
-	const backgroundImage = `url(${ip}:${port}/public/${comment.author.profilePicture})`
-
 	const display = collapse ? "none" : ""
 
 	useEffect(() => {
@@ -193,7 +191,11 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 					<Button onClick={toggleCollapse} Icon={AiOutlineExpand} />
 				) : (
 					<>
-						<div className="comment_avatar" style={{ backgroundImage }} />
+						<img
+							className="comment_avatar"
+							src={`${ip}:${port}/public/${comment.author.profilePicture}`}
+							alt="profile"
+						/>
 						<div onClick={toggleCollapse} className="comment_line_container">
 							<div className="comment_line" />
 						</div>
@@ -203,9 +205,13 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 			<div className="comment_container2">
 				<div className="comment_posted">
 					{collapse && (
-						<div
+						<img
 							className="comment_avatar"
-							style={{ marginRight: "8px", backgroundImage }}
+							src={`${ip}:${port}/public/${comment.author.profilePicture}`}
+							style={{
+								marginRight: "8px",
+							}}
+							alt="profile"
 						/>
 					)}
 					<span className="comment_posted_author">

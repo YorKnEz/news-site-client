@@ -19,12 +19,10 @@
 	}
 
 	&_avatar {
+		object-fit: cover;
 		width: 32px;
 		height: 32px;
-		border-radius: 50px;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
+		border-radius: 100px;
 		margin: 0 10px 0 10px;
 	}
 
