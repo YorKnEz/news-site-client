@@ -9,6 +9,9 @@ import "./AuthorProfileCard.scss"
 import { UserContext } from "../../context"
 import { FOLLOW_AUTHOR } from "../../utils/apollo-queries"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function AuthorProfileCard({ pageCard, data }) {
 	const { user } = useContext(UserContext)
 	const [profile, setProfile] = useState({})
@@ -65,14 +68,12 @@ function AuthorProfileCard({ pageCard, data }) {
 			className={`apc${pageCard ? " page-card" : ""}`}
 		>
 			<div className="apc_info">
-				<img
-					src={
-						profile.profilePicture === "default"
-							? "/default_avatar.png"
-							: profile.profilePicture
-					}
-					alt="avatar of user"
-				/>
+				{profile.profilePicture && (
+					<img
+						src={`${ip}:${port}/public/${profile.profilePicture}`}
+						alt="avatar of user"
+					/>
+				)}
 				<div className="apc_info_container">
 					<span className="apc_info_title">{profile.fullName}</span>
 					<span className="apc_info_text">{profile.email}</span>

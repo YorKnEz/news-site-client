@@ -28,6 +28,9 @@ import {
 	SAVE_ITEM,
 } from "../../utils/apollo-queries"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 	const { link, newsId } = useParams()
 
@@ -54,11 +57,7 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 		skip: !showCommentReplies,
 	})
 
-	const backgroundImage = `url(${
-		comment.author.profilePicture !== "default"
-			? comment.author.profilePicture
-			: "/default_avatar.png"
-	})`
+	const backgroundImage = `url(${ip}:${port}/public/${comment.author.profilePicture})`
 
 	const display = collapse ? "none" : ""
 

@@ -101,7 +101,7 @@ function EditNews() {
 			// set the thumbnail
 			const inputThumbnail = document.querySelector(".formItem_image_thumbnail")
 			inputThumbnail.style.backgroundImage = data.news.thumbnail
-				? `url("${data.news.thumbnail}")`
+				? `url("${ip}:${port}/public/${data.news.thumbnail}")`
 				: "url(/default_thumbnail.png)"
 
 			// set the editorState

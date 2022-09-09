@@ -11,6 +11,9 @@ import { UserContext } from "../../context"
 import { FOLLOW_AUTHOR, USER } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function Profile() {
 	const { id } = useParams()
 	const { user } = useContext(UserContext)
@@ -80,10 +83,11 @@ function Profile() {
 					<div className="profile_container">
 						<div className="profile_row">
 							<div className="profile_info">
-								{profile.profilePicture === "default" ? (
-									<img src="/default_avatar.png" alt="avatar of user" />
-								) : (
-									<img src={profile.profilePicture} alt="avatar of user" />
+								{profile.profilePicture && (
+									<img
+										src={`${ip}:${port}/public/${profile.profilePicture}`}
+										alt="avatar of user"
+									/>
 								)}
 								<div className="profile_info_text">
 									<div className="profile_info_text2">
