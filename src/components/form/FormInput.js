@@ -2,7 +2,7 @@ import React from "react"
 
 import { handleInputBlur, handleInputFocus } from "../../utils/utils"
 
-function FormInput({ register, title, id, type, errorCheck, defaultValue }) {
+function FormInput({ register, title, id, type, errorCheck }) {
 	return (
 		<div className="formItem">
 			<label className="formItem_label" htmlFor={id}>
@@ -13,7 +13,6 @@ function FormInput({ register, title, id, type, errorCheck, defaultValue }) {
 				id={id}
 				name={id}
 				type={type}
-				defaultValue={defaultValue}
 				onFocus={handleInputFocus}
 				{...register(id, {
 					required: true,
