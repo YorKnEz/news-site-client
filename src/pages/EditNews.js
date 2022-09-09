@@ -123,6 +123,11 @@ function EditNews() {
 		}
 	}, [data, setValue])
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async formData => {
 		try {
 			// check if any sources were added, if not return error

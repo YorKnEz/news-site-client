@@ -39,6 +39,11 @@ function SignIn() {
 
 	useEffect(() => updateInputLabels(), [password])
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
 			await axios({

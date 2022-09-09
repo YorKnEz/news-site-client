@@ -35,6 +35,11 @@ function BecomeEditor() {
 
 	const tooltips = ["The CV should be in PDF format"]
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
 			console.log(data)

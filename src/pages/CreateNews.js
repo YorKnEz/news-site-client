@@ -85,6 +85,11 @@ function CreateNews() {
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
 			// check if any sources were added, if not return error
