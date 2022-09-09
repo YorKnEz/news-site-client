@@ -5,7 +5,6 @@ import { useQuery } from "@apollo/client"
 
 import "./SearchResult.scss"
 import { NewsCard, Page, QueryResult, RedditNewsCard } from "../components"
-import { AuthorProfileCard } from "../components/page-cards"
 import { SEARCH } from "../utils/apollo-queries"
 import { useReachedBottom } from "../utils/utils"
 
@@ -42,25 +41,15 @@ function SearchResult() {
 
 	return (
 		<Page>
-			<div
-				className={`searchResult${
-					params.filter === "author" ? "_authors" : ""
-				}`}
-			>
-				{results.map(({ result }) => {
-					const { __typename, id, type, matches } = result
-					if (__typename === "Author") {
-						return <AuthorProfileCard data={result} key={id} />
+			<div className="searchResult">
+				{results.map(result => {
+					const { id, type, matches } = result
+					if (type === "created") {
+						return <NewsCard data={result} key={id} matches={matches} />
 					}
 
-					if (__typename === "News") {
-						if (type === "created") {
-							return <NewsCard data={result} key={id} matches={matches} />
-						}
-
-						if (result.type === "reddit") {
-							return <RedditNewsCard data={result} key={id} matches={matches} />
-						}
+					if (type === "reddit") {
+						return <RedditNewsCard data={result} key={id} matches={matches} />
 					}
 
 					return null

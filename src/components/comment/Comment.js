@@ -44,7 +44,7 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 	const [replies, setReplies] = useState([])
 	const [repliesCounter, setRepliesCounter] = useState(comment.replies)
 	const [totalReplies, setTotalReplies] = useState(0)
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 
 	const client = useApolloClient()
 	const [removeComment] = useMutation(REMOVE_COMMENT)

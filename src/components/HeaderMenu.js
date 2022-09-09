@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 import { AiOutlineRocket as Best } from "react-icons/ai"
 import { MdOutlineNewReleases as New } from "react-icons/md"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = window._env_.REACT_APP_EXPRESS_API_IP
 
 function HeaderMenu({ toggleMenu }) {
 	const history = useNavigate()

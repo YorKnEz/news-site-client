@@ -12,26 +12,4 @@
 			margin-left: 16px;
 		}
 	}
-
-	&_authors {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 50% 50%;
-	}
-}
-
-@media (max-width: 768px) {
-	.searchResult {
-		&_authors {
-			grid-template-columns: 50% 50%;
-		}
-	}
-}
-
-@media (max-width: 400px) {
-	.searchResult {
-		&_authors {
-			grid-template-columns: 100%;
-		}
-	}
 }

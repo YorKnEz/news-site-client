@@ -16,7 +16,7 @@ function LikedItems() {
 	const { id } = useParams()
 
 	const [likedItems, setLikedItems] = useState([])
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 	const [oldestType, setOldestType] = useState("")
 
 	const { loading, error, data } = useQuery(LIKED_ITEMS, {

@@ -9,7 +9,7 @@ import "./SignUp.scss"
 import { FormConfirmPassword, FormPassword, Page } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = window._env_.REACT_APP_EXPRESS_API_IP
 
 function SignIn() {
 	const params = new Proxy(new URLSearchParams(window.location.search), {

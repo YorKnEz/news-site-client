@@ -29,7 +29,7 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = window._env_.REACT_APP_EXPRESS_API_IP
 
 const editorOptions = {
 	inline: {
@@ -174,12 +174,12 @@ function EditNews() {
 				requestBody.thumbnail = `${ip}/public/${fileName}`
 
 				await axios({
-					method: "post",
-					url: `${ip}/news/upload-thumbnail`,
-					data: form,
 					headers: {
 						authorization: token,
 					},
+					method: "post",
+					url: `${ip}/news/upload-thumbnail`,
+					data: form,
 				})
 			}
 

@@ -11,7 +11,7 @@ function News() {
 	const { id } = useParams()
 
 	const [news, setNews] = useState([])
-	const [oldestId, setOldestId] = useState("")
+	const [oldestId, setOldestId] = useState(-1)
 
 	const { loading, error, data } = useQuery(NEWS_FOR_PROFILE, {
 		variables: { oldestId, id },
