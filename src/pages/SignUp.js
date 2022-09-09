@@ -29,7 +29,7 @@ function SignUp() {
 		formState: { errors },
 	} = useForm()
 	const password = watch("password", "")
-	const watchProfilePicture = watch("profilePicture", "")
+	const watchProfilePicture = watch("profilePicture", [])
 
 	const [showPassword, setShowPassword] = useState(false)
 	const [showModal, setShowModal] = useState(false)

@@ -57,7 +57,7 @@ function EditNews() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const watchThumbnail = watch("thumbnail", []) ? watch("thumbnail", []) : []
+	const watchThumbnail = watch("thumbnail", [])
 
 	const { user, token } = useContext(UserContext)
 	const [editorState, setEditorState] = useState(() =>
