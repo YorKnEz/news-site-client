@@ -179,7 +179,7 @@ function EditNews() {
 						authorization: token,
 					},
 					method: "post",
-					url: `${ip}:${port}/news/upload-thumbnail`,
+					url: `${ip}:${port}/utils/upload-thumbnail`,
 					data: form,
 				})
 			}
