@@ -26,7 +26,8 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 const editorOptions = {
 	inline: {
@@ -135,14 +136,14 @@ function CreateNews() {
 
 				form.append("file", thumbnail, fileName)
 
-				requestBody.thumbnail = `${ip}/public/${fileName}`
+				requestBody.thumbnail = fileName
 
 				await axios({
 					headers: {
 						authorization: token,
 					},
 					method: "post",
-					url: `${ip}/news/upload-thumbnail`,
+					url: `${ip}:${port}/news/upload-thumbnail`,
 					data: form,
 				})
 			}

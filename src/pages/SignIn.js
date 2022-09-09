@@ -10,7 +10,8 @@ import { FormInput, FormPassword, Page } from "../components"
 import { UserContext } from "../context"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function SignIn() {
 	const history = useNavigate()
@@ -40,7 +41,7 @@ function SignIn() {
 		try {
 			const res = await axios({
 				method: "post",
-				url: `${ip}/users/login`,
+				url: `${ip}:${port}/users/login`,
 				data,
 			})
 

@@ -15,7 +15,8 @@ import {
 } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function SignUp() {
 	const history = useNavigate()
@@ -45,7 +46,7 @@ function SignUp() {
 		try {
 			await axios({
 				method: "post",
-				url: `${ip}/users/register`,
+				url: `${ip}:${port}/users/register`,
 				data: {
 					...data,
 					fullName: data.firstName + " " + data.lastName,

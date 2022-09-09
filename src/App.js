@@ -30,7 +30,8 @@ import {
 } from "./pages/profile"
 import axios from "axios"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 export default function App() {
 	const client = useApolloClient()
@@ -69,7 +70,7 @@ export default function App() {
 				// if all data is present, check the integrity of the data
 				const res = await axios({
 					method: "get",
-					url: `${ip}/users/login?token=${tokenData}`,
+					url: `${ip}:${port}/users/login?token=${tokenData}`,
 				})
 
 				// finally, if there has been no error, update the storage data

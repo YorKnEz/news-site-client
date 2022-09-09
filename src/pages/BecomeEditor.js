@@ -13,7 +13,8 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function BecomeEditor() {
 	const {
@@ -62,7 +63,7 @@ function BecomeEditor() {
 						"Content-Type": "multipart/form-data",
 					},
 					method: "post",
-					url: `${ip}/users/become-editor`,
+					url: `${ip}:${port}/users/become-editor`,
 					data: form,
 				})
 
