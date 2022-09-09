@@ -8,7 +8,7 @@ import "./SignUp.scss"
 import { FormInput, Modal, Page } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = window._env_.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function ForgotPassword() {
 	const {

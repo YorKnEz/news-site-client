@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client"
 import "./index.scss"
 import App from "./App"
 
-const ip = window._env_.REACT_APP_APOLLO_API_IP
+const ip = process.env.REACT_APP_APOLLO_API_IP
 
 const client = new ApolloClient({
 	uri: ip,

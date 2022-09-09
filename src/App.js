@@ -30,7 +30,7 @@ import {
 } from "./pages/profile"
 import axios from "axios"
 
-const ip = window._env_.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 export default function App() {
 	const client = useApolloClient()
