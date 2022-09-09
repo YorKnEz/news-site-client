@@ -13,7 +13,7 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = window._env_.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function BecomeEditor() {
 	const {

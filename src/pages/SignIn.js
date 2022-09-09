@@ -10,7 +10,7 @@ import { FormInput, FormPassword, Page } from "../components"
 import { UserContext } from "../context"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = window._env_.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_EXPRESS_API_IP
 
 function SignIn() {
 	const history = useNavigate()
