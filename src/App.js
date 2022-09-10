@@ -74,7 +74,6 @@ export default function App() {
 				})
 
 				// finally, if there has been no error, update the storage data
-				console.log(res.data.user)
 				setUser(res.data.user)
 				setToken(tokenData)
 				localStorage.setItem("user", JSON.stringify(res.data.user))

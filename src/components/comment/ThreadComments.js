@@ -26,7 +26,6 @@ function ThreadComments({ setCommentsCounter }) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data.commentNthParentId)
 			setComment(data.commentById)
 			setBackLink(
 				data.commentNthParentId === "-1"

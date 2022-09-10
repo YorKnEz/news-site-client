@@ -42,8 +42,6 @@ function BecomeEditor() {
 
 	const onSubmit = async data => {
 		try {
-			console.log(data)
-
 			// check if the cv is in pdf format
 			const file = data.cv.length > 0 ? data.cv[0] : undefined
 
