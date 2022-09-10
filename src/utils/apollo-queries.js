@@ -152,6 +152,29 @@ export const FOLLOW_AUTHOR = gql`
 	}
 `
 
+export const UPDATE_PROFILE = gql`
+	mutation UpdateProfile($userData: UserInput!) {
+		updateProfile(userData: $userData) {
+			code
+			success
+			message
+			user {
+				id
+				firstName
+				lastName
+				fullName
+				email
+				profilePicture
+				type
+				writtenNews
+				followers
+				createdAt
+				following
+			}
+		}
+	}
+`
+
 // QUERIES
 
 // retrieve the first comments of a news
@@ -572,6 +595,8 @@ export const USER = gql`
 	query User($id: ID!) {
 		user(id: $id) {
 			id
+			firstName
+			lastName
 			fullName
 			email
 			profilePicture
