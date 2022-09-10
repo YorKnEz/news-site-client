@@ -1,6 +1,7 @@
 .profile {
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 4px;
 
 	&_container {
 		background-color: var(--compBg-color);

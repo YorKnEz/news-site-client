@@ -6,7 +6,7 @@ import { useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { format, fromUnixTime } from "date-fns"
 
 import "./index.scss"
-import { Page, QueryResult } from "../../components"
+import { Page, ProfileSettings, QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import { FOLLOW_AUTHOR, USER } from "../../utils/apollo-queries"
 import { useDocumentTitle } from "../../utils/utils"
@@ -128,6 +128,9 @@ function Profile() {
 						)}
 					</div>
 				</div>
+			)}
+			{profile.id == user.id && (
+				<ProfileSettings profile={profile} setProfile={setProfile} />
 			)}
 		</Page>
 	)
