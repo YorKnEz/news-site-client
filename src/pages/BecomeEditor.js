@@ -13,7 +13,8 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function BecomeEditor() {
 	const {
@@ -34,10 +35,13 @@ function BecomeEditor() {
 
 	const tooltips = ["The CV should be in PDF format"]
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
-			console.log(data)
-
 			// check if the cv is in pdf format
 			const file = data.cv.length > 0 ? data.cv[0] : undefined
 
@@ -62,7 +66,7 @@ function BecomeEditor() {
 						"Content-Type": "multipart/form-data",
 					},
 					method: "post",
-					url: `${ip}/users/become-editor`,
+					url: `${ip}:${port}/users/become-editor`,
 					data: form,
 				})
 

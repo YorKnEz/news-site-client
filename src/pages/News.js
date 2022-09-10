@@ -28,6 +28,9 @@ import { UserContext } from "../context"
 import { DELETE_NEWS, NEWS_BY_ID, SAVE_ITEM } from "../utils/apollo-queries"
 import { useDocumentTitle } from "../utils/utils"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function News() {
 	const { newsId, commentId } = useParams()
 	const history = useNavigate()
@@ -189,7 +192,7 @@ function News() {
 									{data.news.thumbnail && (
 										<img
 											className="news_thumbnail"
-											src={data.news.thumbnail}
+											src={`${ip}:${port}/public/${data.news.thumbnail}`}
 											alt={data.news.title}
 										/>
 									)}

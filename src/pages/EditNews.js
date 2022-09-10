@@ -29,7 +29,8 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 const editorOptions = {
 	inline: {
@@ -56,7 +57,7 @@ function EditNews() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm()
-	const watchThumbnail = watch("thumbnail", []) ? watch("thumbnail", []) : []
+	const watchThumbnail = watch("thumbnail", [])
 
 	const { user, token } = useContext(UserContext)
 	const [editorState, setEditorState] = useState(() =>
@@ -100,7 +101,7 @@ function EditNews() {
 			// set the thumbnail
 			const inputThumbnail = document.querySelector(".formItem_image_thumbnail")
 			inputThumbnail.style.backgroundImage = data.news.thumbnail
-				? `url("${data.news.thumbnail}")`
+				? `url("${ip}:${port}/public/${data.news.thumbnail}")`
 				: "url(/default_thumbnail.png)"
 
 			// set the editorState
@@ -121,6 +122,11 @@ function EditNews() {
 			updateInputLabels()
 		}
 	}, [data, setValue])
+
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
 
 	const onSubmit = async formData => {
 		try {
@@ -171,14 +177,14 @@ function EditNews() {
 
 				form.append("file", thumbnail, fileName)
 
-				requestBody.thumbnail = `${ip}/public/${fileName}`
+				requestBody.thumbnail = fileName
 
 				await axios({
 					headers: {
 						authorization: token,
 					},
 					method: "post",
-					url: `${ip}/news/upload-thumbnail`,
+					url: `${ip}:${port}/utils/upload-thumbnail`,
 					data: form,
 				})
 			}

@@ -1,7 +1,7 @@
 import React from "react"
 import { AiOutlinePicture } from "react-icons/ai"
 
-const MAX_IMAGE_SIZE = 10485760
+const MAX_IMAGE_SIZE = 10485760 // 10 MB
 
 function FormThumbnailInput({ register, thumbnail, errorCheck }) {
 	const isSizeOk = value => (value[0] ? value[0].size < MAX_IMAGE_SIZE : true)

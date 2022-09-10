@@ -28,6 +28,9 @@ import {
 	SAVE_ITEM,
 } from "../../utils/apollo-queries"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 	const { link, newsId } = useParams()
 
@@ -53,12 +56,6 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 		variables: { oldestId, commentId: comment.id, sortBy },
 		skip: !showCommentReplies,
 	})
-
-	const backgroundImage = `url(${
-		comment.author.profilePicture !== "default"
-			? comment.author.profilePicture
-			: "/default_avatar.png"
-	})`
 
 	const display = collapse ? "none" : ""
 
@@ -194,7 +191,11 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 					<Button onClick={toggleCollapse} Icon={AiOutlineExpand} />
 				) : (
 					<>
-						<div className="comment_avatar" style={{ backgroundImage }} />
+						<img
+							className="comment_avatar"
+							src={`${ip}:${port}/public/${comment.author.profilePicture}`}
+							alt="profile"
+						/>
 						<div onClick={toggleCollapse} className="comment_line_container">
 							<div className="comment_line" />
 						</div>
@@ -204,9 +205,13 @@ function Comment({ depth, sortBy, comment, onCommentEdit, updateCounter }) {
 			<div className="comment_container2">
 				<div className="comment_posted">
 					{collapse && (
-						<div
+						<img
 							className="comment_avatar"
-							style={{ marginRight: "8px", backgroundImage }}
+							src={`${ip}:${port}/public/${comment.author.profilePicture}`}
+							style={{
+								marginRight: "8px",
+							}}
+							alt="profile"
 						/>
 					)}
 					<span className="comment_posted_author">

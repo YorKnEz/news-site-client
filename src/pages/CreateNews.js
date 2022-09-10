@@ -26,7 +26,8 @@ import {
 	useDocumentTitle,
 } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 const editorOptions = {
 	inline: {
@@ -84,6 +85,11 @@ function CreateNews() {
 	// check if any input has been autofilled in order to change the label position
 	useEffect(() => updateInputLabels())
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
 			// check if any sources were added, if not return error
@@ -135,14 +141,14 @@ function CreateNews() {
 
 				form.append("file", thumbnail, fileName)
 
-				requestBody.thumbnail = `${ip}/public/${fileName}`
+				requestBody.thumbnail = fileName
 
 				await axios({
 					headers: {
 						authorization: token,
 					},
 					method: "post",
-					url: `${ip}/news/upload-thumbnail`,
+					url: `${ip}:${port}/utils/upload-thumbnail`,
 					data: form,
 				})
 			}

@@ -10,6 +10,9 @@ import "./NewsCard.scss"
 import { Button, CardVotes, DropdownList, Modal } from "../components"
 import { SAVE_ITEM } from "../utils/apollo-queries"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function NewsCard({ data, matches }) {
 	const history = useNavigate()
 
@@ -160,7 +163,9 @@ function NewsCard({ data, matches }) {
 					{data.thumbnail ? (
 						<div
 							className="newscard_thumbnail"
-							style={{ backgroundImage: `url("${data.thumbnail}")` }}
+							style={{
+								backgroundImage: `url("${ip}:${port}/public/${data.thumbnail}")`,
+							}}
 						/>
 					) : (
 						<div className="newscard_body" id={`news-body-${data.id}`}></div>

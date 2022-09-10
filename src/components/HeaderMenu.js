@@ -10,7 +10,8 @@ import { Link } from "react-router-dom"
 import { AiOutlineRocket as Best } from "react-icons/ai"
 import { MdOutlineNewReleases as New } from "react-icons/md"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function HeaderMenu({ toggleMenu }) {
 	const history = useNavigate()
@@ -39,7 +40,7 @@ function HeaderMenu({ toggleMenu }) {
 
 			await axios({
 				method: "delete",
-				url: `${ip}/users/sign-out`,
+				url: `${ip}:${port}/users/sign-out`,
 				headers: {
 					authorization: token,
 				},

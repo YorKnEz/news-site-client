@@ -6,7 +6,8 @@ import "./VerifyEmail.scss"
 import { Page } from "../components"
 import { UserContext } from "../context"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function VerifyEmail() {
 	const { token } = useParams()
@@ -20,7 +21,7 @@ function VerifyEmail() {
 			try {
 				const { data, status } = await axios({
 					method: "get",
-					url: `${ip}/users/verify?token=${token}`,
+					url: `${ip}:${port}/users/verify?token=${token}`,
 				})
 
 				setMessage(data.message)

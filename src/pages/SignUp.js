@@ -10,12 +10,14 @@ import {
 	FormConfirmPassword,
 	FormInput,
 	FormPassword,
+	FormProfilePictureInput,
 	Modal,
 	Page,
 } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function SignUp() {
 	const history = useNavigate()
@@ -27,6 +29,7 @@ function SignUp() {
 		formState: { errors },
 	} = useForm()
 	const password = watch("password", "")
+	const watchProfilePicture = watch("profilePicture", [])
 
 	const [showPassword, setShowPassword] = useState(false)
 	const [showModal, setShowModal] = useState(false)
@@ -41,16 +44,43 @@ function SignUp() {
 
 	useEffect(() => updateInputLabels(), [password])
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
+			const requestBody = {
+				...data,
+				fullName: data.firstName + " " + data.lastName,
+				type: "user",
+			}
+
+			const profilePicture = data.profilePicture[0]
+				? data.profilePicture[0]
+				: ""
+
+			if (profilePicture) {
+				const fileName = Date.now() + "-" + profilePicture.name
+
+				const form = new FormData()
+
+				form.append("file", profilePicture, fileName)
+
+				requestBody.profilePicture = fileName
+
+				await axios({
+					method: "post",
+					url: `${ip}:${port}/utils/upload-profile-picture`,
+					data: form,
+				})
+			}
+
 			await axios({
 				method: "post",
-				url: `${ip}/users/register`,
-				data: {
-					...data,
-					fullName: data.firstName + " " + data.lastName,
-					type: "user",
-				},
+				url: `${ip}:${port}/users/register`,
+				data: requestBody,
 			})
 
 			setError("")
@@ -102,6 +132,11 @@ function SignUp() {
 				<div className="signUp_container">
 					<span className="signUp_title">Sign Up</span>
 					<form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
+						<FormProfilePictureInput
+							register={register}
+							profilePicture={watchProfilePicture}
+							errorCheck={errorCheck}
+						/>
 						<div className="form_row">
 							<FormInput
 								register={register}

@@ -11,6 +11,9 @@ import { QueryResult } from "../../components"
 import { UserContext } from "../../context"
 import { BEST_AUTHORS, FOLLOW_AUTHOR } from "../../utils/apollo-queries"
 
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
+
 function BestAuthorsCard() {
 	const { user } = useContext(UserContext)
 	const [authors, setAuthors] = useState([])
@@ -74,11 +77,7 @@ function BestAuthorsCard() {
 					<div className="authortop_info">
 						<img
 							className="authortop_avatar"
-							src={
-								author.profilePicture === "default"
-									? "/default_avatar.png"
-									: author.profilePicture
-							}
+							src={`${ip}:${port}/public/${author.profilePicture}`}
 							alt="avatar of user"
 						/>
 						<span>{author.fullName}</span>

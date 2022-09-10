@@ -9,7 +9,8 @@ import "./SignUp.scss"
 import { FormConfirmPassword, FormPassword, Page } from "../components"
 import { updateInputLabels, useDocumentTitle } from "../utils/utils"
 
-const ip = process.env.REACT_APP_EXPRESS_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_EXPRESS_API_PORT
 
 function SignIn() {
 	const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -38,11 +39,16 @@ function SignIn() {
 
 	useEffect(() => updateInputLabels(), [password])
 
+	// if the user pressed enter, submit the form
+	window.addEventListener("keyup", e => {
+		if (e.key === "Enter") handleSubmit(onSubmit)()
+	})
+
 	const onSubmit = async data => {
 		try {
 			await axios({
 				method: "patch",
-				url: `${ip}/users/reset-password?token=${params.token}`,
+				url: `${ip}:${port}/users/reset-password?token=${params.token}`,
 				data: {
 					password: data.password,
 				},

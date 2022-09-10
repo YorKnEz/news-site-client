@@ -5,10 +5,11 @@ import ReactDOM from "react-dom/client"
 import "./index.scss"
 import App from "./App"
 
-const ip = process.env.REACT_APP_APOLLO_API_IP
+const ip = process.env.REACT_APP_API_IP
+const port = process.env.REACT_APP_APOLLO_API_PORT
 
 const client = new ApolloClient({
-	uri: ip,
+	uri: `${ip}:${port}`,
 	cache: new InMemoryCache(),
 	headers: {
 		authorization: localStorage.getItem("token") || "",
