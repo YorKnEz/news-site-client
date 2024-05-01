@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useParams } from "react-router"
 
 import { useQuery } from "@apollo/client"
 
@@ -8,11 +9,13 @@ import { FOLLOWED_AUTHORS } from "../../utils/apollo-queries"
 import { useReachedBottom } from "../../utils/utils"
 
 function FollowedAuthors() {
+    const { id } = useParams()
+    console.log(id)
 	const [offset, setOffset] = useState(0)
 	const [authors, setAuthors] = useState([])
 
 	const { loading, error, data } = useQuery(FOLLOWED_AUTHORS, {
-		variables: { offset },
+        variables: { offset, userId: id },
 	})
 	const [reachedBottom, setReachedBottom] = useReachedBottom(loading, error)
 

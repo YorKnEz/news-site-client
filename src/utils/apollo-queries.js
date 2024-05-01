@@ -611,8 +611,8 @@ export const USER = gql`
 
 // returns the authors followed by a user, paginated
 export const FOLLOWED_AUTHORS = gql`
-	query FollowedAuthors($offset: Int) {
-		followedAuthors(offset: $offset) {
+	query FollowedAuthors($offset: Int, $userId: ID!) {
+		followedAuthors(offset: $offset, userId: $userId) {
 			id
 			type
 			fullName
